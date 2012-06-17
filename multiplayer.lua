@@ -9,8 +9,8 @@
 -----------------------------------------------------------------------------------------
 
 local storyboard = require("storyboard")
+local Player = require("Player")
 local PlayerControlPanel = require("PlayerControlPanel")
-local TouchListener = require("TouchListener")
 
 -----------------------------------------------------------------------------------------
 -- Constants
@@ -42,43 +42,53 @@ local scene = storyboard.newScene()
 
 -- Called when the scene's view does not exist:
 function scene:createScene(event)
-	local group = self.view
+	-- Create players
+	local player1 = Player.create{
+		id = 1
+	}
+
+	local player2 = Player.create{
+		id = 2
+	}
 
 	-- create a grey rectangle as the backdrop
 	local background = display.newRect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT)
 	background:setFillColor(122, 47, 15)
 	
-	-- Draw background
-	group:insert(background)
-	
-	-- Draw grid (Rows)
-	local yStep = math.floor((GRID_END_Y - GRID_START_Y) / NB_ROWS)
-	for y = GRID_START_Y, GRID_END_Y, yStep do
-		local line = display.newLine(GRID_START_X, y, GRID_END_X, y)
-		line.width = 2
-		group:insert(line)
-	end
-	
-	-- Draw grid (Columns)
-	local xStep = math.floor((GRID_END_X - GRID_START_X) / NB_COLS)
-	for x = GRID_START_X, GRID_END_X, xStep do
-		local line = display.newLine(x, GRID_START_Y, x, GRID_END_Y)
-		line.width = 2
-		group:insert(line)
-	end
-	
 	-- Create player control panels
 	local controlPanel1 = PlayerControlPanel.create{
-		playerId = 1,
+		player = player1,
 		x = 0,
 		y = TOP_ZONE_HEIGHT,
 		height = SCREEN_HEIGHT - TOP_ZONE_HEIGHT
 	}
-	
-	controlPanel1:display()
 
-	-- Initialize touch listener
-	-- TouchListener.init()
+	local controlPanel2 = PlayerControlPanel.create{
+		player = player2,
+		x = SCREEN_WIDTH - PlayerControlPanel.width,
+		y = TOP_ZONE_HEIGHT,
+		height = SCREEN_HEIGHT - TOP_ZONE_HEIGHT
+	}
+	
+	-- Display control panels
+	controlPanel1:display()
+	controlPanel2:display()
+	
+	-- Draw grid (Rows)
+	-- local yStep = math.floor((GRID_END_Y - GRID_START_Y) / NB_ROWS)
+	-- for y = GRID_START_Y, GRID_END_Y, yStep do
+	-- 	local line = display.newLine(GRID_START_X, y, GRID_END_X, y)
+	-- 	line.width = 2
+	-- 	group:insert(line)
+	-- end
+	
+	-- -- Draw grid (Columns)
+	-- local xStep = math.floor((GRID_END_X - GRID_START_X) / NB_COLS)
+	-- for x = GRID_START_X, GRID_END_X, xStep do
+	-- 	local line = display.newLine(x, GRID_START_Y, x, GRID_END_Y)
+	-- 	line.width = 2
+	-- 	group:insert(line)
+	-- end
 end
 
 -- Called immediately after scene has moved onscreen:

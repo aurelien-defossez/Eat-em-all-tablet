@@ -31,6 +31,12 @@ local LEFT = 3
 -- Attributes
 -----------------------------------------------------------------------------------------
 
+-- Panel is 2 Arrows wide and 3 arrows tall
+-- Arrows disposition:
+--   [UP]
+-- [LT][RT]
+--   [DN]
+
 ArrowsPanel.width = 2 * ARROW_WIDTH
 ArrowsPanel.height = 3 * ARROW_HEIGHT
 
@@ -53,6 +59,7 @@ end
 function ArrowsPanel:display()
 	-- Create arrows
 	local arrowUp = self:_createArrow{
+		player = self.player,
 		direction = UP,
 		x = 0,
 		y = 0,
@@ -60,6 +67,7 @@ function ArrowsPanel:display()
 	}
 
 	local arrowDown = self:_createArrow{
+		player = self.player,
 		direction = DOWN,
 		x = 0,
 		y = 2 * ARROW_HEIGHT,
@@ -67,6 +75,7 @@ function ArrowsPanel:display()
 	}
 
 	local arrowRight = self:_createArrow{
+		player = self.player,
 		direction = RIGHT,
 		x = ARROW_WIDTH / 2,
 		y = ARROW_HEIGHT,
@@ -74,6 +83,7 @@ function ArrowsPanel:display()
 	}
 
 	local arrowLeft = self:_createArrow{
+		player = self.player,
 		direction = LEFT,
 		x = -ARROW_WIDTH / 2,
 		y = ARROW_HEIGHT,
@@ -95,6 +105,7 @@ end
 function ArrowsPanel:_createArrow(parameters)
 	local arrow = display.newImageRect("arrow_up.png", ARROW_WIDTH, ARROW_HEIGHT)
 	arrow.direction = parameters.direction or -1
+	arrow.player = parameters.player
 
 	-- Position arrow
 	arrow:setReferencePoint(display.CenterReferencePoint)
@@ -120,6 +131,7 @@ function onArrowTouch(event)
 
 		local draggedArrow = display.newImageRect("arrow_up_selected.png", ARROW_WIDTH, ARROW_HEIGHT)
 		draggedArrow.direction = arrow.direction
+		draggedArrow.player = arrow.player
 
 		-- Position arrow
 		draggedArrow:setReferencePoint(display.CenterReferencePoint)
@@ -147,16 +159,16 @@ function onDraggedArrowTouch(event)
 
 	-- Drop the arrow
 	elseif event.phase == "ended" then
-		print ("Arrow " .. arrow.direction .. " positioned")
+		print ("Arrow " .. arrow.direction .. " positioned by player " .. arrow.player.id)
 		arrow:removeSelf()
 
 		-- Remove focus
-		display.getCurrentStage():setFocus(nil)
+		display.getCurrentStage():setFocus(nil, event.id)
 
 	-- Delete the arrow
 	elseif event.phase == "cancelled" then
 		arrow:removeSelf()
-		display.getCurrentStage():setFocus(nil)
+		display.getCurrentStage():setFocus(nil, event.id)
 	end
 end
 
