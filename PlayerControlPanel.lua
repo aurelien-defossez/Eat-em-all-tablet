@@ -6,6 +6,9 @@
 
 module("PlayerControlPanel", package.seeall)
 
+local PlayerControlPanel = {}
+PlayerControlPanel.__index = PlayerControlPanel
+
 -----------------------------------------------------------------------------------------
 -- Imports
 -----------------------------------------------------------------------------------------
@@ -28,9 +31,6 @@ local DEFAULT_HEIGHT = 500
 -- Initialization and Destruction
 -----------------------------------------------------------------------------------------
 
-local PlayerControlPanel = {}
-PlayerControlPanel.__index = PlayerControlPanel
-
 function PlayerControlPanel.create(values)
 	-- Create object
 	local self = values or {}
@@ -45,8 +45,7 @@ function PlayerControlPanel.create(values)
 	-- Initialize attributes
 	self.arrows = ArrowsPanel.create{
 		x = self.x,
-		y = self.y,
-		width = self.width
+		y = self.y + self.height / 2 - ArrowsPanel.height / 2
 	}
 	
 	return self
