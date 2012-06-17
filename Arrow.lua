@@ -6,7 +6,6 @@
 
 module("Arrow", package.seeall)
 
-local Arrow = {}
 Arrow.__index = Arrow
 
 -----------------------------------------------------------------------------------------
@@ -17,13 +16,13 @@ Arrow.__index = Arrow
 -- Constants
 -----------------------------------------------------------------------------------------
 
-Arrow.UP = 0
-Arrow.DOWN = 1
-Arrow.RIGHT = 2
-Arrow.LEFT = 3
+UP = 0
+DOWN = 1
+RIGHT = 2
+LEFT = 3
 
-Arrow.WIDTH = 64
-Arrow.HEIGHT = 64
+WIDTH = 64
+HEIGHT = 64
 
 -----------------------------------------------------------------------------------------
 -- Initialization and Destruction
@@ -35,8 +34,8 @@ function Arrow.create(parameters)
 	setmetatable(self, Arrow)
 
 	-- Initialize attributes
-	self.width = Arrow.WIDTH
-	self.height = Arrow.HEIGHT
+	self.width = WIDTH
+	self.height = HEIGHT
 
 	return self
 end
@@ -45,7 +44,7 @@ end
 -- Methods
 -----------------------------------------------------------------------------------------
 
-function Arrow:display()
+function Arrow:draw()
 	self.sprite = display.newImageRect("arrow_up.png", self.width, self.height)
 	self.sprite.arrow = self
 
@@ -60,14 +59,14 @@ function Arrow:display()
 end
 
 -----------------------------------------------------------------------------------------
--- Static Methods
+-- Private static Methods
 -----------------------------------------------------------------------------------------
 
 function onArrowTouch(event)
 	local arrow = event.target.arrow
 
 	if event.phase == "began" then
-		print ("Arrow touched: " .. arrow.direction)
+		print ("Drag start: " .. arrow.direction .. " of player " .. arrow.player.id)
 
 		local draggedArrow = display.newImageRect("arrow_up_selected.png", arrow.width, arrow.height)
 		draggedArrow.direction = arrow.direction
@@ -85,27 +84,27 @@ function onArrowTouch(event)
 end
 
 function onDraggedArrowTouch(event)
-	local arrow = event.target
+	local sprite = event.target
 
 	-- Follow the finger movement
 	if event.phase == "moved" then
-		arrow.x = event.x
-		arrow.y = event.y
+		sprite.x = event.x
+		sprite.y = event.y
 
 		-- Focus this object in order to track this finger properly
-		display.getCurrentStage():setFocus(arrow, event.id)
+		display.getCurrentStage():setFocus(sprite, event.id)
 
 	-- Drop the arrow
 	elseif event.phase == "ended" then
-		print ("Arrow " .. arrow.direction .. " positioned by player " .. arrow.player.id)
-		arrow:removeSelf()
+		print ("Drag end:   " .. sprite.direction .. " of player " .. sprite.player.id)
+		sprite:removeSelf()
 
 		-- Remove focus
 		display.getCurrentStage():setFocus(nil, event.id)
 
 	-- Delete the arrow
 	elseif event.phase == "cancelled" then
-		arrow:removeSelf()
+		sprite:removeSelf()
 		display.getCurrentStage():setFocus(nil, event.id)
 	end
 end

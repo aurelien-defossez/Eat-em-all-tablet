@@ -47,7 +47,7 @@ function scene:createScene(event)
 		id = 2
 	}
 
-	-- create a grey rectangle as the backdrop
+	-- Create the background
 	local background = display.newRect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT)
 	background:setFillColor(122, 47, 15)
 	
@@ -66,9 +66,9 @@ function scene:createScene(event)
 		height = SCREEN_HEIGHT - TOP_ZONE_HEIGHT
 	}
 	
-	-- Display control panels
-	controlPanel1:display()
-	controlPanel2:display()
+	-- Draw control panels
+	controlPanel1:draw()
+	controlPanel2:draw()
 	
 	-- Draw grid (Rows)
 	-- local yStep = math.floor((GRID_END_Y - GRID_START_Y) / NB_ROWS)

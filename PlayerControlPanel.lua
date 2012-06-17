@@ -6,22 +6,20 @@
 
 module("PlayerControlPanel", package.seeall)
 
-local PlayerControlPanel = {}
 PlayerControlPanel.__index = PlayerControlPanel
 
 -----------------------------------------------------------------------------------------
 -- Imports
 -----------------------------------------------------------------------------------------
 
-require "utils"
 local ArrowsPanel = require("ArrowsPanel")
 
 -----------------------------------------------------------------------------------------
 -- Constants
 -----------------------------------------------------------------------------------------
 
-PlayerControlPanel.PADDING = 16
-PlayerControlPanel.WIDTH = ArrowsPanel.WIDTH + PlayerControlPanel.PADDING
+PADDING = 16
+WIDTH = ArrowsPanel.WIDTH + PADDING
 
 -----------------------------------------------------------------------------------------
 -- Initialization and Destruction
@@ -33,10 +31,10 @@ function PlayerControlPanel.create(parameters)
 	setmetatable(self, PlayerControlPanel)
 	
 	-- Initialize attributes
-	self.width = PlayerControlPanel.WIDTH
+	self.width = WIDTH
 	self.arrows = ArrowsPanel.create{
 		player = self.player,
-		x = self.x + PlayerControlPanel.PADDING / 2,
+		x = self.x + PADDING / 2,
 		y = self.y + self.height / 2 - ArrowsPanel.HEIGHT / 2
 	}
 	
@@ -47,13 +45,13 @@ end
 -- Methods
 -----------------------------------------------------------------------------------------
 
-function PlayerControlPanel:display()
+function PlayerControlPanel:draw()
 	local myRectangle = display.newRect(self.x, self.y, self.width, self.height)
 	myRectangle.strokeWidth = 3
 	myRectangle:setFillColor(204, 109, 0)
 	myRectangle:setStrokeColor(135, 72, 0)
 	
-	self.arrows:display()
+	self.arrows:draw()
 end
 
 -----------------------------------------------------------------------------------------

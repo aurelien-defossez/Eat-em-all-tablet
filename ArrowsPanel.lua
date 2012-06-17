@@ -6,15 +6,13 @@
 
 module("ArrowsPanel", package.seeall)
 
-local ArrowsPanel = {}
 ArrowsPanel.__index = ArrowsPanel
 
 -----------------------------------------------------------------------------------------
 -- Imports
 -----------------------------------------------------------------------------------------
 
-require "utils"
-require "sprite"
+require("sprite")
 local Arrow = require("Arrow")
 
 -----------------------------------------------------------------------------------------
@@ -27,8 +25,8 @@ local Arrow = require("Arrow")
 -- [LT][RT]
 --   [DN]
 
-ArrowsPanel.WIDTH = 2 * Arrow.WIDTH
-ArrowsPanel.HEIGHT = 3 * Arrow.HEIGHT
+WIDTH = 2 * Arrow.WIDTH
+HEIGHT = 3 * Arrow.HEIGHT
 
 -----------------------------------------------------------------------------------------
 -- Initialization and Destruction
@@ -40,8 +38,8 @@ function ArrowsPanel.create(parameters)
 	setmetatable(self, ArrowsPanel)
 
 	-- Initialize attributes
-	self.width = ArrowsPanel.WIDTH
-	self.height = ArrowsPanel.HEIGHT
+	self.width = WIDTH
+	self.height = HEIGHT
 
 	-- Create arrows
 	self.arrowUp = Arrow.create{
@@ -83,12 +81,12 @@ end
 -- Methods
 -----------------------------------------------------------------------------------------
 
-function ArrowsPanel:display()
-	-- Display arrows
-	self.arrowUp:display()
-	self.arrowDown:display()
-	self.arrowRight:display()
-	self.arrowLeft:display()
+function ArrowsPanel:draw()
+	-- Draw arrows
+	self.arrowUp:draw()
+	self.arrowDown:draw()
+	self.arrowRight:draw()
+	self.arrowLeft:draw()
 end
 
 -----------------------------------------------------------------------------------------

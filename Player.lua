@@ -6,7 +6,6 @@
 
 module("Player", package.seeall)
 
-local Player = {}
 Player.__index = Player
 
 -----------------------------------------------------------------------------------------
