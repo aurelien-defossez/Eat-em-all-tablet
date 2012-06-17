@@ -20,8 +20,10 @@ local ArrowsPanel = require("ArrowsPanel")
 -- Constants
 -----------------------------------------------------------------------------------------
 
-local DEFAULT_WIDTH = 128
-local DEFAULT_HEIGHT = 500
+local defaults = {
+	width = 128,
+	height = 500
+}
 
 -----------------------------------------------------------------------------------------
 -- Attributes
@@ -37,10 +39,7 @@ function PlayerControlPanel.create(values)
 	setmetatable(self, PlayerControlPanel)
 	
 	-- Default values
-	applyDefaults(self, {
-		width = DEFAULT_WIDTH,
-		height = DEFAULT_HEIGHT
-	})
+	applyDefaults(self, defaults)
 	
 	-- Initialize attributes
 	self.arrows = ArrowsPanel.create{

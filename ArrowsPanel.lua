@@ -22,6 +22,10 @@ require "sprite"
 
 local ARROW_WIDTH = 64
 local ARROW_HEIGHT = 64
+local UP = 0
+local DOWN = 1
+local RIGHT = 2
+local LEFT = 3
 
 -----------------------------------------------------------------------------------------
 -- Attributes
@@ -49,25 +53,29 @@ end
 function ArrowsPanel:display()
 	-- Create arrows
 	local arrowUp = self:_createArrow{
-		x = self.width / 2,
+		direction = UP,
+		x = 0,
 		y = 0,
 		orientation = 0
 	}
 
 	local arrowDown = self:_createArrow{
-		x = self.width / 2,
+		direction = DOWN,
+		x = 0,
 		y = 2 * ARROW_HEIGHT,
 		orientation = 180
 	}
 
 	local arrowRight = self:_createArrow{
-		x = self.width / 2 + ARROW_WIDTH / 2,
+		direction = RIGHT,
+		x = ARROW_WIDTH / 2,
 		y = ARROW_HEIGHT,
 		orientation = 90
 	}
 
 	local arrowLeft = self:_createArrow{
-		x = self.width / 2 - ARROW_WIDTH / 2,
+		direction = LEFT,
+		x = -ARROW_WIDTH / 2,
 		y = ARROW_HEIGHT,
 		orientation = -90
 	}
@@ -81,17 +89,33 @@ function ArrowsPanel:display()
 
 	-- Position the arrows
 	self.arrows.x = self.x
-	self.arrows.y = self.y + ARROW_HEIGHT / 2
+	self.arrows.y = self.y
 end
 
 function ArrowsPanel:_createArrow(parameters)
 	local arrow = display.newImageRect("arrow_up.png", ARROW_WIDTH, ARROW_HEIGHT)
+	arrow.direction = parameters.direction or -1
+
+	-- Position arrow
 	arrow:setReferencePoint(display.CenterReferencePoint)
-	arrow.x = parameters.x or 0
-	arrow.y = parameters.y or 0
+	arrow.x = self.width / 2 + (parameters.x or 0)
+	arrow.y = ARROW_HEIGHT / 2 + (parameters.y or 0)
 	arrow:rotate(parameters.orientation or 0)
 
+	-- Handle events
+	arrow:addEventListener("touch", onArrowTouch)
+
 	return arrow
+end
+
+-----------------------------------------------------------------------------------------
+-- Static Methods
+-----------------------------------------------------------------------------------------
+
+function onArrowTouch(event)
+	local self = event.target
+
+	print ("Arrow touched: " .. self.direction)
 end
 
 -----------------------------------------------------------------------------------------
