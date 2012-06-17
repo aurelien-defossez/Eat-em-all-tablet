@@ -20,14 +20,8 @@ local ArrowsPanel = require("ArrowsPanel")
 -- Constants
 -----------------------------------------------------------------------------------------
 
-local PADDING = 16
-local PANEL_WIDTH = ArrowsPanel.width + PADDING
-
------------------------------------------------------------------------------------------
--- Attributes
------------------------------------------------------------------------------------------
-
-PlayerControlPanel.width = PANEL_WIDTH
+PlayerControlPanel.PADDING = 16
+PlayerControlPanel.WIDTH = ArrowsPanel.WIDTH + PlayerControlPanel.PADDING
 
 -----------------------------------------------------------------------------------------
 -- Initialization and Destruction
@@ -39,10 +33,11 @@ function PlayerControlPanel.create(parameters)
 	setmetatable(self, PlayerControlPanel)
 	
 	-- Initialize attributes
+	self.width = PlayerControlPanel.WIDTH
 	self.arrows = ArrowsPanel.create{
 		player = self.player,
-		x = self.x + PADDING / 2,
-		y = self.y + self.height / 2 - ArrowsPanel.height / 2
+		x = self.x + PlayerControlPanel.PADDING / 2,
+		y = self.y + self.height / 2 - ArrowsPanel.HEIGHT / 2
 	}
 	
 	return self

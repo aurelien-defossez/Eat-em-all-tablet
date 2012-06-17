@@ -4,11 +4,13 @@
 --
 -----------------------------------------------------------------------------------------
 
+local storyboard = require("storyboard")
+local scene = storyboard.newScene()
+
 -----------------------------------------------------------------------------------------
 -- Imports
 -----------------------------------------------------------------------------------------
 
-local storyboard = require("storyboard")
 local Player = require("Player")
 local PlayerControlPanel = require("PlayerControlPanel")
 
@@ -31,14 +33,8 @@ local GRID_END_Y = display.contentHeight - 10
 local GRID_END_X = display.contentWidth - 50
 
 -----------------------------------------------------------------------------------------
--- Attributes
------------------------------------------------------------------------------------------
-
------------------------------------------------------------------------------------------
 -- Initialization and Destruction
 -----------------------------------------------------------------------------------------
-
-local scene = storyboard.newScene()
 
 -- Called when the scene's view does not exist:
 function scene:createScene(event)
@@ -65,7 +61,7 @@ function scene:createScene(event)
 
 	local controlPanel2 = PlayerControlPanel.create{
 		player = player2,
-		x = SCREEN_WIDTH - PlayerControlPanel.width,
+		x = SCREEN_WIDTH - PlayerControlPanel.WIDTH,
 		y = TOP_ZONE_HEIGHT,
 		height = SCREEN_HEIGHT - TOP_ZONE_HEIGHT
 	}
