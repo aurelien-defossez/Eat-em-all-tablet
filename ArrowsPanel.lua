@@ -113,9 +113,39 @@ end
 -----------------------------------------------------------------------------------------
 
 function onArrowTouch(event)
-	local self = event.target
+	local arrow = event.target
 
-	print ("Arrow touched: " .. self.direction)
+	if event.phase == "began" then
+		print ("Arrow touched: " .. arrow.direction)
+
+		local draggedArrow = display.newImageRect("arrow_up_selected.png", ARROW_WIDTH, ARROW_HEIGHT)
+		draggedArrow.direction = arrow.direction
+
+		-- Position arrow
+		draggedArrow:setReferencePoint(display.CenterReferencePoint)
+		draggedArrow.x = event.x
+		draggedArrow.y = event.y
+		draggedArrow:rotate(arrow.rotation)
+
+		-- Handle events
+		draggedArrow:addEventListener("touch", onDraggedArrowTouch)
+
+		return arrow
+	end
+end
+
+function onDraggedArrowTouch(event)
+	local arrow = event.target
+
+	if event.phase == "moved" then
+		arrow.x = event.x
+		arrow.y = event.y
+	elseif event.phase == "ended" then
+		print ("Arrow " .. arrow.direction .. " positioned")
+		arrow:removeSelf()
+	elseif event.phase == "cancelled" then
+		arrow:removeSelf()
+	end
 end
 
 -----------------------------------------------------------------------------------------
