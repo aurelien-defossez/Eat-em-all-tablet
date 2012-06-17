@@ -38,9 +38,9 @@ ArrowsPanel.height = 3 * ARROW_HEIGHT
 -- Initialization and Destruction
 -----------------------------------------------------------------------------------------
 
-function ArrowsPanel.create(values)
+function ArrowsPanel.create(parameters)
 	-- Create object
-	local self = values or {}
+	local self = parameters or {}
 	setmetatable(self, ArrowsPanel)
 
 	return self
@@ -137,14 +137,26 @@ end
 function onDraggedArrowTouch(event)
 	local arrow = event.target
 
+	-- Follow the finger movement
 	if event.phase == "moved" then
 		arrow.x = event.x
 		arrow.y = event.y
+
+		-- Focus this object in order to track this finger properly
+		display.getCurrentStage():setFocus(arrow, event.id)
+
+	-- Drop the arrow
 	elseif event.phase == "ended" then
 		print ("Arrow " .. arrow.direction .. " positioned")
 		arrow:removeSelf()
+
+		-- Remove focus
+		display.getCurrentStage():setFocus(nil)
+
+	-- Delete the arrow
 	elseif event.phase == "cancelled" then
 		arrow:removeSelf()
+		display.getCurrentStage():setFocus(nil)
 	end
 end
 

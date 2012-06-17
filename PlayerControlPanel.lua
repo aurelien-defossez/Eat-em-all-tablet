@@ -33,12 +33,12 @@ local defaults = {
 -- Initialization and Destruction
 -----------------------------------------------------------------------------------------
 
-function PlayerControlPanel.create(values)
+function PlayerControlPanel.create(parameters)
 	-- Create object
-	local self = values or {}
+	local self = parameters or {}
 	setmetatable(self, PlayerControlPanel)
 	
-	-- Default values
+	-- Default parameters
 	applyDefaults(self, defaults)
 	
 	-- Initialize attributes

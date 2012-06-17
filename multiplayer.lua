@@ -10,6 +10,7 @@
 
 local storyboard = require("storyboard")
 local PlayerControlPanel = require("PlayerControlPanel")
+local TouchListener = require("TouchListener")
 
 -----------------------------------------------------------------------------------------
 -- Constants
@@ -75,6 +76,9 @@ function scene:createScene(event)
 	}
 	
 	controlPanel1:display()
+
+	-- Initialize touch listener
+	-- TouchListener.init()
 end
 
 -- Called immediately after scene has moved onscreen:
