@@ -40,6 +40,12 @@ function Tile:draw()
 	end
 end
 
+function Tile:enterFrame(event)
+	if self.content ~= nil then
+		self.content:enterFrame(event)
+	end
+end
+
 -----------------------------------------------------------------------------------------
 
 return Tile

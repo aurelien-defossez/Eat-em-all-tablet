@@ -23,11 +23,11 @@ local Grid = require("Grid")
 -- Called when the scene's view does not exist:
 function scene:createScene(event)
 	-- Create players
-	local player1 = Player.create{
+	self.player1 = Player.create{
 		id = 1
 	}
 
-	local player2 = Player.create{
+	self.player2 = Player.create{
 		id = 2
 	}
 
@@ -39,9 +39,9 @@ function scene:createScene(event)
 	local mainHeight = config.screen.height - config.panels.hitpoints.height
 
 	-- Create grid
-	local grid = Grid.create{
-		player1 = player1,
-		player2 = player2,
+	self.grid = Grid.create{
+		player1 = self.player1,
+		player2 = self.player2,
 		x = config.panels.controls.width + config.panels.grid.xpadding,
 		y = config.panels.hitpoints.height,
 		width = config.screen.width - 2 * config.panels.controls.width - 2 * config.panels.grid.xpadding,
@@ -49,44 +49,60 @@ function scene:createScene(event)
 	}
 
 	-- Load default map
-	grid:loadMap(config.defaultMap)
+	self.grid:loadMap(config.defaultMap)
 	
 	-- Create player control panels
-	local controlPanel1 = PlayerControlPanel.create{
-		player = player1,
+	self.controlPanel1 = PlayerControlPanel.create{
+		player = self.player1,
 		x = 0,
 		y = config.panels.hitpoints.height,
 		height = mainHeight,
-		grid = grid
+		grid = self.grid
 	}
 
-	local controlPanel2 = PlayerControlPanel.create{
-		player = player2,
+	self.controlPanel2 = PlayerControlPanel.create{
+		player = self.player2,
 		x = config.screen.width - config.panels.controls.width,
 		y = config.panels.hitpoints.height,
 		height = mainHeight,
-		grid = grid
+		grid = self.grid
 	}
 
 	-- Draw
-	controlPanel1:draw()
-	controlPanel2:draw()
-	grid:draw()
+	self.controlPanel1:draw()
+	self.controlPanel2:draw()
+	self.grid:draw()
+
+	-- Bind enterFrane event
 end
 
 -- Called immediately after scene has moved onscreen:
 function scene:enterScene(event)
 	local group = self.view
+
+	-- Bind enter frame event
+	Runtime:addEventListener("enterFrame", self);
 end
 
 -- Called when scene is about to move offscreen:
 function scene:exitScene(event)
 	local group = self.view
+
+	-- Unbind events
+	Runtime:removeEventListener("enterFrame", self)
 end
 
 -- If scene's view is removed, scene:destroyScene() will be called just prior to:
 function scene:destroyScene(event)
 	local group = self.view
+end
+
+-----------------------------------------------------------------------------------------
+-- Enter Frame
+-----------------------------------------------------------------------------------------
+
+function scene:enterFrame(event)
+	self.grid:enterFrame(event)
 end
 
 -----------------------------------------------------------------------------------------
@@ -106,6 +122,7 @@ scene:addEventListener("exitScene", scene)
 -- automatically unloaded in low memory situations, or explicitly via a call to
 -- storyboard.purgeScene() or storyboard.removeScene().
 scene:addEventListener("destroyScene", scene)
+
 
 -----------------------------------------------------------------------------------------
 

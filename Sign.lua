@@ -46,6 +46,10 @@ function Sign:draw(parameters)
 	self.sprite:rotate(self.direction or 0)
 end
 
+function Sign:enterFrame(event)
+	-- Do nothing
+end
+
 -----------------------------------------------------------------------------------------
 
 return Sign

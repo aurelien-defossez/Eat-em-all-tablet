@@ -111,6 +111,12 @@ function Grid:getTile(parameters)
 	end
 end
 
+function Grid:enterFrame(event)
+	for index, tile in pairs(self.matrix) do
+		tile:enterFrame(event)
+	end
+end
+
 -----------------------------------------------------------------------------------------
 -- Local methods
 -----------------------------------------------------------------------------------------

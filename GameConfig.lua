@@ -13,7 +13,8 @@ arrow = {
 
 cemetery = {
 	width = 64,
-	height = 64
+	height = 64,
+	spawnPeriod = 3000
 }
 
 panels = {
