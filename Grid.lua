@@ -14,6 +14,7 @@ Grid.__index = Grid
 
 local config = require("GameConfig")
 local Tile = require("Tile")
+local Cemetery = require("Cemetery")
 
 -----------------------------------------------------------------------------------------
 -- Constants
@@ -64,6 +65,34 @@ end
 -- Methods
 -----------------------------------------------------------------------------------------
 
+function Grid:loadMap(parameters)
+	-- Place player 1 cemeteries
+	for index, cemetery in pairs(parameters.player1.cemeteries) do
+		local tile = self:getTile{
+			x = cemetery.x,
+			y = cemetery.y
+		}
+
+		tile.content = Cemetery.create{
+			tile = tile,
+			player = self.player1
+		}
+	end
+
+	-- Place player 2 cemeteries
+	for index, cemetery in pairs(parameters.player2.cemeteries) do
+		local tile = self:getTile{
+			x = cemetery.x,
+			y = cemetery.y
+		}
+
+		tile.content = Cemetery.create{
+			tile = tile,
+			player = self.player2
+		}
+	end
+end
+
 function Grid:draw()
 	for index, tile in pairs(self.matrix) do
 		tile:draw()
@@ -79,15 +108,6 @@ function Grid:getTile(parameters)
 		}
 	else
 		return self.matrix[getIndex(parameters.x, parameters.y)]
-	end
-end
-
-function Grid:placeArrow(parameters)
-	if parameters.tile.content == nil then
-		print("NIL")
-		parameters.tile.content = parameters.player.id
-	else
-		print("to player " .. parameters.tile.content)
 	end
 end
 

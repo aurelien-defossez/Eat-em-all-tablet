@@ -1,12 +1,12 @@
 -----------------------------------------------------------------------------------------
 --
--- Sign.lua
+-- Cemetery.lua
 --
 -----------------------------------------------------------------------------------------
 
-module("Sign", package.seeall)
+module("Cemetery", package.seeall)
 
-Sign.__index = Sign
+Cemetery.__index = Cemetery
 
 -----------------------------------------------------------------------------------------
 -- Imports
@@ -18,10 +18,10 @@ local config = require("GameConfig")
 -- Initialization and Destruction
 -----------------------------------------------------------------------------------------
 
-function Sign.create(parameters)
+function Cemetery.create(parameters)
 	-- Create object
 	local self = parameters or {}
-	setmetatable(self, Sign)
+	setmetatable(self, Cemetery)
 
 	-- Initialize attributes
 	self.x = self.tile.x
@@ -34,18 +34,17 @@ end
 -- Methods
 -----------------------------------------------------------------------------------------
 
-function Sign:draw(parameters)
-	local spriteName = self.player.id == 1 and "arrow_up_red" or "arrow_up_blue"
+function Cemetery:draw(parameters)
+	local spriteName = self.player.id == 1 and "cemetery_red" or "cemetery_blue"
 
-	self.sprite = display.newImageRect(spriteName .. ".png", config.arrow.width, config.arrow.height)
+	self.sprite = display.newImageRect(spriteName .. ".png", config.cemetery.width, config.cemetery.height)
 
 	-- Position sprite
 	self.sprite:setReferencePoint(display.CenterReferencePoint)
 	self.sprite.x = self.x + self.tile.width / 2
 	self.sprite.y = self.y + self.tile.height / 2
-	self.sprite:rotate(self.direction or 0)
 end
 
 -----------------------------------------------------------------------------------------
 
-return Sign
+return Cemetery

@@ -40,11 +40,16 @@ function scene:createScene(event)
 
 	-- Create grid
 	local grid = Grid.create{
+		player1 = player1,
+		player2 = player2,
 		x = config.panels.controls.width + config.panels.grid.xpadding,
 		y = config.panels.hitpoints.height,
 		width = config.screen.width - 2 * config.panels.controls.width - 2 * config.panels.grid.xpadding,
 		height = mainHeight
 	}
+
+	-- Load default map
+	grid:loadMap(config.defaultMap)
 	
 	-- Create player control panels
 	local controlPanel1 = PlayerControlPanel.create{

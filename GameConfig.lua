@@ -8,7 +8,12 @@ screen = {
 
 arrow = {
 	width = 64,
-	height = 64,
+	height = 64
+}
+
+cemetery = {
+	width = 64,
+	height = 64
 }
 
 panels = {
@@ -31,5 +36,26 @@ panels = {
 		nbCols = 11,
 		xpadding = 6,
 		lineWidth = 2
+	}
+}
+
+defaultMap = {
+	player1 = {
+		cemeteries = {{
+			x = 1,
+			y = 3
+		}, {
+			x = 1,
+			y = 8
+		}}
+	},
+	player2 = {
+		cemeteries = {{
+			x = 11,
+			y = 3
+		}, {
+			x = 11,
+			y = 8
+		}}
 	}
 }
