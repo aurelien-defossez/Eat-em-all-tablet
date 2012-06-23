@@ -13,10 +13,11 @@ ArrowsPanel.__index = ArrowsPanel
 -----------------------------------------------------------------------------------------
 
 require("sprite")
+local config = require("GameConfig")
 local Arrow = require("Arrow")
 
 -----------------------------------------------------------------------------------------
--- Constants
+-- Initialization and Destruction
 -----------------------------------------------------------------------------------------
 
 -- Panel is 2 Arrows wide and 3 arrows tall
@@ -25,12 +26,6 @@ local Arrow = require("Arrow")
 -- [LT][RT]
 --   [DN]
 
-WIDTH = 2 * Arrow.WIDTH
-HEIGHT = 3 * Arrow.HEIGHT
-
------------------------------------------------------------------------------------------
--- Initialization and Destruction
------------------------------------------------------------------------------------------
 
 function ArrowsPanel.create(parameters)
 	-- Create object
@@ -38,8 +33,8 @@ function ArrowsPanel.create(parameters)
 	setmetatable(self, ArrowsPanel)
 
 	-- Initialize attributes
-	self.width = WIDTH
-	self.height = HEIGHT
+	self.width = config.panels.controls.arrows.width
+	self.height = config.panels.controls.arrows.height
 
 	-- Create arrows
 	self.arrowUp = Arrow.create{
@@ -54,23 +49,23 @@ function ArrowsPanel.create(parameters)
 		player = self.player,
 		direction = Arrow.DOWN,
 		x = self.x + self.width / 2,
-		y = self.y + 2 * Arrow.HEIGHT,
+		y = self.y + 2 * config.arrow.height,
 		orientation = 180
 	}
 
 	self.arrowRight = Arrow.create{
 		player = self.player,
 		direction = Arrow.RIGHT,
-		x = self.x + self.width / 2 + Arrow.WIDTH / 2,
-		y = self.y + Arrow.HEIGHT,
+		x = self.x + self.width / 2 + config.arrow.width / 2,
+		y = self.y + config.arrow.height,
 		orientation = 90
 	}
 
 	self.arrowLeft = Arrow.create{
 		player = self.player,
 		direction = Arrow.LEFT,
-		x = self.x + self.width / 2 - Arrow.WIDTH / 2,
-		y = self.y + Arrow.HEIGHT,
+		x = self.x + self.width / 2 - config.arrow.width / 2,
+		y = self.y + config.arrow.height,
 		orientation = -90
 	}
 

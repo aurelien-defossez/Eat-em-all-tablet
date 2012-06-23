@@ -11,24 +11,10 @@ local scene = storyboard.newScene()
 -- Imports
 -----------------------------------------------------------------------------------------
 
+local config = require("GameConfig")
 local Player = require("Player")
 local PlayerControlPanel = require("PlayerControlPanel")
 local Grid = require("Grid")
-
------------------------------------------------------------------------------------------
--- Constants
------------------------------------------------------------------------------------------
-
-local SCREEN_WIDTH = display.contentWidth
-local SCREEN_HEIGHT = display.contentHeight
-local HALF_WIDTH = SCREEN_WIDTH * 0.5
-
-local TOP_ZONE_HEIGHT = 50
-
-local GRID_START_Y = 100
-local GRID_START_X = 50
-local GRID_END_Y = display.contentHeight - 10
-local GRID_END_X = display.contentWidth - 50
 
 -----------------------------------------------------------------------------------------
 -- Initialization and Destruction
@@ -46,32 +32,32 @@ function scene:createScene(event)
 	}
 
 	-- Create the background
-	local background = display.newRect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT)
+	local background = display.newRect(0, 0, config.screen.width, config.screen.height)
 	background:setFillColor(122, 47, 15)
 
 	-- Sizes
-	local mainHeight = SCREEN_HEIGHT - TOP_ZONE_HEIGHT
+	local mainHeight = config.screen.height - config.panels.hitpoints.height
 	
 	-- Create player control panels
 	local controlPanel1 = PlayerControlPanel.create{
 		player = player1,
 		x = 0,
-		y = TOP_ZONE_HEIGHT,
+		y = config.panels.hitpoints.height,
 		height = mainHeight
 	}
 
 	local controlPanel2 = PlayerControlPanel.create{
 		player = player2,
-		x = SCREEN_WIDTH - PlayerControlPanel.WIDTH,
-		y = TOP_ZONE_HEIGHT,
+		x = config.screen.width - config.panels.controls.width,
+		y = config.panels.hitpoints.height,
 		height = mainHeight
 	}
 
 	-- Create grid
 	local grid = Grid.create{
-		x = PlayerControlPanel.WIDTH + Grid.PADDING,
-		y = TOP_ZONE_HEIGHT,
-		width = SCREEN_WIDTH - 2 * PlayerControlPanel.WIDTH - 2 * Grid.PADDING,
+		x = config.panels.controls.width + config.panels.grid.xpadding,
+		y = config.panels.hitpoints.height,
+		width = config.screen.width - 2 * config.panels.controls.width - 2 * config.panels.grid.xpadding,
 		height = mainHeight
 	}
 

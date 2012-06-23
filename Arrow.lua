@@ -12,6 +12,8 @@ Arrow.__index = Arrow
 -- Imports
 -----------------------------------------------------------------------------------------
 
+local config = require("GameConfig")
+
 -----------------------------------------------------------------------------------------
 -- Constants
 -----------------------------------------------------------------------------------------
@@ -20,9 +22,6 @@ UP = 0
 DOWN = 1
 RIGHT = 2
 LEFT = 3
-
-WIDTH = 64
-HEIGHT = 64
 
 -----------------------------------------------------------------------------------------
 -- Initialization and Destruction
@@ -34,8 +33,8 @@ function Arrow.create(parameters)
 	setmetatable(self, Arrow)
 
 	-- Initialize attributes
-	self.width = WIDTH
-	self.height = HEIGHT
+	self.width = config.arrow.width
+	self.height = config.arrow.height
 
 	return self
 end

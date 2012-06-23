@@ -12,14 +12,8 @@ PlayerControlPanel.__index = PlayerControlPanel
 -- Imports
 -----------------------------------------------------------------------------------------
 
+local config = require("GameConfig")
 local ArrowsPanel = require("ArrowsPanel")
-
------------------------------------------------------------------------------------------
--- Constants
------------------------------------------------------------------------------------------
-
-PADDING = 16
-WIDTH = ArrowsPanel.WIDTH + PADDING
 
 -----------------------------------------------------------------------------------------
 -- Initialization and Destruction
@@ -31,11 +25,11 @@ function PlayerControlPanel.create(parameters)
 	setmetatable(self, PlayerControlPanel)
 	
 	-- Initialize attributes
-	self.width = WIDTH
+	self.width = config.panels.controls.width
 	self.arrows = ArrowsPanel.create{
 		player = self.player,
-		x = self.x + PADDING / 2,
-		y = self.y + self.height / 2 - ArrowsPanel.HEIGHT / 2
+		x = self.x + config.panels.controls.padding,
+		y = self.y + self.height / 2 - config.panels.controls.arrows.height / 2
 	}
 	
 	return self
