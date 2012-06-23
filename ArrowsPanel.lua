@@ -42,9 +42,7 @@ function ArrowsPanel.create(parameters)
 		grid = self.grid,
 		direction = Arrow.UP,
 		x = self.x + self.width / 2,
-		y = self.y,
-		orientation = 0,
-		draggable = true
+		y = self.y
 	}
 
 	self.arrowDown = Arrow.create{
@@ -52,9 +50,7 @@ function ArrowsPanel.create(parameters)
 		grid = self.grid,
 		direction = Arrow.DOWN,
 		x = self.x + self.width / 2,
-		y = self.y + 2 * config.arrow.height,
-		orientation = 180,
-		draggable = true
+		y = self.y + 2 * config.arrow.height
 	}
 
 	self.arrowRight = Arrow.create{
@@ -62,9 +58,7 @@ function ArrowsPanel.create(parameters)
 		grid = self.grid,
 		direction = Arrow.RIGHT,
 		x = self.x + self.width / 2 + config.arrow.width / 2,
-		y = self.y + config.arrow.height,
-		orientation = 90,
-		draggable = true
+		y = self.y + config.arrow.height
 	}
 
 	self.arrowLeft = Arrow.create{
@@ -72,9 +66,7 @@ function ArrowsPanel.create(parameters)
 		grid = self.grid,
 		direction = Arrow.LEFT,
 		x = self.x + self.width / 2 - config.arrow.width / 2,
-		y = self.y + config.arrow.height,
-		orientation = -90,
-		draggable = true
+		y = self.y + config.arrow.height
 	}
 
 	return self

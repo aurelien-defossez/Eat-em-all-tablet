@@ -35,9 +35,8 @@ end
 -----------------------------------------------------------------------------------------
 
 function Sign:draw(parameters)
-	local spriteName = self.player.id == 1 and "arrow_up_red" or "arrow_up_blue"
-
-	self.sprite = display.newImageRect(spriteName .. ".png", config.arrow.width, config.arrow.height)
+	self.sprite = display.newImageRect("arrow_up_" .. self.player.color .. ".png",
+		config.arrow.width, config.arrow.height)
 
 	-- Position sprite
 	self.sprite:setReferencePoint(display.CenterReferencePoint)

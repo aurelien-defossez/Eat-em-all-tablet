@@ -24,11 +24,13 @@ local Grid = require("Grid")
 function scene:createScene(event)
 	-- Create players
 	self.player1 = Player.create{
-		id = 1
+		id = 1,
+		color = "red"
 	}
 
 	self.player2 = Player.create{
-		id = 2
+		id = 2,
+		color = "blue"
 	}
 
 	-- Create the background

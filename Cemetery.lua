@@ -37,9 +37,8 @@ end
 -----------------------------------------------------------------------------------------
 
 function Cemetery:draw(parameters)
-	local spriteName = self.player.id == 1 and "cemetery_red" or "cemetery_blue"
-
-	self.sprite = display.newImageRect(spriteName .. ".png", config.cemetery.width, config.cemetery.height)
+	self.sprite = display.newImageRect("cemetery_" .. self.player.color .. ".png",
+		config.cemetery.width, config.cemetery.height)
 
 	-- Position sprite
 	self.sprite:setReferencePoint(display.CenterReferencePoint)

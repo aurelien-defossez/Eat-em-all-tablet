@@ -36,8 +36,6 @@ function Arrow.create(parameters)
 	-- Initialize attributes
 	self.width = config.arrow.width
 	self.height = config.arrow.height
-	self.draggable = self.draggable or false
-	self.spriteName = self.player.id == 1 and "arrow_up_red" or "arrow_up_blue"
 
 	return self
 end
@@ -47,7 +45,7 @@ end
 -----------------------------------------------------------------------------------------
 
 function Arrow:draw()
-	self.sprite = display.newImageRect(self.spriteName .. ".png", self.width, self.height)
+	self.sprite = display.newImageRect("arrow_up_" .. self.player.color .. ".png", self.width, self.height)
 	self.sprite.arrow = self
 
 	-- Position sprite
@@ -57,9 +55,7 @@ function Arrow:draw()
 	self.sprite:rotate(self.direction or 0)
 	
 	-- Handle events
-	if self.draggable then
-		self.sprite:addEventListener("touch", onArrowTouch)
-	end
+	self.sprite:addEventListener("touch", onArrowTouch)
 end
 
 -----------------------------------------------------------------------------------------
@@ -72,7 +68,8 @@ function onArrowTouch(event)
 	if event.phase == "began" then
 		print ("Drag start: " .. arrow.direction .. " of player " .. arrow.player.id)
 
-		local draggedArrow = display.newImageRect(arrow.spriteName .. "_selected.png", arrow.width, arrow.height)
+		local draggedArrow = display.newImageRect("arrow_up_selected_" .. arrow.player.color .. ".png",
+			arrow.width, arrow.height)
 		draggedArrow.direction = arrow.direction
 		draggedArrow.player = arrow.player
 		draggedArrow.grid = arrow.grid
