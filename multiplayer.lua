@@ -13,6 +13,7 @@ local scene = storyboard.newScene()
 
 local Player = require("Player")
 local PlayerControlPanel = require("PlayerControlPanel")
+local Grid = require("Grid")
 
 -----------------------------------------------------------------------------------------
 -- Constants
@@ -21,9 +22,6 @@ local PlayerControlPanel = require("PlayerControlPanel")
 local SCREEN_WIDTH = display.contentWidth
 local SCREEN_HEIGHT = display.contentHeight
 local HALF_WIDTH = SCREEN_WIDTH * 0.5
-
-local NB_ROWS = 8
-local NB_COLS = 13
 
 local TOP_ZONE_HEIGHT = 50
 
@@ -50,41 +48,37 @@ function scene:createScene(event)
 	-- Create the background
 	local background = display.newRect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT)
 	background:setFillColor(122, 47, 15)
+
+	-- Sizes
+	local mainHeight = SCREEN_HEIGHT - TOP_ZONE_HEIGHT
 	
 	-- Create player control panels
 	local controlPanel1 = PlayerControlPanel.create{
 		player = player1,
 		x = 0,
 		y = TOP_ZONE_HEIGHT,
-		height = SCREEN_HEIGHT - TOP_ZONE_HEIGHT
+		height = mainHeight
 	}
 
 	local controlPanel2 = PlayerControlPanel.create{
 		player = player2,
 		x = SCREEN_WIDTH - PlayerControlPanel.WIDTH,
 		y = TOP_ZONE_HEIGHT,
-		height = SCREEN_HEIGHT - TOP_ZONE_HEIGHT
+		height = mainHeight
 	}
-	
-	-- Draw control panels
+
+	-- Create grid
+	local grid = Grid.create{
+		x = PlayerControlPanel.WIDTH + Grid.PADDING,
+		y = TOP_ZONE_HEIGHT,
+		width = SCREEN_WIDTH - 2 * PlayerControlPanel.WIDTH - 2 * Grid.PADDING,
+		height = mainHeight
+	}
+
+	-- Draw
 	controlPanel1:draw()
 	controlPanel2:draw()
-	
-	-- Draw grid (Rows)
-	-- local yStep = math.floor((GRID_END_Y - GRID_START_Y) / NB_ROWS)
-	-- for y = GRID_START_Y, GRID_END_Y, yStep do
-	-- 	local line = display.newLine(GRID_START_X, y, GRID_END_X, y)
-	-- 	line.width = 2
-	-- 	group:insert(line)
-	-- end
-	
-	-- -- Draw grid (Columns)
-	-- local xStep = math.floor((GRID_END_X - GRID_START_X) / NB_COLS)
-	-- for x = GRID_START_X, GRID_END_X, xStep do
-	-- 	local line = display.newLine(x, GRID_START_Y, x, GRID_END_Y)
-	-- 	line.width = 2
-	-- 	group:insert(line)
-	-- end
+	grid:draw()
 end
 
 -- Called immediately after scene has moved onscreen:
