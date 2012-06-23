@@ -28,6 +28,7 @@ function PlayerControlPanel.create(parameters)
 	self.width = config.panels.controls.width
 	self.arrows = ArrowsPanel.create{
 		player = self.player,
+		grid = self.grid,
 		x = self.x + config.panels.controls.padding,
 		y = self.y + self.height / 2 - config.panels.controls.arrows.height / 2
 	}

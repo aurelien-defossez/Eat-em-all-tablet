@@ -37,21 +37,6 @@ function scene:createScene(event)
 
 	-- Sizes
 	local mainHeight = config.screen.height - config.panels.hitpoints.height
-	
-	-- Create player control panels
-	local controlPanel1 = PlayerControlPanel.create{
-		player = player1,
-		x = 0,
-		y = config.panels.hitpoints.height,
-		height = mainHeight
-	}
-
-	local controlPanel2 = PlayerControlPanel.create{
-		player = player2,
-		x = config.screen.width - config.panels.controls.width,
-		y = config.panels.hitpoints.height,
-		height = mainHeight
-	}
 
 	-- Create grid
 	local grid = Grid.create{
@@ -59,6 +44,23 @@ function scene:createScene(event)
 		y = config.panels.hitpoints.height,
 		width = config.screen.width - 2 * config.panels.controls.width - 2 * config.panels.grid.xpadding,
 		height = mainHeight
+	}
+	
+	-- Create player control panels
+	local controlPanel1 = PlayerControlPanel.create{
+		player = player1,
+		x = 0,
+		y = config.panels.hitpoints.height,
+		height = mainHeight,
+		grid = grid
+	}
+
+	local controlPanel2 = PlayerControlPanel.create{
+		player = player2,
+		x = config.screen.width - config.panels.controls.width,
+		y = config.panels.hitpoints.height,
+		height = mainHeight,
+		grid = grid
 	}
 
 	-- Draw

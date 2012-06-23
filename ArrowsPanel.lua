@@ -39,34 +39,42 @@ function ArrowsPanel.create(parameters)
 	-- Create arrows
 	self.arrowUp = Arrow.create{
 		player = self.player,
+		grid = self.grid,
 		direction = Arrow.UP,
 		x = self.x + self.width / 2,
 		y = self.y,
-		orientation = 0
+		orientation = 0,
+		draggable = true
 	}
 
 	self.arrowDown = Arrow.create{
 		player = self.player,
+		grid = self.grid,
 		direction = Arrow.DOWN,
 		x = self.x + self.width / 2,
 		y = self.y + 2 * config.arrow.height,
-		orientation = 180
+		orientation = 180,
+		draggable = true
 	}
 
 	self.arrowRight = Arrow.create{
 		player = self.player,
+		grid = self.grid,
 		direction = Arrow.RIGHT,
 		x = self.x + self.width / 2 + config.arrow.width / 2,
 		y = self.y + config.arrow.height,
-		orientation = 90
+		orientation = 90,
+		draggable = true
 	}
 
 	self.arrowLeft = Arrow.create{
 		player = self.player,
+		grid = self.grid,
 		direction = Arrow.LEFT,
 		x = self.x + self.width / 2 - config.arrow.width / 2,
 		y = self.y + config.arrow.height,
-		orientation = -90
+		orientation = -90,
+		draggable = true
 	}
 
 	return self

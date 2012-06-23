@@ -35,6 +35,7 @@ function Arrow.create(parameters)
 	-- Initialize attributes
 	self.width = config.arrow.width
 	self.height = config.arrow.height
+	self.draggable = self.draggable or false
 
 	return self
 end
@@ -54,7 +55,9 @@ function Arrow:draw()
 	self.sprite:rotate(self.orientation or 0)
 	
 	-- Handle events
-	self.sprite:addEventListener("touch", onArrowTouch)
+	if self.draggable then
+		self.sprite:addEventListener("touch", onArrowTouch)
+	end
 end
 
 -----------------------------------------------------------------------------------------
@@ -70,6 +73,7 @@ function onArrowTouch(event)
 		local draggedArrow = display.newImageRect("arrow_up_selected.png", arrow.width, arrow.height)
 		draggedArrow.direction = arrow.direction
 		draggedArrow.player = arrow.player
+		draggedArrow.grid = arrow.grid
 
 		-- Position arrow
 		draggedArrow:setReferencePoint(display.CenterReferencePoint)
@@ -96,6 +100,16 @@ function onDraggedArrowTouch(event)
 	-- Drop the arrow
 	elseif event.phase == "ended" then
 		print ("Drag end:   " .. sprite.direction .. " of player " .. sprite.player.id)
+		sprite.grid:placeArrow{
+			player = sprite.player,
+			direction = sprite.direction,
+			tile = sprite.grid:getTile{
+				x = event.x,
+				y = event.y,
+				unit = Grid.PIXEL
+			}
+		}
+
 		sprite:removeSelf()
 
 		-- Remove focus
