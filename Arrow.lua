@@ -13,15 +13,16 @@ Arrow.__index = Arrow
 -----------------------------------------------------------------------------------------
 
 local config = require("GameConfig")
+local Sign = require("Sign")
 
 -----------------------------------------------------------------------------------------
 -- Constants
 -----------------------------------------------------------------------------------------
 
 UP = 0
-DOWN = 1
-RIGHT = 2
-LEFT = 3
+DOWN = 180
+RIGHT = 90
+LEFT = 270
 
 -----------------------------------------------------------------------------------------
 -- Initialization and Destruction
@@ -36,6 +37,7 @@ function Arrow.create(parameters)
 	self.width = config.arrow.width
 	self.height = config.arrow.height
 	self.draggable = self.draggable or false
+	self.spriteName = self.player.id == 1 and "arrow_up_red" or "arrow_up_blue"
 
 	return self
 end
@@ -45,14 +47,14 @@ end
 -----------------------------------------------------------------------------------------
 
 function Arrow:draw()
-	self.sprite = display.newImageRect("arrow_up.png", self.width, self.height)
+	self.sprite = display.newImageRect(self.spriteName .. ".png", self.width, self.height)
 	self.sprite.arrow = self
 
 	-- Position sprite
 	self.sprite:setReferencePoint(display.CenterReferencePoint)
 	self.sprite.x = self.x or 0
 	self.sprite.y = self.height / 2 + (self.y or 0)
-	self.sprite:rotate(self.orientation or 0)
+	self.sprite:rotate(self.direction or 0)
 	
 	-- Handle events
 	if self.draggable then
@@ -61,7 +63,7 @@ function Arrow:draw()
 end
 
 -----------------------------------------------------------------------------------------
--- Private static Methods
+-- Private Methods
 -----------------------------------------------------------------------------------------
 
 function onArrowTouch(event)
@@ -70,7 +72,7 @@ function onArrowTouch(event)
 	if event.phase == "began" then
 		print ("Drag start: " .. arrow.direction .. " of player " .. arrow.player.id)
 
-		local draggedArrow = display.newImageRect("arrow_up_selected.png", arrow.width, arrow.height)
+		local draggedArrow = display.newImageRect(arrow.spriteName .. "_selected.png", arrow.width, arrow.height)
 		draggedArrow.direction = arrow.direction
 		draggedArrow.player = arrow.player
 		draggedArrow.grid = arrow.grid
@@ -79,7 +81,7 @@ function onArrowTouch(event)
 		draggedArrow:setReferencePoint(display.CenterReferencePoint)
 		draggedArrow.x = event.x
 		draggedArrow.y = event.y
-		draggedArrow:rotate(arrow.orientation)
+		draggedArrow:rotate(arrow.direction)
 
 		-- Handle events
 		draggedArrow:addEventListener("touch", onDraggedArrowTouch)
@@ -100,15 +102,25 @@ function onDraggedArrowTouch(event)
 	-- Drop the arrow
 	elseif event.phase == "ended" then
 		print ("Drag end:   " .. sprite.direction .. " of player " .. sprite.player.id)
-		sprite.grid:placeArrow{
-			player = sprite.player,
-			direction = sprite.direction,
-			tile = sprite.grid:getTile{
-				x = event.x,
-				y = event.y,
-				unit = Grid.PIXEL
-			}
+
+		-- Locate drop tile
+		local tile = sprite.grid:getTile{
+			x = event.x,
+			y = event.y,
+			unit = Grid.PIXEL
 		}
+
+		-- Create sign
+		if tile ~= nil and tile.content == nil then
+			print("Create sign")
+			tile.content = Sign.create{
+				tile = tile,
+				player = sprite.player,
+				direction = sprite.direction
+			}
+
+			tile.content:draw()
+		end
 
 		sprite:removeSelf()
 

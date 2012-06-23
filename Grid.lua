@@ -31,13 +31,28 @@ function Grid.create(parameters)
 	local self = parameters or {}
 	setmetatable(self, Grid)
 
+	local saveWidth = self.width
+	local saveHeight = self.height
+
 	-- Initialize attributes
+	self.tileWidth = math.floor(self.width / config.panels.grid.nbCols)
+	self.tileHeight = math.floor(self.height / config.panels.grid.nbRows)
+	self.width = self.tileWidth * config.panels.grid.nbCols
+	self.height = self.tileHeight * config.panels.grid.nbRows
+
+	self.x = self.x + math.floor((saveWidth - self.width) / 2)
+	self.y = self.y + math.floor((saveHeight - self.height) / 2)
+
 	self.matrix = {}
-	for x = 1, config.panels.grid.nbRows do
-		for y = 1, config.panels.grid.nbCols do
+	for x = 1, config.panels.grid.nbRows + 1 do
+		for y = 1, config.panels.grid.nbCols + 1 do
 			self.matrix[getIndex(x, y)] = Tile.create{
-				x = x,
-				y = y
+				xGrid = x,
+				yGrid = y,
+				x = self.x + (x - 1) * self.tileWidth,
+				y = self.y + (y - 1) * self.tileHeight,
+				width = self.tileWidth,
+				height = self.tileHeight
 			}
 		end
 	end
@@ -50,26 +65,8 @@ end
 -----------------------------------------------------------------------------------------
 
 function Grid:draw()
-	-- Boundaries
-	local xEnd = self.x + self.width
-	local yEnd = self.y + self.height
-
-	-- Draw grid (Rows)
-	local yStep = self.height / config.panels.grid.nbRows
-	for y = self.y, yEnd + 1, yStep do
-		local yFloored = math.floor(y)
-		local line = display.newLine(self.x, yFloored, xEnd, yFloored)
-		line.width = config.panels.grid.lineWidth
-		line:setColor(60, 30, 0)
-	end
-	
-	-- Draw grid (Columns)
-	local xStep = self.width / config.panels.grid.nbCols
-	for x = self.x, xEnd + 1, xStep do
-		local xFloored = math.floor(x)
-		local line = display.newLine(xFloored, self.y, xFloored, yEnd)
-		line.width = config.panels.grid.lineWidth
-		line:setColor(60, 30, 0)
+	for index, tile in pairs(self.matrix) do
+		tile:draw()
 	end
 end
 

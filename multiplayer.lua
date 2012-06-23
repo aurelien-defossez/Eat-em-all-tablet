@@ -33,7 +33,7 @@ function scene:createScene(event)
 
 	-- Create the background
 	local background = display.newRect(0, 0, config.screen.width, config.screen.height)
-	background:setFillColor(122, 47, 15)
+	background:setFillColor(142, 57, 20)
 
 	-- Sizes
 	local mainHeight = config.screen.height - config.panels.hitpoints.height
