@@ -20,6 +20,13 @@ Player.__index = Player
 -- Initialization and Destruction
 -----------------------------------------------------------------------------------------
 
+-- Create the player
+--
+-- Parameters:
+--  id: The player id,
+--  color: The player color, used to load correct sprites
+--  direction: The default direction for new zombies
+--  hitPoints: The number of hit points
 function Player.create(parameters)
 	-- Create object
 	local self = parameters or {}
@@ -31,6 +38,14 @@ end
 -----------------------------------------------------------------------------------------
 -- Methods
 -----------------------------------------------------------------------------------------
+
+function Player:addHPs(nbHPs)
+	self.hitPoints = self.hitPoints + nbHPs
+
+	if self.hitPoints <= 0 then
+		print("Player "..self.id.." has lost")
+	end
+end
 
 -----------------------------------------------------------------------------------------
 

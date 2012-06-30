@@ -26,7 +26,8 @@ RIGHT = { x = 1, y = 0 }
 
 KILLER_ZOMBIE = 1
 KILLER_FORTRESS = 2
-KILLER_CITY = 3
+KILLER_CEMETERY = 3
+KILLER_CITY = 4
 
 -----------------------------------------------------------------------------------------
 -- Class attributes

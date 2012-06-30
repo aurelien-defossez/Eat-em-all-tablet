@@ -1,8 +1,8 @@
 module("GameConfig", package.seeall)
 
 debug = {
-	oneCemetery = true,
-	oneZombie = true,
+	oneCemetery = false,
+	oneZombie = false,
 	immediateSpawn = true
 }
 

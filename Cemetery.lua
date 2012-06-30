@@ -84,6 +84,25 @@ function Cemetery:removeZombie(zombie)
 	self.nbZombies = self.nbZombies - 1
 end
 
+-- Enter tile handler, called when a zombie enters the tile
+--
+-- Parameters:
+--  zombie: The zombie entering the tile
+function Cemetery:enterTile(zombie)
+	if zombie.player.id ~= self.player.id then
+		-- Lose HP
+		self.player:addHPs(-1)
+
+		-- Kill zombie
+		zombie:die{
+			killer = Zombie.KILLER_CEMETERY
+		}
+	else
+		-- Move backward
+		zombie:changeDirection(self.player.direction)
+	end
+end
+
 -- Enter frame handler
 --
 -- Parameters:
