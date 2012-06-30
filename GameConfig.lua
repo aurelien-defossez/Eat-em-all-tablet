@@ -21,7 +21,11 @@ zombie = {
 	width = 64,
 	height = 64,
 	-- speed in tiles per seconds
-	speed = 1
+	speed = 1,
+	tileColliderOffset = {
+		x = 6,
+		y = 0
+	}
 }
 
 panels = {
@@ -48,21 +52,26 @@ panels = {
 }
 
 defaultMap = {
-	cemeteries = {{
-		x = 1,
-		y = 3,
-		playerId = 1
-	}, {
-		x = 1,
-		y = 8,
-		playerId = 1
-	}, {
-		x = 11,
-		y = 3,
-		playerId = 2
-	}, {
-		x = 11,
-		y = 8,
-		playerId = 2
-	}}
+	cemeteries = {
+		{
+			x = 1,
+			y = 3,
+			playerId = 1
+		},
+		-- {
+		-- 	x = 1,
+		-- 	y = 8,
+		-- 	playerId = 1
+		-- },
+		-- {
+		-- 	x = 11,
+		-- 	y = 3,
+		-- 	playerId = 2
+		-- },
+		-- {
+		-- 	x = 11,
+		-- 	y = 8,
+		-- 	playerId = 2
+		-- }
+	}
 }

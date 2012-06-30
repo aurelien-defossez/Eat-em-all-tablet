@@ -54,6 +54,21 @@ function Cemetery:draw()
 	self.sprite.y = self.y + self.tile.height / 2
 end
 
+-- Spawn a single zombie
+function Cemetery:spawn()
+	print ("spawn (".. self.x .." / " .. self.y.. ")")
+
+	local zombie = Zombie.create{
+		cemetery = self,
+		player = self.player,
+		grid = self.grid
+	}
+
+	zombie:draw()
+
+	self.zombies[zombie.id] = zombie
+end
+
 -- Enter frame handler
 --
 -- Parameters:
@@ -71,20 +86,6 @@ function Cemetery:enterFrame(timeDelta)
 	for index, zombie in pairs(self.zombies) do
 		zombie:enterFrame(timeDelta)
 	end
-end
-
--- Spawn a single zombie
-function Cemetery:spawn()
-	print ("spawn (".. self.x .." / " .. self.y.. ")")
-
-	local zombie = Zombie.create{
-		cemetery = self,
-		player = self.player
-	}
-
-	zombie:draw()
-
-	self.zombies[zombie.id] = zombie
 end
 
 -----------------------------------------------------------------------------------------

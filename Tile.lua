@@ -50,6 +50,30 @@ function Tile:draw()
 	end
 end
 
+-- Enter tile handler, called when a zombie enters the tile
+--
+-- Parameters:
+--  zombie: The zombie entering the tile
+function Tile:enterTile(zombie)
+	print("Zombie ".. zombie.id.." enters tile")
+end
+
+-- Leave tile handler, called when a zombie leaves the tile
+--
+-- Parameters:
+--  zombie: The zombie leaving the tile
+function Tile:leaveTile(zombie)
+	print("Zombie ".. zombie.id.." leaves tile")
+end
+
+-- Reach middle tile handler, called when a zombie reaches the middle of the tile
+--
+-- Parameters:
+--  zombie: The zombie reaching the middle of the tile
+function Tile:reachTileMiddle(zombie)
+	print("Zombie ".. zombie.id.." reaches tile middle")
+end
+
 -- Enter frame handler
 --
 -- Parameters:
