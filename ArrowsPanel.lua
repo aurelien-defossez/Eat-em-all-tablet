@@ -26,7 +26,13 @@ local Arrow = require("Arrow")
 -- [LT][RT]
 --   [DN]
 
-
+-- Create the arrows panel
+--
+-- Parameters:
+--  player: The panel owner
+--  grid: The grid
+--  x: X position
+--  y: Y position
 function ArrowsPanel.create(parameters)
 	-- Create object
 	local self = parameters or {}
@@ -76,6 +82,7 @@ end
 -- Methods
 -----------------------------------------------------------------------------------------
 
+-- Draw the arrows panel
 function ArrowsPanel:draw()
 	-- Draw arrows
 	self.arrowUp:draw()

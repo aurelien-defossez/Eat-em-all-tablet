@@ -19,6 +19,14 @@ local ArrowsPanel = require("ArrowsPanel")
 -- Initialization and Destruction
 -----------------------------------------------------------------------------------------
 
+-- Create the player control panel
+--
+-- Parameters:
+--  player: The control panel owner
+--  x: X position
+--  y: Y position
+--  height: Height (Width is hardcoded in configuration file)
+--  grid: The grid
 function PlayerControlPanel.create(parameters)
 	-- Create object
 	local self = parameters or {}
@@ -40,6 +48,7 @@ end
 -- Methods
 -----------------------------------------------------------------------------------------
 
+-- Draw the control panel
 function PlayerControlPanel:draw()
 	local myRectangle = display.newRect(self.x, self.y, self.width, self.height)
 	myRectangle.strokeWidth = 3

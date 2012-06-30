@@ -19,6 +19,12 @@ local Zombie = require("Zombie")
 -- Initialization and Destruction
 -----------------------------------------------------------------------------------------
 
+-- Create the cemetery
+--
+-- Parameters:
+--  grid: The grid
+--  tile: The tile the cemetery is on
+--  player: The cemetery owner
 function Cemetery.create(parameters)
 	-- Create object
 	local self = parameters or {}
@@ -37,7 +43,8 @@ end
 -- Methods
 -----------------------------------------------------------------------------------------
 
-function Cemetery:draw(parameters)
+-- Draw the cemetery
+function Cemetery:draw()
 	self.sprite = display.newImageRect("cemetery_" .. self.player.color .. ".png",
 		config.cemetery.width, config.cemetery.height)
 
@@ -47,6 +54,10 @@ function Cemetery:draw(parameters)
 	self.sprite.y = self.y + self.tile.height / 2
 end
 
+-- Enter frame handler
+--
+-- Parameters:
+--  timeDelta: The time in ms since last frame
 function Cemetery:enterFrame(timeDelta)
 	self.timeSinceLastSpawn = self.timeSinceLastSpawn + timeDelta
 
@@ -62,6 +73,7 @@ function Cemetery:enterFrame(timeDelta)
 	end
 end
 
+-- Spawn a single zombie
 function Cemetery:spawn()
 	print ("spawn (".. self.x .." / " .. self.y.. ")")
 

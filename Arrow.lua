@@ -28,6 +28,14 @@ LEFT = 270
 -- Initialization and Destruction
 -----------------------------------------------------------------------------------------
 
+-- Create a control arrow
+--
+-- Parameters:
+--  player: The arrow owner
+--  grid: The grid
+--  direction: The arrow direction, using arrow constants
+--  x: X position
+--  y: Y position
 function Arrow.create(parameters)
 	-- Create object
 	local self = parameters or {}
@@ -44,6 +52,7 @@ end
 -- Methods
 -----------------------------------------------------------------------------------------
 
+-- Draw the arrow
 function Arrow:draw()
 	self.sprite = display.newImageRect("arrow_up_" .. self.player.color .. ".png", self.width, self.height)
 	self.sprite.arrow = self
@@ -62,9 +71,11 @@ end
 -- Private Methods
 -----------------------------------------------------------------------------------------
 
+-- Touch handler on one of the four arrows of the control panel
 function onArrowTouch(event)
 	local arrow = event.target.arrow
 
+	-- Begin drag by creating a new draggable arrow
 	if event.phase == "began" then
 		print ("Drag start: " .. arrow.direction .. " of player " .. arrow.player.id)
 
@@ -85,6 +96,7 @@ function onArrowTouch(event)
 	end
 end
 
+-- Touch handler on a draggable arrow
 function onDraggedArrowTouch(event)
 	local sprite = event.target
 

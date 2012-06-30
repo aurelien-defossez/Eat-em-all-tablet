@@ -26,13 +26,14 @@ function scene:createScene(event)
 	self.lastFrameTime = 0
 
 	-- Create players
-	self.player1 = Player.create{
+	self.players = {}
+	self.players[1] = Player.create{
 		id = 1,
 		color = "red",
 		direction = "right"
 	}
 
-	self.player2 = Player.create{
+	self.players[2] = Player.create{
 		id = 2,
 		color = "blue",
 		direction = "left"
@@ -47,8 +48,7 @@ function scene:createScene(event)
 
 	-- Create grid
 	self.grid = Grid.create{
-		player1 = self.player1,
-		player2 = self.player2,
+		players = self.players,
 		x = config.panels.controls.width + config.panels.grid.xpadding,
 		y = config.panels.hitpoints.height,
 		width = config.screen.width - 2 * config.panels.controls.width - 2 * config.panels.grid.xpadding,
@@ -60,7 +60,7 @@ function scene:createScene(event)
 	
 	-- Create player control panels
 	self.controlPanel1 = PlayerControlPanel.create{
-		player = self.player1,
+		player = self.players[1],
 		x = 0,
 		y = config.panels.hitpoints.height,
 		height = mainHeight,
@@ -68,7 +68,7 @@ function scene:createScene(event)
 	}
 
 	self.controlPanel2 = PlayerControlPanel.create{
-		player = self.player2,
+		player = self.players[2],
 		x = config.screen.width - config.panels.controls.width,
 		y = config.panels.hitpoints.height,
 		height = mainHeight,

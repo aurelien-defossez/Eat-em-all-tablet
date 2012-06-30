@@ -33,6 +33,11 @@ ctId = 0
 -- Initialization and Destruction
 -----------------------------------------------------------------------------------------
 
+-- Create the zombie
+--
+-- Parameters:
+--  cemetery: The cemetery the zombie spawned from
+--  player: The zombie owner
 function Zombie.create(parameters)
 	-- Create object
 	local self = parameters or {}
@@ -54,6 +59,7 @@ end
 -- Methods
 -----------------------------------------------------------------------------------------
 
+-- Draw the zombie
 function Zombie:draw()
 	self.sprite = display.newImageRect("zombie_" .. self.player.color .. ".png", self.width, self.height)
 	self.sprite.arrow = self
@@ -64,6 +70,10 @@ function Zombie:draw()
 	self.sprite.y = self.y
 end
 
+-- Enter frame handler
+--
+-- Parameters:
+--  timeDelta: The time in ms since last frame
 function Zombie:enterFrame(timeDelta)
 	local movement = timeDelta / 1000 * config.zombie.speed * self.cemetery.tile.width
 

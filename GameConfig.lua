@@ -48,22 +48,21 @@ panels = {
 }
 
 defaultMap = {
-	player1 = {
-		cemeteries = {{
-			x = 1,
-			y = 3
-		}, {
-			x = 1,
-			y = 8
-		}}
-	},
-	player2 = {
-		cemeteries = {{
-			x = 11,
-			y = 3
-		}, {
-			x = 11,
-			y = 8
-		}}
-	}
+	cemeteries = {{
+		x = 1,
+		y = 3,
+		playerId = 1
+	}, {
+		x = 1,
+		y = 8,
+		playerId = 1
+	}, {
+		x = 11,
+		y = 3,
+		playerId = 2
+	}, {
+		x = 11,
+		y = 8,
+		playerId = 2
+	}}
 }
