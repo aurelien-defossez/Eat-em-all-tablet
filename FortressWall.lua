@@ -68,6 +68,9 @@ function FortressWall:enterTile(zombie)
 		zombie:die{
 			killer = Zombie.KILLER_FORTRESS
 		}
+	else
+		-- Move backward
+		zombie:changeDirection(self.player.direction)
 	end
 end
 

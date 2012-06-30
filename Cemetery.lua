@@ -61,7 +61,7 @@ end
 
 -- Spawn a single zombie
 function Cemetery:spawn()
-	if config.debug.oneZombie == false or self.nbZombies == 0 then
+	if not config.debug.oneZombie or self.nbZombies == 0 then
 		local zombie = Zombie.create{
 			cemetery = self,
 			player = self.player,

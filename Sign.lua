@@ -14,7 +14,6 @@ Sign.__index = Sign
 
 local config = require("GameConfig")
 local Arrow = require("Arrow")
-local Zombie = require("Zombie")
 
 -----------------------------------------------------------------------------------------
 -- Initialization and Destruction
@@ -34,7 +33,6 @@ function Sign.create(parameters)
 	-- Initialize attributes
 	self.x = self.tile.x
 	self.y = self.tile.y
-	self.zombieDirection = self:translateDirection(self.direction)
 
 	return self
 end
@@ -61,28 +59,11 @@ end
 --  zombie: The zombie reaching the middle of the tile
 function Sign:reachTileMiddle(zombie)
 	if zombie.player.id == self.player.id then
-		zombie:changeDirection{
-			direction = self.zombieDirection
-		}
-	end
-end
-
--- Translate an arrow diretion into a zombie direction
---
--- Parameters:
---  arrowDirection: The arrow direction value, from Arrow constants
---
--- Returns:
---  The zombie direction, from Zombie constants
-function Sign:translateDirection(arrowDirection)
-	if arrowDirection == Arrow.UP then
-		return Zombie.UP
-	elseif arrowDirection == Arrow.DOWN then
-		return Zombie.DOWN
-	elseif arrowDirection == Arrow.LEFT then
-		return Zombie.LEFT
-	elseif arrowDirection == Arrow.RIGHT then
-		return Zombie.RIGHT
+		-- Ignore special cases
+		if not (self.tile.isOnFirstRow and self.direction == Arrow.UP)
+			and not (self.tile.isOnLastRow and self.direction == Arrow.DOWN) then
+			zombie:changeDirection(self.direction)
+		end
 	end
 end
 

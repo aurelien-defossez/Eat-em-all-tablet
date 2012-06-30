@@ -79,7 +79,7 @@ function Grid:loadMap(parameters)
 
 	-- Place cemeteries
 	for index, cemetery in pairs(parameters.cemeteries) do
-		if config.debug.oneCemetery == false or placedCemeteries == 0 then
+		if not config.debug.oneCemetery or placedCemeteries == 0 then
 			local tile = self:getTile{
 				x = cemetery.x,
 				y = cemetery.y

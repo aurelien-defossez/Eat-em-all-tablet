@@ -13,6 +13,7 @@ Zombie.__index = Zombie
 -----------------------------------------------------------------------------------------
 
 local config = require("GameConfig")
+local Arrow = require("Arrow")
 
 -----------------------------------------------------------------------------------------
 -- Constants
@@ -55,9 +56,10 @@ function Zombie.create(parameters)
 	self.height = config.zombie.height
 	self.x = self.cemetery.x + self.width / 2
 	self.y = self.cemetery.y + self.height / 2
-	self.direction = self.player.direction == "right" and RIGHT or LEFT
+	self.direction = self.player.direction
 	self.tile = self.cemetery.tile
-	
+
+	self:changeDirection(self.direction)
 	self:computeTileCollider()
 
 	return self
@@ -86,8 +88,8 @@ end
 -- Compute the tile collider position
 function Zombie:computeTileCollider()
 	self.tileCollider = {
-		x = self.x + config.zombie.tileColliderOffset.x * self.direction.x,
-		y = self.y + config.zombie.tileColliderOffset.y * self.direction.y
+		x = self.x + config.zombie.tileColliderOffset.x * self.directionVector.x,
+		y = self.y + config.zombie.tileColliderOffset.y * self.directionVector.y
 	}
 end
 
@@ -117,18 +119,20 @@ function Zombie:move(parameters)
 	if self.tileCollider.x >= self.tile.x and self.tileCollider.x < self.tile.x + self.tile.width
 		and self.tileCollider.y >= self.tile.y and self.tileCollider.y < self.tile.y + self.tile.height then
 		-- Staying on the same tile, checking if we passed through middle
-		if self.direction.x ~= 0 then
+		if self.directionVector.x ~= 0 then
 			-- Middle is negative when going from right to left, to facilitate further calculations
-			local middle = (self.tile.x + self.tile.width / 2) * self.direction.x
+			local middle = (self.tile.x + self.tile.width / 2) * self.directionVector.x
 
-			if lastCollider.x * self.direction.x < middle and self.tileCollider.x * self.direction.x >= middle then
+			if lastCollider.x * self.directionVector.x < middle
+				and self.tileCollider.x * self.directionVector.x >= middle then
 				self.tile:reachTileMiddle(self)
 			end
 		else
 			-- Middle is negative when going from bottom to up, to facilitate further calculations
-			local middle = (self.tile.y + self.tile.height / 2) * self.direction.y
+			local middle = (self.tile.y + self.tile.height / 2) * self.directionVector.y
 
-			if lastCollider.y * self.direction.y < middle and self.tileCollider.y * self.direction.y >= middle then
+			if lastCollider.y * self.directionVector.y < middle
+				and self.tileCollider.y * self.directionVector.y >= middle then
 				self.tile:reachTileMiddle(self)
 			end
 		end
@@ -150,8 +154,18 @@ end
 --
 -- Parameters:
 --  direction: The new direction
-function Zombie:changeDirection(parameters)
-	self.direction = parameters.direction
+function Zombie:changeDirection(direction)
+	self.direction = direction
+
+	if direction == Arrow.UP then
+		self.directionVector = Zombie.UP
+	elseif direction == Arrow.DOWN then
+		self.directionVector = Zombie.DOWN
+	elseif direction == Arrow.LEFT then
+		self.directionVector = Zombie.LEFT
+	elseif direction == Arrow.RIGHT then
+		self.directionVector = Zombie.RIGHT
+	end
 end
 
 -- Kills the zombie
@@ -176,8 +190,8 @@ function Zombie:enterFrame(timeDelta)
 	local movement = timeDelta / 1000 * config.zombie.speed * self.tile.width
 
 	self:move{
-		x = self.x + movement * self.direction.x,
-		y = self.y + movement * self.direction.y
+		x = self.x + movement * self.directionVector.x,
+		y = self.y + movement * self.directionVector.y
 	}
 end
 

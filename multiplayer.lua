@@ -14,6 +14,7 @@ local scene = storyboard.newScene()
 local config = require("GameConfig")
 local Player = require("Player")
 local PlayerControlPanel = require("PlayerControlPanel")
+local Arrow = require("Arrow")
 local Grid = require("Grid")
 
 -----------------------------------------------------------------------------------------
@@ -30,14 +31,14 @@ function scene:createScene(event)
 	self.players[1] = Player.create{
 		id = 1,
 		color = "red",
-		direction = "right",
+		direction = Arrow.RIGHT,
 		hitPoints = config.player.hitPoints
 	}
 
 	self.players[2] = Player.create{
 		id = 2,
 		color = "blue",
-		direction = "left",
+		direction = Arrow.LEFT,
 		hitPoints = config.player.hitPoints
 	}
 

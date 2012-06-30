@@ -13,6 +13,7 @@ Tile.__index = Tile
 -----------------------------------------------------------------------------------------
 
 local config = require("GameConfig")
+local Arrow = require("Arrow")
 
 -----------------------------------------------------------------------------------------
 -- Initialization and Destruction
@@ -31,6 +32,10 @@ function Tile.create(parameters)
 	-- Create object
 	local self = parameters or {}
 	setmetatable(self, Tile)
+
+	-- Initialize attributes
+	self.isOnFirstRow = (self.yGrid == 1)
+	self.isOnLastRow = (self.yGrid == config.panels.grid.nbRows)
 
 	return self
 end
@@ -77,6 +82,15 @@ end
 function Tile:reachTileMiddle(zombie)
 	if self.content ~= nil and self.content.reachTileMiddle ~= nil then
 		self.content:reachTileMiddle(zombie)
+	end
+
+	-- First or last row tile 
+	if self.isOnFirstRow and zombie.direction == Arrow.UP or self.isOnLastRow and zombie.direction == Arrow.DOWN then
+		if math.random() < 0.5 then
+			zombie:changeDirection(Arrow.LEFT)
+		else
+			zombie:changeDirection(Arrow.RIGHT)
+		end
 	end
 end
 
