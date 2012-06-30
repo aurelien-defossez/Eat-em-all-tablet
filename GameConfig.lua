@@ -34,6 +34,12 @@ fortressWall = {
 zombie = {
 	width = 64,
 	height = 64,
+	mask = {
+		width = 16,
+		height = 54,
+		x = 24,
+		y = 5
+	},
 	-- speed in tiles per seconds
 	speed = 1,
 	tileColliderOffset = {

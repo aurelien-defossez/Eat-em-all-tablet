@@ -202,17 +202,21 @@ function Grid:enterFrame(timeDelta)
 
 	-- Check for collisions
 	for index, zombie in pairs(self.zombies) do
+		local mask1 = zombie:getCollisionMask()
+
 		for otherIndex, otherZombie in pairs(self.zombies) do
 			if zombie.player.id ~= otherZombie.player.id and otherZombie.id > zombie.id then
-				if collisions.intersectRects(zombie.x, zombie.y, zombie.width, zombie.height,
-					otherZombie.x, otherZombie.y, otherZombie.width, otherZombie.height) then
+				local mask2 = otherZombie:getCollisionMask()
+
+				if collisions.intersectRects(mask1.x, mask1.y, mask1.width, mask1.height,
+					mask2.x, mask2.y, mask2.width, mask2.height) then
 					local dyingParameters = {
 						killer = Zombie.KILLER_ZOMBIE
 					}
 
 					zombie:die(dyingParameters)
 					otherZombie:die(dyingParameters)
-					
+
 					break
 				end
 			end

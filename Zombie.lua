@@ -182,6 +182,15 @@ function Zombie:die(parameters)
 	self.debug:removeSelf()
 end
 
+function Zombie:getCollisionMask()
+	return {
+		x = self.x + config.zombie.mask.x,
+		y = self.y + config.zombie.mask.y,
+		width = config.zombie.mask.width,
+		height = config.zombie.mask.height
+	}
+end
+
 -- Enter frame handler
 --
 -- Parameters:
