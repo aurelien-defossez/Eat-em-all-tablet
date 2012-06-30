@@ -6,6 +6,10 @@ screen = {
 	height = display.contentHeight
 }
 
+player = {
+	hitPoints = 100
+}
+
 arrow = {
 	width = 64,
 	height = 64
@@ -15,6 +19,11 @@ cemetery = {
 	width = 64,
 	height = 64,
 	spawnPeriod = 3000
+}
+
+fortressWall = {
+	width = 64,
+	height = 64
 }
 
 zombie = {
@@ -29,7 +38,7 @@ zombie = {
 }
 
 panels = {
-	hitpoints = {
+	hitPoints = {
 		height = 50
 		-- width = max
 	},
@@ -37,7 +46,7 @@ panels = {
 		padding = 8,
 		-- width = 2 x (arrow.width + padding)
 		width = 2 * (arrow.width + 8),
-		-- height = max - hitpoints.height
+		-- height = max - hitPoints.height
 		arrows = {
 			width = 2 * arrow.width,
 			height = 3 * arrow.height

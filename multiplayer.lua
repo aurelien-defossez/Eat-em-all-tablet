@@ -30,13 +30,15 @@ function scene:createScene(event)
 	self.players[1] = Player.create{
 		id = 1,
 		color = "red",
-		direction = "right"
+		direction = "right",
+		hitPoints = config.player.hitPoints
 	}
 
 	self.players[2] = Player.create{
 		id = 2,
 		color = "blue",
-		direction = "left"
+		direction = "left",
+		hitPoints = config.player.hitPoints
 	}
 
 	-- Create the background
@@ -44,13 +46,13 @@ function scene:createScene(event)
 	background:setFillColor(142, 57, 20)
 
 	-- Sizes
-	local mainHeight = config.screen.height - config.panels.hitpoints.height
+	local mainHeight = config.screen.height - config.panels.hitPoints.height
 
 	-- Create grid
 	self.grid = Grid.create{
 		players = self.players,
 		x = config.panels.controls.width + config.panels.grid.xpadding,
-		y = config.panels.hitpoints.height,
+		y = config.panels.hitPoints.height,
 		width = config.screen.width - 2 * config.panels.controls.width - 2 * config.panels.grid.xpadding,
 		height = mainHeight
 	}
@@ -62,7 +64,7 @@ function scene:createScene(event)
 	self.controlPanel1 = PlayerControlPanel.create{
 		player = self.players[1],
 		x = 0,
-		y = config.panels.hitpoints.height,
+		y = config.panels.hitPoints.height,
 		height = mainHeight,
 		grid = self.grid
 	}
@@ -70,7 +72,7 @@ function scene:createScene(event)
 	self.controlPanel2 = PlayerControlPanel.create{
 		player = self.players[2],
 		x = config.screen.width - config.panels.controls.width,
-		y = config.panels.hitpoints.height,
+		y = config.panels.hitPoints.height,
 		height = mainHeight,
 		grid = self.grid
 	}

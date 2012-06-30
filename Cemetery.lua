@@ -69,6 +69,14 @@ function Cemetery:spawn()
 	self.zombies[zombie.id] = zombie
 end
 
+-- Removes a zombie from the zombies list
+--
+-- Parameters
+--  zombie: The zombie to remove
+function Cemetery:removeZombie(zombie)
+	self.zombies[zombie.id] = nil
+end
+
 -- Enter frame handler
 --
 -- Parameters:

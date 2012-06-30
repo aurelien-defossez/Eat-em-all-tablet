@@ -15,6 +15,7 @@ Grid.__index = Grid
 local config = require("GameConfig")
 local Tile = require("Tile")
 local Cemetery = require("Cemetery")
+local FortressWall = require("FortressWall")
 
 -----------------------------------------------------------------------------------------
 -- Initialization and Destruction
@@ -87,6 +88,33 @@ function Grid:loadMap(parameters)
 			player = self.players[cemetery.playerId]
 		}
 	end
+
+	-- Place fortress walls on edges where there are not any cemetery
+	for y = 1, config.panels.grid.nbRows do
+		local leftTile = self:getTile{
+			x = 1,
+			y = y
+		}
+
+		local rightTile = self:getTile{
+			x = config.panels.grid.nbRows + 1,
+			y = y
+		}
+
+		if leftTile.content == nil then
+			leftTile.content = FortressWall.create{
+				tile = leftTile,
+				player = self.players[1]
+			}
+		end
+
+		if rightTile.content == nil then
+			rightTile.content = FortressWall.create{
+				tile = rightTile,
+				player = self.players[2]
+			}
+		end
+	end
 end
 
 -- Draw the grid
@@ -120,6 +148,11 @@ end
 -- Returns:
 --  The corresponding tile
 function Grid:getTile(parameters)
+	assert(parameters.x > 0)
+	assert(parameters.x <= config.panels.grid.nbCols)
+	assert(parameters.y > 0)
+	assert(parameters.y <= config.panels.grid.nbRows)
+
 	return self.matrix[getIndex(parameters.x, parameters.y)]
 end
 

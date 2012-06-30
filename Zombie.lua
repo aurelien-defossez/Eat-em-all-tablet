@@ -23,6 +23,10 @@ DOWN = { x = 0, y = 1 }
 LEFT = { x = -1, y = 0 }
 RIGHT = { x = 1, y = 0 }
 
+KILLER_ZOMBIE = 1
+KILLER_FORTRESS = 2
+KILLER_CITY = 3
+
 -----------------------------------------------------------------------------------------
 -- Class attributes
 -----------------------------------------------------------------------------------------
@@ -140,6 +144,20 @@ function Zombie:move(parameters)
 	-- Move zombie sprite
 	self.sprite.x = self.x
 	self.sprite.y = self.y
+end
+
+-- Kills the zombie
+--
+-- Parameters
+--  killer: The killer type, as possible Zombie constant types
+function Zombie:die(parameters)
+	-- Remove zombie from cemetery
+	self.cemetery:removeZombie(self)
+
+	-- Remove sprite from display
+	self.sprite:removeSelf()
+
+	self.debug:removeSelf()
 end
 
 -- Enter frame handler

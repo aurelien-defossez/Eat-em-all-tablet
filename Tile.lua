@@ -55,7 +55,9 @@ end
 -- Parameters:
 --  zombie: The zombie entering the tile
 function Tile:enterTile(zombie)
-	print("Zombie ".. zombie.id.." enters tile")
+	if self.content ~= nil and self.content.enterTile ~= nil then
+		self.content:enterTile(zombie)
+	end
 end
 
 -- Leave tile handler, called when a zombie leaves the tile
@@ -63,7 +65,9 @@ end
 -- Parameters:
 --  zombie: The zombie leaving the tile
 function Tile:leaveTile(zombie)
-	print("Zombie ".. zombie.id.." leaves tile")
+	if self.content ~= nil and self.content.leaveTile ~= nil then
+		self.content:leaveTile(zombie)
+	end
 end
 
 -- Reach middle tile handler, called when a zombie reaches the middle of the tile
@@ -71,7 +75,9 @@ end
 -- Parameters:
 --  zombie: The zombie reaching the middle of the tile
 function Tile:reachTileMiddle(zombie)
-	print("Zombie ".. zombie.id.." reaches tile middle")
+	if self.content ~= nil and self.content.reachTileMiddle ~= nil then
+		self.content:reachTileMiddle(zombie)
+	end
 end
 
 -- Enter frame handler
