@@ -42,7 +42,7 @@ ctId = 0
 -- Create the zombie
 --
 -- Parameters:
---  cemetery: The cemetery the zombie spawned from
+--  tile: The tile the zombie spawned from
 --  player: The zombie owner
 --  grid: The grid
 function Zombie.create(parameters)
@@ -55,10 +55,9 @@ function Zombie.create(parameters)
 	self.id = ctId
 	self.width = config.zombie.width
 	self.height = config.zombie.height
-	self.x = self.cemetery.x + self.width / 2
-	self.y = self.cemetery.y + self.height / 2
+	self.x = self.tile.x + self.width / 2
+	self.y = self.tile.y + self.height / 2
 	self.direction = self.player.direction
-	self.tile = self.cemetery.tile
 
 	self:changeDirection(self.direction)
 	self:computeTileCollider()
@@ -174,8 +173,8 @@ end
 -- Parameters
 --  killer: The killer type, as possible Zombie constant types
 function Zombie:die(parameters)
-	-- Remove zombie from cemetery
-	self.cemetery:removeZombie(self)
+	-- Remove zombie from the zombies list
+	self.grid:removeZombie(self)
 
 	-- Remove sprite from display
 	self.sprite:removeSelf()

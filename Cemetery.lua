@@ -34,8 +34,6 @@ function Cemetery.create(parameters)
 	self.x = self.tile.x
 	self.y = self.tile.y
 	self.timeSinceLastSpawn = 0
-	self.zombies = {}
-	self.nbZombies = 0
 
 	if config.debug.immediateSpawn then
 		self.timeSinceLastSpawn = config.cemetery.spawnPeriod
@@ -61,27 +59,17 @@ end
 
 -- Spawn a single zombie
 function Cemetery:spawn()
-	if not config.debug.oneZombie or self.nbZombies == 0 then
+	if not config.debug.oneZombie or grid.nbZombies == 0 then
 		local zombie = Zombie.create{
-			cemetery = self,
 			player = self.player,
+			tile = self.tile,
 			grid = self.grid
 		}
 
+		self.grid:addZombie(zombie)
+
 		zombie:draw()
-
-		self.zombies[zombie.id] = zombie
-		self.nbZombies = self.nbZombies + 1
 	end
-end
-
--- Removes a zombie from the zombies list
---
--- Parameters
---  zombie: The zombie to remove
-function Cemetery:removeZombie(zombie)
-	self.zombies[zombie.id] = nil
-	self.nbZombies = self.nbZombies - 1
 end
 
 -- Enter tile handler, called when a zombie enters the tile
@@ -114,11 +102,6 @@ function Cemetery:enterFrame(timeDelta)
 	if self.timeSinceLastSpawn >= config.cemetery.spawnPeriod then
 		self.timeSinceLastSpawn = self.timeSinceLastSpawn - config.cemetery.spawnPeriod
 		self:spawn()
-	end
-
-	-- Relay event to zombies
-	for index, zombie in pairs(self.zombies) do
-		zombie:enterFrame(timeDelta)
 	end
 end
 

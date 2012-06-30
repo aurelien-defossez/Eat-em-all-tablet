@@ -39,6 +39,10 @@ end
 -- Methods
 -----------------------------------------------------------------------------------------
 
+-- Add HPs to the player
+--
+-- Parameters:
+--  nbHPs: The number of HPs to add, can be a negative number
 function Player:addHPs(nbHPs)
 	self.hitPoints = self.hitPoints + nbHPs
 

@@ -12,10 +12,12 @@ Grid.__index = Grid
 -- Imports
 -----------------------------------------------------------------------------------------
 
+local collisions = require("collisions")
 local config = require("GameConfig")
 local Tile = require("Tile")
 local Cemetery = require("Cemetery")
 local FortressWall = require("FortressWall")
+local Zombie = require("Zombie")
 
 -----------------------------------------------------------------------------------------
 -- Initialization and Destruction
@@ -45,6 +47,9 @@ function Grid.create(parameters)
 
 	self.x = self.x + math.floor((saveWidth - self.width) / 2)
 	self.y = self.y + math.floor((saveHeight - self.height) / 2)
+
+	self.zombies = {}
+	self.nbZombies = 0
 
 	self.matrix = {}
 	for x = 1, config.panels.grid.nbRows + 1 do
@@ -130,6 +135,24 @@ function Grid:draw()
 	end
 end
 
+-- Add a zombie to the list
+--
+-- Parameters:
+--  zombie: The zombie to add
+function Grid:addZombie(zombie)
+	self.zombies[zombie.id] = zombie
+	self.nbZombies = self.nbZombies + 1
+end
+
+-- Removes a zombie from the zombies list
+--
+-- Parameters
+--  zombie: The zombie to remove
+function Grid:removeZombie(zombie)
+	self.zombies[zombie.id] = nil
+	self.nbZombies = self.nbZombies - 1
+end
+
 -- Get a tile using pixel coordinates
 -- 
 -- Parameters:
@@ -167,8 +190,33 @@ end
 -- Parameters:
 --  timeDelta: The time in ms since last frame
 function Grid:enterFrame(timeDelta)
+	-- Relay event to tiles
 	for index, tile in pairs(self.matrix) do
 		tile:enterFrame(timeDelta)
+	end
+
+	-- Relay event to zombies
+	for index, zombie in pairs(self.zombies) do
+		zombie:enterFrame(timeDelta)
+	end
+
+	-- Check for collisions
+	for index, zombie in pairs(self.zombies) do
+		for otherIndex, otherZombie in pairs(self.zombies) do
+			if zombie.player.id ~= otherZombie.player.id and otherZombie.id > zombie.id then
+				if collisions.intersectRects(zombie.x, zombie.y, zombie.width, zombie.height,
+					otherZombie.x, otherZombie.y, otherZombie.width, otherZombie.height) then
+					local dyingParameters = {
+						killer = Zombie.KILLER_ZOMBIE
+					}
+
+					zombie:die(dyingParameters)
+					otherZombie:die(dyingParameters)
+					
+					break
+				end
+			end
+		end
 	end
 end
 
