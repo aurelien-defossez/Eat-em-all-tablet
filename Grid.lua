@@ -17,13 +17,6 @@ local Tile = require("Tile")
 local Cemetery = require("Cemetery")
 
 -----------------------------------------------------------------------------------------
--- Constants
------------------------------------------------------------------------------------------
-
-PIXEL = 1
-TILE = 2
-
------------------------------------------------------------------------------------------
 -- Initialization and Destruction
 -----------------------------------------------------------------------------------------
 
@@ -99,21 +92,20 @@ function Grid:draw()
 	end
 end
 
-function Grid:getTile(parameters)
-	if parameters.unit == PIXEL then
-		return self:getTile{
-			x = math.floor((parameters.x - self.x) / self.width * config.panels.grid.nbCols) + 1,
-			y = math.floor((parameters.y - self.y) / self.height * config.panels.grid.nbRows) + 1,
-			unit = TILE
-		}
-	else
-		return self.matrix[getIndex(parameters.x, parameters.y)]
-	end
+function Grid:getTileByPixels(parameters)
+	return self:getTile{
+		x = math.floor((parameters.x - self.x) / self.width * config.panels.grid.nbCols) + 1,
+		y = math.floor((parameters.y - self.y) / self.height * config.panels.grid.nbRows) + 1
+	}
 end
 
-function Grid:enterFrame(event)
+function Grid:getTile(parameters)
+	return self.matrix[getIndex(parameters.x, parameters.y)]
+end
+
+function Grid:enterFrame(timeDelta)
 	for index, tile in pairs(self.matrix) do
-		tile:enterFrame(event)
+		tile:enterFrame(timeDelta)
 	end
 end
 

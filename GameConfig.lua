@@ -17,6 +17,13 @@ cemetery = {
 	spawnPeriod = 3000
 }
 
+zombie = {
+	width = 64,
+	height = 64,
+	-- speed in tiles per seconds
+	speed = 1
+}
+
 panels = {
 	hitpoints = {
 		height = 50

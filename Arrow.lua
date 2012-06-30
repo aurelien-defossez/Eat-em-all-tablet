@@ -101,10 +101,9 @@ function onDraggedArrowTouch(event)
 		print ("Drag end:   " .. sprite.direction .. " of player " .. sprite.player.id)
 
 		-- Locate drop tile
-		local tile = sprite.grid:getTile{
+		local tile = sprite.grid:getTileByPixels{
 			x = event.x,
-			y = event.y,
-			unit = Grid.PIXEL
+			y = event.y
 		}
 
 		-- Create sign

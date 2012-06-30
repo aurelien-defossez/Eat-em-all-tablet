@@ -22,15 +22,20 @@ local Grid = require("Grid")
 
 -- Called when the scene's view does not exist:
 function scene:createScene(event)
+	-- Enter frame time
+	self.lastFrameTime = 0
+
 	-- Create players
 	self.player1 = Player.create{
 		id = 1,
-		color = "red"
+		color = "red",
+		direction = "right"
 	}
 
 	self.player2 = Player.create{
 		id = 2,
-		color = "blue"
+		color = "blue",
+		direction = "left"
 	}
 
 	-- Create the background
@@ -104,7 +109,10 @@ end
 -----------------------------------------------------------------------------------------
 
 function scene:enterFrame(event)
-	self.grid:enterFrame(event)
+	local timeDelta =  event.time - self.lastFrameTime
+	self.lastFrameTime = event.time
+
+	self.grid:enterFrame(timeDelta)
 end
 
 -----------------------------------------------------------------------------------------

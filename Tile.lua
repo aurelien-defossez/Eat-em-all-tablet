@@ -40,9 +40,9 @@ function Tile:draw()
 	end
 end
 
-function Tile:enterFrame(event)
+function Tile:enterFrame(timeDelta)
 	if self.content ~= nil then
-		self.content:enterFrame(event)
+		self.content:enterFrame(timeDelta)
 	end
 end
 
