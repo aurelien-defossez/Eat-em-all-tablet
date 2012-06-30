@@ -1,5 +1,10 @@
 module("GameConfig", package.seeall)
 
+debug = {
+	oneCemetery = true,
+	oneZombie = true,
+	immediateSpawn = true
+}
 
 screen = {
 	width = display.contentWidth,
@@ -66,21 +71,18 @@ defaultMap = {
 			x = 1,
 			y = 3,
 			playerId = 1
-		},
-		-- {
-		-- 	x = 1,
-		-- 	y = 8,
-		-- 	playerId = 1
-		-- },
-		-- {
-		-- 	x = 11,
-		-- 	y = 3,
-		-- 	playerId = 2
-		-- },
-		-- {
-		-- 	x = 11,
-		-- 	y = 8,
-		-- 	playerId = 2
-		-- }
+		}, {
+			x = 1,
+			y = 8,
+			playerId = 1
+		}, {
+			x = 11,
+			y = 3,
+			playerId = 2
+		}, {
+			x = 11,
+			y = 8,
+			playerId = 2
+		}
 	}
 }

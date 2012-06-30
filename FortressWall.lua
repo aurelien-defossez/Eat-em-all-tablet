@@ -55,18 +55,20 @@ end
 -- Parameters:
 --  zombie: The zombie entering the tile
 function FortressWall:enterTile(zombie)
-	-- Lose player HP
-	self.player.hitPoints = self.player.hitPoints - 1
-	print("Player "..self.player.id.." HP="..self.player.hitPoints)
+	if zombie.player.id ~= self.player.id then
+		-- Lose HP
+		self.player.hitPoints = self.player.hitPoints - 1
+		print("Player "..self.player.id.." HP="..self.player.hitPoints)
 
-	if self.player.hitPoints == 0 then
-		print("Player "..self.player.id.." has lost")
+		if self.player.hitPoints == 0 then
+			print("Player "..self.player.id.." has lost")
+		end
+
+		-- Kill zombie
+		zombie:die{
+			killer = Zombie.KILLER_FORTRESS
+		}
 	end
-
-	-- Kill zombie
-	zombie:die{
-		killer = Zombie.KILLER_FORTRESS
-	}
 end
 
 -----------------------------------------------------------------------------------------

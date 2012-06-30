@@ -119,14 +119,14 @@ function Zombie:move(parameters)
 		-- Staying on the same tile, checking if we passed through middle
 		if self.direction.x ~= 0 then
 			-- Middle is negative when going from right to left, to facilitate further calculations
-			local middle = self.tile.x + self.tile.width / 2 * self.direction.x
+			local middle = (self.tile.x + self.tile.width / 2) * self.direction.x
 
 			if lastCollider.x * self.direction.x < middle and self.tileCollider.x * self.direction.x >= middle then
 				self.tile:reachTileMiddle(self)
 			end
 		else
 			-- Middle is negative when going from bottom to up, to facilitate further calculations
-			local middle = self.tile.y + self.tile.height / 2 * self.direction.y
+			local middle = (self.tile.y + self.tile.height / 2) * self.direction.y
 
 			if lastCollider.y * self.direction.y < middle and self.tileCollider.y * self.direction.y >= middle then
 				self.tile:reachTileMiddle(self)
@@ -144,6 +144,14 @@ function Zombie:move(parameters)
 	-- Move zombie sprite
 	self.sprite.x = self.x
 	self.sprite.y = self.y
+end
+
+-- Changes the direction of the zombie
+--
+-- Parameters:
+--  direction: The new direction
+function Zombie:changeDirection(parameters)
+	self.direction = parameters.direction
 end
 
 -- Kills the zombie

@@ -75,18 +75,24 @@ end
 --   y: The Y tile coordinate
 --   playerId: The owner id
 function Grid:loadMap(parameters)
+	local placedCemeteries = 0
+
 	-- Place cemeteries
 	for index, cemetery in pairs(parameters.cemeteries) do
-		local tile = self:getTile{
-			x = cemetery.x,
-			y = cemetery.y
-		}
+		if config.debug.oneCemetery == false or placedCemeteries == 0 then
+			local tile = self:getTile{
+				x = cemetery.x,
+				y = cemetery.y
+			}
 
-		tile.content = Cemetery.create{
-			grid = self,
-			tile = tile,
-			player = self.players[cemetery.playerId]
-		}
+			tile.content = Cemetery.create{
+				grid = self,
+				tile = tile,
+				player = self.players[cemetery.playerId]
+			}
+
+			placedCemeteries = placedCemeteries + 1
+		end
 	end
 
 	-- Place fortress walls on edges where there are not any cemetery
@@ -146,14 +152,14 @@ end
 --  y: Y tile coordinate
 --
 -- Returns:
---  The corresponding tile
+--  The corresponding tile, or nil if the coordinates are incorrect
 function Grid:getTile(parameters)
-	assert(parameters.x > 0)
-	assert(parameters.x <= config.panels.grid.nbCols)
-	assert(parameters.y > 0)
-	assert(parameters.y <= config.panels.grid.nbRows)
-
-	return self.matrix[getIndex(parameters.x, parameters.y)]
+	if parameters.x > 0 and parameters.x <= config.panels.grid.nbCols
+		and parameters.y > 0 and parameters.y <= config.panels.grid.nbRows then
+		return self.matrix[getIndex(parameters.x, parameters.y)]
+	else
+		return nil
+	end
 end
 
 -- Enter frame handler

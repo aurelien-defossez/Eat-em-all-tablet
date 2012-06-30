@@ -77,8 +77,6 @@ function onArrowTouch(event)
 
 	-- Begin drag by creating a new draggable arrow
 	if event.phase == "began" then
-		print ("Drag start: " .. arrow.direction .. " of player " .. arrow.player.id)
-
 		local draggedArrow = display.newImageRect("arrow_up_selected_" .. arrow.player.color .. ".png",
 			arrow.width, arrow.height)
 		draggedArrow.direction = arrow.direction
@@ -110,8 +108,6 @@ function onDraggedArrowTouch(event)
 
 	-- Drop the arrow
 	elseif event.phase == "ended" then
-		print ("Drag end:   " .. sprite.direction .. " of player " .. sprite.player.id)
-
 		-- Locate drop tile
 		local tile = sprite.grid:getTileByPixels{
 			x = event.x,
@@ -120,7 +116,6 @@ function onDraggedArrowTouch(event)
 
 		-- Create sign
 		if tile ~= nil and tile.content == nil then
-			print("Create sign")
 			tile.content = Sign.create{
 				tile = tile,
 				player = sprite.player,
