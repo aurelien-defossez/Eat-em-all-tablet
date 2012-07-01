@@ -66,6 +66,19 @@ function Tile:draw()
 	group:insert(borders)
 end
 
+-- Check if a pixel is in the tile
+--
+-- Parameters:
+--  x: The X position
+--  y: The Y position
+--
+-- Returns:
+--  True if the pixel is inside the tile coordinates
+function Tile:isInside(parameters)
+	return (parameters.x >= self.x and parameters.x < self.x + self.width
+		and parameters.y >= self.y and parameters.y < self.y + self.height)
+end
+
 -- Enter tile handler, called when a zombie enters the tile
 --
 -- Parameters:

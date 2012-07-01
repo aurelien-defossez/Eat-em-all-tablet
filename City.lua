@@ -50,20 +50,25 @@ function City.create(parameters)
 	self.x = self.tile.x
 	self.y = self.tile.y
 	self.player = nil
+	self.gateOpened = false
 	self.timeSinceLastSpawn = 0
+	self.timeSinceLastExit = 0
 
 	if self.size == SIZE_SMALL then
 		self.inhabitants = config.city.small.inhabitants
 		self.spawnPeriod = config.city.small.spawnPeriod
 		self.maxInhabitants = config.city.small.maxInhabitants
+		self.exitPeriod = config.city.small.exitPeriod
 	elseif self.size == SIZE_MEDIUM then
 		self.inhabitants = config.city.medium.inhabitants
 		self.spawnPeriod = config.city.medium.spawnPeriod
 		self.maxInhabitants = config.city.medium.maxInhabitants
+		self.exitPeriod = config.city.medium.exitPeriod
 	else
 		self.inhabitants = config.city.large.inhabitants
 		self.spawnPeriod = config.city.large.spawnPeriod
 		self.maxInhabitants = config.city.large.maxInhabitants
+		self.exitPeriod = config.city.large.exitPeriod
 	end
 
 	return self
@@ -113,7 +118,12 @@ function City:drawSprite()
 	self.sprite:setReferencePoint(display.CenterReferencePoint)
 	self.sprite.x = self.x + self.tile.width / 2
 	self.sprite.y = self.y + self.tile.height / 2
+	
+	-- Handle events
+	self.sprite.city = self
+	self.sprite:addEventListener("touch", onCityTouch)
 
+	-- Insert into group
 	self.cityGroup:insert(self.sprite)
 end
 
@@ -122,20 +132,27 @@ function City:addInhabitants(nb)
 	self.inhabitants = self.inhabitants + nb
 
 	if self.inhabitants > self.maxInhabitants then
-		self.inhabitants = self.maxInhabitants
-
-		local zombie = Zombie.create{
-			player = self.player,
-			tile = self.tile,
-			grid = self.grid
-		}
-
-		self.grid:addZombie(zombie)
-
-		zombie:draw()
+		self:spawn()
+	elseif self.inhabitants == 0 then
+		self.player = nil
+		self:drawSprite()
 	end
 
 	self.inhabitantsText.text = self.inhabitants
+end
+
+function City:spawn()
+	local zombie = Zombie.create{
+		player = self.player,
+		tile = self.tile,
+		grid = self.grid
+	}
+
+	self.grid:addZombie(zombie)
+
+	zombie:draw()
+
+	self:addInhabitants(-1)
 end
 
 -- Enter tile handler, called when a zombie enters the tile
@@ -171,13 +188,49 @@ end
 function City:enterFrame(timeDelta)
 	if self.player ~= nil then
 		self.timeSinceLastSpawn = self.timeSinceLastSpawn + timeDelta
+		self.timeSinceLastExit = self.timeSinceLastExit + timeDelta
 
 		-- Count spawn time
 		if self.timeSinceLastSpawn >= self.spawnPeriod then
 			self.timeSinceLastSpawn = self.timeSinceLastSpawn - self.spawnPeriod
 			self:addInhabitants(1)
 		end
+
+		-- Count exit time
+		if self.gateOpened then
+			if self.timeSinceLastExit >= self.exitPeriod then
+				self.timeSinceLastExit = self.timeSinceLastExit - self.exitPeriod
+				self:spawn()
+			end
+		elseif self.timeSinceLastExit > self.exitPeriod then
+			-- Prepare next exit
+			self.timeSinceLastExit = self.exitPeriod
+		end
 	end
+end
+
+-----------------------------------------------------------------------------------------
+-- Private Methods
+-----------------------------------------------------------------------------------------
+
+-- Touch handler on a city
+function onCityTouch(event)
+	local city = event.target.city
+
+	print("event phase="..event.phase)
+
+	-- Open the gates while the finger touches the city
+	city.gateOpened = city.player ~= nil and city.tile:isInside(event)
+		and event.phase ~= "ended" and event.phase ~= "cancelled"
+
+	if not city.gateOpened then
+		city.timeSinceLastExit = 0
+	end
+
+	print("gates="..(city.gateOpened and "yes" or "no"))
+
+	-- Focus this object in order to track this finger properly
+	display.getCurrentStage():setFocus(event.target, event.id)
 end
 
 -----------------------------------------------------------------------------------------

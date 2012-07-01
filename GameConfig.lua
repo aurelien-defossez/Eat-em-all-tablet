@@ -33,7 +33,6 @@ cemetery = {
 city = {
 	width = 64,
 	height = 64,
-	exitPeriod = 400,
 	sizeText = {
 		x = 28,
 		y = 10,
@@ -43,19 +42,22 @@ city = {
 		y = 42
 	},
 	small = {
-		inhabitants = 5,
-		spawnPeriod = 4000,
-		maxInhabitants = 50
+		inhabitants = 1,
+		spawnPeriod = 5000,
+		maxInhabitants = 50,
+		exitPeriod = 400
 	},
 	medium = {
 		inhabitants = 15,
-		spawnPeriod = 2500,
-		maxInhabitants = 75
+		spawnPeriod = 3500,
+		maxInhabitants = 75,
+		exitPeriod = 300
 	},
 	large = {
 		inhabitants = 40,
-		spawnPeriod = 1500,
-		maxInhabitants = 100
+		spawnPeriod = 2000,
+		maxInhabitants = 99,
+		exitPeriod = 200
 	}
 }
 
