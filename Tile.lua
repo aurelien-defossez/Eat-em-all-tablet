@@ -16,6 +16,14 @@ local config = require("GameConfig")
 local Arrow = require("Arrow")
 
 -----------------------------------------------------------------------------------------
+-- Class initialization
+-----------------------------------------------------------------------------------------
+
+function initialize()
+	group = display.newGroup()
+end
+
+-----------------------------------------------------------------------------------------
 -- Initialization and Destruction
 -----------------------------------------------------------------------------------------
 
@@ -53,6 +61,9 @@ function Tile:draw()
 	if self.content ~= nil then
 		self.content:draw()
 	end
+
+	-- Add to group
+	group:insert(borders)
 end
 
 -- Enter tile handler, called when a zombie enters the tile

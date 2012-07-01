@@ -16,6 +16,14 @@ local config = require("GameConfig")
 local Arrow = require("Arrow")
 
 -----------------------------------------------------------------------------------------
+-- Class initialization
+-----------------------------------------------------------------------------------------
+
+function initialize()
+	group = display.newGroup()
+end
+
+-----------------------------------------------------------------------------------------
 -- Initialization and Destruction
 -----------------------------------------------------------------------------------------
 
@@ -51,6 +59,9 @@ function Sign:draw()
 	self.sprite.x = self.x + self.tile.width / 2
 	self.sprite.y = self.y + self.tile.height / 2
 	self.sprite:rotate(self.direction or 0)
+
+	-- Add to group
+	group:insert(self.sprite)
 end
 
 -- Reach middle tile handler, called when a zombie reaches the middle of the tile

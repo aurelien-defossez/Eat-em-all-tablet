@@ -13,9 +13,8 @@ local scene = storyboard.newScene()
 
 local config = require("GameConfig")
 local Player = require("Player")
-local PlayerControlPanel = require("PlayerControlPanel")
 local Arrow = require("Arrow")
-local Grid = require("Grid")
+local GameScene = require("GameScene")
 
 -----------------------------------------------------------------------------------------
 -- Initialization and Destruction
@@ -42,48 +41,10 @@ function scene:createScene(event)
 		hitPoints = config.player.hitPoints
 	}
 
-	-- Create the background
-	local background = display.newRect(0, 0, config.screen.width, config.screen.height)
-	background:setFillColor(142, 57, 20)
-
-	-- Sizes
-	local mainHeight = config.screen.height - config.panels.hitPoints.height
-
-	-- Create grid
-	self.grid = Grid.create{
-		players = self.players,
-		x = config.panels.controls.width + config.panels.grid.xpadding,
-		y = config.panels.hitPoints.height,
-		width = config.screen.width - 2 * config.panels.controls.width - 2 * config.panels.grid.xpadding,
-		height = mainHeight
+	-- Create game scene
+	self.gameScene = GameScene.create{
+		players = self.players
 	}
-
-	-- Load default map
-	self.grid:loadMap(config.defaultMap)
-	
-	-- Create player control panels
-	self.controlPanel1 = PlayerControlPanel.create{
-		player = self.players[1],
-		x = 0,
-		y = config.panels.hitPoints.height,
-		height = mainHeight,
-		grid = self.grid
-	}
-
-	self.controlPanel2 = PlayerControlPanel.create{
-		player = self.players[2],
-		x = config.screen.width - config.panels.controls.width,
-		y = config.panels.hitPoints.height,
-		height = mainHeight,
-		grid = self.grid
-	}
-
-	-- Draw
-	self.controlPanel1:draw()
-	self.controlPanel2:draw()
-	self.grid:draw()
-
-	-- Bind enterFrane event
 end
 
 -- Called immediately after scene has moved onscreen:
@@ -115,7 +76,7 @@ function scene:enterFrame(event)
 	local timeDelta =  event.time - self.lastFrameTime
 	self.lastFrameTime = event.time
 
-	self.grid:enterFrame(timeDelta)
+	self.gameScene:enterFrame(timeDelta)
 end
 
 -----------------------------------------------------------------------------------------

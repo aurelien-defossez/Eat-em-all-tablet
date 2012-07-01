@@ -30,6 +30,14 @@ KILLER_CEMETERY = 3
 KILLER_CITY = 4
 
 -----------------------------------------------------------------------------------------
+-- Class initialization
+-----------------------------------------------------------------------------------------
+
+function initialize()
+	group = display.newGroup()
+end
+
+-----------------------------------------------------------------------------------------
 -- Class attributes
 -----------------------------------------------------------------------------------------
 
@@ -101,6 +109,9 @@ function Zombie:draw()
 		self.collisionMaskDebug:setStrokeColor(255, 0, 0)
 		self.collisionMaskDebug:setFillColor(0, 0, 0, 0)
 	end
+
+	-- Add to group
+	group:insert(self.sprite)
 end
 
 -- Compute the tile collider position

@@ -16,6 +16,14 @@ local config = require("GameConfig")
 local Zombie = require("Zombie")
 
 -----------------------------------------------------------------------------------------
+-- Class initialization
+-----------------------------------------------------------------------------------------
+
+function initialize()
+	group = display.newGroup()
+end
+
+-----------------------------------------------------------------------------------------
 -- Initialization and Destruction
 -----------------------------------------------------------------------------------------
 
@@ -55,6 +63,9 @@ function Cemetery:draw()
 	self.sprite:setReferencePoint(display.CenterReferencePoint)
 	self.sprite.x = self.x + self.tile.width / 2
 	self.sprite.y = self.y + self.tile.height / 2
+
+	-- Add to group
+	group:insert(self.sprite)
 end
 
 -- Spawn a single zombie

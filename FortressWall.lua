@@ -15,6 +15,14 @@ FortressWall.__index = FortressWall
 local config = require("GameConfig")
 
 -----------------------------------------------------------------------------------------
+-- Class initialization
+-----------------------------------------------------------------------------------------
+
+function initialize()
+	group = display.newGroup()
+end
+
+-----------------------------------------------------------------------------------------
 -- Initialization and Destruction
 -----------------------------------------------------------------------------------------
 
@@ -48,6 +56,9 @@ function FortressWall:draw()
 	self.sprite:setReferencePoint(display.CenterReferencePoint)
 	self.sprite.x = self.x + self.tile.width / 2
 	self.sprite.y = self.y + self.tile.height / 2
+
+	-- Add to group
+	group:insert(self.sprite)
 end
 
 -- Enter tile handler, called when a zombie enters the tile
