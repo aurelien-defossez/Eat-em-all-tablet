@@ -23,10 +23,6 @@ SIZE_SMALL = 1
 SIZE_MEDIUM = 2
 SIZE_LARGE = 3
 
-INHABITANTS_SMALL = 5
-INHABITANTS_MEDIUM = 15
-INHABITANTS_LARGE = 40
-
 -----------------------------------------------------------------------------------------
 -- Class initialization
 -----------------------------------------------------------------------------------------
@@ -54,13 +50,20 @@ function City.create(parameters)
 	self.x = self.tile.x
 	self.y = self.tile.y
 	self.player = nil
+	self.timeSinceLastSpawn = 0
 
 	if self.size == SIZE_SMALL then
-		self.inhabitants = INHABITANTS_SMALL
+		self.inhabitants = config.city.small.inhabitants
+		self.spawnPeriod = config.city.small.spawnPeriod
+		self.maxInhabitants = config.city.small.maxInhabitants
 	elseif self.size == SIZE_MEDIUM then
-		self.inhabitants = INHABITANTS_MEDIUM
+		self.inhabitants = config.city.medium.inhabitants
+		self.spawnPeriod = config.city.medium.spawnPeriod
+		self.maxInhabitants = config.city.medium.maxInhabitants
 	else
-		self.inhabitants = INHABITANTS_LARGE
+		self.inhabitants = config.city.large.inhabitants
+		self.spawnPeriod = config.city.large.spawnPeriod
+		self.maxInhabitants = config.city.large.maxInhabitants
 	end
 
 	return self
@@ -77,7 +80,7 @@ function City:draw()
 	self.textGroup = display.newGroup()
 
 	-- Draw city
-	self:drawCity()
+	self:drawSprite()
 
 	-- Inhabitants count text
 	self.inhabitantsText = display.newText(self.inhabitants, self.x + config.city.inhabitantsText.x,
@@ -93,7 +96,8 @@ function City:draw()
 	group:insert(self.cityGroup)
 end
 
-function City:drawCity()
+-- Draw the city sprite
+function City:drawSprite()
 	local spriteName;
 
 	if self.player then
@@ -113,8 +117,24 @@ function City:drawCity()
 	self.cityGroup:insert(self.sprite)
 end
 
+-- Add inhabitants to the city
 function City:addInhabitants(nb)
 	self.inhabitants = self.inhabitants + nb
+
+	if self.inhabitants > self.maxInhabitants then
+		self.inhabitants = self.maxInhabitants
+
+		local zombie = Zombie.create{
+			player = self.player,
+			tile = self.tile,
+			grid = self.grid
+		}
+
+		self.grid:addZombie(zombie)
+
+		zombie:draw()
+	end
+
 	self.inhabitantsText.text = self.inhabitants
 end
 
@@ -135,7 +155,7 @@ function City:enterTile(zombie)
 			zombie:die(Zombie.KILLER_CITY_ENTER)
 
 			self.sprite:removeSelf()
-			self:drawCity()
+			self:drawSprite()
 		end
 	else
 		-- Enforce city
@@ -149,7 +169,15 @@ end
 -- Parameters:
 --  timeDelta: The time in ms since last frame
 function City:enterFrame(timeDelta)
-	
+	if self.player ~= nil then
+		self.timeSinceLastSpawn = self.timeSinceLastSpawn + timeDelta
+
+		-- Count spawn time
+		if self.timeSinceLastSpawn >= self.spawnPeriod then
+			self.timeSinceLastSpawn = self.timeSinceLastSpawn - self.spawnPeriod
+			self:addInhabitants(1)
+		end
+	end
 end
 
 -----------------------------------------------------------------------------------------

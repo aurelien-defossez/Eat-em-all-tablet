@@ -41,6 +41,21 @@ city = {
 	inhabitantsText = {
 		x = 24,
 		y = 42
+	},
+	small = {
+		inhabitants = 5,
+		spawnPeriod = 4000,
+		maxInhabitants = 50
+	},
+	medium = {
+		inhabitants = 15,
+		spawnPeriod = 2500,
+		maxInhabitants = 75
+	},
+	large = {
+		inhabitants = 40,
+		spawnPeriod = 1500,
+		maxInhabitants = 100
 	}
 }
 
