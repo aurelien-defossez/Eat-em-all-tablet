@@ -58,6 +58,12 @@ function Zombie.create(parameters)
 	self.x = self.tile.x + self.width / 2
 	self.y = self.tile.y + self.height / 2
 	self.direction = self.player.direction
+	self.collisionMask = {
+		x = self.x,
+		y = self.y,
+		width = config.zombie.mask.width,
+		height = config.zombie.mask.height
+	}
 
 	self:changeDirection(self.direction)
 	self:computeTileCollider()
@@ -154,6 +160,10 @@ function Zombie:move(parameters)
 		self.tile:enterTile(self)
 	end
 
+	-- Update collision mask
+	self.collisionMask.x = self.x
+	self.collisionMask.y = self.y
+
 	-- Move zombie sprite
 	self.sprite.x = self.x
 	self.sprite.y = self.y
@@ -208,15 +218,6 @@ function Zombie:die(parameters)
 	if config.debug.showCollisionMask then
 		self.collisionMaskDebug:removeSelf()
 	end
-end
-
-function Zombie:getCollisionMask()
-	return {
-		x = self.x,
-		y = self.y,
-		width = config.zombie.mask.width,
-		height = config.zombie.mask.height
-	}
 end
 
 -- Enter frame handler
