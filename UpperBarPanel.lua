@@ -39,7 +39,8 @@ function UpperBarPanel.create(parameters)
 		hitPoints = self.players[1].hitPoints,
 		x = 0,
 		y = 0,
-		width = hpWidth
+		width = hpWidth,
+		direction = HitPointsPanel.FORWARD
 	}
 
 	self.hitPoints[2] = HitPointsPanel.create{
@@ -47,7 +48,8 @@ function UpperBarPanel.create(parameters)
 		hitPoints = self.players[2].hitPoints,
 		x = hpWidth + config.panels.upperBar.menuButton.width,
 		y = 0,
-		width = hpWidth
+		width = hpWidth,
+		direction = HitPointsPanel.REVERSE
 	}
 
 	self.players[1].hitPointsPanel = self.hitPoints[1]

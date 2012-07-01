@@ -1,5 +1,7 @@
 module("GameConfig", package.seeall)
 
+local City = require("City")
+
 debug = {
 	oneCemetery = false,
 	oneZombie = false,
@@ -26,6 +28,20 @@ cemetery = {
 	width = 64,
 	height = 64,
 	spawnPeriod = 3000
+}
+
+city = {
+	width = 64,
+	height = 64,
+	exitPeriod = 400,
+	sizeText = {
+		x = 28,
+		y = 10,
+	},
+	inhabitantsText = {
+		x = 24,
+		y = 42
+	}
 }
 
 fortressWall = {
@@ -97,6 +113,29 @@ defaultMap = {
 			x = 11,
 			y = 8,
 			playerId = 2
+		}
+	},
+	cities = {
+		{
+			x = 3,
+			y = 2,
+			size = City.SIZE_SMALL
+		}, {
+			x = 9,
+			y = 9,
+			size = City.SIZE_SMALL
+		}, {
+			x = 4,
+			y = 6,
+			size = City.SIZE_MEDIUM
+		}, {
+			x = 8,
+			y = 5,
+			size = City.SIZE_MEDIUM
+		}, {
+			x = 6,
+			y = 4,
+			size = City.SIZE_LARGE
 		}
 	}
 }

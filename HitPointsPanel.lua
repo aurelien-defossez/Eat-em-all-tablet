@@ -15,6 +15,13 @@ HitPointsPanel.__index = HitPointsPanel
 local config = require("GameConfig")
 
 -----------------------------------------------------------------------------------------
+-- Constants
+-----------------------------------------------------------------------------------------
+
+FORWARD = 1
+REVERSE = 2
+
+-----------------------------------------------------------------------------------------
 -- Initialization and Destruction
 -----------------------------------------------------------------------------------------
 
@@ -68,9 +75,15 @@ function HitPointsPanel:updateHPs(hitPoints)
 	local redWidth = self.barPosition.maxWidth - greenWidth
 
 	self.greenBar.width = greenWidth
-	self.greenBar.x = self.barPosition.x + greenWidth / 2
 	self.redBar.width = redWidth
-	self.redBar.x = self.barPosition.x + greenWidth + redWidth / 2
+
+	if self.direction == FORWARD then
+		self.greenBar.x = self.barPosition.x + greenWidth / 2
+		self.redBar.x = self.barPosition.x + greenWidth + redWidth / 2
+	else
+		self.greenBar.x = self.barPosition.x + redWidth + greenWidth / 2
+		self.redBar.x = self.barPosition.x + redWidth / 2
+	end
 end
 
 -----------------------------------------------------------------------------------------

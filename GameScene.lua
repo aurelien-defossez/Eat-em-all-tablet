@@ -13,14 +13,15 @@ GameScene.__index = GameScene
 -----------------------------------------------------------------------------------------
 
 local config = require("GameConfig")
+local UpperBarPanel = require("UpperBarPanel")
+local PlayerControlPanel = require("PlayerControlPanel")
 local Grid = require("Grid")
 local Tile = require("Tile")
-local PlayerControlPanel = require("PlayerControlPanel")
 local Cemetery = require("Cemetery")
 local FortressWall = require("FortressWall")
 local Zombie = require("Zombie")
 local Sign = require("Sign")
-local UpperBarPanel = require("UpperBarPanel")
+local City = require("City")
 
 -----------------------------------------------------------------------------------------
 -- Initialization and Destruction
@@ -43,6 +44,7 @@ function GameScene.create(parameters)
 	Tile.initialize()
 	FortressWall.initialize()
 	Cemetery.initialize()
+	City.initialize()
 	Sign.initialize()
 	Zombie.initialize()
 

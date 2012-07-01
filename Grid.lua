@@ -79,6 +79,10 @@ end
 --   x: The X tile coordinate
 --   y: The Y tile coordinate
 --   playerId: The owner id
+--  cities: The list of cities to place, with in each:
+--   x: The X tile coordinate
+--   y: The Y tile coordinate
+--   size: The city size, as City size constant
 function Grid:loadMap(parameters)
 	local placedCemeteries = 0
 
@@ -125,6 +129,20 @@ function Grid:loadMap(parameters)
 				player = self.players[2]
 			}
 		end
+	end
+
+	-- Place cities
+	for index, city in pairs(parameters.cities) do
+		local tile = self:getTile{
+			x = city.x,
+			y = city.y
+		}
+
+		tile.content = City.create{
+			grid = self,
+			tile = tile,
+			size = city.size
+		}
 	end
 end
 
