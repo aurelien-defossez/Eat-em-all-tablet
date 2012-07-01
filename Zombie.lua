@@ -28,6 +28,7 @@ KILLER_ZOMBIE = 1
 KILLER_FORTRESS = 2
 KILLER_CEMETERY = 3
 KILLER_CITY = 4
+KILLER_CITY_ENTER = 4
 
 -----------------------------------------------------------------------------------------
 -- Class initialization
