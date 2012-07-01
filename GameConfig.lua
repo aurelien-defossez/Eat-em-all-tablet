@@ -101,7 +101,7 @@ panels = {
 		-- height = maxHeight - upperBar.height
 		arrows = {
 			width = 2 * arrow.width,
-			height = 3 * arrow.height
+			height = 4 * arrow.height
 		}
 	},
 	grid = {

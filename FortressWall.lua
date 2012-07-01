@@ -13,6 +13,7 @@ FortressWall.__index = FortressWall
 -----------------------------------------------------------------------------------------
 
 local config = require("GameConfig")
+local Tile = require("Tile")
 
 -----------------------------------------------------------------------------------------
 -- Class initialization
@@ -37,6 +38,7 @@ function FortressWall.create(parameters)
 	setmetatable(self, FortressWall)
 
 	-- Initialize attributes
+	self.type = Tile.TYPE_FORTRESS_WALL
 	self.x = self.tile.x
 	self.y = self.tile.y
 

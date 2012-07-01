@@ -14,6 +14,7 @@ City.__index = City
 
 local config = require("GameConfig")
 local Zombie = require("Zombie")
+local Tile = require("Tile")
 
 -----------------------------------------------------------------------------------------
 -- Constants
@@ -47,6 +48,7 @@ function City.create(parameters)
 	setmetatable(self, City)
 
 	-- Initialize attributes
+	self.type = Tile.TYPE_CITY
 	self.x = self.tile.x
 	self.y = self.tile.y
 	self.player = nil

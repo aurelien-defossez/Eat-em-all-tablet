@@ -20,11 +20,12 @@ local Arrow = require("Arrow")
 -- Initialization and Destruction
 -----------------------------------------------------------------------------------------
 
--- Panel is 2 Arrows wide and 3 arrows tall
+-- Panel is 2 Arrows wide and 4 arrows tall
 -- Arrows disposition:
 --   [UP]
 -- [LT][RT]
 --   [DN]
+--   [XX]
 
 -- Create the arrows panel
 --
@@ -75,6 +76,14 @@ function ArrowsPanel.create(parameters)
 		y = self.y + config.arrow.height
 	}
 
+	self.arrowDelete = Arrow.create{
+		player = self.player,
+		grid = self.grid,
+		direction = Arrow.DELETE,
+		x = self.x + self.width / 2,
+		y = self.y + 3 * config.arrow.height
+	}
+
 	return self
 end
 
@@ -89,6 +98,7 @@ function ArrowsPanel:draw()
 	self.arrowDown:draw()
 	self.arrowRight:draw()
 	self.arrowLeft:draw()
+	self.arrowDelete:draw()
 end
 
 -----------------------------------------------------------------------------------------

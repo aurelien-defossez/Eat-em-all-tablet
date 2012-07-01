@@ -16,6 +16,15 @@ local config = require("GameConfig")
 local Arrow = require("Arrow")
 
 -----------------------------------------------------------------------------------------
+-- Constants
+-----------------------------------------------------------------------------------------
+
+TYPE_CEMETERY = 1
+TYPE_FORTRESS_WALL = 2
+TYPE_CITY = 3
+TYPE_SIGN = 4
+
+-----------------------------------------------------------------------------------------
 -- Class initialization
 -----------------------------------------------------------------------------------------
 
@@ -64,6 +73,17 @@ function Tile:draw()
 
 	-- Add to group
 	group:insert(borders)
+end
+
+-- Remove the tile content, if exists
+function Tile:removeContent()
+	if self.content ~= nil then
+		if self.content.destroy ~= nil then
+			self.content:destroy()
+		end
+
+		self.content = nil
+	end
 end
 
 -- Check if a pixel is in the tile

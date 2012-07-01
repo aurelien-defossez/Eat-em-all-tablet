@@ -14,6 +14,7 @@ Arrow.__index = Arrow
 
 local config = require("GameConfig")
 local Sign = require("Sign")
+local Tile = require("Tile")
 
 -----------------------------------------------------------------------------------------
 -- Constants
@@ -23,6 +24,7 @@ UP = 0
 DOWN = 180
 RIGHT = 90
 LEFT = 270
+DELETE = 360
 
 -----------------------------------------------------------------------------------------
 -- Initialization and Destruction
@@ -54,7 +56,12 @@ end
 
 -- Draw the arrow
 function Arrow:draw()
-	self.sprite = display.newImageRect("arrow_up_" .. self.player.color .. ".png", self.width, self.height)
+	if self.direction ~= DELETE then
+		self.sprite = display.newImageRect("arrow_up_" .. self.player.color .. ".png", self.width, self.height)
+	else 
+		self.sprite = display.newImageRect("arrow_crossed_" .. self.player.color .. ".png", self.width, self.height)
+	end
+
 	self.sprite.arrow = self
 
 	-- Position sprite
@@ -77,8 +84,16 @@ function onArrowTouch(event)
 
 	-- Begin drag by creating a new draggable arrow
 	if event.phase == "began" then
-		local draggedArrow = display.newImageRect("arrow_up_selected_" .. arrow.player.color .. ".png",
-			arrow.width, arrow.height)
+		local draggedArrow = nil
+
+		if arrow.direction ~= DELETE then
+			draggedArrow = display.newImageRect("arrow_up_selected_" .. arrow.player.color .. ".png",
+				arrow.width, arrow.height)
+		else 
+			draggedArrow = display.newImageRect("arrow_crossed_" .. arrow.player.color .. ".png",
+				arrow.width, arrow.height)
+		end
+
 		draggedArrow.direction = arrow.direction
 		draggedArrow.player = arrow.player
 		draggedArrow.grid = arrow.grid
@@ -114,17 +129,26 @@ function onDraggedArrowTouch(event)
 			y = event.y
 		}
 
-		-- Create sign
-		if tile ~= nil and tile.content == nil then
-			tile.content = Sign.create{
-				tile = tile,
-				player = sprite.player,
-				direction = sprite.direction
-			}
+		if tile ~= nil then
+			if sprite.direction ~= DELETE then
+				-- Create sign
+				if tile ~= nil and tile.content == nil then
+					tile.content = Sign.create{
+						tile = tile,
+						player = sprite.player,
+						direction = sprite.direction
+					}
 
-			tile.content:draw()
+					tile.content:draw()
+				end
+			elseif tile.content ~= nil and tile.content.type == Tile.TYPE_SIGN
+				and tile.content.player == sprite.player then
+				-- Remove sign
+				tile:removeContent()
+			end
 		end
 
+		-- Remove dragged sprite
 		sprite:removeSelf()
 
 		-- Remove focus

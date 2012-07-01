@@ -13,6 +13,7 @@ Sign.__index = Sign
 -----------------------------------------------------------------------------------------
 
 local config = require("GameConfig")
+local Tile = require("Tile")
 local Arrow = require("Arrow")
 
 -----------------------------------------------------------------------------------------
@@ -39,10 +40,16 @@ function Sign.create(parameters)
 	setmetatable(self, Sign)
 
 	-- Initialize attributes
+	self.type = Tile.TYPE_SIGN
 	self.x = self.tile.x
 	self.y = self.tile.y
 
 	return self
+end
+
+-- Destroy the sign
+function Sign:destroy()
+	self.sprite:removeSelf()
 end
 
 -----------------------------------------------------------------------------------------

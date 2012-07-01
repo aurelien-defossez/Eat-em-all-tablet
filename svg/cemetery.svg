@@ -15,7 +15,10 @@
    id="svg3792"
    version="1.1"
    inkscape:version="0.48.3.1 r9886"
-   sodipodi:docname="New document 3">
+   sodipodi:docname="cemetery.svg"
+   inkscape:export-filename="D:\Work\eat-em-all-tablet\svg\cemetery_blue.png"
+   inkscape:export-xdpi="90"
+   inkscape:export-ydpi="90">
   <defs
      id="defs3794">
     <linearGradient
@@ -78,7 +81,7 @@
      inkscape:groupmode="layer">
     <path
        sodipodi:type="arc"
-       style="fill:url(#radialGradient4321);fill-opacity:1;stroke:#cb0000;stroke-width:3;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       style="fill:url(#radialGradient4321);fill-opacity:1;stroke:#183d9a;stroke-width:3;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
        id="path3805"
        sodipodi:cx="32.545456"
        sodipodi:cy="28.363636"

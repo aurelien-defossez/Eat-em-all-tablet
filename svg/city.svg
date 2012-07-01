@@ -14,7 +14,10 @@
    id="svg5455"
    version="1.1"
    inkscape:version="0.48.3.1 r9886"
-   sodipodi:docname="New document 10">
+   sodipodi:docname="city.svg"
+   inkscape:export-filename="D:\Work\eat-em-all-tablet\city_grey.png"
+   inkscape:export-xdpi="90"
+   inkscape:export-ydpi="90">
   <defs
      id="defs5457" />
   <sodipodi:namedview
@@ -53,7 +56,7 @@
      inkscape:label="Layer 1"
      inkscape:groupmode="layer">
     <rect
-       style="fill:#bfbfbf;fill-opacity:1;stroke:#1d0b00;stroke-width:2.11797237;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       style="fill:#d1d1d1;fill-opacity:1;stroke:#1d0b00;stroke-width:2.11797236999999990;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
        id="rect5475"
        width="35.895557"
        height="41.186871"
@@ -61,7 +64,7 @@
        y="20.754143"
        ry="0.88437462" />
     <path
-       style="fill:#bfbfbf;fill-opacity:1;stroke:#1d0b00;stroke-width:2.12811351;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1"
+       style="fill:#717171;fill-opacity:1;stroke:#1d0b00;stroke-width:2.12811350999999990;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1"
        d="m 61.20867,22.762317 -0.86895,0.884157 -55.2248952,0 L 4.2458749,22.762317 33.015071,3.1451805 z"
        id="rect5477"
        inkscape:connector-curvature="0"

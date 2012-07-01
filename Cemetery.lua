@@ -14,6 +14,7 @@ Cemetery.__index = Cemetery
 
 local config = require("GameConfig")
 local Zombie = require("Zombie")
+local Tile = require("Tile")
 
 -----------------------------------------------------------------------------------------
 -- Class initialization
@@ -39,6 +40,7 @@ function Cemetery.create(parameters)
 	setmetatable(self, Cemetery)
 
 	-- Initialize attributes
+	self.type = Tile.TYPE_CEMETERY
 	self.x = self.tile.x
 	self.y = self.tile.y
 	self.timeSinceLastSpawn = 0

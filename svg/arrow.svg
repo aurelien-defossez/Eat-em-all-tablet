@@ -16,7 +16,7 @@
    version="1.1"
    inkscape:version="0.48.3.1 r9886"
    sodipodi:docname="arrow.svg"
-   inkscape:export-filename="D:\Work\eat-em-all-tablet\svg\arrow_up_selected_red.png"
+   inkscape:export-filename="D:\Work\eat-em-all-tablet\arrow_crossed_blue.png"
    inkscape:export-xdpi="90"
    inkscape:export-ydpi="90">
   <defs
@@ -50,9 +50,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="2.8"
-     inkscape:cx="45.969458"
-     inkscape:cy="8.6778216"
+     inkscape:zoom="7.9195959"
+     inkscape:cx="7.1760567"
+     inkscape:cy="35.43173"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -60,7 +60,9 @@
      inkscape:window-height="1028"
      inkscape:window-x="-8"
      inkscape:window-y="-8"
-     inkscape:window-maximized="1" />
+     inkscape:window-maximized="1"
+     showguides="true"
+     inkscape:guide-bbox="true" />
   <metadata
      id="metadata7">
     <rdf:RDF>
@@ -69,7 +71,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -93,5 +95,10 @@
        id="rect3776"
        inkscape:connector-curvature="0"
        sodipodi:nodetypes="cccccccc" />
+    <path
+       id="rect3876"
+       style="fill:none;stroke:#dc0300;stroke-width:6;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       d="m 47.961947,999.01348 -31.314729,42.30012 -0.06314,0.063 z m 10.732865,21.27632 c 0,14.5052 -11.758778,26.264 -26.263965,26.264 -14.505188,0 -26.2639669,-11.7588 -26.2639669,-26.264 0,-14.5052 11.7587789,-26.26394 26.2639669,-26.26394 14.505187,0 26.263965,11.75874 26.263965,26.26394 z"
+       inkscape:connector-curvature="0" />
   </g>
 </svg>
