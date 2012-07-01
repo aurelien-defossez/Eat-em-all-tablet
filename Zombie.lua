@@ -79,10 +79,22 @@ function Zombie:draw()
 	self.sprite.x = self.x
 	self.sprite.y = self.y
 
-	-- TEMP
-	self.debug = display.newRect(self.x, self.y, 2, 2)
-	self.debug.strokeWidth = 0
-	self.debug:setFillColor(0, 255, 0)
+	-- Draw cell collider pixel
+	if config.debug.showTileCollider then
+		self.tileColliderDebug = display.newRect(self.x, self.y, 2, 2)
+		self.tileColliderDebug.strokeWidth = 0
+		self.tileColliderDebug:setFillColor(0, 255, 0)
+	end
+
+	-- Draw collision mask
+	if config.debug.showCollisionMask then
+		local mask = self:getCollisionMask()
+
+		self.collisionMaskDebug = display.newRect(mask.x, mask.y, mask.width, mask.height)
+		self.collisionMaskDebug.strokeWidth = 3
+		self.collisionMaskDebug:setStrokeColor(255, 0, 0)
+		self.collisionMaskDebug:setFillColor(0, 0, 0, 0)
+	end
 end
 
 -- Compute the tile collider position
@@ -111,9 +123,6 @@ function Zombie:move(parameters)
 
 	-- Calculate point to test tile collision
 	self:computeTileCollider()
-
-	self.debug.x = self.tileCollider.x 
-	self.debug.y = self.tileCollider.y 
 
 	-- Determine the tile the zombie is on and send events (enter, leave and reachMiddle)
 	if self.tileCollider.x >= self.tile.x and self.tileCollider.x < self.tile.x + self.tile.width
@@ -148,6 +157,19 @@ function Zombie:move(parameters)
 	-- Move zombie sprite
 	self.sprite.x = self.x
 	self.sprite.y = self.y
+
+	-- Update debug shapes
+	if config.debug.showTileCollider then
+		self.tileColliderDebug.x = self.tileCollider.x 
+		self.tileColliderDebug.y = self.tileCollider.y 
+	end
+
+	if config.debug.showCollisionMask then
+		local mask = self:getCollisionMask()
+
+		self.collisionMaskDebug.x = mask.x;
+		self.collisionMaskDebug.y = mask.y;
+	end
 end
 
 -- Changes the direction of the zombie
@@ -179,13 +201,19 @@ function Zombie:die(parameters)
 	-- Remove sprite from display
 	self.sprite:removeSelf()
 
-	self.debug:removeSelf()
+	if config.debug.showTileCollider then
+		self.tileColliderDebug:removeSelf()
+	end
+
+	if config.debug.showCollisionMask then
+		self.collisionMaskDebug:removeSelf()
+	end
 end
 
 function Zombie:getCollisionMask()
 	return {
-		x = self.x + config.zombie.mask.x,
-		y = self.y + config.zombie.mask.y,
+		x = self.x,
+		y = self.y,
 		width = config.zombie.mask.width,
 		height = config.zombie.mask.height
 	}

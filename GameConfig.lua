@@ -3,7 +3,9 @@ module("GameConfig", package.seeall)
 debug = {
 	oneCemetery = false,
 	oneZombie = false,
-	immediateSpawn = true
+	immediateSpawn = true,
+	showCollisionMask = false,
+	showTileCollider = true
 }
 
 screen = {
@@ -36,9 +38,7 @@ zombie = {
 	height = 64,
 	mask = {
 		width = 16,
-		height = 54,
-		x = 24,
-		y = 5
+		height = 50
 	},
 	-- speed in tiles per seconds
 	speed = 1,
