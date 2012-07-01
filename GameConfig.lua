@@ -49,15 +49,23 @@ zombie = {
 }
 
 panels = {
-	hitPoints = {
-		height = 50
-		-- width = max
+	upperBar = {
+		-- width = maxWidth
+		height = 50,
+		hitPoints = {
+			-- width = (maxWidth - menuButton) / 2
+			xpadding = 10,
+			ypadding = 10
+		},
+		menuButton = {
+			width = 100
+		}
 	},
 	controls = {
 		padding = 8,
 		-- width = 2 x (arrow.width + padding)
 		width = 2 * (arrow.width + 8),
-		-- height = max - hitPoints.height
+		-- height = maxHeight - upperBar.height
 		arrows = {
 			width = 2 * arrow.width,
 			height = 3 * arrow.height

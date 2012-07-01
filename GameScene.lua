@@ -20,6 +20,7 @@ local Cemetery = require("Cemetery")
 local FortressWall = require("FortressWall")
 local Zombie = require("Zombie")
 local Sign = require("Sign")
+local UpperBarPanel = require("UpperBarPanel")
 
 -----------------------------------------------------------------------------------------
 -- Initialization and Destruction
@@ -46,13 +47,18 @@ function GameScene.create(parameters)
 	Zombie.initialize()
 
 	-- Sizes
-	local mainHeight = config.screen.height - config.panels.hitPoints.height
+	local mainHeight = config.screen.height - config.panels.upperBar.height
+	
+	-- Create upper bar panel
+	self.upperBar = UpperBarPanel.create{
+		players = self.players
+	}
 
 	-- Create grid
 	self.grid = Grid.create{
 		players = self.players,
 		x = config.panels.controls.width + config.panels.grid.xpadding,
-		y = config.panels.hitPoints.height,
+		y = config.panels.upperBar.height,
 		width = config.screen.width - 2 * config.panels.controls.width - 2 * config.panels.grid.xpadding,
 		height = mainHeight
 	}
@@ -64,7 +70,7 @@ function GameScene.create(parameters)
 	self.controlPanel1 = PlayerControlPanel.create{
 		player = self.players[1],
 		x = 0,
-		y = config.panels.hitPoints.height,
+		y = config.panels.upperBar.height,
 		height = mainHeight,
 		grid = self.grid
 	}
@@ -72,12 +78,13 @@ function GameScene.create(parameters)
 	self.controlPanel2 = PlayerControlPanel.create{
 		player = self.players[2],
 		x = config.screen.width - config.panels.controls.width,
-		y = config.panels.hitPoints.height,
+		y = config.panels.upperBar.height,
 		height = mainHeight,
 		grid = self.grid
 	}
 
 	-- Draw
+	self.upperBar:draw()
 	self.controlPanel1:draw()
 	self.controlPanel2:draw()
 	self.grid:draw()

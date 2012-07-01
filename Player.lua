@@ -46,6 +46,8 @@ end
 function Player:addHPs(nbHPs)
 	self.hitPoints = self.hitPoints + nbHPs
 
+	self.hitPointsPanel:updateHPs(self.hitPoints)
+
 	if self.hitPoints <= 0 then
 		print("Player "..self.id.." has lost")
 	end
