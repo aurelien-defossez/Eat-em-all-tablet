@@ -57,12 +57,15 @@ end
 function CitiesPanel:gainCity(city)
 	local shortcut = CityShortcut.create{
 		city = city,
-		player = self.player,
-		x = self.x,
-		y = self.y
+		player = self.player
 	}
 
 	shortcut:draw()
+
+	shortcut:moveTo{
+		x = self.x,
+		y = self.y
+	}
 
 	self.shortcuts[city.id] = shortcut
 end

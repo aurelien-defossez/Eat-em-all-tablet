@@ -15,6 +15,9 @@ GameScene.__index = GameScene
 local config = require("GameConfig")
 local UpperBarPanel = require("UpperBarPanel")
 local PlayerControlPanel = require("PlayerControlPanel")
+local ArrowsPanel = require("ArrowsPanel")
+local Arrow = require("Arrow")
+local CityShortcut = require("CityShortcut")
 local Grid = require("Grid")
 local Tile = require("Tile")
 local Cemetery = require("Cemetery")
@@ -41,12 +44,16 @@ function GameScene.create(parameters)
 	background:setFillColor(142, 57, 20)
 
 	-- Initialize groups in invert Z order
+	PlayerControlPanel.initialize()
+	ArrowsPanel.initialize()
+	Arrow.initialize()
 	Tile.initialize()
 	FortressWall.initialize()
 	Cemetery.initialize()
 	City.initialize()
 	Sign.initialize()
 	Zombie.initialize()
+	CityShortcut.initialize()
 
 	-- Sizes
 	local mainHeight = config.screen.height - config.panels.upperBar.height

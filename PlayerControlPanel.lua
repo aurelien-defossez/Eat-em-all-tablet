@@ -17,6 +17,14 @@ local ArrowsPanel = require("ArrowsPanel")
 local CitiesPanel = require("CitiesPanel")
 
 -----------------------------------------------------------------------------------------
+-- Class initialization
+-----------------------------------------------------------------------------------------
+
+function initialize()
+	group = display.newGroup()
+end
+
+-----------------------------------------------------------------------------------------
 -- Initialization and Destruction
 -----------------------------------------------------------------------------------------
 
@@ -58,13 +66,16 @@ end
 
 -- Draw the control panel
 function PlayerControlPanel:draw()
-	local myRectangle = display.newRect(self.x, self.y, self.width, self.height)
-	myRectangle.strokeWidth = 3
-	myRectangle:setFillColor(204, 109, 0)
-	myRectangle:setStrokeColor(135, 72, 0)
+	local background = display.newRect(self.x, self.y, self.width, self.height)
+	background.strokeWidth = 3
+	background:setFillColor(204, 109, 0)
+	background:setStrokeColor(135, 72, 0)
 	
 	self.arrows:draw()
 	self.cities:draw()
+
+	-- Add background to group
+	group:insert(background)
 end
 
 -----------------------------------------------------------------------------------------

@@ -15,6 +15,14 @@ CityShortcut.__index = CityShortcut
 local config = require("GameConfig")
 
 -----------------------------------------------------------------------------------------
+-- Class initialization
+-----------------------------------------------------------------------------------------
+
+function initialize()
+	group = display.newGroup()
+end
+
+-----------------------------------------------------------------------------------------
 -- Initialization and Destruction
 -----------------------------------------------------------------------------------------
 
@@ -31,6 +39,8 @@ function CityShortcut.create(parameters)
 	setmetatable(self, CityShortcut)
 	
 	-- Initialize attributes
+	self.x = self.city.x
+	self.y = self.city.y
 	self.width = config.city.width
 	self.height = config.city.height
 
@@ -56,6 +66,7 @@ function CityShortcut:draw()
 	-- Create Z-index groups
 	self.cityGroup = display.newGroup()
 	self.textGroup = display.newGroup()
+	self.group = display.newGroup()
 
 	-- Draw city
 	self:drawSprite()
@@ -78,6 +89,26 @@ function CityShortcut:draw()
 	self.textGroup:insert(self.inhabitantsText)
 	self.textGroup:insert(self.nameText)
 	self.textGroup:insert(self.sizeText)
+
+	-- Add groups to class group
+	self.group:insert(self.cityGroup)
+	self.group:insert(self.textGroup)
+	group:insert(self.group)
+end
+
+function CityShortcut:moveTo(parameters)
+print("To "..parameters.x.." "..parameters.y)
+
+	transition.to(self.group, {
+		time = 1500,
+		x = parameters.x - self.x,
+		y = parameters.y - self.y,
+		delta = true,
+		transition = easing.outExpo
+	})
+
+	self.x = parameters.x
+	self.y = parameters.y
 end
 
 -- Draw the city sprite
