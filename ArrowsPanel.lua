@@ -21,7 +21,7 @@ local Arrow = require("Arrow")
 -----------------------------------------------------------------------------------------
 
 function initialize()
-	group = display.newGroup()
+	classGroup = display.newGroup()
 end
 
 -----------------------------------------------------------------------------------------
@@ -91,6 +91,10 @@ function ArrowsPanel.create(parameters)
 		x = self.x + self.width / 2,
 		y = self.y + 3 * config.arrow.height
 	}
+
+	-- Manage groups
+	self.group = display.newGroup()
+	classGroup:insert(self.group)
 
 	return self
 end

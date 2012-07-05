@@ -21,7 +21,7 @@ local CitiesPanel = require("CitiesPanel")
 -----------------------------------------------------------------------------------------
 
 function initialize()
-	group = display.newGroup()
+	classGroup = display.newGroup()
 end
 
 -----------------------------------------------------------------------------------------
@@ -50,12 +50,15 @@ function PlayerControlPanel.create(parameters)
 		y = self.y + self.height / 2 - config.panels.controls.arrows.height / 2
 	}
 	
-
 	self.cities = CitiesPanel.create{
 		player = self.player,
 		x = self.x + config.panels.controls.padding,
 		y = self.y + self.height / 2 + config.panels.controls.arrows.height / 2 + config.panels.controls.cities.ypadding
 	}
+
+	-- Manage groups
+	self.group = display.newGroup()
+	classGroup:insert(self.group)
 
 	return self
 end
@@ -75,7 +78,7 @@ function PlayerControlPanel:draw()
 	self.cities:draw()
 
 	-- Add background to group
-	group:insert(background)
+	self.group:insert(background)
 end
 
 -----------------------------------------------------------------------------------------

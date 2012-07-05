@@ -21,7 +21,7 @@ local Arrow = require("Arrow")
 -----------------------------------------------------------------------------------------
 
 function initialize()
-	group = display.newGroup()
+	classGroup = display.newGroup()
 end
 
 -----------------------------------------------------------------------------------------
@@ -44,6 +44,14 @@ function Sign.create(parameters)
 	self.x = self.tile.x
 	self.y = self.tile.y
 
+	-- Manage groups
+	self.group = display.newGroup()
+	classGroup:insert(self.group)
+
+	-- Position group
+	self.group.x = self.x
+	self.group.y = self.y
+
 	return self
 end
 
@@ -63,12 +71,12 @@ function Sign:draw()
 
 	-- Position sprite
 	self.sprite:setReferencePoint(display.CenterReferencePoint)
-	self.sprite.x = self.x + self.tile.width / 2
-	self.sprite.y = self.y + self.tile.height / 2
+	self.sprite.x = self.tile.width / 2
+	self.sprite.y = self.tile.height / 2
 	self.sprite:rotate(self.direction or 0)
 
 	-- Add to group
-	group:insert(self.sprite)
+	self.group:insert(self.sprite)
 end
 
 -- Reach middle tile handler, called when a zombie reaches the middle of the tile

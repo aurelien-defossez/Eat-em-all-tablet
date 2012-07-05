@@ -35,7 +35,7 @@ KILLER_CITY_ENTER = 4
 -----------------------------------------------------------------------------------------
 
 function initialize()
-	group = display.newGroup()
+	classGroup = display.newGroup()
 end
 
 -----------------------------------------------------------------------------------------
@@ -77,6 +77,14 @@ function Zombie.create(parameters)
 	self:changeDirection(self.direction)
 	self:computeTileCollider()
 
+	-- Manage groups
+	self.group = display.newGroup()
+	classGroup:insert(self.group)
+
+	-- Position group
+	self.group.x = self.x
+	self.group.y = self.y
+
 	return self
 end
 
@@ -91,28 +99,29 @@ function Zombie:draw()
 
 	-- Position sprite
 	self.sprite:setReferencePoint(display.CenterReferencePoint)
-	self.sprite.x = self.x
-	self.sprite.y = self.y
+
+	-- Add to group
+	self.group:insert(self.sprite)
 
 	-- Draw cell collider pixel
 	if config.debug.showTileCollider then
-		self.tileColliderDebug = display.newRect(self.x, self.y, 2, 2)
+		self.tileColliderDebug = display.newRect(0, 0, 2, 2)
 		self.tileColliderDebug.strokeWidth = 0
 		self.tileColliderDebug:setFillColor(0, 255, 0)
+
+		self.group:insert(self.tileColliderDebug)
 	end
 
 	-- Draw collision mask
 	if config.debug.showCollisionMask then
-		local mask = self:getCollisionMask()
-
-		self.collisionMaskDebug = display.newRect(mask.x, mask.y, mask.width, mask.height)
+		self.collisionMaskDebug = display.newRect(- config.zombie.mask.width / 2, - config.zombie.mask.height / 2,
+			config.zombie.mask.width, config.zombie.mask.height)
 		self.collisionMaskDebug.strokeWidth = 3
 		self.collisionMaskDebug:setStrokeColor(255, 0, 0)
 		self.collisionMaskDebug:setFillColor(0, 0, 0, 0)
-	end
 
-	-- Add to group
-	group:insert(self.sprite)
+		self.group:insert(self.collisionMaskDebug)
+	end
 end
 
 -- Compute the tile collider position
@@ -177,21 +186,8 @@ function Zombie:move(parameters)
 	self.collisionMask.y = self.y
 
 	-- Move zombie sprite
-	self.sprite.x = self.x
-	self.sprite.y = self.y
-
-	-- Update debug shapes
-	if config.debug.showTileCollider then
-		self.tileColliderDebug.x = self.tileCollider.x 
-		self.tileColliderDebug.y = self.tileCollider.y 
-	end
-
-	if config.debug.showCollisionMask then
-		local mask = self:getCollisionMask()
-
-		self.collisionMaskDebug.x = mask.x;
-		self.collisionMaskDebug.y = mask.y;
-	end
+	self.group.x = self.x
+	self.group.y = self.y
 end
 
 -- Changes the direction of the zombie
@@ -221,15 +217,7 @@ function Zombie:die(parameters)
 	self.grid:removeZombie(self)
 
 	-- Remove sprite from display
-	self.sprite:removeSelf()
-
-	if config.debug.showTileCollider then
-		self.tileColliderDebug:removeSelf()
-	end
-
-	if config.debug.showCollisionMask then
-		self.collisionMaskDebug:removeSelf()
-	end
+	self.group:removeSelf()
 end
 
 -- Enter frame handler

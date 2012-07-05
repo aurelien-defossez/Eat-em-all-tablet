@@ -21,7 +21,7 @@ local Tile = require("Tile")
 -----------------------------------------------------------------------------------------
 
 function initialize()
-	group = display.newGroup()
+	classGroup = display.newGroup()
 end
 
 -----------------------------------------------------------------------------------------
@@ -45,6 +45,14 @@ function Cemetery.create(parameters)
 	self.y = self.tile.y
 	self.timeSinceLastSpawn = 0
 
+	-- Manage groups
+	self.group = display.newGroup()
+	classGroup:insert(self.group)
+
+	-- Position group
+	self.group.x = self.x
+	self.group.y = self.y
+
 	if config.debug.immediateSpawn then
 		self.timeSinceLastSpawn = config.cemetery.spawnPeriod
 	end
@@ -63,11 +71,11 @@ function Cemetery:draw()
 
 	-- Position sprite
 	self.sprite:setReferencePoint(display.CenterReferencePoint)
-	self.sprite.x = self.x + self.tile.width / 2
-	self.sprite.y = self.y + self.tile.height / 2
+	self.sprite.x = self.tile.width / 2
+	self.sprite.y = self.tile.height / 2
 
 	-- Add to group
-	group:insert(self.sprite)
+	self.group:insert(self.sprite)
 end
 
 -- Spawn a single zombie

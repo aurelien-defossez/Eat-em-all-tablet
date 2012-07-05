@@ -21,7 +21,7 @@ local Tile = require("Tile")
 -----------------------------------------------------------------------------------------
 
 function initialize()
-	group = display.newGroup()
+	classGroup = display.newGroup()
 end
 
 -----------------------------------------------------------------------------------------
@@ -55,6 +55,10 @@ function Arrow.create(parameters)
 	self.width = config.arrow.width
 	self.height = config.arrow.height
 
+	-- Manage groups
+	self.group = display.newGroup()
+	classGroup:insert(self.group)
+
 	return self
 end
 
@@ -82,7 +86,7 @@ function Arrow:draw()
 	self.sprite:addEventListener("touch", onArrowTouch)
 
 	-- Add to group
-	group:insert(self.sprite)
+	self.group:insert(self.sprite)
 end
 
 -----------------------------------------------------------------------------------------

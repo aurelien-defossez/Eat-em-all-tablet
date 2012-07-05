@@ -12,7 +12,6 @@ CitiesPanel.__index = CitiesPanel
 -- Imports
 -----------------------------------------------------------------------------------------
 
-require("utils")
 local config = require("GameConfig")
 local CityShortcut = require("CityShortcut")
 

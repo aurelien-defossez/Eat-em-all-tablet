@@ -29,7 +29,7 @@ TYPE_SIGN = 4
 -----------------------------------------------------------------------------------------
 
 function initialize()
-	group = display.newGroup()
+	classGroup = display.newGroup()
 end
 
 -----------------------------------------------------------------------------------------
@@ -54,6 +54,14 @@ function Tile.create(parameters)
 	self.isOnFirstRow = (self.yGrid == 1)
 	self.isOnLastRow = (self.yGrid == config.panels.grid.nbRows)
 
+	-- Manage groups
+	self.group = display.newGroup()
+	classGroup:insert(self.group)
+
+	-- Position group
+	self.group.x = self.x
+	self.group.y = self.y
+
 	return self
 end
 
@@ -63,7 +71,7 @@ end
 
 -- Draw the tile and its content if it exists
 function Tile:draw()
-	local borders = display.newRect(self.x, self.y, self.width, self.height)
+	local borders = display.newRect(0, 0, self.width, self.height)
 	borders.strokeWidth = config.panels.grid.lineWidth
 	borders:setFillColor(122, 47, 15)
 
@@ -72,7 +80,7 @@ function Tile:draw()
 	end
 
 	-- Add to group
-	group:insert(borders)
+	self.group:insert(borders)
 end
 
 -- Remove the tile content, if exists
