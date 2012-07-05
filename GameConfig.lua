@@ -33,6 +33,7 @@ cemetery = {
 city = {
 	width = 64,
 	height = 64,
+	easingTime = 1500,
 	sizeText = {
 		x = 28,
 		y = 10,
@@ -110,8 +111,10 @@ panels = {
 		cities = {
 			ypadding = 8,
 			-- width = 2 Arrows width
-			width = 2 * arrow.width
+			width = 2 * arrow.width,
 			-- height = maxHeight until bottom, less padding
+			nbRows = 3,
+			nbCols = 2
 		}
 	},
 	grid = {

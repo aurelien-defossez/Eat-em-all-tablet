@@ -78,6 +78,7 @@ function CitiesPanel:loseCity(city)
 	self:reorganize()
 end
 
+-- Reorganize shortcuts by sorting them alphabetically and moving them accordingly
 function CitiesPanel:reorganize()
 	local i = 0
 	local j = 0
@@ -99,7 +100,7 @@ function CitiesPanel:reorganize()
 
 		j = j + 1
 
-		if j == 3 then
+		if j == config.panels.controls.cities.nbRows then
 			i = i + 1
 			j = 0
 		end
@@ -110,7 +111,6 @@ end
 function compareLess(a, b)
 	return a.city.id < b.city.id
 end
-
 
 -----------------------------------------------------------------------------------------
 

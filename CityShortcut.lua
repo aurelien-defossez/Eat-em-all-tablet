@@ -98,12 +98,13 @@ function CityShortcut:draw()
 	self.group.y = self.y
 end
 
+-- Move the shortcut to an absolute position on the screen, easing it
 function CityShortcut:moveTo(parameters)
 	transition.to(self.group, {
-		time = 1500,
+		transition = easing.outExpo,
+		time = config.city.easingTime,
 		x = parameters.x,
-		y = parameters.y,
-		transition = easing.outExpo
+		y = parameters.y
 	})
 
 	self.x = parameters.x
