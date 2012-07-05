@@ -20,6 +20,12 @@ local FortressWall = require("FortressWall")
 local Zombie = require("Zombie")
 
 -----------------------------------------------------------------------------------------
+-- Constants
+-----------------------------------------------------------------------------------------
+
+ASCII_CAPITAL_A = 65
+
+-----------------------------------------------------------------------------------------
 -- Initialization and Destruction
 -----------------------------------------------------------------------------------------
 
@@ -132,6 +138,7 @@ function Grid:loadMap(parameters)
 	end
 
 	-- Place cities
+	local cityId = 0
 	for index, city in pairs(parameters.cities) do
 		local tile = self:getTile{
 			x = city.x,
@@ -141,8 +148,12 @@ function Grid:loadMap(parameters)
 		tile.content = City.create{
 			grid = self,
 			tile = tile,
-			size = city.size
+			size = city.size,
+			id = cityId,
+			name = string.char(cityId + ASCII_CAPITAL_A)
 		}
+
+		cityId = cityId + 1
 	end
 end
 

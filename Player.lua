@@ -53,6 +53,21 @@ function Player:addHPs(nbHPs)
 	end
 end
 
+-- Add a city under the control of the player
+--
+-- Parameters:
+--  The city controlled
+function Player:gainCity(city)
+	self.citiesPanel:gainCity(city)
+end
+
+-- Lose the control of a city
+--
+-- Parameters:
+--  The city lost
+function Player:loseCity(city)
+	self.citiesPanel:loseCity(city)
+end
 -----------------------------------------------------------------------------------------
 
 return Player

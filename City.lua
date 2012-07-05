@@ -42,6 +42,8 @@ end
 --  grid: The grid
 --  tile: The tile the city is on
 --  size: The city size
+--  id: The city unique id
+--  name: The city name
 function City.create(parameters)
 	-- Create object
 	local self = parameters or {}
@@ -94,13 +96,23 @@ function City:draw()
 		self.y + config.city.inhabitantsText.y, native.systemFontBold, 16)
 	self.inhabitantsText:setTextColor(0, 0, 0)
 
+	-- Name text
+	self.nameText = display.newText(self.name, self.x + config.city.nameText.x, self.y + config.city.nameText.y,
+		native.systemFontBold, 16)
+	self.nameText:setTextColor(0, 0, 0)
+
 	-- Size text
-	display.newText(self.size, self.x + config.city.sizeText.x, self.y + config.city.sizeText.y,
+	self.sizeText = display.newText(self.size, self.x + config.city.sizeText.x, self.y + config.city.sizeText.y,
 		native.systemFontBold, 16)
 
-	-- Add to group
+	-- Add texts to group
+	self.textGroup:insert(self.inhabitantsText)
+	self.textGroup:insert(self.nameText)
+	self.textGroup:insert(self.sizeText)
+
+	-- Add groups to class group
 	group:insert(self.cityGroup)
-	group:insert(self.cityGroup)
+	group:insert(self.textGroup)
 end
 
 -- Draw the city sprite
@@ -136,13 +148,26 @@ function City:addInhabitants(nb)
 	if self.inhabitants > self.maxInhabitants then
 		self:spawn()
 	elseif self.inhabitants == 0 then
+		-- Notify player
+		if self.player ~= nil then
+			self.player:loseCity(self)
+		end
+
 		self.player = nil
+		self.gateOpened = false
+
 		self:drawSprite()
 	end
 
 	self.inhabitantsText.text = self.inhabitants
+
+	-- Notify shortcut
+	if self.shortcut ~= nil then
+		self.shortcut:updateInhabitants()
+	end
 end
 
+-- Spawn a zombie
 function City:spawn()
 	local zombie = Zombie.create{
 		player = self.player,
@@ -191,6 +216,9 @@ function City:attackCity(zombie)
 		self:addInhabitants(-1)
 		zombie:die(Zombie.KILLER_CITY)
 	else
+		-- Notify player
+		zombie.player:gainCity(self)
+
 		-- Change the city owner
 		self.player = zombie.player
 		self:addInhabitants(1)
@@ -240,10 +268,6 @@ function onCityTouch(event)
 	-- Open the gates while the finger touches the city
 	city.gateOpened = city.player ~= nil and city.tile:isInside(event)
 		and event.phase ~= "ended" and event.phase ~= "cancelled"
-
-	if not city.gateOpened then
-		city.timeSinceLastExit = 0
-	end
 
 	-- Focus this object in order to track this finger properly
 	display.getCurrentStage():setFocus(event.target, event.id)

@@ -39,7 +39,11 @@ city = {
 	},
 	inhabitantsText = {
 		x = 24,
-		y = 42
+		y = 45
+	},
+	nameText = {
+		x = 26,
+		y = 28
 	},
 	small = {
 		inhabitants = 1,
@@ -102,6 +106,12 @@ panels = {
 		arrows = {
 			width = 2 * arrow.width,
 			height = 4 * arrow.height
+		},
+		cities = {
+			ypadding = 8,
+			-- width = 2 Arrows width
+			width = 2 * arrow.width
+			-- height = maxHeight until bottom, less padding
 		}
 	},
 	grid = {

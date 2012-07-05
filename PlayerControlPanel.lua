@@ -14,6 +14,7 @@ PlayerControlPanel.__index = PlayerControlPanel
 
 local config = require("GameConfig")
 local ArrowsPanel = require("ArrowsPanel")
+local CitiesPanel = require("CitiesPanel")
 
 -----------------------------------------------------------------------------------------
 -- Initialization and Destruction
@@ -41,6 +42,13 @@ function PlayerControlPanel.create(parameters)
 		y = self.y + self.height / 2 - config.panels.controls.arrows.height / 2
 	}
 	
+
+	self.cities = CitiesPanel.create{
+		player = self.player,
+		x = self.x + config.panels.controls.padding,
+		y = self.y + self.height / 2 + config.panels.controls.arrows.height / 2 + config.panels.controls.cities.ypadding
+	}
+
 	return self
 end
 
@@ -56,6 +64,7 @@ function PlayerControlPanel:draw()
 	myRectangle:setStrokeColor(135, 72, 0)
 	
 	self.arrows:draw()
+	self.cities:draw()
 end
 
 -----------------------------------------------------------------------------------------
