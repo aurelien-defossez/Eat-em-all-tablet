@@ -163,23 +163,41 @@ end
 --  zombie: The zombie entering the tile
 function City:enterTile(zombie)
 	if self.player == nil or zombie.player ~= self.player then
-		if self.inhabitants > 0 then
-			-- Attack city and die
-			self:addInhabitants(-1)
-			zombie:die(Zombie.KILLER_CITY)
-		else
-			-- Change the city owner
-			self.player = zombie.player
-			self:addInhabitants(1)
-			zombie:die(Zombie.KILLER_CITY_ENTER)
+		self:attackCity(zombie)
+	end
+end
 
-			self.sprite:removeSelf()
-			self:drawSprite()
-		end
-	else
-		-- Enforce city
+-- Reach middle tile handler, called when a zombie reaches the middle of the tile
+--
+-- Parameters:
+--  zombie: The zombie reaching the middle of the tile
+function City:reachTileMiddle(zombie)
+	if self.player == nil or zombie.player ~= self.player then
+		self:attackCity(zombie)
+	elseif self.inhabitants < self.maxInhabitants then
+	-- Enforce city
 		self:addInhabitants(1)
 		zombie:die(Zombie.KILLER_CITY_ENTER)
+	end
+end
+
+-- Make the city receive an attack by the given zombie
+--
+-- Parameters:
+--  zombie: The zombie attacking the city
+function City:attackCity(zombie)
+	if self.inhabitants > 0 then
+		-- Attack city and die
+		self:addInhabitants(-1)
+		zombie:die(Zombie.KILLER_CITY)
+	else
+		-- Change the city owner
+		self.player = zombie.player
+		self:addInhabitants(1)
+		zombie:die(Zombie.KILLER_CITY_ENTER)
+
+		self.sprite:removeSelf()
+		self:drawSprite()
 	end
 end
 
@@ -219,8 +237,6 @@ end
 function onCityTouch(event)
 	local city = event.target.city
 
-	print("event phase="..event.phase)
-
 	-- Open the gates while the finger touches the city
 	city.gateOpened = city.player ~= nil and city.tile:isInside(event)
 		and event.phase ~= "ended" and event.phase ~= "cancelled"
@@ -228,8 +244,6 @@ function onCityTouch(event)
 	if not city.gateOpened then
 		city.timeSinceLastExit = 0
 	end
-
-	print("gates="..(city.gateOpened and "yes" or "no"))
 
 	-- Focus this object in order to track this finger properly
 	display.getCurrentStage():setFocus(event.target, event.id)
