@@ -53,8 +53,7 @@ end
 -- Destroy the shortcut, by notifying its linked city and removing every sprite
 function CityShortcut:destroy()
 	self.city.shortcut = nil
-	self.cityGroup:removeSelf()
-	self.textGroup:removeSelf()
+	self.group:removeSelf()
 end
 
 -----------------------------------------------------------------------------------------
@@ -97,8 +96,6 @@ function CityShortcut:draw()
 end
 
 function CityShortcut:moveTo(parameters)
-print("To "..parameters.x.." "..parameters.y)
-
 	transition.to(self.group, {
 		time = 1500,
 		x = parameters.x - self.x,

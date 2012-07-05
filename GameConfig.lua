@@ -145,11 +145,23 @@ defaultMap = {
 	cities = {
 		{
 			x = 3,
-			y = 2,
+			y = 3,
 			size = City.SIZE_SMALL
 		}, {
-			x = 9,
-			y = 9,
+			x = 4,
+			y = 8,
+			size = City.SIZE_SMALL
+		},{
+			x = 5,
+			y = 8,
+			size = City.SIZE_SMALL
+		},{
+			x = 4,
+			y = 7,
+			size = City.SIZE_SMALL
+		},{
+			x = 4,
+			y = 6,
 			size = City.SIZE_SMALL
 		}, {
 			x = 4,

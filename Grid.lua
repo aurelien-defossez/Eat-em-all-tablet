@@ -138,7 +138,7 @@ function Grid:loadMap(parameters)
 	end
 
 	-- Place cities
-	local cityId = 0
+	local cityId = 1
 	for index, city in pairs(parameters.cities) do
 		local tile = self:getTile{
 			x = city.x,
@@ -150,7 +150,7 @@ function Grid:loadMap(parameters)
 			tile = tile,
 			size = city.size,
 			id = cityId,
-			name = string.char(cityId + ASCII_CAPITAL_A)
+			name = string.char(cityId + ASCII_CAPITAL_A - 1)
 		}
 
 		cityId = cityId + 1

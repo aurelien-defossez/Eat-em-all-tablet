@@ -12,6 +12,7 @@ CitiesPanel.__index = CitiesPanel
 -- Imports
 -----------------------------------------------------------------------------------------
 
+require("utils")
 local config = require("GameConfig")
 local CityShortcut = require("CityShortcut")
 
@@ -62,12 +63,9 @@ function CitiesPanel:gainCity(city)
 
 	shortcut:draw()
 
-	shortcut:moveTo{
-		x = self.x,
-		y = self.y
-	}
-
 	self.shortcuts[city.id] = shortcut
+
+	self:reorganize()
 end
 
 -- Lose the control of a city
@@ -77,7 +75,43 @@ end
 function CitiesPanel:loseCity(city)
 	self.shortcuts[city.id]:destroy()
 	self.shortcuts[city.id] = nil
+
+	self:reorganize()
 end
+
+function CitiesPanel:reorganize()
+	local i = 0
+	local j = 0
+	local orderedShortcuts = {}
+	
+	-- Sort shortcuts by id
+	for index, shortcut in pairs(self.shortcuts) do
+		table.insert(orderedShortcuts, shortcut)
+	end
+
+	table.sort(orderedShortcuts, compareLess)
+
+	-- Move shortcuts to their new place
+	for index, shortcut in ipairs(orderedShortcuts) do
+		shortcut:moveTo{
+			x = self.x + i * config.city.width,
+			y = self.y + j * config.city.height
+		}
+
+		j = j + 1
+
+		if j == 3 then
+			i = i + 1
+			j = 0
+		end
+	end
+end
+
+-- Comparison function for sorting chortcuts
+function compareLess(a, b)
+	return a.city.id < b.city.id
+end
+
 
 -----------------------------------------------------------------------------------------
 
