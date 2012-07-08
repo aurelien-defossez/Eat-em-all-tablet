@@ -7,7 +7,7 @@ debug = {
 	oneZombie = false,
 	immediateSpawn = true,
 	immediateItemSpawn = true,
-	showCollisionMask = false
+	showCollisionMask = true
 }
 
 screen = {
@@ -82,7 +82,8 @@ item = {
 			max = 20000,
 		},
 		xoffset = 2
-	}
+	},
+	easingTime = 1500
 }
 
 fortressWall = {
@@ -128,7 +129,12 @@ panels = {
 		padding = 8,
 		-- width = 2 x (arrow.width + padding)
 		width = 2 * (arrow.width + 8),
-		-- height = maxHeight - upperBar.height
+		-- height = maxHeight - upperBar.height,
+		items = {
+			ypadding = 8,
+			nbRows = 3,
+			nbCols = 2
+		},
 		arrows = {
 			width = 2 * arrow.width,
 			height = 4 * arrow.height

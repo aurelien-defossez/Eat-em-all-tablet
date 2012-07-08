@@ -71,8 +71,8 @@ function Cemetery:draw()
 
 	-- Position sprite
 	self.cemeterySprite:setReferencePoint(display.CenterReferencePoint)
-	self.cemeterySprite.x = self.tile.width / 2
-	self.cemeterySprite.y = self.tile.height / 2
+	self.cemeterySprite.x = Tile.width_2
+	self.cemeterySprite.y = Tile.height_2
 
 	-- Add to group
 	self.group:insert(self.cemeterySprite)

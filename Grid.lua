@@ -18,7 +18,7 @@ local Tile = require("Tile")
 local Cemetery = require("Cemetery")
 local FortressWall = require("FortressWall")
 local Zombie = require("Zombie")
-local Item = require("Item")
+local MapItem = require("MapItem")
 
 -----------------------------------------------------------------------------------------
 -- Constants
@@ -47,10 +47,13 @@ function Grid.create(parameters)
 	local saveHeight = self.height
 
 	-- Initialize attributes
-	self.tileWidth = math.floor(self.width / config.panels.grid.nbCols)
-	self.tileHeight = math.floor(self.height / config.panels.grid.nbRows)
-	self.width = self.tileWidth * config.panels.grid.nbCols
-	self.height = self.tileHeight * config.panels.grid.nbRows
+	Tile.initializeDimensions{
+		width = math.floor(self.width / config.panels.grid.nbCols),
+		height = math.floor(self.height / config.panels.grid.nbRows)
+	}
+
+	self.width = Tile.width * config.panels.grid.nbCols
+	self.height = Tile.height * config.panels.grid.nbRows
 
 	self.x = self.x + math.floor((saveWidth - self.width) / 2)
 	self.y = self.y + math.floor((saveHeight - self.height) / 2)
@@ -68,10 +71,10 @@ function Grid.create(parameters)
 			self.matrix[getIndex(x, y)] = Tile.create{
 				xGrid = x,
 				yGrid = y,
-				x = self.x + (x - 1) * self.tileWidth,
-				y = self.y + (y - 1) * self.tileHeight,
-				width = self.tileWidth,
-				height = self.tileHeight
+				x = self.x + (x - 1) * Tile.width,
+				y = self.y + (y - 1) * Tile.height,
+				width = Tile.width,
+				height = Tile.height
 			}
 		end
 	end
@@ -187,6 +190,14 @@ function Grid:removeZombie(zombie)
 	self.nbZombies = self.nbZombies - 1
 end
 
+-- Removes an item from the items list
+--
+-- Parameters
+--  item: The item to remove
+function Grid:removeItem(item)
+	self.items[item.id] = nil
+end
+
 -- Get a tile using pixel coordinates
 -- 
 -- Parameters:
@@ -252,8 +263,9 @@ function Grid:enterFrame(timeDelta)
 			}
 		until tile.content == nil or tile.content.type == TYPE_SIGN
 
-		local item = Item.create{
-			tile = tile
+		local item = MapItem.create{
+			tile = tile,
+			grid = self
 		}
 
 		self.items[item.id] = item
@@ -287,7 +299,7 @@ function Grid:enterFrame(timeDelta)
 		end
 
 		-- Check collision with items
-		if not zombie.item then
+		if zombie.phase == Zombie.PHASE_MOVE then
 			for itemIndex, item in pairs(self.items) do
 				local mask2 = item.collisionMask
 

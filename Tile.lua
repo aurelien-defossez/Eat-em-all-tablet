@@ -32,6 +32,13 @@ function initialize()
 	classGroup = display.newGroup()
 end
 
+function initializeDimensions(parameters)
+	width = parameters.width
+	height = parameters.height
+	width_2 = width / 2
+	height_2 = height / 2
+end
+
 -----------------------------------------------------------------------------------------
 -- Initialization and Destruction
 -----------------------------------------------------------------------------------------

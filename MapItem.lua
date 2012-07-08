@@ -1,12 +1,12 @@
 -----------------------------------------------------------------------------------------
 --
--- Item.lua
+-- MapItem.lua
 --
 -----------------------------------------------------------------------------------------
 
-module("Item", package.seeall)
+module("MapItem", package.seeall)
 
-Item.__index = Item
+MapItem.__index = MapItem
 
 -----------------------------------------------------------------------------------------
 -- Imports
@@ -14,6 +14,7 @@ Item.__index = Item
 
 local config = require("GameConfig")
 local Tile = require("Tile")
+local PlayerItem = require("PlayerItem")
 
 -----------------------------------------------------------------------------------------
 -- Class attributes
@@ -37,10 +38,11 @@ end
 --
 -- Parameters:
 --  tile: The tile the item is on
-function Item.create(parameters)
+--  grid: The grid
+function MapItem.create(parameters)
 	-- Create object
 	local self = parameters or {}
-	setmetatable(self, Item)
+	setmetatable(self, MapItem)
 
 	-- Initialize attributes
 	self.id = ctId
@@ -65,24 +67,19 @@ function Item.create(parameters)
 	return self
 end
 
--- Destroy the item
-function Item:destroy()
-	self.itemSprite:removeSelf()
-end
-
 -----------------------------------------------------------------------------------------
 -- Methods
 -----------------------------------------------------------------------------------------
 
 -- Draw the item
-function Item:draw()
+function MapItem:draw()
 	self.itemSprite = display.newImageRect("item.png",
 		config.item.width, config.item.height)
 
 	-- Position sprite
 	self.itemSprite:setReferencePoint(display.CenterReferencePoint)
-	self.itemSprite.x = self.tile.width / 2
-	self.itemSprite.y = self.tile.height / 2
+	self.itemSprite.x = Tile.width_2
+	self.itemSprite.y = Tile.height_2
 
 	-- Add to group
 	self.group:insert(self.itemSprite)
@@ -100,7 +97,7 @@ function Item:draw()
 end
 
 -- Compute the item collision mask
-function Item:computeCollisionMask()
+function MapItem:computeCollisionMask()
 	self.collisionMask = {
 		x = self.x + config.item.mask.x,
 		y = self.y + config.item.mask.y,
@@ -109,7 +106,7 @@ function Item:computeCollisionMask()
 	}
 end
 
-function Item:attachZombie(parameters)
+function MapItem:attachZombie(parameters)
 	local maxSpeed = config.item.speed.max
 
 	self.zombies[parameters.zombie.id] = parameters.zombie
@@ -117,27 +114,35 @@ function Item:attachZombie(parameters)
 	self.actualSpeed = math.max(-maxSpeed, math.min(self.speed, maxSpeed))
 end
 
-function Item:fetched(player)
-	print("Item fetched by player "..player.id)
-	self.x = 0
-	self.y = 0
-	self:computeCollisionMask()
-
+function MapItem:fetched(player)
+	-- Release zombies from their tasks
 	for index, zombie in pairs(self.zombies) do
 		if zombie.phase == Zombie.PHASE_CARRY_ITEM then
 			zombie.phase = Zombie.PHASE_MOVE
 			zombie:changeDirection(zombie.player.direction)
 		end
 	end
+
+	-- Create player item
+	local playerItem = PlayerItem.create{
+		x = self.x,
+		y = self.y
+	}
+
+	playerItem:draw()
+	player:gainItem(playerItem)
+	self.grid:removeItem(self)
+
+	self.group:removeSelf()
 end
 
 -- Enter frame handler
 --
 -- Parameters:
 --  timeDelta: The time in ms since last frame
-function Item:enterFrame(timeDelta)
+function MapItem:enterFrame(timeDelta)
 	if self.actualSpeed ~= 0 then
-		local movement = timeDelta / 1000 * self.actualSpeed * self.tile.width
+		local movement = timeDelta / 1000 * self.actualSpeed * Tile.width
 
 		self.x = self.x + movement
 		self.group.x = self.x
@@ -149,4 +154,4 @@ end
 
 -----------------------------------------------------------------------------------------
 
-return Item
+return MapItem

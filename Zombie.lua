@@ -15,6 +15,7 @@ Zombie.__index = Zombie
 require("utils")
 local config = require("GameConfig")
 local Arrow = require("Arrow")
+local Tile = require("Tile")
 
 -----------------------------------------------------------------------------------------
 -- Constants
@@ -150,7 +151,7 @@ function Zombie:move(parameters)
 		-- Staying on the same tile, checking if we passed through middle
 		if self.directionVector.x ~= 0 then
 			-- Middle is negative when going from right to left, to facilitate further calculations
-			local middle = (self.tile.x + self.tile.width / 2) * self.directionVector.x
+			local middle = (self.tile.x + Tile.width_2) * self.directionVector.x
 
 			if (tileCollider.x - parameters.x) * self.directionVector.x < middle
 				and tileCollider.x * self.directionVector.x >= middle then
@@ -158,7 +159,7 @@ function Zombie:move(parameters)
 			end
 		else
 			-- Middle is negative when going from bottom to up, to facilitate further calculations
-			local middle = (self.tile.y + self.tile.height / 2) * self.directionVector.y
+			local middle = (self.tile.y + Tile.height_2) * self.directionVector.y
 
 			if (tileCollider.y - parameters.y) * self.directionVector.y < middle
 				and tileCollider.y * self.directionVector.y >= middle then
@@ -237,7 +238,6 @@ function Zombie:die(parameters)
 	-- Remove sprite from display
 	self.group:removeSelf()
 
-
 	self.phase = PHASE_DEAD
 end
 
@@ -247,14 +247,14 @@ end
 --  timeDelta: The time in ms since last frame
 function Zombie:enterFrame(timeDelta)
 	if self.phase == PHASE_MOVE then
-		local movement = timeDelta / 1000 * config.zombie.speed * self.tile.width
+		local movement = timeDelta / 1000 * config.zombie.speed * Tile.width
 
 		self:move{
 			x = movement * self.directionVector.x,
 			y = movement * self.directionVector.y
 		}
 	elseif self.phase == PHASE_CARRY_ITEM then
-		local movement = timeDelta / 1000 * self.item.actualSpeed * self.tile.width
+		local movement = timeDelta / 1000 * self.item.actualSpeed * Tile.width
 
 		self:move{
 			x = movement,

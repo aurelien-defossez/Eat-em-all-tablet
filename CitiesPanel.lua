@@ -53,7 +53,7 @@ end
 -- Add a city under the control of the player
 --
 -- Parameters:
---  The city controlled
+--  city: The city controlled
 function CitiesPanel:gainCity(city)
 	local shortcut = CityShortcut.create{
 		city = city,
@@ -70,7 +70,7 @@ end
 -- Lose the control of a city
 --
 -- Parameters:
---  The city lost
+--  city: The city lost
 function CitiesPanel:loseCity(city)
 	self.shortcuts[city.id]:destroy()
 	self.shortcuts[city.id] = nil

@@ -13,6 +13,7 @@ PlayerControlPanel.__index = PlayerControlPanel
 -----------------------------------------------------------------------------------------
 
 local config = require("GameConfig")
+local ItemsPanel = require("ItemsPanel")
 local ArrowsPanel = require("ArrowsPanel")
 local CitiesPanel = require("CitiesPanel")
 
@@ -43,6 +44,14 @@ function PlayerControlPanel.create(parameters)
 	
 	-- Initialize attributes
 	self.width = config.panels.controls.width
+
+	self.items = ItemsPanel.create{
+		player = self.player,
+		grid = self.grid,
+		x = self.x + config.panels.controls.padding,
+		y = self.y + config.panels.controls.items.ypadding
+	}
+
 	self.arrows = ArrowsPanel.create{
 		player = self.player,
 		grid = self.grid,
@@ -74,6 +83,7 @@ function PlayerControlPanel:draw()
 	background:setFillColor(204, 109, 0)
 	background:setStrokeColor(135, 72, 0)
 	
+	self.items:draw()
 	self.arrows:draw()
 	self.cities:draw()
 

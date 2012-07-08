@@ -68,6 +68,15 @@ end
 function Player:loseCity(city)
 	self.citiesPanel:loseCity(city)
 end
+
+-- Add an item
+--
+-- Parameters:
+--  item: The item
+function Player:gainItem(item)
+	self.itemsPanel:gainItem(item)
+end
+
 -----------------------------------------------------------------------------------------
 
 return Player
