@@ -84,7 +84,7 @@ end
 -- Parameters:
 --  zombie: The zombie reaching the middle of the tile
 function Sign:reachTileMiddle(zombie)
-	if zombie.player.id == self.player.id then
+	if zombie.phase == Zombie.PHASE_MOVE and zombie.player.id == self.player.id then
 		-- Ignore special cases
 		if not (self.tile.isOnFirstRow and self.direction == Arrow.UP)
 			and not (self.tile.isOnLastRow and self.direction == Arrow.DOWN) then

@@ -48,6 +48,7 @@ function Item.create(parameters)
 	self.y = self.tile.y
 	self.speed = 0
 	self.actualSpeed = 0
+	self.zombies = {}
 
 	self:computeCollisionMask()
 
@@ -108,11 +109,26 @@ function Item:computeCollisionMask()
 	}
 end
 
-function Item:addSpeed(speed)
+function Item:attachZombie(parameters)
 	local maxSpeed = config.item.speed.max
 
-	self.speed = self.speed + speed
+	self.zombies[parameters.zombie.id] = parameters.zombie
+	self.speed = self.speed + parameters.speed
 	self.actualSpeed = math.max(-maxSpeed, math.min(self.speed, maxSpeed))
+end
+
+function Item:fetched(player)
+	print("Item fetched by player "..player.id)
+	self.x = 0
+	self.y = 0
+	self:computeCollisionMask()
+
+	for index, zombie in pairs(self.zombies) do
+		if zombie.phase == Zombie.PHASE_CARRY_ITEM then
+			zombie.phase = Zombie.PHASE_MOVE
+			zombie:changeDirection(zombie.player.direction)
+		end
+	end
 end
 
 -- Enter frame handler

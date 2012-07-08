@@ -192,7 +192,7 @@ end
 -- Parameters:
 --  zombie: The zombie entering the tile
 function City:enterTile(zombie)
-	if self.player == nil or zombie.player ~= self.player then
+	if zombie.phase == Zombie.PHASE_MOVE and (self.player == nil or zombie.player ~= self.player) then
 		self:attackCity(zombie)
 	end
 end
@@ -202,12 +202,14 @@ end
 -- Parameters:
 --  zombie: The zombie reaching the middle of the tile
 function City:reachTileMiddle(zombie)
-	if self.player == nil or zombie.player ~= self.player then
-		self:attackCity(zombie)
-	elseif self.inhabitants < self.maxInhabitants then
-	-- Enforce city
-		self:addInhabitants(1)
-		zombie:die(Zombie.KILLER_CITY_ENTER)
+	if zombie.phase == Zombie.PHASE_MOVE then
+		if self.player == nil or zombie.player ~= self.player then
+			self:attackCity(zombie)
+		elseif self.inhabitants < self.maxInhabitants then
+		-- Enforce city
+			self:addInhabitants(1)
+			zombie:die(Zombie.KILLER_CITY_ENTER)
+		end
 	end
 end
 

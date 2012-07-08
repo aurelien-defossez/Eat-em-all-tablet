@@ -84,9 +84,11 @@ function FortressWall:enterTile(zombie)
 		zombie:die{
 			killer = Zombie.KILLER_FORTRESS
 		}
-	else
+	elseif zombie.phase == Zombie.PHASE_MOVE then
 		-- Move backward
 		zombie:changeDirection(self.player.direction)
+	elseif zombie.phase == Zombie.PHASE_CARRY_ITEM then
+		zombie.item:fetched(self.player)
 	end
 end
 
