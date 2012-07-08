@@ -79,6 +79,10 @@ zombie = {
 	tileColliderOffset = {
 		x = 6,
 		y = 0
+	},
+	randomOffsetRange = {
+		x = { -10, 10 },
+		y = { -12, 4 }
 	}
 }
 

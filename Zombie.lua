@@ -99,6 +99,8 @@ function Zombie:draw()
 
 	-- Position sprite
 	self.zombieSprite:setReferencePoint(display.CenterReferencePoint)
+	self.zombieSprite.x = math.random(config.zombie.randomOffsetRange.x[1], config.zombie.randomOffsetRange.x[2])
+	self.zombieSprite.y = math.random(config.zombie.randomOffsetRange.y[1], config.zombie.randomOffsetRange.y[2])
 
 	-- Add to group
 	self.group:insert(self.zombieSprite)
