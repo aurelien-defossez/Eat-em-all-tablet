@@ -80,7 +80,7 @@ end
 
 -- Spawn a single zombie
 function Cemetery:spawn()
-	if not config.debug.oneZombie or grid.nbZombies == 0 then
+	if not config.debug.oneZombie or self.grid.nbZombies == 0 then
 		local zombie = Zombie.create{
 			player = self.player,
 			tile = self.tile,

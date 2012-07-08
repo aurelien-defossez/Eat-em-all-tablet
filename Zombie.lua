@@ -145,8 +145,8 @@ function Zombie:move(parameters)
 	}
 
 	-- Update zombie position
-	self.x = parameters.x
-	self.y = parameters.y
+	self.x = self.x + parameters.x
+	self.y = self.y + parameters.y
 
 	-- Calculate point to test tile collision
 	self:computeTileCollider()
@@ -179,6 +179,25 @@ function Zombie:move(parameters)
 		-- Find new tile and enter it
 		self.tile = self.grid:getTileByPixels(self.tileCollider)
 		self.tile:enterTile(self)
+	end
+
+	-- Correct trajectory
+	if self.directionVector.x ~= 0 then
+		local tileCenter = self.tile.y + self.tile.height / 2
+
+		if self.y > tileCenter + 0.5 then
+			self.y = self.y - 1
+		elseif self.y < tileCenter - 0.5 then
+			self.y = self.y + 1
+		end
+	else
+		local tileCenter = self.tile.x + self.tile.width / 2
+
+		if self.x > tileCenter + 0.5 then
+			self.x = self.x - 1
+		elseif self.x < tileCenter - 0.5 then
+			self.x = self.x + 1
+		end
 	end
 
 	-- Update collision mask
@@ -228,8 +247,8 @@ function Zombie:enterFrame(timeDelta)
 	local movement = timeDelta / 1000 * config.zombie.speed * self.tile.width
 
 	self:move{
-		x = self.x + movement * self.directionVector.x,
-		y = self.y + movement * self.directionVector.y
+		x = movement * self.directionVector.x,
+		y = movement * self.directionVector.y
 	}
 end
 
