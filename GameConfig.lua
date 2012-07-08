@@ -6,6 +6,7 @@ debug = {
 	oneCemetery = false,
 	oneZombie = false,
 	immediateSpawn = true,
+	immediateItemSpawn = true,
 	showCollisionMask = false
 }
 
@@ -70,9 +71,13 @@ item = {
 		x = 16,
 		y = 16
 	},
+	speed = {
+		perZombie = 0.1,
+		max = 1
+	},
 	creation = {
 		time = {
-			first = 0000,
+			first = 10000,
 			min = 5000,
 			max = 20000,
 		},

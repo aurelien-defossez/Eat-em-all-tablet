@@ -60,7 +60,7 @@ function Grid.create(parameters)
 
 	self.items = {}
 
-	self.timeUntilItemCreation = config.item.creation.time.first
+	self.timeUntilItemCreation = config.debug.immediateItemSpawn and 0 or config.item.creation.time.first
 
 	self.matrix = {}
 	for x = 1, config.panels.grid.nbRows + 1 do
@@ -232,6 +232,11 @@ function Grid:enterFrame(timeDelta)
 	-- Relay event to zombies
 	for index, zombie in pairs(self.zombies) do
 		zombie:enterFrame(timeDelta)
+	end
+
+	-- Relay event to items
+	for index, item in pairs(self.items) do
+		item:enterFrame(timeDelta)
 	end
 
 	-- Create item

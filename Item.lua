@@ -46,12 +46,10 @@ function Item.create(parameters)
 	self.id = ctId
 	self.x = self.tile.x
 	self.y = self.tile.y
-	self.collisionMask = {
-		x = self.x + config.item.mask.x,
-		y = self.y + config.item.mask.y,
-		width = config.item.mask.width,
-		height = config.item.mask.height
-	}
+	self.speed = 0
+	self.actualSpeed = 0
+
+	self:computeCollisionMask()
 
 	ctId = ctId + 1
 
@@ -99,6 +97,39 @@ function Item:draw()
 		self.group:insert(self.collisionMaskDebug)
 	end
 end
+
+-- Compute the item collision mask
+function Item:computeCollisionMask()
+	self.collisionMask = {
+		x = self.x + config.item.mask.x,
+		y = self.y + config.item.mask.y,
+		width = config.item.mask.width,
+		height = config.item.mask.height
+	}
+end
+
+function Item:addSpeed(speed)
+	local maxSpeed = config.item.speed.max
+
+	self.speed = self.speed + speed
+	self.actualSpeed = math.max(-maxSpeed, math.min(self.speed, maxSpeed))
+end
+
+-- Enter frame handler
+--
+-- Parameters:
+--  timeDelta: The time in ms since last frame
+function Item:enterFrame(timeDelta)
+	if self.actualSpeed ~= 0 then
+		local movement = timeDelta / 1000 * self.actualSpeed * self.tile.width
+
+		self.x = self.x + movement
+		self.group.x = self.x
+
+		self:computeCollisionMask()
+	end
+end
+
 
 -----------------------------------------------------------------------------------------
 
