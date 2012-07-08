@@ -34,17 +34,13 @@ city = {
 	width = 64,
 	height = 64,
 	easingTime = 1500,
-	sizeText = {
-		x = 28,
-		y = 10,
-	},
 	inhabitantsText = {
 		x = 24,
 		y = 45
 	},
 	nameText = {
-		x = 26,
-		y = 28
+		x = 27,
+		y = 27
 	},
 	small = {
 		inhabitants = 1,

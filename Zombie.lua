@@ -94,14 +94,14 @@ end
 
 -- Draw the zombie
 function Zombie:draw()
-	self.sprite = display.newImageRect("zombie_" .. self.player.color .. ".png", self.width, self.height)
-	self.sprite.arrow = self
+	self.zombieSprite = display.newImageRect("zombie_" .. self.player.color .. ".png", self.width, self.height)
+	self.zombieSprite.arrow = self
 
 	-- Position sprite
-	self.sprite:setReferencePoint(display.CenterReferencePoint)
+	self.zombieSprite:setReferencePoint(display.CenterReferencePoint)
 
 	-- Add to group
-	self.group:insert(self.sprite)
+	self.group:insert(self.zombieSprite)
 
 	-- Draw cell collider pixel
 	if config.debug.showTileCollider then

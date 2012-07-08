@@ -57,7 +57,7 @@ end
 
 -- Destroy the sign
 function Sign:destroy()
-	self.sprite:removeSelf()
+	self.signSprite:removeSelf()
 end
 
 -----------------------------------------------------------------------------------------
@@ -66,17 +66,17 @@ end
 
 -- Draw the sign
 function Sign:draw()
-	self.sprite = display.newImageRect("arrow_up_" .. self.player.color .. ".png",
+	self.signSprite = display.newImageRect("arrow_up_" .. self.player.color .. ".png",
 		config.arrow.width, config.arrow.height)
 
 	-- Position sprite
-	self.sprite:setReferencePoint(display.CenterReferencePoint)
-	self.sprite.x = self.tile.width / 2
-	self.sprite.y = self.tile.height / 2
-	self.sprite:rotate(self.direction or 0)
+	self.signSprite:setReferencePoint(display.CenterReferencePoint)
+	self.signSprite.x = self.tile.width / 2
+	self.signSprite.y = self.tile.height / 2
+	self.signSprite:rotate(self.direction or 0)
 
 	-- Add to group
-	self.group:insert(self.sprite)
+	self.group:insert(self.signSprite)
 end
 
 -- Reach middle tile handler, called when a zombie reaches the middle of the tile

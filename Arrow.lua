@@ -69,24 +69,24 @@ end
 -- Draw the arrow
 function Arrow:draw()
 	if self.direction ~= DELETE then
-		self.sprite = display.newImageRect("arrow_up_" .. self.player.color .. ".png", self.width, self.height)
+		self.arrowSprite = display.newImageRect("arrow_up_" .. self.player.color .. ".png", self.width, self.height)
 	else 
-		self.sprite = display.newImageRect("arrow_crossed_" .. self.player.color .. ".png", self.width, self.height)
+		self.arrowSprite = display.newImageRect("arrow_crossed_" .. self.player.color .. ".png", self.width, self.height)
 	end
 
-	self.sprite.arrow = self
+	self.arrowSprite.arrow = self
 
 	-- Position sprite
-	self.sprite:setReferencePoint(display.CenterReferencePoint)
-	self.sprite.x = self.x or 0
-	self.sprite.y = self.height / 2 + (self.y or 0)
-	self.sprite:rotate(self.direction or 0)
+	self.arrowSprite:setReferencePoint(display.CenterReferencePoint)
+	self.arrowSprite.x = self.x or 0
+	self.arrowSprite.y = self.height / 2 + (self.y or 0)
+	self.arrowSprite:rotate(self.direction or 0)
 	
 	-- Handle events
-	self.sprite:addEventListener("touch", onArrowTouch)
+	self.arrowSprite:addEventListener("touch", onArrowTouch)
 
 	-- Add to group
-	self.group:insert(self.sprite)
+	self.group:insert(self.arrowSprite)
 end
 
 -----------------------------------------------------------------------------------------
@@ -126,52 +126,52 @@ end
 
 -- Touch handler on a draggable arrow
 function onDraggedArrowTouch(event)
-	local sprite = event.target
+	local arrowSprite = event.target
 
 	-- Follow the finger movement
 	if event.phase == "moved" then
-		sprite.x = event.x
-		sprite.y = event.y
+		arrowSprite.x = event.x
+		arrowSprite.y = event.y
 
 		-- Focus this object in order to track this finger properly
-		display.getCurrentStage():setFocus(sprite, event.id)
+		display.getCurrentStage():setFocus(arrowSprite, event.id)
 
 	-- Drop the arrow
 	elseif event.phase == "ended" then
 		-- Locate drop tile
-		local tile = sprite.grid:getTileByPixels{
+		local tile = arrowSprite.grid:getTileByPixels{
 			x = event.x,
 			y = event.y
 		}
 
 		if tile ~= nil then
-			if sprite.direction ~= DELETE then
+			if arrowSprite.direction ~= DELETE then
 				-- Create sign
 				if tile ~= nil and tile.content == nil then
 					tile.content = Sign.create{
 						tile = tile,
-						player = sprite.player,
-						direction = sprite.direction
+						player = arrowSprite.player,
+						direction = arrowSprite.direction
 					}
 
 					tile.content:draw()
 				end
 			elseif tile.content ~= nil and tile.content.type == Tile.TYPE_SIGN
-				and tile.content.player == sprite.player then
+				and tile.content.player == arrowSprite.player then
 				-- Remove sign
 				tile:removeContent()
 			end
 		end
 
 		-- Remove dragged sprite
-		sprite:removeSelf()
+		arrowSprite:removeSelf()
 
 		-- Remove focus
 		display.getCurrentStage():setFocus(nil, event.id)
 
 	-- Delete the arrow
 	elseif event.phase == "cancelled" then
-		sprite:removeSelf()
+		arrowSprite:removeSelf()
 		display.getCurrentStage():setFocus(nil, event.id)
 	end
 end

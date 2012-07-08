@@ -110,14 +110,9 @@ function City:draw()
 		native.systemFontBold, 16)
 	self.nameText:setTextColor(0, 0, 0)
 
-	-- Size text
-	self.sizeText = display.newText(self.size, config.city.sizeText.x, config.city.sizeText.y,
-		native.systemFontBold, 16)
-
 	-- Add texts to group
 	self.textGroup:insert(self.inhabitantsText)
 	self.textGroup:insert(self.nameText)
-	self.textGroup:insert(self.sizeText)
 end
 
 -- Draw the city sprite
@@ -125,25 +120,30 @@ function City:drawSprite()
 	local spriteName;
 
 	if self.player then
-		spriteName = "city_" .. self.player.color .. ".png"
+		spriteName = "city" .. self.size .. "_" .. self.player.color .. ".png"
 	else
-		spriteName = "city_grey.png"
+		spriteName = "city" .. self.size .. "_grey.png"
+	end
+
+	-- Remove old sprite if exists
+	if self.citySprite then
+		self.citySprite:removeSelf()
 	end
 
 	-- Create sprite
-	self.sprite = display.newImageRect(spriteName, config.city.width, config.city.height)
+	self.citySprite = display.newImageRect(spriteName, config.city.width, config.city.height)
 
 	-- Position sprite
-	self.sprite:setReferencePoint(display.CenterReferencePoint)
-	self.sprite.x = self.tile.width / 2
-	self.sprite.y = self.tile.height / 2
+	self.citySprite:setReferencePoint(display.CenterReferencePoint)
+	self.citySprite.x = self.tile.width / 2
+	self.citySprite.y = self.tile.height / 2
 	
 	-- Handle events
-	self.sprite.city = self
-	self.sprite:addEventListener("touch", onCityTouch)
+	self.citySprite.city = self
+	self.citySprite:addEventListener("touch", onCityTouch)
 
 	-- Insert into group
-	self.cityGroup:insert(self.sprite)
+	self.cityGroup:insert(self.citySprite)
 end
 
 -- Add inhabitants to the city
@@ -229,7 +229,6 @@ function City:attackCity(zombie)
 		self:addInhabitants(1)
 		zombie:die(Zombie.KILLER_CITY_ENTER)
 
-		self.sprite:removeSelf()
 		self:drawSprite()
 	end
 end

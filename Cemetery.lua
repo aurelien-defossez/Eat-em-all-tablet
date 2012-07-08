@@ -66,16 +66,16 @@ end
 
 -- Draw the cemetery
 function Cemetery:draw()
-	self.sprite = display.newImageRect("cemetery_" .. self.player.color .. ".png",
+	self.cemeterySprite = display.newImageRect("cemetery_" .. self.player.color .. ".png",
 		config.cemetery.width, config.cemetery.height)
 
 	-- Position sprite
-	self.sprite:setReferencePoint(display.CenterReferencePoint)
-	self.sprite.x = self.tile.width / 2
-	self.sprite.y = self.tile.height / 2
+	self.cemeterySprite:setReferencePoint(display.CenterReferencePoint)
+	self.cemeterySprite.x = self.tile.width / 2
+	self.cemeterySprite.y = self.tile.height / 2
 
 	-- Add to group
-	self.group:insert(self.sprite)
+	self.group:insert(self.cemeterySprite)
 end
 
 -- Spawn a single zombie

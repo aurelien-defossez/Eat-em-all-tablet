@@ -84,14 +84,9 @@ function CityShortcut:draw()
 		native.systemFontBold, 16)
 	self.nameText:setTextColor(0, 0, 0)
 
-	-- Size text
-	self.sizeText = display.newText(self.city.size, config.city.sizeText.x, config.city.sizeText.y,
-		native.systemFontBold, 16)
-
 	-- Add texts to group
 	self.textGroup:insert(self.inhabitantsText)
 	self.textGroup:insert(self.nameText)
-	self.textGroup:insert(self.sizeText)
 
 	-- Position group
 	self.group.x = self.x
@@ -113,7 +108,7 @@ end
 
 -- Draw the city sprite
 function CityShortcut:drawSprite()
-	local spriteName = "city_" .. self.player.color .. ".png"
+	local spriteName = "city" .. self.city.size .. "_" .. self.player.color .. ".png"
 	
 	-- Create sprite
 	self.sprite = display.newImageRect(spriteName, config.city.width, config.city.height)

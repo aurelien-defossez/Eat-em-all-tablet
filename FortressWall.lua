@@ -59,16 +59,16 @@ end
 
 -- Draw the sign
 function FortressWall:draw()
-	self.sprite = display.newImageRect("fortress_wall_" .. self.player.color .. ".png",
+	self.wallSprite = display.newImageRect("fortress_wall_" .. self.player.color .. ".png",
 		config.fortressWall.width, config.fortressWall.height)
 
 	-- Position sprite
-	self.sprite:setReferencePoint(display.CenterReferencePoint)
-	self.sprite.x = self.tile.width / 2
-	self.sprite.y = self.tile.height / 2
+	self.wallSprite:setReferencePoint(display.CenterReferencePoint)
+	self.wallSprite.x = self.tile.width / 2
+	self.wallSprite.y = self.tile.height / 2
 
 	-- Add to group
-	self.group:insert(self.sprite)
+	self.group:insert(self.wallSprite)
 end
 
 -- Enter tile handler, called when a zombie enters the tile
