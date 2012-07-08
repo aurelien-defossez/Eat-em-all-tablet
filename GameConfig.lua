@@ -6,8 +6,7 @@ debug = {
 	oneCemetery = false,
 	oneZombie = false,
 	immediateSpawn = true,
-	showCollisionMask = false,
-	showTileCollider = true
+	showCollisionMask = false
 }
 
 screen = {
@@ -62,6 +61,25 @@ city = {
 	}
 }
 
+item = {
+	width = 64,
+	height = 64,
+	mask = {
+		width = 32,
+		height = 32,
+		x = 16,
+		y = 16
+	},
+	creation = {
+		time = {
+			first = 0000,
+			min = 5000,
+			max = 20000,
+		},
+		xoffset = 2
+	}
+}
+
 fortressWall = {
 	width = 64,
 	height = 64
@@ -72,12 +90,14 @@ zombie = {
 	height = 64,
 	mask = {
 		width = 16,
-		height = 50
+		height = 50,
+		x = 24,
+		y = 7
 	},
 	-- speed in tiles per seconds
 	speed = 1,
 	tileColliderOffset = {
-		x = 6,
+		x = 4,
 		y = 0
 	},
 	randomOffsetRange = {

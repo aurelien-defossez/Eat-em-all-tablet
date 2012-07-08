@@ -25,6 +25,7 @@ local FortressWall = require("FortressWall")
 local Zombie = require("Zombie")
 local Sign = require("Sign")
 local City = require("City")
+local Item = require("Item")
 
 -----------------------------------------------------------------------------------------
 -- Initialization and Destruction
@@ -52,6 +53,7 @@ function GameScene.create(parameters)
 	Cemetery.initialize()
 	City.initialize()
 	Sign.initialize()
+	Item.initialize()
 	Zombie.initialize()
 	CityShortcut.initialize()
 

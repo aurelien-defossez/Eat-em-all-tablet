@@ -24,6 +24,9 @@ DOWN = { x = 0, y = 1 }
 LEFT = { x = -1, y = 0 }
 RIGHT = { x = 1, y = 0 }
 
+PHASE_MOVE = 1
+PHASE_CARRY_ITEM = 2
+
 KILLER_ZOMBIE = 1
 KILLER_FORTRESS = 2
 KILLER_CEMETERY = 3
@@ -42,7 +45,7 @@ end
 -- Class attributes
 -----------------------------------------------------------------------------------------
 
-ctId = 0
+ctId = 1
 
 -----------------------------------------------------------------------------------------
 -- Initialization and Destruction
@@ -60,22 +63,18 @@ function Zombie.create(parameters)
 	setmetatable(self, Zombie)
 
 	-- Initialize attributes
-	ctId = ctId + 1
 	self.id = ctId
+	self.phase = PHASE_MOVE
 	self.width = config.zombie.width
 	self.height = config.zombie.height
-	self.x = self.tile.x + self.width / 2
-	self.y = self.tile.y + self.height / 2
+	self.x = self.tile.x
+	self.y = self.tile.y
 	self.direction = self.player.direction
-	self.collisionMask = {
-		x = self.x,
-		y = self.y,
-		width = config.zombie.mask.width,
-		height = config.zombie.mask.height
-	}
+
+	ctId = ctId + 1
 
 	self:changeDirection(self.direction)
-	self:computeTileCollider()
+	self:computeCollisionMask()
 
 	-- Manage groups
 	self.group = display.newGroup()
@@ -98,25 +97,17 @@ function Zombie:draw()
 	self.zombieSprite.arrow = self
 
 	-- Position sprite
-	self.zombieSprite:setReferencePoint(display.CenterReferencePoint)
-	self.zombieSprite.x = math.random(config.zombie.randomOffsetRange.x[1], config.zombie.randomOffsetRange.x[2])
-	self.zombieSprite.y = math.random(config.zombie.randomOffsetRange.y[1], config.zombie.randomOffsetRange.y[2])
+	self.zombieSprite.x = self.width / 2 +
+		math.random(config.zombie.randomOffsetRange.x[1], config.zombie.randomOffsetRange.x[2])
+	self.zombieSprite.y = self.height / 2 +
+		math.random(config.zombie.randomOffsetRange.y[1], config.zombie.randomOffsetRange.y[2])
 
 	-- Add to group
 	self.group:insert(self.zombieSprite)
 
-	-- Draw cell collider pixel
-	if config.debug.showTileCollider then
-		self.tileColliderDebug = display.newRect(0, 0, 2, 2)
-		self.tileColliderDebug.strokeWidth = 0
-		self.tileColliderDebug:setFillColor(0, 255, 0)
-
-		self.group:insert(self.tileColliderDebug)
-	end
-
 	-- Draw collision mask
 	if config.debug.showCollisionMask then
-		self.collisionMaskDebug = display.newRect(- config.zombie.mask.width / 2, - config.zombie.mask.height / 2,
+		self.collisionMaskDebug = display.newRect(config.zombie.mask.x, config.zombie.mask.y,
 			config.zombie.mask.width, config.zombie.mask.height)
 		self.collisionMaskDebug.strokeWidth = 3
 		self.collisionMaskDebug:setStrokeColor(255, 0, 0)
@@ -126,11 +117,12 @@ function Zombie:draw()
 	end
 end
 
--- Compute the tile collider position
-function Zombie:computeTileCollider()
-	self.tileCollider = {
-		x = self.x + config.zombie.tileColliderOffset.x * self.directionVector.x,
-		y = self.y + config.zombie.tileColliderOffset.y * self.directionVector.y
+function Zombie:computeCollisionMask()
+	self.collisionMask = {
+		x = self.x + config.zombie.mask.x,
+		y = self.y + config.zombie.mask.y,
+		width = config.zombie.mask.width,
+		height = config.zombie.mask.height
 	}
 end
 
@@ -140,37 +132,33 @@ end
 --  x: X movement
 --  y: Y movement
 function Zombie:move(parameters)
-	-- Save last tile collider location
-	local lastCollider = {
-		x = self.tileCollider.x,
-		y = self.tileCollider.y
-	}
-
 	-- Update zombie position
 	self.x = self.x + parameters.x
 	self.y = self.y + parameters.y
 
-	-- Calculate point to test tile collision
-	self:computeTileCollider()
+	-- Determine tile collider
+	local tileCollider = {
+		x = self.x + self.width / 2 + config.zombie.tileColliderOffset.x * self.directionVector.x,
+		y = self.y + self.height / 2 + config.zombie.tileColliderOffset.y * self.directionVector.y
+	}
 
 	-- Determine the tile the zombie is on and send events (enter, leave and reachMiddle)
-	if self.tileCollider.x >= self.tile.x and self.tileCollider.x < self.tile.x + self.tile.width
-		and self.tileCollider.y >= self.tile.y and self.tileCollider.y < self.tile.y + self.tile.height then
+	if self.tile:isInside(tileCollider) then
 		-- Staying on the same tile, checking if we passed through middle
 		if self.directionVector.x ~= 0 then
 			-- Middle is negative when going from right to left, to facilitate further calculations
 			local middle = (self.tile.x + self.tile.width / 2) * self.directionVector.x
 
-			if lastCollider.x * self.directionVector.x < middle
-				and self.tileCollider.x * self.directionVector.x >= middle then
+			if (tileCollider.x - parameters.x) * self.directionVector.x < middle
+				and tileCollider.x * self.directionVector.x >= middle then
 				self.tile:reachTileMiddle(self)
 			end
 		else
 			-- Middle is negative when going from bottom to up, to facilitate further calculations
 			local middle = (self.tile.y + self.tile.height / 2) * self.directionVector.y
 
-			if lastCollider.y * self.directionVector.y < middle
-				and self.tileCollider.y * self.directionVector.y >= middle then
+			if (tileCollider.y - parameters.y) * self.directionVector.y < middle
+				and tileCollider.y * self.directionVector.y >= middle then
 				self.tile:reachTileMiddle(self)
 			end
 		end
@@ -179,32 +167,27 @@ function Zombie:move(parameters)
 		self.tile:leaveTile(self)
 
 		-- Find new tile and enter it
-		self.tile = self.grid:getTileByPixels(self.tileCollider)
+		self.tile = self.grid:getTileByPixels(tileCollider)
 		self.tile:enterTile(self)
 	end
 
 	-- Correct trajectory
 	if self.directionVector.x ~= 0 then
-		local tileCenter = self.tile.y + self.tile.height / 2
-
-		if self.y > tileCenter + 0.5 then
+		if self.y > self.tile.y + 0.5 then
 			self.y = self.y - 1
-		elseif self.y < tileCenter - 0.5 then
+		elseif self.y < self.tile.y - 0.5 then
 			self.y = self.y + 1
 		end
 	else
-		local tileCenter = self.tile.x + self.tile.width / 2
-
-		if self.x > tileCenter + 0.5 then
+		if self.x > self.tile.x + 0.5 then
 			self.x = self.x - 1
-		elseif self.x < tileCenter - 0.5 then
+		elseif self.x < self.tile.x - 0.5 then
 			self.x = self.x + 1
 		end
 	end
 
 	-- Update collision mask
-	self.collisionMask.x = self.x
-	self.collisionMask.y = self.y
+	self:computeCollisionMask()
 
 	-- Move zombie sprite
 	self.group.x = self.x
@@ -229,6 +212,13 @@ function Zombie:changeDirection(direction)
 	end
 end
 
+function Zombie:carryItem(item)
+	self.item = item
+
+	self.phase = PHASE_CARRY_ITEM
+	--item:addSpeed(self.player.direction.x)
+end
+
 -- Kills the zombie
 --
 -- Parameters
@@ -246,12 +236,14 @@ end
 -- Parameters:
 --  timeDelta: The time in ms since last frame
 function Zombie:enterFrame(timeDelta)
-	local movement = timeDelta / 1000 * config.zombie.speed * self.tile.width
+	if self.phase == PHASE_MOVE then
+		local movement = timeDelta / 1000 * config.zombie.speed * self.tile.width
 
-	self:move{
-		x = movement * self.directionVector.x,
-		y = movement * self.directionVector.y
-	}
+		self:move{
+			x = movement * self.directionVector.x,
+			y = movement * self.directionVector.y
+		}
+	end
 end
 
 -----------------------------------------------------------------------------------------

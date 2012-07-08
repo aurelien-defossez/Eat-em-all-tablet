@@ -18,6 +18,7 @@ local Tile = require("Tile")
 local Cemetery = require("Cemetery")
 local FortressWall = require("FortressWall")
 local Zombie = require("Zombie")
+local Item = require("Item")
 
 -----------------------------------------------------------------------------------------
 -- Constants
@@ -56,6 +57,10 @@ function Grid.create(parameters)
 
 	self.zombies = {}
 	self.nbZombies = 0
+
+	self.items = {}
+
+	self.timeUntilItemCreation = config.item.creation.time.first
 
 	self.matrix = {}
 	for x = 1, config.panels.grid.nbRows + 1 do
@@ -229,10 +234,35 @@ function Grid:enterFrame(timeDelta)
 		zombie:enterFrame(timeDelta)
 	end
 
+	-- Create item
+	self.timeUntilItemCreation = self.timeUntilItemCreation - timeDelta
+	if self.timeUntilItemCreation <= 0 then
+		local middleTileX = math.ceil(config.panels.grid.nbCols / 2)
+		local tile
+
+		repeat
+			tile = self:getTile{
+				x = math.random(middleTileX - config.item.creation.xoffset, middleTileX + config.item.creation.xoffset),
+				y = math.random(config.panels.grid.nbRows)
+			}
+		until tile.content == nil or tile.content.type == TYPE_SIGN
+
+		local item = Item.create{
+			tile = tile
+		}
+
+		self.items[item.id] = item
+		item:draw()
+
+		self.timeUntilItemCreation = self.timeUntilItemCreation +
+			math.random(config.item.creation.time.min, config.item.creation.time.max)
+	end
+
 	-- Check for collisions
 	for index, zombie in pairs(self.zombies) do
 		local mask1 = zombie.collisionMask
 
+		-- Check collision with other zombies
 		for otherIndex, otherZombie in pairs(self.zombies) do
 			if zombie.player.id ~= otherZombie.player.id and otherZombie.id > zombie.id then
 				local mask2 = otherZombie.collisionMask
@@ -246,6 +276,20 @@ function Grid:enterFrame(timeDelta)
 					zombie:die(dyingParameters)
 					otherZombie:die(dyingParameters)
 
+					break
+				end
+			end
+		end
+
+		-- Check collision with items
+		if not zombie.item then
+			for itemIndex, item in pairs(self.items) do
+				local mask2 = item.collisionMask
+
+				if collisions.intersectRects(mask1.x, mask1.y, mask1.width, mask1.height,
+					mask2.x, mask2.y, mask2.width, mask2.height) then
+					
+					zombie:carryItem(item)
 					break
 				end
 			end
