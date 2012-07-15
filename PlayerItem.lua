@@ -16,6 +16,18 @@ local config = require("GameConfig")
 local Tile = require("Tile")
 
 -----------------------------------------------------------------------------------------
+-- Constants
+-----------------------------------------------------------------------------------------
+
+TYPES = {
+	COUNT = 4,
+	SKELETON = 1,
+	GIANT = 2,
+	FIRE = 3,
+	MINE = 4
+}
+
+-----------------------------------------------------------------------------------------
 -- Class attributes
 -----------------------------------------------------------------------------------------
 
@@ -45,6 +57,16 @@ function PlayerItem.create(parameters)
 
 	-- Initialize attributes
 	self.id = ctId
+	if self.type == TYPES.SKELETON then
+		self.typeName = "skeleton"
+	elseif self.type == TYPES.GIANT then
+		self.typeName = "giant"
+	elseif self.type == TYPES.FIRE then
+		self.typeName = "fire"
+	elseif self.type == TYPES.MINE then
+		self.typeName = "mine"
+	end
+
 	ctId = ctId + 1
 
 	-- Manage groups
@@ -64,7 +86,7 @@ end
 
 -- Draw the item
 function PlayerItem:draw()
-	self.itemSprite = display.newImageRect("item.png",
+	self.itemSprite = display.newImageRect("item_" .. self.typeName .. ".png",
 		config.item.width, config.item.height)
 
 	-- Position sprite

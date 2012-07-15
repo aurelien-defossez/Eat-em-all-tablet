@@ -126,7 +126,8 @@ function MapItem:fetched(player)
 	-- Create player item
 	local playerItem = PlayerItem.create{
 		x = self.x,
-		y = self.y
+		y = self.y,
+		type = math.random(1, PlayerItem.TYPES.COUNT)
 	}
 
 	playerItem:draw()

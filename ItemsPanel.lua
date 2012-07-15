@@ -57,7 +57,7 @@ function ItemsPanel:gainItem(item)
 	self:reorganize()
 end
 
--- Reorganize items by sorting them alphabetically and moving them accordingly
+-- Reorganize items by sorting them by obtention order and moving them accordingly
 function ItemsPanel:reorganize()
 	local i = 0
 	local j = 0
