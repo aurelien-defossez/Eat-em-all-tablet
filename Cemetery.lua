@@ -119,16 +119,17 @@ end
 function Cemetery:enterTile(zombie)
 	if zombie.player.id ~= self.player.id then
 		-- Lose HP
-		self.player:addHPs(-1)
+		self.player:addHPs(-zombie.size)
 
 		-- Kill zombie
 		zombie:die{
 			killer = Zombie.KILLER_CEMETERY
 		}
-	elseif zombie.phase == Zombie.PHASE_MOVE then
+	elseif zombie.phase == Zombie.PHASE_MOVE or zombie.phase == Zombie.PHASE_CARRY_ITEM_INIT then
 		-- Move backward
 		zombie:changeDirection(self.player.direction)
 	elseif zombie.phase == Zombie.PHASE_CARRY_ITEM then
+		-- Fetch item
 		zombie.item:fetched(self.player)
 	end
 end
@@ -144,7 +145,15 @@ function Cemetery:enterFrame(timeDelta)
 	-- Count spawn time
 	if self.timeSinceLastSpawn >= config.cemetery.spawnPeriod.normal then
 		self.timeSinceLastSpawn = self.timeSinceLastSpawn - config.cemetery.spawnPeriod.normal
-		self:spawn{}
+
+		local size = 1
+		if config.debug.randomGiants and math.random() < 0.2 then
+			size = config.item.giant.size
+		end
+
+		self:spawn{
+			size = size
+		}
 	end
 
 	-- Count quick spawn time
@@ -153,7 +162,9 @@ function Cemetery:enterFrame(timeDelta)
 	elseif self.timeSinceLastQuickSpawn >= config.cemetery.spawnPeriod.quick then
 		self.timeSinceLastQuickSpawn = self.timeSinceLastQuickSpawn - config.cemetery.spawnPeriod.quick
 		self.nbQuickZombies = self.nbQuickZombies - 1
-		self:spawn{}
+		self:spawn{
+			size = 1
+		}
 	end
 end
 

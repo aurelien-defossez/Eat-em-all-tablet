@@ -208,12 +208,14 @@ end
 --  zombie: The zombie reaching the middle of the tile
 function City:reachTileMiddle(zombie)
 	if zombie.phase == Zombie.PHASE_MOVE then
-		if self.player == nil or zombie.player ~= self.player then
+		if not self.player or zombie.player ~= self.player then
 			self:attackCity(zombie)
-		elseif self.inhabitants < self.maxInhabitants then
-		-- Enforce city
-			self:addInhabitants(1)
-			zombie:die(Zombie.KILLER_CITY_ENTER)
+		elseif self.inhabitants < self.maxInhabitants and zombie.size == 1 then
+			-- Enforce city
+			self:addInhabitants(zombie.size)
+			zombie:die{
+				killer = Zombie.KILLER_CITY_ENTER
+			}
 		end
 	end
 end
@@ -225,16 +227,22 @@ end
 function City:attackCity(zombie)
 	if self.inhabitants > 0 then
 		-- Attack city and die
-		self:addInhabitants(-1)
-		zombie:die(Zombie.KILLER_CITY)
-	else
+		local hits = math.min(zombie.size, self.inhabitants)
+		self:addInhabitants(-hits)
+		zombie:die{
+			killer = Zombie.KILLER_CITY,
+			hits = hits
+		}
+	elseif zombie.size == 1 then
 		-- Notify player
 		zombie.player:gainCity(self)
 
 		-- Change the city owner
 		self.player = zombie.player
-		self:addInhabitants(1)
-		zombie:die(Zombie.KILLER_CITY_ENTER)
+		self:addInhabitants(zombie.size)
+		zombie:die{
+			killer = Zombie.KILLER_CITY_ENTER
+		}
 
 		self:drawSprite()
 	end

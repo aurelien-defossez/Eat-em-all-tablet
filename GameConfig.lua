@@ -5,9 +5,10 @@ local City = require("City")
 debug = {
 	oneCemetery = false,
 	oneZombie = false,
+	randomGiants = true,
 	immediateSpawn = true,
 	immediateItemSpawn = true,
-	showCollisionMask = true
+	showCollisionMask = false
 }
 
 screen = {
@@ -76,6 +77,7 @@ item = {
 	},
 	speed = {
 		perZombie = 0.1,
+		perGiant = 0.3,
 		max = 1
 	},
 	creation = {
@@ -113,7 +115,10 @@ zombie = {
 		y = 7
 	},
 	-- speed in tiles per seconds
-	speed = 1,
+	speed = {
+		normal = 1,
+		giant = 0.5
+	},
 	tileColliderOffset = {
 		x = 4,
 		y = 0

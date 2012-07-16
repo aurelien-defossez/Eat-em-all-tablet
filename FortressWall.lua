@@ -83,16 +83,17 @@ end
 function FortressWall:enterTile(zombie)
 	if zombie.player.id ~= self.player.id then
 		-- Lose HP
-		self.player:addHPs(-1)
+		self.player:addHPs(-zombie.size)
 
 		-- Kill zombie
 		zombie:die{
 			killer = Zombie.KILLER_FORTRESS
 		}
-	elseif zombie.phase == Zombie.PHASE_MOVE then
+	elseif zombie.phase == Zombie.PHASE_MOVE or zombie.phase == Zombie.PHASE_CARRY_ITEM_INIT then
 		-- Move backward
 		zombie:changeDirection(self.player.direction)
 	elseif zombie.phase == Zombie.PHASE_CARRY_ITEM then
+		-- Fetch item
 		zombie.item:fetched(self.player)
 	end
 end

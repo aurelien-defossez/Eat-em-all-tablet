@@ -51,6 +51,7 @@ function MapItem.create(parameters)
 	self.speed = 0
 	self.actualSpeed = 0
 	self.zombies = {}
+	self.alreadyFetched = false
 
 	self:computeCollisionMask()
 
@@ -120,28 +121,32 @@ function MapItem:attachZombie(parameters)
 end
 
 function MapItem:fetched(player)
-	-- Release zombies from their tasks
-	for index, zombie in pairs(self.zombies) do
-		if zombie.phase == Zombie.PHASE_CARRY_ITEM then
-			zombie.phase = Zombie.PHASE_MOVE
-			zombie:changeDirection(zombie.player.direction)
+	if not self.alreadyFetched then
+		self.alreadyFetched = true
+
+		-- Release zombies from their tasks
+		for index, zombie in pairs(self.zombies) do
+			if zombie.phase == Zombie.PHASE_CARRY_ITEM or zombie.phase == Zombie.PHASE_CARRY_ITEM_INIT then
+				zombie.phase = Zombie.PHASE_MOVE
+				zombie:changeDirection(zombie.player.direction)
+			end
 		end
+
+		-- Create player item
+		local playerItem = PlayerItem.create{
+			player = player,
+			grid = self.grid,
+			x = self.x,
+			y = self.y,
+			type = math.random(1, PlayerItem.TYPES.COUNT)
+		}
+
+		playerItem:draw()
+		player:gainItem(playerItem)
+		self.grid:removeItem(self)
+
+		self.group:removeSelf()
 	end
-
-	-- Create player item
-	local playerItem = PlayerItem.create{
-		player = player,
-		grid = self.grid,
-		x = self.x,
-		y = self.y,
-		type = math.random(1, PlayerItem.TYPES.COUNT)
-	}
-
-	playerItem:draw()
-	player:gainItem(playerItem)
-	self.grid:removeItem(self)
-
-	self.group:removeSelf()
 end
 
 -- Enter frame handler

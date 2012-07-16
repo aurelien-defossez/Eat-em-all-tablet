@@ -293,13 +293,16 @@ function Grid:enterFrame(timeDelta)
 
 				if collisions.intersectRects(mask1.x, mask1.y, mask1.width, mask1.height,
 					mask2.x, mask2.y, mask2.width, mask2.height) then
-					local dyingParameters = {
-						killer = Zombie.KILLER_ZOMBIE
+
+					zombie:die{
+						killer = Zombie.KILLER_ZOMBIE,
+						hits = otherZombie.size
 					}
 
-					zombie:die(dyingParameters)
-					otherZombie:die(dyingParameters)
-
+					otherZombie:die{
+						killer = Zombie.KILLER_ZOMBIE,
+						hits = zombie.size
+					}
 					break
 				end
 			end

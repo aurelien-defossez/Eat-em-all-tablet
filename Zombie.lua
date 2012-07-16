@@ -61,6 +61,7 @@ ctId = 1
 --  tile: The tile the zombie spawned from
 --  player: The zombie owner
 --  grid: The grid
+--  size: The zombie size
 function Zombie.create(parameters)
 	-- Create object
 	local self = parameters or {}
@@ -74,6 +75,14 @@ function Zombie.create(parameters)
 	self.x = self.tile.x
 	self.y = self.tile.y
 	self.direction = self.player.direction
+	self.size = self.size or 1
+	self.hitPoints = self.size
+
+	if self.size == 1 then
+		self.speed = config.zombie.speed.normal
+	else
+		self.speed = config.zombie.speed.giant
+	end
 
 	ctId = ctId + 1
 
@@ -102,14 +111,30 @@ end
 
 -- Draw the zombie
 function Zombie:draw()
-	self.zombieSprite = display.newImageRect("zombie_" .. self.player.color .. ".png", self.width, self.height)
+	local spriteWidth
+	local spriteHeight
+
+	if self.size == 1 then
+		spriteWidth = self.width
+		spriteHeight = self.height
+	else
+		spriteWidth = self.width * 1.5
+		spriteHeight = self.height * 1.5
+	end
+
+	self.zombieSprite = display.newImageRect("zombie_" .. self.player.color .. ".png", spriteWidth, spriteHeight)
 	self.zombieSprite.arrow = self
 
 	-- Position sprite
-	self.zombieSprite.x = self.width / 2 +
-		math.random(config.zombie.randomOffsetRange.x[1], config.zombie.randomOffsetRange.x[2])
-	self.zombieSprite.y = self.height / 2 +
-		math.random(config.zombie.randomOffsetRange.y[1], config.zombie.randomOffsetRange.y[2])
+	if self.size == 1 then
+		self.zombieSprite.x = spriteWidth / 2 +
+			math.random(config.zombie.randomOffsetRange.x[1], config.zombie.randomOffsetRange.x[2])
+		self.zombieSprite.y = spriteHeight / 2 +
+			math.random(config.zombie.randomOffsetRange.y[1], config.zombie.randomOffsetRange.y[2])
+	else
+		self.zombieSprite.x = 32
+		self.zombieSprite.y = 20
+	end
 
 	-- Add to group
 	self.group:insert(self.zombieSprite)
@@ -249,9 +274,16 @@ function Zombie:carryItem(item)
 	self.phase = PHASE_CARRY_ITEM_INIT
 	self:changeDirection(getReverseDirection(self.player.direction))
 
+	local speed
+	if self.size == 1 then
+		speed = config.item.speed.perZombie
+	else
+		speed = config.item.speed.perGiant
+	end
+
 	item:attachZombie({
 		zombie = self,
-		speed = config.item.speed.perZombie * self.directionVector.x
+		speed = speed * self.directionVector.x
 	})
 end
 
@@ -259,14 +291,20 @@ end
 --
 -- Parameters
 --  killer: The killer type, as possible Zombie constant types
+--  hits: The number of hits the zombie takes (Default is all)
 function Zombie:die(parameters)
-	-- Remove zombie from the zombies list
-	self.grid:removeZombie(self)
+	parameters.hits = parameters.hits or self.hitPoints
+	self.hitPoints = self.hitPoints - parameters.hits
 
-	-- Remove sprite from display
-	self:destroy()
+	if self.hitPoints <= 0 then
+		-- Remove zombie from the zombies list
+		self.grid:removeZombie(self)
 
-	self.phase = PHASE_DEAD
+		-- Remove sprite from display
+		self:destroy()
+
+		self.phase = PHASE_DEAD
+	end
 end
 
 -- Enter frame handler
@@ -275,14 +313,14 @@ end
 --  timeDelta: The time in ms since last frame
 function Zombie:enterFrame(timeDelta)
 	if self.phase == PHASE_MOVE then
-		local movement = timeDelta / 1000 * config.zombie.speed * Tile.width
+		local movement = timeDelta / 1000 * self.speed * Tile.width
 
 		self:move{
 			x = movement * self.directionVector.x,
 			y = movement * self.directionVector.y
 		}
 	elseif self.phase == PHASE_CARRY_ITEM_INIT then
-		local movement = timeDelta / 1000 * config.zombie.speed * Tile.width
+		local movement = timeDelta / 1000 * self.speed * Tile.width
 		local itemMask = self.item.collisionMask
 
 		if self.player.direction == Arrow.RIGHT then
