@@ -22,6 +22,14 @@ FORWARD = 1
 REVERSE = 2
 
 -----------------------------------------------------------------------------------------
+-- Class initialization
+-----------------------------------------------------------------------------------------
+
+function initialize()
+	classGroup = display.newGroup()
+end
+
+-----------------------------------------------------------------------------------------
 -- Initialization and Destruction
 -----------------------------------------------------------------------------------------
 
@@ -46,8 +54,17 @@ function HitPointsPanel.create(parameters)
 		maxWidth = self.width - 2 * config.panels.upperBar.hitPoints.xpadding,
 		height = self.height - 2 * config.panels.upperBar.hitPoints.ypadding
 	}
+
+	-- Manage groups
+	self.group = display.newGroup()
+	classGroup:insert(self.group)
 	
 	return self
+end
+
+-- Destroy the panel
+function HitPointsPanel:destroy()
+	self.group:removeSelf()
 end
 
 -----------------------------------------------------------------------------------------
@@ -66,6 +83,9 @@ function HitPointsPanel:draw()
 	self.redBar:setFillColor(200, 30, 30)
 
 	self:updateHPs(self.hitPoints)
+
+	self.group:insert(self.greenBar)
+	self.group:insert(self.redBar)
 end
 
 function HitPointsPanel:updateHPs(hitPoints)

@@ -41,6 +41,15 @@ function CitiesPanel.create(parameters)
 	return self
 end
 
+-- Destroy the panel
+function CitiesPanel:destroy()
+	for index, shortcut in pairs(self.shortcuts) do
+		shortcut:destroy()
+	end
+
+	self.group:removeSelf()
+end
+
 -----------------------------------------------------------------------------------------
 -- Methods
 -----------------------------------------------------------------------------------------

@@ -38,6 +38,13 @@ function ItemsPanel.create(parameters)
 	return self
 end
 
+-- Destroy the panel
+function ItemsPanel:destroy()
+	for index, item in ipairs(self.items) do
+		item:destroy()
+	end
+end
+
 -----------------------------------------------------------------------------------------
 -- Methods
 -----------------------------------------------------------------------------------------

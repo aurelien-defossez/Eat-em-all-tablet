@@ -99,6 +99,17 @@ function ArrowsPanel.create(parameters)
 	return self
 end
 
+-- Destroy the panel
+function ArrowsPanel:destroy()
+	self.arrowUp:destroy()
+	self.arrowDown:destroy()
+	self.arrowRight:destroy()
+	self.arrowLeft:destroy()
+	self.arrowDelete:destroy()
+
+	self.group:removeSelf()
+end
+
 -----------------------------------------------------------------------------------------
 -- Methods
 -----------------------------------------------------------------------------------------

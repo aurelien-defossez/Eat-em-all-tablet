@@ -90,6 +90,11 @@ function Zombie.create(parameters)
 	return self
 end
 
+-- Destroy the zombie
+function Zombie:destroy()
+	self.group:removeSelf()
+end
+
 -----------------------------------------------------------------------------------------
 -- Methods
 -----------------------------------------------------------------------------------------
@@ -236,7 +241,7 @@ function Zombie:die(parameters)
 	self.grid:removeZombie(self)
 
 	-- Remove sprite from display
-	self.group:removeSelf()
+	self:destroy()
 
 	self.phase = PHASE_DEAD
 end

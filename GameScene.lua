@@ -46,6 +46,7 @@ function GameScene.create(parameters)
 	background:setFillColor(142, 57, 20)
 
 	-- Initialize groups in invert Z order
+	UpperBarPanel.initialize()
 	PlayerControlPanel.initialize()
 	ArrowsPanel.initialize()
 	Arrow.initialize()
@@ -103,6 +104,14 @@ function GameScene.create(parameters)
 	self.grid:draw()
 
 	return self
+end
+
+-- Destroy the scene
+function GameScene:destroy()
+	self.controlPanel1:destroy()
+	self.controlPanel2:destroy()
+	self.grid:destroy()
+	self.upperBar:destroy()
 end
 
 -----------------------------------------------------------------------------------------

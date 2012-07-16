@@ -91,6 +91,11 @@ function City.create(parameters)
 	return self
 end
 
+-- Destroy the city
+function City:destroy()
+	self.group:removeSelf()
+end
+
 -----------------------------------------------------------------------------------------
 -- Methods
 -----------------------------------------------------------------------------------------

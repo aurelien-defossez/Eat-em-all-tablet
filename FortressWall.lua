@@ -53,6 +53,11 @@ function FortressWall.create(parameters)
 	return self
 end
 
+-- Destroy the wall
+function FortressWall:destroy()
+	self.group:removeSelf()
+end
+
 -----------------------------------------------------------------------------------------
 -- Methods
 -----------------------------------------------------------------------------------------

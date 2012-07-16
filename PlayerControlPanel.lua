@@ -72,6 +72,15 @@ function PlayerControlPanel.create(parameters)
 	return self
 end
 
+-- Destroy the panel
+function PlayerControlPanel:destroy()
+	self.cities:destroy()
+	self.arrows:destroy()
+	self.items:destroy()
+
+	self.group:removeSelf()
+end
+
 -----------------------------------------------------------------------------------------
 -- Methods
 -----------------------------------------------------------------------------------------

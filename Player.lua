@@ -35,6 +35,11 @@ function Player.create(parameters)
 	return self
 end
 
+-- Destroy the player
+function Player:destroy()
+	-- Do nothing
+end
+
 -----------------------------------------------------------------------------------------
 -- Methods
 -----------------------------------------------------------------------------------------

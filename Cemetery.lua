@@ -60,6 +60,11 @@ function Cemetery.create(parameters)
 	return self
 end
 
+-- Destroy the cemetery
+function Cemetery:destroy()
+	self.group:removeSelf()
+end
+
 -----------------------------------------------------------------------------------------
 -- Methods
 -----------------------------------------------------------------------------------------

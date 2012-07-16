@@ -72,6 +72,15 @@ function Tile.create(parameters)
 	return self
 end
 
+-- Destroy the tile
+function Tile:destroy()
+	if self.content then
+		self.content:destroy()
+	end
+
+	self.group:removeSelf()
+end
+
 -----------------------------------------------------------------------------------------
 -- Methods
 -----------------------------------------------------------------------------------------

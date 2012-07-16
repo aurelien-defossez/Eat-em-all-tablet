@@ -67,6 +67,11 @@ function MapItem.create(parameters)
 	return self
 end
 
+-- Destroy the item
+function MapItem:destroy()
+	self.group:removeSelf()
+end
+
 -----------------------------------------------------------------------------------------
 -- Methods
 -----------------------------------------------------------------------------------------

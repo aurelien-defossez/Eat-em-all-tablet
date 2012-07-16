@@ -57,7 +57,7 @@ end
 
 -- Destroy the sign
 function Sign:destroy()
-	self.signSprite:removeSelf()
+	self.group:removeSelf()
 end
 
 -----------------------------------------------------------------------------------------

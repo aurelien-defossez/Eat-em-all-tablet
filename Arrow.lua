@@ -62,6 +62,11 @@ function Arrow.create(parameters)
 	return self
 end
 
+-- Destroy the arrow
+function Arrow:destroy()
+	self.group:removeSelf()
+end
+
 -----------------------------------------------------------------------------------------
 -- Methods
 -----------------------------------------------------------------------------------------
@@ -95,29 +100,29 @@ end
 
 -- Touch handler on one of the four arrows of the control panel
 function onArrowTouch(event)
-	local arrow = event.target.arrow
+	local self = event.target.arrow
 
 	-- Begin drag by creating a new draggable arrow
 	if event.phase == "began" then
 		local draggedArrow = nil
 
-		if arrow.direction ~= DELETE then
-			draggedArrow = display.newImageRect("arrow_up_selected_" .. arrow.player.color .. ".png",
-				arrow.width, arrow.height)
+		if self.direction ~= DELETE then
+			draggedArrow = display.newImageRect("arrow_up_selected_" .. self.player.color .. ".png",
+				self.width, self.height)
 		else 
-			draggedArrow = display.newImageRect("arrow_crossed_" .. arrow.player.color .. ".png",
-				arrow.width, arrow.height)
+			draggedArrow = display.newImageRect("arrow_crossed_" .. self.player.color .. ".png",
+				self.width, self.height)
 		end
 
-		draggedArrow.direction = arrow.direction
-		draggedArrow.player = arrow.player
-		draggedArrow.grid = arrow.grid
+		draggedArrow.direction = self.direction
+		draggedArrow.player = self.player
+		draggedArrow.grid = self.grid
 
 		-- Position arrow
 		draggedArrow:setReferencePoint(display.CenterReferencePoint)
 		draggedArrow.x = event.x
 		draggedArrow.y = event.y
-		draggedArrow:rotate(arrow.direction)
+		draggedArrow:rotate(self.direction)
 
 		-- Handle events
 		draggedArrow:addEventListener("touch", onDraggedArrowTouch)

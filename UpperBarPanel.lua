@@ -16,6 +16,16 @@ local config = require("GameConfig")
 local HitPointsPanel = require("HitPointsPanel")
 
 -----------------------------------------------------------------------------------------
+-- Class initialization
+-----------------------------------------------------------------------------------------
+
+function initialize()
+	classGroup = display.newGroup()
+
+	HitPointsPanel.initialize()
+end
+
+-----------------------------------------------------------------------------------------
 -- Initialization and Destruction
 -----------------------------------------------------------------------------------------
 
@@ -56,6 +66,12 @@ function UpperBarPanel.create(parameters)
 	self.players[2].hitPointsPanel = self.hitPoints[2]
 	
 	return self
+end
+
+-- Destroy the panel
+function UpperBarPanel:destroy()
+	self.hitPoints[1]:destroy()
+	self.hitPoints[2]:destroy()
 end
 
 -----------------------------------------------------------------------------------------

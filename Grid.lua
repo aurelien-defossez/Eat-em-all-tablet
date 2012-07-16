@@ -82,6 +82,13 @@ function Grid.create(parameters)
 	return self
 end
 
+-- Destroy the grid
+function Grid:destroy()
+	for index, tile in paris(self.matrix) do
+		tile:destroy()
+	end
+end
+
 -----------------------------------------------------------------------------------------
 -- Methods
 -----------------------------------------------------------------------------------------
