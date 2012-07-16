@@ -7,7 +7,7 @@ debug = {
 	oneZombie = false,
 	immediateSpawn = true,
 	immediateItemSpawn = true,
-	showCollisionMask = true
+	showCollisionMask = false
 }
 
 screen = {
