@@ -125,6 +125,7 @@ function MapItem:fetched(player)
 
 	-- Create player item
 	local playerItem = PlayerItem.create{
+		grid = self.grid,
 		x = self.x,
 		y = self.y,
 		type = math.random(1, PlayerItem.TYPES.COUNT)

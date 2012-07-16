@@ -90,6 +90,18 @@ function Tile:draw()
 	self.group:insert(borders)
 end
 
+-- Return the content type, if exist
+--
+-- Returns:
+--  The content type, as defined by the cell content, if cell has content
+function Tile:getContentType()
+	if self.content ~= nil then
+		return self.content.type
+	else
+		return nil
+	end
+end
+
 -- Remove the tile content, if exists
 function Tile:removeContent()
 	if self.content ~= nil then

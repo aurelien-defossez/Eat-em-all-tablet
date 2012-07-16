@@ -28,10 +28,10 @@ TYPES = {
 }
 
 ALLOWED_DROP_ZONE = {
-	ALL,
-	CEMETERIES,
-	EMPTY_EXCEPT_ARROWS,
-	EMPTY
+	ALL = 1,
+	CEMETERIES = 2,
+	EMPTY_EXCEPT_SIGNS = 3,
+	EMPTY = 4
 }
 
 -----------------------------------------------------------------------------------------
@@ -55,6 +55,7 @@ end
 -- Creates the item
 --
 -- Parameters:
+--  grid: The grid
 --  x: The X position
 --  y: The Y position
 function PlayerItem.create(parameters)
@@ -76,10 +77,10 @@ function PlayerItem.create(parameters)
 		self.dropZones = ALLOWED_DROP_ZONE.CEMETERIES
 	elseif self.type == TYPES.FIRE then
 		self.typeName = "fire"
-		self.dropZones = ALLOWED_DROP_ZONE.EMPTY_EXCEPT_ARROWS
+		self.dropZones = ALLOWED_DROP_ZONE.EMPTY_EXCEPT_SIGNS
 	elseif self.type == TYPES.MINE then
 		self.typeName = "mine"
-		self.dropZones = ALLOWED_DROP_ZONE.EMPTY_EXCEPT_ARROWS
+		self.dropZones = ALLOWED_DROP_ZONE.EMPTY_EXCEPT_SIGNS
 	end
 
 	ctId = ctId + 1
@@ -137,6 +138,7 @@ end
 -- Touch handler on the item
 function onItemTouch(event)
 	local self = event.target.item
+	local cancel = false
 
 	-- Begin drag
 	if event.phase == "began" or event.phase == "moved" then
@@ -146,7 +148,34 @@ function onItemTouch(event)
 
 		-- Focus this object in order to track this finger properly
 		display.getCurrentStage():setFocus(self.itemSprite, event.id)
-	elseif event.phase == "ended" or event.phase == "cancelled" then
+	elseif event.phase == "ended" then
+		-- Locate drop tile
+		local tile = self.grid:getTileByPixels{
+			x = event.x,
+			y = event.y
+		}
+
+		if tile == nil then
+			cancel = true
+		else
+			-- Check if the drop is a legal drop for this item
+			if self.dropZones == ALLOWED_DROP_ZONE.ALL
+				or self.dropZones == ALLOWED_DROP_ZONE.CEMETERIES and tile:getContentType() == Tile.TYPE_CEMETERY
+				or self.dropZones == ALLOWED_DROP_ZONE.EMPTY and tile.content == nil
+				or self.dropZones == ALLOWED_DROP_ZONE.EMPTY_EXCEPT_SIGNS and
+					(tile.content == nil or tile:getContentType() == Tile.TYPE_SIGN) then
+				print("Dropped")
+			else
+				cancel = true
+			end
+		end
+	elseif event.phase == "cancelled" then
+		cancel = true
+	end
+
+	if cancel then
+		display.getCurrentStage():setFocus(nil, event.id)
+
 		self:moveTo{
 			x = self.x,
 			y = self.y
