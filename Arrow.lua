@@ -149,10 +149,16 @@ function onDraggedArrowTouch(event)
 			y = event.y
 		}
 
-		if tile ~= nil then
+		if tile then
 			if arrowSprite.direction ~= DELETE then
 				-- Create sign
-				if tile ~= nil and tile.content == nil then
+				if not tile.content
+					or tile.content.type == Tile.TYPE_SIGN and tile.content.player == arrowSprite.player then
+
+					if tile.content then
+						tile.content:destroy()
+					end
+
 					tile.content = Sign.create{
 						tile = tile,
 						player = arrowSprite.player,
