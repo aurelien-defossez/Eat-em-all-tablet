@@ -14,6 +14,7 @@ local scene = storyboard.newScene()
 local config = require("GameConfig")
 local Player = require("Player")
 local Arrow = require("Arrow")
+local TableLayout = require("TableLayout")
 local GameScene = require("GameScene")
 
 -----------------------------------------------------------------------------------------
@@ -31,6 +32,7 @@ function scene:createScene(event)
 		id = 1,
 		color = "red",
 		direction = Arrow.RIGHT,
+		tableLayoutDirection = TableLayout.LEFT_TO_RIGHT,
 		hitPoints = config.player.hitPoints
 	}
 
@@ -38,6 +40,7 @@ function scene:createScene(event)
 		id = 2,
 		color = "blue",
 		direction = Arrow.LEFT,
+		tableLayoutDirection = TableLayout.RIGHT_TO_LEFT,
 		hitPoints = config.player.hitPoints
 	}
 

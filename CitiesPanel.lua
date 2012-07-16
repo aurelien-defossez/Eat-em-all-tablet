@@ -14,6 +14,7 @@ CitiesPanel.__index = CitiesPanel
 
 local config = require("GameConfig")
 local CityShortcut = require("CityShortcut")
+local TableLayout = require("TableLayout")
 
 -----------------------------------------------------------------------------------------
 -- Initialization and Destruction
@@ -33,7 +34,15 @@ function CitiesPanel.create(parameters)
 	-- Initialize attributes
 	self.width = config.panels.controls.cities.width
 	self.height = config.screen.height - self.y - config.panels.controls.cities.ypadding
-	self.shortcuts = {}
+	self.tableLayout = TableLayout.create{
+		x = self.x,
+		y = self.y,
+		width = self.width,
+		height = self.height,
+		itemWidth = config.city.width,
+		itemHeight = config.city.height,
+		direction = self.player.tableLayoutDirection
+	}
 
 	-- Register itself to the player
 	self.player.citiesPanel = self
@@ -43,9 +52,7 @@ end
 
 -- Destroy the panel
 function CitiesPanel:destroy()
-	for index, shortcut in pairs(self.shortcuts) do
-		shortcut:destroy()
-	end
+	self.tableLayout:destroy()
 
 	self.group:removeSelf()
 end
@@ -65,15 +72,13 @@ end
 --  city: The city controlled
 function CitiesPanel:gainCity(city)
 	local shortcut = CityShortcut.create{
+		id = city.id,
 		city = city,
 		player = self.player
 	}
 
 	shortcut:draw()
-
-	self.shortcuts[city.id] = shortcut
-
-	self:reorganize()
+	self.tableLayout:addItem(shortcut)
 end
 
 -- Lose the control of a city
@@ -81,44 +86,7 @@ end
 -- Parameters:
 --  city: The city lost
 function CitiesPanel:loseCity(city)
-	self.shortcuts[city.id]:destroy()
-	self.shortcuts[city.id] = nil
-
-	self:reorganize()
-end
-
--- Reorganize shortcuts by sorting them alphabetically and moving them accordingly
-function CitiesPanel:reorganize()
-	local i = 0
-	local j = 0
-	local orderedShortcuts = {}
-	
-	-- Sort shortcuts by id
-	for index, shortcut in pairs(self.shortcuts) do
-		table.insert(orderedShortcuts, shortcut)
-	end
-
-	table.sort(orderedShortcuts, compareLess)
-
-	-- Move shortcuts to their new place
-	for index, shortcut in ipairs(orderedShortcuts) do
-		shortcut:moveTo{
-			x = self.x + i * config.city.width,
-			y = self.y + j * config.city.height
-		}
-
-		j = j + 1
-
-		if j == config.panels.controls.cities.nbRows then
-			i = i + 1
-			j = 0
-		end
-	end
-end
-
--- Comparison function for sorting chortcuts
-function compareLess(a, b)
-	return a.city.id < b.city.id
+	self.tableLayout:removeItem(city)
 end
 
 -----------------------------------------------------------------------------------------

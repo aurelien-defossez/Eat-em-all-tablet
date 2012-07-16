@@ -13,6 +13,7 @@ ItemsPanel.__index = ItemsPanel
 -----------------------------------------------------------------------------------------
 
 local config = require("GameConfig")
+local TableLayout = require("TableLayout")
 
 -----------------------------------------------------------------------------------------
 -- Initialization and Destruction
@@ -30,7 +31,17 @@ function ItemsPanel.create(parameters)
 	setmetatable(self, ItemsPanel)
 	
 	-- Initialize attributes
-	self.items = {}
+	self.width = config.panels.controls.items.width
+	self.height = 3 * config.item.height
+	self.tableLayout = TableLayout.create{
+		x = self.x,
+		y = self.y,
+		width = self.width,
+		height = self.height,
+		itemWidth = config.item.width,
+		itemHeight = config.item.height,
+		direction = self.player.tableLayoutDirection
+	}
 
 	-- Register itself to the player
 	self.player.itemsPanel = self
@@ -40,9 +51,7 @@ end
 
 -- Destroy the panel
 function ItemsPanel:destroy()
-	for index, item in ipairs(self.items) do
-		item:destroy()
-	end
+	self.tableLayout:destroy()
 end
 
 -----------------------------------------------------------------------------------------
@@ -59,9 +68,7 @@ end
 -- Parameters:
 --  item: The new item
 function ItemsPanel:gainItem(item)
-	self.items[item.id] = item
-
-	self:reorganize()
+	self.tableLayout:addItem(item)
 end
 
 -- Remove an item from the list
@@ -69,44 +76,7 @@ end
 -- Parameters:
 --  item: The item to remove
 function ItemsPanel:removeItem(item)
-	self.items[item.id]:destroy()
-	self.items[item.id] = nil
-
-	self:reorganize()
-end
-
--- Reorganize items by sorting them by obtention order and moving them accordingly
-function ItemsPanel:reorganize()
-	local i = 0
-	local j = 0
-	local orderedItems = {}
-	
-	-- Sort items by id
-	for index, item in pairs(self.items) do
-		table.insert(orderedItems, item)
-	end
-
-	table.sort(orderedItems, compareLess)
-
-	-- Move items to their new place
-	for index, item in ipairs(orderedItems) do
-		item:moveTo{
-			x = self.x + i * config.item.width,
-			y = self.y + j * config.item.height
-		}
-
-		j = j + 1
-
-		if j == config.panels.controls.items.nbRows then
-			i = i + 1
-			j = 0
-		end
-	end
-end
-
--- Comparison function for sorting chortcuts
-function compareLess(a, b)
-	return a.id < b.id
+	self.tableLayout:removeItem(item)
 end
 
 -----------------------------------------------------------------------------------------

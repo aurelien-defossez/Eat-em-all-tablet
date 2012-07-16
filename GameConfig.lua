@@ -131,6 +131,7 @@ panels = {
 		width = 2 * (arrow.width + 8),
 		-- height = maxHeight - upperBar.height,
 		items = {
+			width = 2 * arrow.width,
 			ypadding = 8,
 			nbRows = 3,
 			nbCols = 2
