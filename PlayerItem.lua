@@ -129,7 +129,12 @@ end
 -- Parameters:
 --  tile: The tile to use the item on
 function PlayerItem:useItem(tile)
-	print("Use item")
+	if self.type == TYPES.SKELETON then
+		tile.content:quicklySpawnZombies(config.item.skeleton.nbZombies)
+	elseif self.type == TYPES.GIANT then
+	elseif self.type == TYPES.FIRE then
+	elseif self.type == TYPES.MINE then
+	end
 end
 
 -- Move the item to an absolute position on the screen, easing it

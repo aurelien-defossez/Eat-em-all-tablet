@@ -27,7 +27,10 @@ arrow = {
 cemetery = {
 	width = 64,
 	height = 64,
-	spawnPeriod = 3000
+	spawnPeriod = {
+		normal = 3000,
+		quick = 400
+	}
 }
 
 city = {
@@ -83,7 +86,10 @@ item = {
 		},
 		xoffset = 2
 	},
-	easingTime = 1500
+	easingTime = 1500,
+	skeleton = {
+		nbZombies = 5
+	}
 }
 
 fortressWall = {
@@ -183,23 +189,19 @@ defaultMap = {
 			y = 3,
 			size = City.SIZE_SMALL
 		}, {
-			x = 4,
-			y = 8,
-			size = City.SIZE_SMALL
-		},{
 			x = 5,
 			y = 8,
 			size = City.SIZE_SMALL
-		},{
+		}, {
 			x = 4,
 			y = 7,
 			size = City.SIZE_SMALL
-		},{
+		}, {
 			x = 4,
 			y = 6,
 			size = City.SIZE_SMALL
 		}, {
-			x = 4,
+			x = 6,
 			y = 6,
 			size = City.SIZE_MEDIUM
 		}, {

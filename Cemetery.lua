@@ -44,6 +44,8 @@ function Cemetery.create(parameters)
 	self.x = self.tile.x
 	self.y = self.tile.y
 	self.timeSinceLastSpawn = 0
+	self.timeSinceLastQuickSpawn = 0
+	self.nbQuickZombies = 0
 
 	-- Manage groups
 	self.group = display.newGroup()
@@ -54,7 +56,7 @@ function Cemetery.create(parameters)
 	self.group.y = self.y
 
 	if config.debug.immediateSpawn then
-		self.timeSinceLastSpawn = config.cemetery.spawnPeriod
+		self.timeSinceLastSpawn = config.cemetery.spawnPeriod.normal
 	end
 
 	return self
@@ -98,6 +100,14 @@ function Cemetery:spawn()
 	end
 end
 
+-- Quickly spawn n zombies
+--
+-- Parameters
+--  nbZombies: The number of zombies to spawn
+function Cemetery:quicklySpawnZombies(nbZombies)
+	self.nbQuickZombies = self.nbQuickZombies + nbZombies
+end
+
 -- Enter tile handler, called when a zombie enters the tile
 --
 -- Parameters:
@@ -125,10 +135,20 @@ end
 --  timeDelta: The time in ms since last frame
 function Cemetery:enterFrame(timeDelta)
 	self.timeSinceLastSpawn = self.timeSinceLastSpawn + timeDelta
+	self.timeSinceLastQuickSpawn = self.timeSinceLastQuickSpawn + timeDelta
 
 	-- Count spawn time
-	if self.timeSinceLastSpawn >= config.cemetery.spawnPeriod then
-		self.timeSinceLastSpawn = self.timeSinceLastSpawn - config.cemetery.spawnPeriod
+	if self.timeSinceLastSpawn >= config.cemetery.spawnPeriod.normal then
+		self.timeSinceLastSpawn = self.timeSinceLastSpawn - config.cemetery.spawnPeriod.normal
+		self:spawn()
+	end
+
+	-- Count quick spawn time
+	if self.nbQuickZombies == 0 then
+		self.timeSinceLastQuickSpawn = math.min(self.timeSinceLastQuickSpawn, config.cemetery.spawnPeriod.quick)
+	elseif self.timeSinceLastQuickSpawn >= config.cemetery.spawnPeriod.quick then
+		self.timeSinceLastQuickSpawn = self.timeSinceLastQuickSpawn - config.cemetery.spawnPeriod.quick
+		self.nbQuickZombies = self.nbQuickZombies - 1
 		self:spawn()
 	end
 end
