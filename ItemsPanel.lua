@@ -57,6 +57,17 @@ function ItemsPanel:gainItem(item)
 	self:reorganize()
 end
 
+-- Remove an item from the list
+--
+-- Parameters:
+--  item: The item to remove
+function ItemsPanel:removeItem(item)
+	self.items[item.id]:destroy()
+	self.items[item.id] = nil
+
+	self:reorganize()
+end
+
 -- Reorganize items by sorting them by obtention order and moving them accordingly
 function ItemsPanel:reorganize()
 	local i = 0

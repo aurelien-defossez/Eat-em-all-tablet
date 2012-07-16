@@ -77,6 +77,14 @@ function Player:gainItem(item)
 	self.itemsPanel:gainItem(item)
 end
 
+-- Remove an item from the list
+--
+-- Parameters:
+--  item: The item to remove
+function Player:removeItem(item)
+	self.itemsPanel:removeItem(item)
+end
+
 -----------------------------------------------------------------------------------------
 
 return Player

@@ -55,6 +55,7 @@ end
 -- Creates the item
 --
 -- Parameters:
+--  player: The player that owns this item
 --  grid: The grid
 --  x: The X position
 --  y: The Y position
@@ -96,6 +97,11 @@ function PlayerItem.create(parameters)
 	return self
 end
 
+-- Destroy the item
+function PlayerItem:destroy()
+	self.group:removeSelf()
+end
+
 -----------------------------------------------------------------------------------------
 -- Methods
 -----------------------------------------------------------------------------------------
@@ -116,6 +122,14 @@ function PlayerItem:draw()
 
 	-- Add to group
 	self.group:insert(self.itemSprite)
+end
+
+-- Use the item on the specified tile
+--
+-- Parameters:
+--  tile: The tile to use the item on
+function PlayerItem:useItem(tile)
+	print("Use item")
 end
 
 -- Move the item to an absolute position on the screen, easing it
@@ -164,7 +178,8 @@ function onItemTouch(event)
 				or self.dropZones == ALLOWED_DROP_ZONE.EMPTY and tile.content == nil
 				or self.dropZones == ALLOWED_DROP_ZONE.EMPTY_EXCEPT_SIGNS and
 					(tile.content == nil or tile:getContentType() == Tile.TYPE_SIGN) then
-				print("Dropped")
+				self.player:removeItem(self)
+				self:useItem(tile)
 			else
 				cancel = true
 			end
