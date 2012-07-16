@@ -7,7 +7,7 @@ debug = {
 	oneZombie = false,
 	immediateSpawn = true,
 	immediateItemSpawn = true,
-	showCollisionMask = false
+	showCollisionMask = true
 }
 
 screen = {
@@ -86,9 +86,15 @@ item = {
 		},
 		xoffset = 2
 	},
-	easingTime = 1500,
+	easingTime = {
+		reorganize = 1500,
+		cancel = 750
+	},
 	skeleton = {
 		nbZombies = 5
+	},
+	giant = {
+		size = 8
 	}
 }
 

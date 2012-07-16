@@ -132,16 +132,24 @@ function PlayerItem:useItem(tile)
 	if self.type == TYPES.SKELETON then
 		tile.content:quicklySpawnZombies(config.item.skeleton.nbZombies)
 	elseif self.type == TYPES.GIANT then
+		tile.content:spawn{
+			size = config.item.giant.size
+		}
 	elseif self.type == TYPES.FIRE then
 	elseif self.type == TYPES.MINE then
 	end
 end
 
 -- Move the item to an absolute position on the screen, easing it
+--
+-- Parameters:
+--  x: The X target position
+--  y: The y target position
+--  easingTimeL The time took to make the easing (Default is config.item.easingTime.reorganize)
 function PlayerItem:moveTo(parameters)
 	transition.to(self.group, {
 		transition = easing.outExpo,
-		time = config.item.easingTime,
+		time = parameters.easingTime or config.item.easingTime.reorganize,
 		x = parameters.x,
 		y = parameters.y
 	})
@@ -198,7 +206,8 @@ function onItemTouch(event)
 
 		self:moveTo{
 			x = self.x,
-			y = self.y
+			y = self.y,
+			easingTime = config.item.easingTime.cancel
 		}
 	end
 end

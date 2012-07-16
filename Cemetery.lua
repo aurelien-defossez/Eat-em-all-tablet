@@ -86,12 +86,16 @@ function Cemetery:draw()
 end
 
 -- Spawn a single zombie
-function Cemetery:spawn()
+--
+-- Parameters:
+--  size: The zombie size (default = 1)
+function Cemetery:spawn(parameters)
 	if not config.debug.oneZombie or self.grid.nbZombies == 0 then
 		local zombie = Zombie.create{
 			player = self.player,
 			tile = self.tile,
-			grid = self.grid
+			grid = self.grid,
+			size = parameters.size or 1
 		}
 
 		self.grid:addZombie(zombie)
@@ -140,7 +144,7 @@ function Cemetery:enterFrame(timeDelta)
 	-- Count spawn time
 	if self.timeSinceLastSpawn >= config.cemetery.spawnPeriod.normal then
 		self.timeSinceLastSpawn = self.timeSinceLastSpawn - config.cemetery.spawnPeriod.normal
-		self:spawn()
+		self:spawn{}
 	end
 
 	-- Count quick spawn time
@@ -149,7 +153,7 @@ function Cemetery:enterFrame(timeDelta)
 	elseif self.timeSinceLastQuickSpawn >= config.cemetery.spawnPeriod.quick then
 		self.timeSinceLastQuickSpawn = self.timeSinceLastQuickSpawn - config.cemetery.spawnPeriod.quick
 		self.nbQuickZombies = self.nbQuickZombies - 1
-		self:spawn()
+		self:spawn{}
 	end
 end
 
