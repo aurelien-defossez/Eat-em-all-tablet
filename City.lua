@@ -275,7 +275,7 @@ end
 -- Touch handler on a city
 function onCityTouch(event)
 	local city = event.target.city
-
+	
 	-- Open the gates while the finger touches the city
 	city.gateOpened = city.player ~= nil and city.tile:isInside(event)
 		and event.phase ~= "ended" and event.phase ~= "cancelled"

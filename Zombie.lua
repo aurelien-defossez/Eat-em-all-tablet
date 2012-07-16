@@ -27,8 +27,9 @@ LEFT = { x = -1, y = 0 }
 RIGHT = { x = 1, y = 0 }
 
 PHASE_MOVE = 1
-PHASE_CARRY_ITEM = 2
-PHASE_DEAD = 3
+PHASE_CARRY_ITEM_INIT = 2
+PHASE_CARRY_ITEM = 3
+PHASE_DEAD = 4
 
 KILLER_ZOMBIE = 1
 KILLER_FORTRESS = 2
@@ -203,6 +204,28 @@ function Zombie:move(parameters)
 	self.group.y = self.y
 end
 
+function Zombie:moveTo(parameters)
+	if self.x < parameters.x then
+		self.x = math.min(self.x + parameters.maxMovement, parameters.x)
+	elseif self.x > parameters.x then
+		self.x = math.max(self.x - parameters.maxMovement, parameters.x)
+	end
+
+	if self.y < parameters.y then
+		self.y = math.min(self.y + parameters.maxMovement, parameters.y)
+	elseif self.y > parameters.y then
+		self.y = math.max(self.y - parameters.maxMovement, parameters.y)
+	end
+
+	-- Move zombie sprite
+	self.group.x = self.x
+	self.group.y = self.y
+
+	if self.x == parameters.x and self.y == parameters.y then
+		self.phase = PHASE_CARRY_ITEM
+	end
+end
+
 -- Changes the direction of the zombie
 --
 -- Parameters:
@@ -223,7 +246,7 @@ end
 
 function Zombie:carryItem(item)
 	self.item = item
-	self.phase = PHASE_CARRY_ITEM
+	self.phase = PHASE_CARRY_ITEM_INIT
 	self:changeDirection(getReverseDirection(self.player.direction))
 
 	item:attachZombie({
@@ -258,6 +281,23 @@ function Zombie:enterFrame(timeDelta)
 			x = movement * self.directionVector.x,
 			y = movement * self.directionVector.y
 		}
+	elseif self.phase == PHASE_CARRY_ITEM_INIT then
+		local movement = timeDelta / 1000 * config.zombie.speed * Tile.width
+		local itemMask = self.item.collisionMask
+
+		if self.player.direction == Arrow.RIGHT then
+			self:moveTo{
+				x = self.item.x - itemMask.width,
+				y = self.item.y,
+				maxMovement = movement
+			}
+		else
+			self:moveTo{
+				x = self.item.x + itemMask.width,
+				y = self.item.y,
+				maxMovement = movement
+			}
+		end
 	elseif self.phase == PHASE_CARRY_ITEM then
 		local movement = timeDelta / 1000 * self.item.actualSpeed * Tile.width
 
