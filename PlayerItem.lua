@@ -70,6 +70,7 @@ function PlayerItem.create(parameters)
 	self.height = config.item.height
 	self.width_2 = config.item.width / 2
 	self.height_2 = config.item.height / 2
+	
 	if self.type == TYPES.SKELETON then
 		self.typeName = "skeleton"
 		self.dropZones = ALLOWED_DROP_ZONE.CEMETERIES

@@ -312,15 +312,18 @@ end
 -- Parameters:
 --  timeDelta: The time in ms since last frame
 function Zombie:enterFrame(timeDelta)
+	local speedFactor = Tile.width * timeDelta / 1000
+
 	if self.phase == PHASE_MOVE then
-		local movement = timeDelta / 1000 * self.speed * Tile.width
+		local movement = self.speed * speedFactor
 
 		self:move{
 			x = movement * self.directionVector.x,
 			y = movement * self.directionVector.y
 		}
 	elseif self.phase == PHASE_CARRY_ITEM_INIT then
-		local movement = timeDelta / 1000 * self.speed * Tile.width
+		local speed = math.max(self.speed, self.item.actualSpeed)
+		local movement = speed * speedFactor
 		local itemMask = self.item.collisionMask
 
 		if self.player.direction == Arrow.RIGHT then
@@ -337,7 +340,7 @@ function Zombie:enterFrame(timeDelta)
 			}
 		end
 	elseif self.phase == PHASE_CARRY_ITEM then
-		local movement = timeDelta / 1000 * self.item.actualSpeed * Tile.width
+		local movement = self.item.actualSpeed * speedFactor
 
 		self:move{
 			x = movement,

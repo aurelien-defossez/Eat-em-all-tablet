@@ -139,7 +139,11 @@ panels = {
 			ypadding = 10
 		},
 		menuButton = {
-			width = 100
+			width = 100,
+			pause = {
+				width = 32,
+				height = 32
+			}
 		}
 	},
 	controls = {

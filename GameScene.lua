@@ -36,10 +36,14 @@ local PlayerItem = require("PlayerItem")
 --
 -- Parameters:
 --  players: The two player objects
-function GameScene.create(parameters)
+function create(parameters)
 	-- Create object
-	local self = parameters or {}
+	self = parameters or {}
 	setmetatable(self, GameScene)
+	instance = self
+
+	-- Initialize attributes
+	self.paused = false
 
 	-- Draw the background
 	local background = display.newRect(0, 0, config.screen.width, config.screen.height)
@@ -107,11 +111,27 @@ function GameScene.create(parameters)
 end
 
 -- Destroy the scene
-function GameScene:destroy()
+function destroy()
 	self.controlPanel1:destroy()
 	self.controlPanel2:destroy()
 	self.grid:destroy()
 	self.upperBar:destroy()
+end
+
+-----------------------------------------------------------------------------------------
+-- Methods - Game control
+-----------------------------------------------------------------------------------------
+
+function switchPause()
+	self.paused = not self.paused
+end
+
+function pause()
+	self.paused = true
+end
+
+function resume()
+	self.paused = false
 end
 
 -----------------------------------------------------------------------------------------
@@ -122,9 +142,11 @@ end
 --
 -- Parameters:
 --  timeDelta: The time in ms since last frame
-function GameScene:enterFrame(timeDelta)
-	-- Relay event to grid
-	self.grid:enterFrame(timeDelta)
+function enterFrame(timeDelta)
+	if not self.paused then
+		-- Relay event to grid
+		self.grid:enterFrame(timeDelta)
+	end
 end
 
 -----------------------------------------------------------------------------------------

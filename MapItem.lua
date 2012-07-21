@@ -79,8 +79,7 @@ end
 
 -- Draw the item
 function MapItem:draw()
-	self.itemSprite = display.newImageRect("item.png",
-		config.item.width, config.item.height)
+	self.itemSprite = display.newImageRect("item.png", config.item.width, config.item.height)
 
 	-- Position sprite
 	self.itemSprite:setReferencePoint(display.CenterReferencePoint)
