@@ -28,10 +28,14 @@ local systemEventListener = function(event)
 		exit()
 		return true
 	elseif event.type == "applicationSuspend" then
-		GameScene.pause()
+		GameScene.pause{
+			system = true
+		}
 		return true
 	elseif event.type == "applicationResume" then
-		GameScene.resume()
+		GameScene.resume{
+			system = true
+		}
 		return true
 	end
 
@@ -42,7 +46,9 @@ end
 local keyListener = function(event)
 	print("Key event: "..event.keyName.." ("..event.phase..")")
 	if event.keyName == "back" and event.phase == "up" then
-		GameScene.pause()
+		GameScene.pause{
+			system = true
+		}
 
 		-- We caught the event so we return true
 		return true

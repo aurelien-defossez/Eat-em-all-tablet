@@ -43,7 +43,10 @@ function create(parameters)
 	instance = self
 
 	-- Initialize attributes
-	self.paused = false
+	self.paused = {
+		system = false,
+		user = false
+	}
 
 	-- Draw the background
 	local background = display.newRect(0, 0, config.screen.width, config.screen.height)
@@ -122,16 +125,46 @@ end
 -- Methods - Game control
 -----------------------------------------------------------------------------------------
 
-function switchPause()
-	self.paused = not self.paused
+-- Pause the game
+--
+-- Parameters
+--  system: True if the game has been paused by the system
+function pause(parameters)
+	parameters = parameters or {}
+
+	if parameters.system then
+		self.paused.system = true
+	else
+		self.paused.user = true
+	end
 end
 
-function pause()
-	self.paused = true
+-- Resume the game
+--
+-- Parameters
+--  system: True if the game has been resumed by the system
+function resume(parameters)
+	parameters = parameters or {}
+
+	if parameters.system then
+		self.paused.system = false
+	else
+		self.paused.user = false
+	end
 end
 
-function resume()
-	self.paused = false
+-- Pause or resume the game depending on the current pause state
+--
+-- Parameters
+--  system: True if the game has been paused or resumed by the system
+function switchPause(parameters)
+	parameters = parameters or {}
+
+	if parameters.system then
+		self.paused.system = not self.paused.system
+	else
+		self.paused.user = not self.paused.user
+	end
 end
 
 -----------------------------------------------------------------------------------------
@@ -143,7 +176,7 @@ end
 -- Parameters:
 --  timeDelta: The time in ms since last frame
 function enterFrame(timeDelta)
-	if not self.paused then
+	if not self.paused.user and not self.paused.system then
 		-- Relay event to grid
 		self.grid:enterFrame(timeDelta)
 	end
