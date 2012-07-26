@@ -15,6 +15,7 @@ City.__index = City
 local config = require("GameConfig")
 local Zombie = require("Zombie")
 local Tile = require("Tile")
+local utils = require("utils")
 
 -----------------------------------------------------------------------------------------
 -- Constants
@@ -30,6 +31,18 @@ SIZE_LARGE = 3
 
 function initialize()
 	classGroup = display.newGroup()
+
+	spriteSet = loadSpriteSet{
+		city1_grey = 1,
+		city1_blue = 1,
+		city1_red = 1,
+		city2_grey = 1,
+		city2_blue = 1,
+		city2_red = 1,
+		city3_grey = 1,
+		city3_blue = 1,
+		city3_red = 1
+	}
 end
 
 -----------------------------------------------------------------------------------------
@@ -102,8 +115,20 @@ end
 
 -- Draw the city
 function City:draw()
-	-- Draw city
-	self:drawSprite()
+	-- Draw sprite
+	self.citySprite = sprite.newSprite(spriteSet)
+
+	-- Position sprite
+	self.citySprite:setReferencePoint(display.CenterReferencePoint)
+	self.citySprite.x = self.tile.width / 2
+	self.citySprite.y = self.tile.height / 2
+	
+	-- Handle events
+	self.citySprite.city = self
+	self.citySprite:addEventListener("touch", onCityTouch)
+
+	-- Insert into group
+	self.cityGroup:insert(self.citySprite)
 
 	-- Inhabitants count text
 	self.inhabitantsText = display.newText(self.inhabitants, config.city.inhabitantsText.x,
@@ -118,37 +143,21 @@ function City:draw()
 	-- Add texts to group
 	self.textGroup:insert(self.inhabitantsText)
 	self.textGroup:insert(self.nameText)
+
+	self:updateSprite()
 end
 
 -- Draw the city sprite
-function City:drawSprite()
+function City:updateSprite()
 	local spriteName;
-
-	if self.player then
-		spriteName = "city" .. self.size .. "_" .. self.player.color .. ".png"
-	else
-		spriteName = "city" .. self.size .. "_grey.png"
-	end
-
-	-- Remove old sprite if exists
-	if self.citySprite then
-		self.citySprite:removeSelf()
-	end
-
-	-- Create sprite
-	self.citySprite = display.newImageRect(spriteName, config.city.width, config.city.height)
-
-	-- Position sprite
-	self.citySprite:setReferencePoint(display.CenterReferencePoint)
-	self.citySprite.x = self.tile.width / 2
-	self.citySprite.y = self.tile.height / 2
 	
-	-- Handle events
-	self.citySprite.city = self
-	self.citySprite:addEventListener("touch", onCityTouch)
-
-	-- Insert into group
-	self.cityGroup:insert(self.citySprite)
+	if self.player then
+		spriteName = "city" .. self.size .. "_" .. self.player.color
+	else
+		spriteName = "city" .. self.size .. "_grey"
+	end
+	
+	self.citySprite:prepare(spriteName)
 end
 
 -- Add inhabitants to the city
@@ -159,20 +168,20 @@ function City:addInhabitants(nb)
 		self:spawn()
 	elseif self.inhabitants == 0 then
 		-- Notify player
-		if self.player ~= nil then
+		if self.player then
 			self.player:loseCity(self)
 		end
 
 		self.player = nil
 		self.gateOpened = false
 
-		self:drawSprite()
+		self:updateSprite()
 	end
 
 	self.inhabitantsText.text = self.inhabitants
 
 	-- Notify shortcut
-	if self.shortcut ~= nil then
+	if self.shortcut then
 		self.shortcut:updateInhabitants()
 	end
 end
@@ -244,7 +253,7 @@ function City:attackCity(zombie)
 			killer = Zombie.KILLER_CITY_ENTER
 		}
 
-		self:drawSprite()
+		self:updateSprite()
 	end
 end
 
@@ -285,7 +294,7 @@ function onCityTouch(event)
 	local city = event.target.city
 	
 	-- Open the gates while the finger touches the city
-	city.gateOpened = city.player ~= nil and city.tile:isInside(event)
+	city.gateOpened = city.player and city.tile:isInside(event)
 		and event.phase ~= "ended" and event.phase ~= "cancelled"
 
 	-- Focus this object in order to track this finger properly

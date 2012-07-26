@@ -91,7 +91,7 @@ function Tile:draw()
 	borders.strokeWidth = config.panels.grid.lineWidth
 	borders:setFillColor(122, 47, 15)
 
-	if self.content ~= nil then
+	if self.content then
 		self.content:draw()
 	end
 
@@ -104,7 +104,7 @@ end
 -- Returns:
 --  The content type, as defined by the cell content, if cell has content
 function Tile:getContentType()
-	if self.content ~= nil then
+	if self.content then
 		return self.content.type
 	else
 		return nil
@@ -113,8 +113,8 @@ end
 
 -- Remove the tile content, if exists
 function Tile:removeContent()
-	if self.content ~= nil then
-		if self.content.destroy ~= nil then
+	if self.content then
+		if self.content.destroy then
 			self.content:destroy()
 		end
 
@@ -140,7 +140,7 @@ end
 -- Parameters:
 --  zombie: The zombie entering the tile
 function Tile:enterTile(zombie)
-	if self.content ~= nil and self.content.enterTile ~= nil then
+	if self.content and self.content.enterTile then
 		self.content:enterTile(zombie)
 	end
 end
@@ -150,7 +150,7 @@ end
 -- Parameters:
 --  zombie: The zombie leaving the tile
 function Tile:leaveTile(zombie)
-	if self.content ~= nil and self.content.leaveTile ~= nil then
+	if self.content and self.content.leaveTile then
 		self.content:leaveTile(zombie)
 	end
 end
@@ -160,7 +160,7 @@ end
 -- Parameters:
 --  zombie: The zombie reaching the middle of the tile
 function Tile:reachTileMiddle(zombie)
-	if self.content ~= nil and self.content.reachTileMiddle ~= nil then
+	if self.content and self.content.reachTileMiddle then
 		self.content:reachTileMiddle(zombie)
 	end
 
@@ -179,7 +179,7 @@ end
 -- Parameters:
 --  timeDelta: The time in ms since last frame
 function Tile:enterFrame(timeDelta)
-	if self.content ~= nil and self.content.enterFrame ~= nil then
+	if self.content and self.content.enterFrame then
 		self.content:enterFrame(timeDelta)
 	end
 end
