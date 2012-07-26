@@ -172,13 +172,6 @@ function Grid:loadMap(parameters)
 	end
 end
 
--- Draw the grid
-function Grid:draw()
-	for index, tile in pairs(self.matrix) do
-		tile:draw()
-	end
-end
-
 -- Add a zombie to the list
 --
 -- Parameters:
@@ -276,7 +269,6 @@ function Grid:enterFrame(timeDelta)
 		}
 
 		self.items[item.id] = item
-		item:draw()
 
 		self.timeUntilItemCreation = self.timeUntilItemCreation +
 			math.random(config.item.creation.time.min, config.item.creation.time.max)

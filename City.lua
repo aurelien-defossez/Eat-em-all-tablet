@@ -31,7 +31,7 @@ SIZE_LARGE = 3
 
 function initialize()
 	classGroup = display.newGroup()
-	spriteSet = SpriteManager.getSpriteSet(SpriteManager.SET.CITY)
+	spriteSet = SpriteManager.getSpriteSet(SpriteManager.CITY)
 end
 
 -----------------------------------------------------------------------------------------
@@ -50,6 +50,10 @@ function City.create(parameters)
 	-- Create object
 	local self = parameters or {}
 	setmetatable(self, City)
+
+	-- Create group
+	self.group = display.newGroup()
+	classGroup:insert(self.group)
 
 	-- Initialize attributes
 	self.type = Tile.TYPE_CITY
@@ -77,34 +81,18 @@ function City.create(parameters)
 		self.exitPeriod = config.city.large.exitPeriod
 	end
 
-	-- Manage groups
+	-- Add to groups
 	self.cityGroup = display.newGroup()
 	self.textGroup = display.newGroup()
-	self.group = display.newGroup()
 
 	self.group:insert(self.cityGroup)
 	self.group:insert(self.textGroup)
-	classGroup:insert(self.group)
 
 	-- Position group
 	self.group.x = self.x
 	self.group.y = self.y
 
-	return self
-end
-
--- Destroy the city
-function City:destroy()
-	self.group:removeSelf()
-end
-
------------------------------------------------------------------------------------------
--- Methods
------------------------------------------------------------------------------------------
-
--- Draw the city
-function City:draw()
-	-- Draw sprite
+	-- Create sprite
 	self.citySprite = SpriteManager.newSprite(spriteSet)
 
 	-- Position sprite
@@ -133,8 +121,20 @@ function City:draw()
 	self.textGroup:insert(self.inhabitantsText)
 	self.textGroup:insert(self.nameText)
 
+	-- Play neutral animation
 	self:updateSprite()
+
+	return self
 end
+
+-- Destroy the city
+function City:destroy()
+	self.group:removeSelf()
+end
+
+-----------------------------------------------------------------------------------------
+-- Methods
+-----------------------------------------------------------------------------------------
 
 -- Update the city sprite animation
 function City:updateSprite()
@@ -185,8 +185,6 @@ function City:spawn()
 	}
 
 	self.grid:addZombie(zombie)
-
-	zombie:draw()
 
 	self:addInhabitants(-1)
 end

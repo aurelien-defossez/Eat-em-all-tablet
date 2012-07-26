@@ -13,6 +13,7 @@ Cemetery.__index = Cemetery
 -----------------------------------------------------------------------------------------
 
 local config = require("GameConfig")
+local SpriteManager = require("SpriteManager")
 local Zombie = require("Zombie")
 local Tile = require("Tile")
 
@@ -22,6 +23,7 @@ local Tile = require("Tile")
 
 function initialize()
 	classGroup = display.newGroup()
+	spriteSet = SpriteManager.getSpriteSet(SpriteManager.CEMETERY)
 end
 
 -----------------------------------------------------------------------------------------
@@ -39,6 +41,10 @@ function Cemetery.create(parameters)
 	local self = parameters or {}
 	setmetatable(self, Cemetery)
 
+	-- Create group
+	self.group = display.newGroup()
+	classGroup:insert(self.group)
+
 	-- Initialize attributes
 	self.type = Tile.TYPE_CEMETERY
 	self.x = self.tile.x
@@ -47,10 +53,6 @@ function Cemetery.create(parameters)
 	self.timeSinceLastQuickSpawn = 0
 	self.nbQuickZombies = 0
 
-	-- Manage groups
-	self.group = display.newGroup()
-	classGroup:insert(self.group)
-
 	-- Position group
 	self.group.x = self.x
 	self.group.y = self.y
@@ -58,6 +60,19 @@ function Cemetery.create(parameters)
 	if config.debug.immediateSpawn then
 		self.timeSinceLastSpawn = config.cemetery.spawnPeriod.normal
 	end
+
+	-- Draw the sprite
+	self.cemeterySprite = SpriteManager.newSprite(spriteSet)
+	self.cemeterySprite:prepare("cemetery_" .. self.player.color)
+	self.cemeterySprite:play()
+
+	-- Position sprite
+	self.cemeterySprite:setReferencePoint(display.CenterReferencePoint)
+	self.cemeterySprite.x = Tile.width_2
+	self.cemeterySprite.y = Tile.height_2
+
+	-- Add to group
+	self.group:insert(self.cemeterySprite)
 
 	return self
 end
@@ -70,20 +85,6 @@ end
 -----------------------------------------------------------------------------------------
 -- Methods
 -----------------------------------------------------------------------------------------
-
--- Draw the cemetery
-function Cemetery:draw()
-	self.cemeterySprite = display.newImageRect("cemetery_" .. self.player.color .. ".png",
-		config.cemetery.width, config.cemetery.height)
-
-	-- Position sprite
-	self.cemeterySprite:setReferencePoint(display.CenterReferencePoint)
-	self.cemeterySprite.x = Tile.width_2
-	self.cemeterySprite.y = Tile.height_2
-
-	-- Add to group
-	self.group:insert(self.cemeterySprite)
-end
 
 -- Spawn a single zombie
 --
@@ -99,8 +100,6 @@ function Cemetery:spawn(parameters)
 		}
 
 		self.grid:addZombie(zombie)
-
-		zombie:draw()
 	end
 end
 

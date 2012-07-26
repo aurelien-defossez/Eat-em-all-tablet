@@ -12,7 +12,6 @@ ArrowsPanel.__index = ArrowsPanel
 -- Imports
 -----------------------------------------------------------------------------------------
 
-require("sprite")
 local config = require("GameConfig")
 local Arrow = require("Arrow")
 
@@ -46,6 +45,10 @@ function ArrowsPanel.create(parameters)
 	-- Create object
 	local self = parameters or {}
 	setmetatable(self, ArrowsPanel)
+
+	-- Create group
+	self.group = display.newGroup()
+	classGroup:insert(self.group)
 
 	-- Initialize attributes
 	self.width = config.panels.controls.arrows.width
@@ -92,10 +95,6 @@ function ArrowsPanel.create(parameters)
 		y = self.y + 3 * config.arrow.height
 	}
 
-	-- Manage groups
-	self.group = display.newGroup()
-	classGroup:insert(self.group)
-
 	return self
 end
 
@@ -108,20 +107,6 @@ function ArrowsPanel:destroy()
 	self.arrowDelete:destroy()
 
 	self.group:removeSelf()
-end
-
------------------------------------------------------------------------------------------
--- Methods
------------------------------------------------------------------------------------------
-
--- Draw the arrows panel
-function ArrowsPanel:draw()
-	-- Draw arrows
-	self.arrowUp:draw()
-	self.arrowDown:draw()
-	self.arrowRight:draw()
-	self.arrowLeft:draw()
-	self.arrowDelete:draw()
 end
 
 -----------------------------------------------------------------------------------------

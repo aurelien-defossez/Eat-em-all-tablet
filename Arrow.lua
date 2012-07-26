@@ -13,6 +13,7 @@ Arrow.__index = Arrow
 -----------------------------------------------------------------------------------------
 
 local config = require("GameConfig")
+local SpriteManager = require("SpriteManager")
 local Sign = require("Sign")
 local Tile = require("Tile")
 
@@ -22,6 +23,7 @@ local Tile = require("Tile")
 
 function initialize()
 	classGroup = display.newGroup()
+	spriteSet = SpriteManager.getSpriteSet(SpriteManager.ARROW)
 end
 
 -----------------------------------------------------------------------------------------
@@ -51,13 +53,39 @@ function Arrow.create(parameters)
 	local self = parameters or {}
 	setmetatable(self, Arrow)
 
+	-- Create group
+	self.group = display.newGroup()
+	classGroup:insert(self.group)
+
 	-- Initialize attributes
 	self.width = config.arrow.width
 	self.height = config.arrow.height
 
-	-- Manage groups
-	self.group = display.newGroup()
-	classGroup:insert(self.group)
+	-- Determine sprite animation
+	local animationName
+	if self.direction ~= DELETE then
+		animationName = "arrow_" .. self.player.color
+	else 
+		animationName = "arrow_crossed_" .. self.player.color
+	end
+
+	-- Draw sprite
+	self.arrowSprite = SpriteManager.newSprite(spriteSet)
+	self.arrowSprite:prepare(animationName)
+	self.arrowSprite:play()
+
+	-- Position sprite
+	self.arrowSprite:setReferencePoint(display.CenterReferencePoint)
+	self.arrowSprite.x = self.x or 0
+	self.arrowSprite.y = self.height / 2 + (self.y or 0)
+	self.arrowSprite:rotate(self.direction or 0)
+	
+	-- Handle events
+	self.arrowSprite.arrow = self
+	self.arrowSprite:addEventListener("touch", onArrowTouch)
+
+	-- Add to group
+	self.group:insert(self.arrowSprite)
 
 	return self
 end
@@ -68,34 +96,7 @@ function Arrow:destroy()
 end
 
 -----------------------------------------------------------------------------------------
--- Methods
------------------------------------------------------------------------------------------
-
--- Draw the arrow
-function Arrow:draw()
-	if self.direction ~= DELETE then
-		self.arrowSprite = display.newImageRect("arrow_up_" .. self.player.color .. ".png", self.width, self.height)
-	else 
-		self.arrowSprite = display.newImageRect("arrow_crossed_" .. self.player.color .. ".png", self.width, self.height)
-	end
-
-	self.arrowSprite.arrow = self
-
-	-- Position sprite
-	self.arrowSprite:setReferencePoint(display.CenterReferencePoint)
-	self.arrowSprite.x = self.x or 0
-	self.arrowSprite.y = self.height / 2 + (self.y or 0)
-	self.arrowSprite:rotate(self.direction or 0)
-	
-	-- Handle events
-	self.arrowSprite:addEventListener("touch", onArrowTouch)
-
-	-- Add to group
-	self.group:insert(self.arrowSprite)
-end
-
------------------------------------------------------------------------------------------
--- Private Methods
+-- Callbacks
 -----------------------------------------------------------------------------------------
 
 -- Touch handler on one of the four arrows of the control panel
@@ -164,8 +165,6 @@ function onDraggedArrowTouch(event)
 						player = arrowSprite.player,
 						direction = arrowSprite.direction
 					}
-
-					tile.content:draw()
 				end
 			elseif tile:getContentType() == Tile.TYPE_SIGN and tile.content.player == arrowSprite.player then
 				-- Remove sign

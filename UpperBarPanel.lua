@@ -13,6 +13,7 @@ UpperBarPanel.__index = UpperBarPanel
 -----------------------------------------------------------------------------------------
 
 local config = require("GameConfig")
+local SpriteManager = require("SpriteManager")
 local GameScene = require("GameScene")
 local HitPointsPanel = require("HitPointsPanel")
 
@@ -22,6 +23,7 @@ local HitPointsPanel = require("HitPointsPanel")
 
 function initialize()
 	classGroup = display.newGroup()
+	spriteSet = SpriteManager.getSpriteSet(SpriteManager.MISC)
 
 	HitPointsPanel.initialize()
 end
@@ -38,6 +40,10 @@ function UpperBarPanel.create(parameters)
 	-- Create object
 	local self = parameters or {}
 	setmetatable(self, UpperBarPanel)
+	
+	-- Create group
+	self.group = display.newGroup()
+	classGroup:insert(self.group)
 	
 	-- Initialize attributes
 	self.height = config.panels.upperBar.height
@@ -64,14 +70,26 @@ function UpperBarPanel.create(parameters)
 
 	self.players[1].hitPointsPanel = self.hitPoints[1]
 	self.players[2].hitPointsPanel = self.hitPoints[2]
-	
-	-- Manage groups
-	self.group = display.newGroup()
-	classGroup:insert(self.group)
 
 	-- Position group
 	self.group.x = self.x
 	self.group.y = self.y
+
+	-- Draw pause button
+	self.pauseSprite = SpriteManager.newSprite(spriteSet)
+	self.pauseSprite:prepare("pause")
+	self.pauseSprite:play()
+
+	-- Position sprite
+	self.pauseSprite:setReferencePoint(display.CenterReferencePoint)
+	self.pauseSprite.x = self.hpWidth + config.panels.upperBar.menuButton.width / 2
+	self.pauseSprite.y = config.panels.upperBar.height / 2
+
+	-- Add listener on pause tap
+	self.pauseSprite:addEventListener("tap", onPauseTap)
+
+	-- Add to group
+	self.group:insert(self.pauseSprite)
 	
 	return self
 end
@@ -84,34 +102,7 @@ function UpperBarPanel:destroy()
 end
 
 -----------------------------------------------------------------------------------------
--- Methods
------------------------------------------------------------------------------------------
-
--- Draw the upper bar panel
-function UpperBarPanel:draw()
-	-- Draw HP bars
-	for index, panel in pairs(self.hitPoints) do
-		panel:draw()
-	end
-
-	-- Draw pause button
-	self.pauseSprite = display.newImageRect("pause.png",
-		config.panels.upperBar.menuButton.pause.width, config.panels.upperBar.menuButton.pause.height)
-
-	-- Position sprite
-	self.pauseSprite:setReferencePoint(display.CenterReferencePoint)
-	self.pauseSprite.x = self.hpWidth + config.panels.upperBar.menuButton.width / 2
-	self.pauseSprite.y = config.panels.upperBar.height / 2
-
-	-- Add listener on pause tap
-	self.pauseSprite:addEventListener("tap", onPauseTap)
-
-	-- Add to group
-	self.group:insert(self.pauseSprite)
-end
-
------------------------------------------------------------------------------------------
--- Private Methods
+-- Callbacks
 -----------------------------------------------------------------------------------------
 
 -- Tap handler on the pause button

@@ -16,6 +16,14 @@ local config = require("GameConfig")
 local TableLayout = require("TableLayout")
 
 -----------------------------------------------------------------------------------------
+-- Class methods
+-----------------------------------------------------------------------------------------
+
+function initialize()
+	classGroup = display.newGroup()
+end
+
+-----------------------------------------------------------------------------------------
 -- Initialization and Destruction
 -----------------------------------------------------------------------------------------
 
@@ -29,6 +37,10 @@ function ItemsPanel.create(parameters)
 	-- Create object
 	local self = parameters or {}
 	setmetatable(self, ItemsPanel)
+
+	-- Create group
+	self.group = display.newGroup()
+	classGroup:insert(self.group)
 	
 	-- Initialize attributes
 	self.width = config.panels.controls.items.width
@@ -52,16 +64,12 @@ end
 -- Destroy the panel
 function ItemsPanel:destroy()
 	self.tableLayout:destroy()
+	self.group:removeSelf()
 end
 
 -----------------------------------------------------------------------------------------
 -- Methods
 -----------------------------------------------------------------------------------------
-
--- Draw the cities panel
-function ItemsPanel:draw()
-	-- Nothing to draw
-end
 
 -- Add an item to the player
 --

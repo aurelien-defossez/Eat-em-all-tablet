@@ -179,6 +179,18 @@ panels = {
 }
 
 sprites = {
+	arrow = {
+		arrow_blue = {},
+		arrow_red = {},
+		arrow_selected_blue = {},
+		arrow_selected_red = {},
+		arrow_crossed_blue = {},
+		arrow_crossed_red = {}
+	},
+	cemetery = {
+		cemetery_red = {},
+		cemetery_blue = {}
+	},
 	city = {
 		city1_grey = {},
 		city1_blue = {},
@@ -195,6 +207,24 @@ sprites = {
 			frameCount = 2,
 			period = 1000
 		}
+	},
+	fortressWall = {
+		fortress_wall_blue = {},
+		fortress_wall_red = {}
+	},
+	item = {
+		item = {},
+		item_fire = {},
+		item_giant = {},
+		item_mine = {},
+		item_skeleton = {}
+	},
+	zombie = {
+		zombie_blue = {},
+		zombie_red = {}
+	},
+	misc = {
+		pause = {}
 	}
 }
 

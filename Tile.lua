@@ -57,17 +57,25 @@ function Tile.create(parameters)
 	local self = parameters or {}
 	setmetatable(self, Tile)
 
+	-- Create group
+	self.group = display.newGroup()
+	classGroup:insert(self.group)
+
 	-- Initialize attributes
 	self.isOnFirstRow = (self.yGrid == 1)
 	self.isOnLastRow = (self.yGrid == config.panels.grid.nbRows)
 
-	-- Manage groups
-	self.group = display.newGroup()
-	classGroup:insert(self.group)
-
 	-- Position group
 	self.group.x = self.x
 	self.group.y = self.y
+
+	-- Draw borders
+	local borders = display.newRect(0, 0, self.width, self.height)
+	borders.strokeWidth = config.panels.grid.lineWidth
+	borders:setFillColor(122, 47, 15)
+
+	-- Add to group
+	self.group:insert(borders)
 
 	return self
 end
@@ -84,20 +92,6 @@ end
 -----------------------------------------------------------------------------------------
 -- Methods
 -----------------------------------------------------------------------------------------
-
--- Draw the tile and its content if it exists
-function Tile:draw()
-	local borders = display.newRect(0, 0, self.width, self.height)
-	borders.strokeWidth = config.panels.grid.lineWidth
-	borders:setFillColor(122, 47, 15)
-
-	if self.content then
-		self.content:draw()
-	end
-
-	-- Add to group
-	self.group:insert(borders)
-end
 
 -- Return the content type, if exist
 --

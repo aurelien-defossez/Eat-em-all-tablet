@@ -20,9 +20,13 @@ local spritesheetData = require("spritesheetData")
 -- Constants
 -----------------------------------------------------------------------------------------
 
-SET = {
-	CITY = 1
-}
+ARROW = 1
+CEMETERY = 2
+CITY = 3
+FORTRESS_WALL = 4
+ITEM = 5
+ZOMBIE = 6
+MISC = 42
 
 -----------------------------------------------------------------------------------------
 -- Class attributes
@@ -50,7 +54,13 @@ function initialize()
 
 	-- Load sprite sets
 	spriteSets = {}
-	spriteSets[SET.CITY] = loadSpriteSet(config.sprites.city)
+	spriteSets[ARROW] = loadSpriteSet(config.sprites.arrow)
+	spriteSets[CEMETERY] = loadSpriteSet(config.sprites.cemetery)
+	spriteSets[CITY] = loadSpriteSet(config.sprites.city)
+	spriteSets[FORTRESS_WALL] = loadSpriteSet(config.sprites.fortressWall)
+	spriteSets[ITEM] = loadSpriteSet(config.sprites.item)
+	spriteSets[ZOMBIE] = loadSpriteSet(config.sprites.zombie)
+	spriteSets[MISC] = loadSpriteSet(config.sprites.misc)
 end
 
 -----------------------------------------------------------------------------------------

@@ -12,8 +12,9 @@ Zombie.__index = Zombie
 -- Imports
 -----------------------------------------------------------------------------------------
 
-require("utils")
+local utils = require("utils")
 local config = require("GameConfig")
+local SpriteManager = require("SpriteManager")
 local Arrow = require("Arrow")
 local Tile = require("Tile")
 
@@ -43,6 +44,7 @@ KILLER_CITY_ENTER = 4
 
 function initialize()
 	classGroup = display.newGroup()
+	spriteSet = SpriteManager.getSpriteSet(SpriteManager.ZOMBIE)
 end
 
 -----------------------------------------------------------------------------------------
@@ -67,6 +69,10 @@ function Zombie.create(parameters)
 	local self = parameters or {}
 	setmetatable(self, Zombie)
 
+	-- Create group
+	self.group = display.newGroup()
+	classGroup:insert(self.group)
+
 	-- Initialize attributes
 	self.id = ctId
 	self.phase = PHASE_MOVE
@@ -89,49 +95,24 @@ function Zombie.create(parameters)
 	self:changeDirection(self.direction)
 	self:computeCollisionMask()
 
-	-- Manage groups
-	self.group = display.newGroup()
-	classGroup:insert(self.group)
-
 	-- Position group
 	self.group.x = self.x
 	self.group.y = self.y
 
-	return self
-end
-
--- Destroy the zombie
-function Zombie:destroy()
-	self.group:removeSelf()
-end
-
------------------------------------------------------------------------------------------
--- Methods
------------------------------------------------------------------------------------------
-
--- Draw the zombie
-function Zombie:draw()
-	local spriteWidth
-	local spriteHeight
-
-	if self.size == 1 then
-		spriteWidth = self.width
-		spriteHeight = self.height
-	else
-		spriteWidth = self.width * 1.5
-		spriteHeight = self.height * 1.5
-	end
-
-	self.zombieSprite = display.newImageRect("zombie_" .. self.player.color .. ".png", spriteWidth, spriteHeight)
-	self.zombieSprite.arrow = self
+	-- Draw sprite
+	self.zombieSprite = SpriteManager.newSprite(spriteSet)
+	self.zombieSprite:prepare("zombie_" .. self.player.color)
+	self.zombieSprite:play()
 
 	-- Position sprite
 	if self.size == 1 then
-		self.zombieSprite.x = spriteWidth / 2 +
+		self.zombieSprite.x = self.width / 2 +
 			math.random(config.zombie.randomOffsetRange.x[1], config.zombie.randomOffsetRange.x[2])
-		self.zombieSprite.y = spriteHeight / 2 +
+		self.zombieSprite.y = self.height / 2 +
 			math.random(config.zombie.randomOffsetRange.y[1], config.zombie.randomOffsetRange.y[2])
 	else
+		self.zombieSprite.width = self.width * 1.5
+		self.zombieSprite.height = self.height * 1.5
 		self.zombieSprite.x = 32
 		self.zombieSprite.y = 20
 	end
@@ -149,7 +130,18 @@ function Zombie:draw()
 
 		self.group:insert(self.collisionMaskDebug)
 	end
+
+	return self
 end
+
+-- Destroy the zombie
+function Zombie:destroy()
+	self.group:removeSelf()
+end
+
+-----------------------------------------------------------------------------------------
+-- Methods
+-----------------------------------------------------------------------------------------
 
 -- Compute the zombie collision mask
 function Zombie:computeCollisionMask()

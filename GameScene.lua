@@ -17,6 +17,8 @@ local SpriteManager = require("SpriteManager")
 local UpperBarPanel = require("UpperBarPanel")
 local PlayerControlPanel = require("PlayerControlPanel")
 local ArrowsPanel = require("ArrowsPanel")
+local ItemsPanel = require("ItemsPanel")
+local CitiesPanel = require("CitiesPanel")
 local Arrow = require("Arrow")
 local CityShortcut = require("CityShortcut")
 local Grid = require("Grid")
@@ -60,6 +62,8 @@ function create(parameters)
 	UpperBarPanel.initialize()
 	PlayerControlPanel.initialize()
 	ArrowsPanel.initialize()
+	ItemsPanel.initialize()
+	CitiesPanel.initialize()
 	Arrow.initialize()
 	Tile.initialize()
 	FortressWall.initialize()
@@ -107,12 +111,6 @@ function create(parameters)
 		height = mainHeight,
 		grid = self.grid
 	}
-
-	-- Draw
-	self.upperBar:draw()
-	self.controlPanel1:draw()
-	self.controlPanel2:draw()
-	self.grid:draw()
 
 	return self
 end

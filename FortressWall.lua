@@ -13,6 +13,7 @@ FortressWall.__index = FortressWall
 -----------------------------------------------------------------------------------------
 
 local config = require("GameConfig")
+local SpriteManager = require("SpriteManager")
 local Tile = require("Tile")
 
 -----------------------------------------------------------------------------------------
@@ -21,6 +22,7 @@ local Tile = require("Tile")
 
 function initialize()
 	classGroup = display.newGroup()
+	spriteSet = SpriteManager.getSpriteSet(SpriteManager.FORTRESS_WALL)
 end
 
 -----------------------------------------------------------------------------------------
@@ -37,18 +39,31 @@ function FortressWall.create(parameters)
 	local self = parameters or {}
 	setmetatable(self, FortressWall)
 
+	-- Create group
+	self.group = display.newGroup()
+	classGroup:insert(self.group)
+
 	-- Initialize attributes
 	self.type = Tile.TYPE_FORTRESS_WALL
 	self.x = self.tile.x
 	self.y = self.tile.y
 
-	-- Manage groups
-	self.group = display.newGroup()
-	classGroup:insert(self.group)
-
 	-- Position group
 	self.group.x = self.x
 	self.group.y = self.y
+
+	-- Draw sprite
+	self.wallSprite = SpriteManager.newSprite(spriteSet)
+	self.wallSprite:prepare("fortress_wall_" .. self.player.color)
+	self.wallSprite:play()
+
+	-- Position sprite
+	self.wallSprite:setReferencePoint(display.CenterReferencePoint)
+	self.wallSprite.x = self.tile.width / 2
+	self.wallSprite.y = self.tile.height / 2
+
+	-- Add to group
+	self.group:insert(self.wallSprite)
 
 	return self
 end
@@ -61,20 +76,6 @@ end
 -----------------------------------------------------------------------------------------
 -- Methods
 -----------------------------------------------------------------------------------------
-
--- Draw the sign
-function FortressWall:draw()
-	self.wallSprite = display.newImageRect("fortress_wall_" .. self.player.color .. ".png",
-		config.fortressWall.width, config.fortressWall.height)
-
-	-- Position sprite
-	self.wallSprite:setReferencePoint(display.CenterReferencePoint)
-	self.wallSprite.x = self.tile.width / 2
-	self.wallSprite.y = self.tile.height / 2
-
-	-- Add to group
-	self.group:insert(self.wallSprite)
-end
 
 -- Enter tile handler, called when a zombie enters the tile
 --

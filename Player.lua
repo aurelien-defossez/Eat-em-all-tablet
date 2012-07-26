@@ -12,9 +12,7 @@ Player.__index = Player
 -- Imports
 -----------------------------------------------------------------------------------------
 
------------------------------------------------------------------------------------------
--- Constants
------------------------------------------------------------------------------------------
+local GameScene = require("GameScene")
 
 -----------------------------------------------------------------------------------------
 -- Initialization and Destruction
@@ -54,7 +52,8 @@ function Player:addHPs(nbHPs)
 	self.hitPointsPanel:updateHPs(self.hitPoints)
 
 	if self.hitPoints <= 0 then
-		print("Player "..self.id.." has lost")
+		print("Player " .. self.id .. " has lost")
+		GameScene.switchPause()
 	end
 end
 

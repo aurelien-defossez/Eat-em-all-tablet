@@ -45,6 +45,10 @@ function HitPointsPanel.create(parameters)
 	-- Create object
 	local self = parameters or {}
 	setmetatable(self, HitPointsPanel)
+
+	-- Create group
+	self.group = display.newGroup()
+	classGroup:insert(self.group)
 	
 	-- Initialize attributes
 	self.height = config.panels.upperBar.height
@@ -55,24 +59,7 @@ function HitPointsPanel.create(parameters)
 		height = self.height - 2 * config.panels.upperBar.hitPoints.ypadding
 	}
 
-	-- Manage groups
-	self.group = display.newGroup()
-	classGroup:insert(self.group)
-	
-	return self
-end
-
--- Destroy the panel
-function HitPointsPanel:destroy()
-	self.group:removeSelf()
-end
-
------------------------------------------------------------------------------------------
--- Methods
------------------------------------------------------------------------------------------
-
--- Draw the hit points panel
-function HitPointsPanel:draw()
+	-- Draw bars
 	self.greenBar = display.newRect(0, self.barPosition.y, 0, self.barPosition.height)
 	self.greenBar.x = self.barPosition.x
 	self.greenBar.strokeWidth = 2
@@ -86,7 +73,18 @@ function HitPointsPanel:draw()
 
 	self.group:insert(self.greenBar)
 	self.group:insert(self.redBar)
+	
+	return self
 end
+
+-- Destroy the panel
+function HitPointsPanel:destroy()
+	self.group:removeSelf()
+end
+
+-----------------------------------------------------------------------------------------
+-- Methods
+-----------------------------------------------------------------------------------------
 
 function HitPointsPanel:updateHPs(hitPoints)
 	self.hitPoints = hitPoints

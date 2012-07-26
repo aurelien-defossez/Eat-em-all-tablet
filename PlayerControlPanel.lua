@@ -41,10 +41,15 @@ function PlayerControlPanel.create(parameters)
 	-- Create object
 	local self = parameters or {}
 	setmetatable(self, PlayerControlPanel)
+
+	-- Create group
+	self.group = display.newGroup()
+	classGroup:insert(self.group)
 	
 	-- Initialize attributes
 	self.width = config.panels.controls.width
 
+	-- Create sub-panels
 	self.items = ItemsPanel.create{
 		player = self.player,
 		grid = self.grid,
@@ -65,9 +70,14 @@ function PlayerControlPanel.create(parameters)
 		y = self.y + self.height / 2 + config.panels.controls.arrows.height / 2 + config.panels.controls.cities.ypadding
 	}
 
-	-- Manage groups
-	self.group = display.newGroup()
-	classGroup:insert(self.group)
+	-- Draw background
+	local background = display.newRect(self.x, self.y, self.width, self.height)
+	background.strokeWidth = 3
+	background:setFillColor(204, 109, 0)
+	background:setStrokeColor(135, 72, 0)
+	
+	-- Add background to group
+	self.group:insert(background)
 
 	return self
 end
@@ -84,21 +94,6 @@ end
 -----------------------------------------------------------------------------------------
 -- Methods
 -----------------------------------------------------------------------------------------
-
--- Draw the control panel
-function PlayerControlPanel:draw()
-	local background = display.newRect(self.x, self.y, self.width, self.height)
-	background.strokeWidth = 3
-	background:setFillColor(204, 109, 0)
-	background:setStrokeColor(135, 72, 0)
-	
-	self.items:draw()
-	self.arrows:draw()
-	self.cities:draw()
-
-	-- Add background to group
-	self.group:insert(background)
-end
 
 -----------------------------------------------------------------------------------------
 

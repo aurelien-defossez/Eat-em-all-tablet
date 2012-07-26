@@ -17,6 +17,14 @@ local CityShortcut = require("CityShortcut")
 local TableLayout = require("TableLayout")
 
 -----------------------------------------------------------------------------------------
+-- Class methods
+-----------------------------------------------------------------------------------------
+
+function initialize()
+	classGroup = display.newGroup()
+end
+
+-----------------------------------------------------------------------------------------
 -- Initialization and Destruction
 -----------------------------------------------------------------------------------------
 
@@ -30,6 +38,10 @@ function CitiesPanel.create(parameters)
 	-- Create object
 	local self = parameters or {}
 	setmetatable(self, CitiesPanel)
+
+	-- Create group
+	self.group = display.newGroup()
+	classGroup:insert(self.group)
 	
 	-- Initialize attributes
 	self.width = config.panels.controls.cities.width
@@ -53,18 +65,12 @@ end
 -- Destroy the panel
 function CitiesPanel:destroy()
 	self.tableLayout:destroy()
-
 	self.group:removeSelf()
 end
 
 -----------------------------------------------------------------------------------------
 -- Methods
 -----------------------------------------------------------------------------------------
-
--- Draw the cities panel
-function CitiesPanel:draw()
-	-- Nothing to draw
-end
 
 -- Add a city under the control of the player
 --
@@ -77,7 +83,6 @@ function CitiesPanel:gainCity(city)
 		player = self.player
 	}
 
-	shortcut:draw()
 	self.tableLayout:addItem(shortcut)
 end
 

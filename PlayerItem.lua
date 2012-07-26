@@ -13,6 +13,7 @@ PlayerItem.__index = PlayerItem
 -----------------------------------------------------------------------------------------
 
 local config = require("GameConfig")
+local SpriteManager = require("SpriteManager")
 local Tile = require("Tile")
 
 -----------------------------------------------------------------------------------------
@@ -46,6 +47,7 @@ ctId = 1
 
 function initialize()
 	classGroup = display.newGroup()
+	spriteSet = SpriteManager.getSpriteSet(SpriteManager.ITEM)
 end
 
 -----------------------------------------------------------------------------------------
@@ -63,6 +65,10 @@ function PlayerItem.create(parameters)
 	-- Create object
 	local self = parameters or {}
 	setmetatable(self, PlayerItem)
+
+	-- Create group
+	self.group = display.newGroup()
+	classGroup:insert(self.group)
 
 	-- Initialize attributes
 	self.id = ctId
@@ -87,30 +93,14 @@ function PlayerItem.create(parameters)
 
 	ctId = ctId + 1
 
-	-- Manage groups
-	self.group = display.newGroup()
-	classGroup:insert(self.group)
-
 	-- Position group
 	self.group.x = self.x
 	self.group.y = self.y
 
-	return self
-end
-
--- Destroy the item
-function PlayerItem:destroy()
-	self.group:removeSelf()
-end
-
------------------------------------------------------------------------------------------
--- Methods
------------------------------------------------------------------------------------------
-
--- Draw the item
-function PlayerItem:draw()
-	self.itemSprite = display.newImageRect("item_" .. self.typeName .. ".png",
-		config.item.width, config.item.height)
+	-- Draw sprite
+	self.itemSprite = SpriteManager.newSprite(spriteSet)
+	self.itemSprite:prepare("item_" .. self.typeName)
+	self.itemSprite:play()
 
 	-- Position sprite
 	self.itemSprite:setReferencePoint(display.CenterReferencePoint)
@@ -123,7 +113,18 @@ function PlayerItem:draw()
 
 	-- Add to group
 	self.group:insert(self.itemSprite)
+
+	return self
 end
+
+-- Destroy the item
+function PlayerItem:destroy()
+	self.group:removeSelf()
+end
+
+-----------------------------------------------------------------------------------------
+-- Methods
+-----------------------------------------------------------------------------------------
 
 -- Use the item on the specified tile
 --

@@ -13,6 +13,7 @@ MapItem.__index = MapItem
 -----------------------------------------------------------------------------------------
 
 local config = require("GameConfig")
+local SpriteManager = require("SpriteManager")
 local Tile = require("Tile")
 local PlayerItem = require("PlayerItem")
 
@@ -28,6 +29,7 @@ ctId = 1
 
 function initialize()
 	classGroup = display.newGroup()
+	spriteSet = SpriteManager.getSpriteSet(SpriteManager.ITEM)
 end
 
 -----------------------------------------------------------------------------------------
@@ -44,6 +46,10 @@ function MapItem.create(parameters)
 	local self = parameters or {}
 	setmetatable(self, MapItem)
 
+	-- Create group
+	self.group = display.newGroup()
+	classGroup:insert(self.group)
+
 	-- Initialize attributes
 	self.id = ctId
 	self.x = self.tile.x
@@ -57,29 +63,14 @@ function MapItem.create(parameters)
 
 	ctId = ctId + 1
 
-	-- Manage groups
-	self.group = display.newGroup()
-	classGroup:insert(self.group)
-
 	-- Position group
 	self.group.x = self.x
 	self.group.y = self.y
 
-	return self
-end
-
--- Destroy the item
-function MapItem:destroy()
-	self.group:removeSelf()
-end
-
------------------------------------------------------------------------------------------
--- Methods
------------------------------------------------------------------------------------------
-
--- Draw the item
-function MapItem:draw()
-	self.itemSprite = display.newImageRect("item.png", config.item.width, config.item.height)
+	-- Draw sprite
+	self.itemSprite = SpriteManager.newSprite(spriteSet)
+	self.itemSprite:prepare("item")
+	self.itemSprite:play()
 
 	-- Position sprite
 	self.itemSprite:setReferencePoint(display.CenterReferencePoint)
@@ -99,7 +90,18 @@ function MapItem:draw()
 
 		self.group:insert(self.collisionMaskDebug)
 	end
+
+	return self
 end
+
+-- Destroy the item
+function MapItem:destroy()
+	self.group:removeSelf()
+end
+
+-----------------------------------------------------------------------------------------
+-- Methods
+-----------------------------------------------------------------------------------------
 
 -- Compute the item collision mask
 function MapItem:computeCollisionMask()
@@ -140,7 +142,6 @@ function MapItem:fetched(player)
 			type = math.random(1, PlayerItem.TYPES.COUNT)
 		}
 
-		playerItem:draw()
 		player:gainItem(playerItem)
 		self.grid:removeItem(self)
 

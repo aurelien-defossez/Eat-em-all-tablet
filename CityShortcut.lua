@@ -21,7 +21,7 @@ local SpriteManager = require("SpriteManager")
 
 function initialize()
 	classGroup = display.newGroup()
-	spriteSet = SpriteManager.getSpriteSet(SpriteManager.SET.CITY)
+	spriteSet = SpriteManager.getSpriteSet(SpriteManager.CITY)
 end
 
 -----------------------------------------------------------------------------------------
@@ -39,6 +39,10 @@ function CityShortcut.create(parameters)
 	-- Create object
 	local self = parameters or {}
 	setmetatable(self, CityShortcut)
+
+	-- Create group
+	self.group = display.newGroup()
+	classGroup:insert(self.group)
 	
 	-- Initialize attributes
 	self.x = self.city.x
@@ -46,38 +50,19 @@ function CityShortcut.create(parameters)
 	self.width = config.city.width
 	self.height = config.city.height
 
-	-- Manage groups
+	-- Add to groups
 	self.cityGroup = display.newGroup()
 	self.textGroup = display.newGroup()
-	self.group = display.newGroup()
 	
 	self.group:insert(self.cityGroup)
 	self.group:insert(self.textGroup)
-	classGroup:insert(self.group)
 
 	-- Register shortcut to city
 	self.city.shortcut = self
-	
-	return self
-end
-
--- Destroy the shortcut, by notifying its linked city and removing every sprite
-function CityShortcut:destroy()
-	self.city.shortcut = nil
-	self.group:removeSelf()
-end
-
------------------------------------------------------------------------------------------
--- Methods
------------------------------------------------------------------------------------------
-
--- Draw the city
-function CityShortcut:draw()
-	local animationName = "city" .. self.city.size .. "_" .. self.player.color
 
 	-- Draw sprite
 	self.citySprite = SpriteManager.newSprite(spriteSet)
-	self.citySprite:prepare(animationName)
+	self.citySprite:prepare("city" .. self.city.size .. "_" .. self.player.color)
 	self.citySprite:play()
 
 	-- Position sprite
@@ -107,7 +92,19 @@ function CityShortcut:draw()
 	-- Position group
 	self.group.x = self.x
 	self.group.y = self.y
+	
+	return self
 end
+
+-- Destroy the shortcut, by notifying its linked city and removing every sprite
+function CityShortcut:destroy()
+	self.city.shortcut = nil
+	self.group:removeSelf()
+end
+
+-----------------------------------------------------------------------------------------
+-- Methods
+-----------------------------------------------------------------------------------------
 
 -- Move the shortcut to an absolute position on the screen, easing it
 function CityShortcut:moveTo(parameters)

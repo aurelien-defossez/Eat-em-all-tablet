@@ -13,6 +13,7 @@ Sign.__index = Sign
 -----------------------------------------------------------------------------------------
 
 local config = require("GameConfig")
+local SpriteManager = require("SpriteManager")
 local Tile = require("Tile")
 local Arrow = require("Arrow")
 
@@ -22,6 +23,7 @@ local Arrow = require("Arrow")
 
 function initialize()
 	classGroup = display.newGroup()
+	spriteSet = SpriteManager.getSpriteSet(SpriteManager.ARROW)
 end
 
 -----------------------------------------------------------------------------------------
@@ -39,18 +41,32 @@ function Sign.create(parameters)
 	local self = parameters or {}
 	setmetatable(self, Sign)
 
+	-- Create group
+	self.group = display.newGroup()
+	classGroup:insert(self.group)
+
 	-- Initialize attributes
 	self.type = Tile.TYPE_SIGN
 	self.x = self.tile.x
 	self.y = self.tile.y
 
-	-- Manage groups
-	self.group = display.newGroup()
-	classGroup:insert(self.group)
-
 	-- Position group
 	self.group.x = self.x
 	self.group.y = self.y
+
+	-- Draw sprite
+	self.signSprite = SpriteManager.newSprite(spriteSet)
+	self.signSprite:prepare("arrow_" .. self.player.color)
+	self.signSprite:play()
+
+	-- Position sprite
+	self.signSprite:setReferencePoint(display.CenterReferencePoint)
+	self.signSprite.x = self.tile.width / 2
+	self.signSprite.y = self.tile.height / 2
+	self.signSprite:rotate(self.direction or 0)
+
+	-- Add to group
+	self.group:insert(self.signSprite)
 
 	return self
 end
@@ -63,21 +79,6 @@ end
 -----------------------------------------------------------------------------------------
 -- Methods
 -----------------------------------------------------------------------------------------
-
--- Draw the sign
-function Sign:draw()
-	self.signSprite = display.newImageRect("arrow_up_" .. self.player.color .. ".png",
-		config.arrow.width, config.arrow.height)
-
-	-- Position sprite
-	self.signSprite:setReferencePoint(display.CenterReferencePoint)
-	self.signSprite.x = self.tile.width / 2
-	self.signSprite.y = self.tile.height / 2
-	self.signSprite:rotate(self.direction or 0)
-
-	-- Add to group
-	self.group:insert(self.signSprite)
-end
 
 -- Reach middle tile handler, called when a zombie reaches the middle of the tile
 --
