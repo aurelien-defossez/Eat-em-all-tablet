@@ -13,6 +13,7 @@ CityShortcut.__index = CityShortcut
 -----------------------------------------------------------------------------------------
 
 local config = require("GameConfig")
+local SpriteManager = require("SpriteManager")
 
 -----------------------------------------------------------------------------------------
 -- Class initialization
@@ -20,6 +21,7 @@ local config = require("GameConfig")
 
 function initialize()
 	classGroup = display.newGroup()
+	spriteSet = SpriteManager.getSpriteSet(SpriteManager.SET.CITY)
 end
 
 -----------------------------------------------------------------------------------------
@@ -71,8 +73,21 @@ end
 
 -- Draw the city
 function CityShortcut:draw()
-	-- Draw city
-	self:drawSprite()
+	local animationName = "city" .. self.city.size .. "_" .. self.player.color
+
+	-- Draw sprite
+	self.citySprite = SpriteManager.newSprite(spriteSet)
+	self.citySprite:prepare(animationName)
+	self.citySprite:play()
+
+	-- Position sprite
+	self.citySprite:setReferencePoint(display.CenterReferencePoint)
+	self.citySprite.x = self.city.tile.width / 2
+	self.citySprite.y = self.city.tile.height / 2
+
+	-- Handle events
+	self.citySprite.cityShortcut = self
+	self.citySprite:addEventListener("touch", onCityTouch)
 
 	-- Inhabitants count text
 	self.inhabitantsText = display.newText(self.city.inhabitants, config.city.inhabitantsText.x,
@@ -85,6 +100,7 @@ function CityShortcut:draw()
 	self.nameText:setTextColor(0, 0, 0)
 
 	-- Add texts to group
+	self.cityGroup:insert(self.citySprite)
 	self.textGroup:insert(self.inhabitantsText)
 	self.textGroup:insert(self.nameText)
 
@@ -104,26 +120,6 @@ function CityShortcut:moveTo(parameters)
 
 	self.x = parameters.x
 	self.y = parameters.y
-end
-
--- Draw the city sprite
-function CityShortcut:drawSprite()
-	local spriteName = "city" .. self.city.size .. "_" .. self.player.color .. ".png"
-	
-	-- Create sprite
-	self.sprite = display.newImageRect(spriteName, config.city.width, config.city.height)
-
-	-- Position sprite
-	self.sprite:setReferencePoint(display.CenterReferencePoint)
-	self.sprite.x = self.city.tile.width / 2
-	self.sprite.y = self.city.tile.height / 2
-	
-	-- Handle events
-	self.sprite.cityShortcut = self
-	self.sprite:addEventListener("touch", onCityTouch)
-
-	-- Insert into group
-	self.cityGroup:insert(self.sprite)
 end
 
 -- Update the number of inhabitants from the linked city

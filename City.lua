@@ -136,17 +136,18 @@ function City:draw()
 	self:updateSprite()
 end
 
--- Draw the city sprite
+-- Update the city sprite animation
 function City:updateSprite()
-	local spriteName;
+	local animationName;
 	
 	if self.player then
-		spriteName = "city" .. self.size .. "_" .. self.player.color
+		animationName = "city" .. self.size .. "_" .. self.player.color
 	else
-		spriteName = "city" .. self.size .. "_grey"
+		animationName = "city" .. self.size .. "_grey"
 	end
 	
-	self.citySprite:prepare(spriteName)
+	self.citySprite:prepare(animationName)
+	self.citySprite:play()
 end
 
 -- Add inhabitants to the city

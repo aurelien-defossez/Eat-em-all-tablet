@@ -178,6 +178,26 @@ panels = {
 	}
 }
 
+sprites = {
+	city = {
+		city1_grey = {},
+		city1_blue = {},
+		city1_red = {},
+		city2_grey = {},
+		city2_blue = {},
+		city2_red = {},
+		city3_grey = {},
+		city3_blue = {
+			frameCount = 2,
+			period = 1000
+		},
+		city3_red = {
+			frameCount = 2,
+			period = 1000
+		}
+	}
+}
+
 defaultMap = {
 	cemeteries = {
 		{

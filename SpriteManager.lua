@@ -12,6 +12,7 @@ SpriteManager.__index = SpriteManager
 -- Imports
 -----------------------------------------------------------------------------------------
 
+local config = require("GameConfig")
 local spriteApi = require("sprite")
 local spritesheetData = require("spritesheetData")
 
@@ -49,17 +50,7 @@ function initialize()
 
 	-- Load sprite sets
 	spriteSets = {}
-	spriteSets[SET.CITY] = loadSpriteSet{
-		city1_grey = 1,
-		city1_blue = 1,
-		city1_red = 1,
-		city2_grey = 1,
-		city2_blue = 1,
-		city2_red = 1,
-		city3_grey = 1,
-		city3_blue = 1,
-		city3_red = 1
-	}
+	spriteSets[SET.CITY] = loadSpriteSet(config.sprites.city)
 end
 
 -----------------------------------------------------------------------------------------
@@ -76,16 +67,20 @@ end
 function loadSpriteSet(sprites)
 	local spriteSet = spriteApi.newSpriteSet(spriteSheet, 1, 1)
 
-	for spriteName, frameCount in pairs(sprites) do
-		local firstSpriteName = spriteName
+	for spriteName, animation in pairs(sprites) do
+		local firstSpriteName
+		local frameCount = animation.frameCount or 1
+		local period = animation.period or 600000
 
 		-- Rename sprite as the first sprite of the animation if it is one
-		if frameCount > 1 then
-			firstSpriteName = firstSpriteName .. "_1"
+		if frameCount == 1 then
+			firstSpriteName = spriteName
+		else
+			firstSpriteName = spriteName .. "_1"
 		end
 	
 		-- Add the animation to the sprite set
-		spriteApi.add(spriteSet, spriteName, spriteSheetIndex[firstSpriteName .. ".png"], frameCount, 600000)
+		spriteApi.add(spriteSet, spriteName, spriteSheetIndex[firstSpriteName .. ".png"], frameCount, period)
 	end
 	
 	return spriteSet
