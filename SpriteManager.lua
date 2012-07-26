@@ -70,6 +70,7 @@ function loadSpriteSet(sprites)
 	for spriteName, animation in pairs(sprites) do
 		local firstSpriteName
 		local frameCount = animation.frameCount or 1
+		-- Set the period to 10 minutes if no period is defined (= steady frame)
 		local period = animation.period or 600000
 
 		-- Rename sprite as the first sprite of the animation if it is one
