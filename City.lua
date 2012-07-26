@@ -13,9 +13,9 @@ City.__index = City
 -----------------------------------------------------------------------------------------
 
 local config = require("GameConfig")
+local SpriteManager = require("SpriteManager")
 local Zombie = require("Zombie")
 local Tile = require("Tile")
-local utils = require("utils")
 
 -----------------------------------------------------------------------------------------
 -- Constants
@@ -31,18 +31,7 @@ SIZE_LARGE = 3
 
 function initialize()
 	classGroup = display.newGroup()
-
-	spriteSet = loadSpriteSet{
-		city1_grey = 1,
-		city1_blue = 1,
-		city1_red = 1,
-		city2_grey = 1,
-		city2_blue = 1,
-		city2_red = 1,
-		city3_grey = 1,
-		city3_blue = 1,
-		city3_red = 1
-	}
+	spriteSet = SpriteManager.getSpriteSet(SpriteManager.SET.CITY)
 end
 
 -----------------------------------------------------------------------------------------
@@ -116,7 +105,7 @@ end
 -- Draw the city
 function City:draw()
 	-- Draw sprite
-	self.citySprite = sprite.newSprite(spriteSet)
+	self.citySprite = SpriteManager.newSprite(spriteSet)
 
 	-- Position sprite
 	self.citySprite:setReferencePoint(display.CenterReferencePoint)

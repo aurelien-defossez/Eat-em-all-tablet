@@ -13,6 +13,7 @@ GameScene.__index = GameScene
 -----------------------------------------------------------------------------------------
 
 local config = require("GameConfig")
+local SpriteManager = require("SpriteManager")
 local UpperBarPanel = require("UpperBarPanel")
 local PlayerControlPanel = require("PlayerControlPanel")
 local ArrowsPanel = require("ArrowsPanel")
@@ -51,6 +52,9 @@ function create(parameters)
 	-- Draw the background
 	local background = display.newRect(0, 0, config.screen.width, config.screen.height)
 	background:setFillColor(142, 57, 20)
+
+	-- Initialize managers
+	SpriteManager.initialize()
 
 	-- Initialize groups in invert Z order
 	UpperBarPanel.initialize()
