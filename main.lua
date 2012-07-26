@@ -24,7 +24,13 @@ end
 -- System event listener
 local systemEventListener = function(event)
 	print("System event: "..event.type)
-	if event.type == "applicationExit" then
+	if event.type == "applicationStart" then
+		-- Seed randomizer
+		math.randomseed(os.time())
+
+		-- Start the multiplayer game
+		storyboard.gotoScene("multiplayer")
+	elseif event.type == "applicationExit" then
 		exit()
 		return true
 	elseif event.type == "applicationSuspend" then
@@ -62,6 +68,3 @@ Runtime:addEventListener("key", keyListener);
  
 -- Setup a system event listener
 Runtime:addEventListener("system", systemEventListener)
-
--- Start the multiplayer game
-storyboard.gotoScene("multiplayer")

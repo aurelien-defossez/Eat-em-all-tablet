@@ -153,7 +153,7 @@ function onDraggedArrowTouch(event)
 			if arrowSprite.direction ~= DELETE then
 				-- Create sign
 				if not tile.content
-					or tile.getContentType() == Tile.TYPE_SIGN and tile.content.player == arrowSprite.player then
+					or tile:getContentType() == Tile.TYPE_SIGN and tile.content.player == arrowSprite.player then
 
 					if tile.content then
 						tile.content:destroy()
