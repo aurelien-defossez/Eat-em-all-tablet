@@ -22,6 +22,10 @@ local exit = function()
 	-- os.exit();
 end
 
+-- Pauses the game
+--
+-- Parameters:
+--  pauseStatus: True if the game has to be paused, false to resume
 local pause = function(pauseStatus)
 	EventManager.dispatch{
 		name = "pause",

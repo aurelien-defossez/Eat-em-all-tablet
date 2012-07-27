@@ -78,8 +78,10 @@ function Zombie.create(parameters)
 
 	if self.size == 1 then
 		self.speed = config.zombie.speed.normal
+		self.isGiant = false
 	else
 		self.speed = config.zombie.speed.giant
+		self.isGiant = true
 	end
 
 	if config.debug.fastZombies then
@@ -101,7 +103,7 @@ function Zombie.create(parameters)
 	self.zombieSprite:play()
 
 	-- Position sprite
-	if self.size == 1 then
+	if not self.isGiant then
 		self.zombieSprite.x = self.width / 2 +
 			math.random(config.zombie.randomOffsetRange.x[1], config.zombie.randomOffsetRange.x[2])
 		self.zombieSprite.y = self.height / 2 +
@@ -262,16 +264,9 @@ function Zombie:carryItem(item)
 	self.phase = ZOMBIE.PHASE.CARRY_ITEM_INIT
 	self:changeDirection(getReverseDirection(self.player.direction))
 
-	local speed
-	if self.size == 1 then
-		speed = config.item.speed.perZombie
-	else
-		speed = config.item.speed.perGiant
-	end
-
 	item:attachZombie({
 		zombie = self,
-		speed = speed * self.directionVector.x
+		speed = config.item.speed.perZombie * self.directionVector.x
 	})
 end
 

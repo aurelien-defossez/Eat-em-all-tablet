@@ -193,7 +193,13 @@ function GameScene:enterFrame(timeDelta)
 	end
 end
 
--- Switch pause handler, calls the switch pause method on the GameScene instance
+-- Pause handler
+--
+-- Parameters:
+--  event: The event object, with these data:
+--   switch: If true, then switches the pause status
+--   status: If true, then pauses the game, resumes otherwise (overriden by switch if true)
+--   system: Tells whether the event is a system event
 function pauseCallback(event)
 	if event.switch then
 		instance:switchPause(event)

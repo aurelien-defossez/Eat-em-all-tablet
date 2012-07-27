@@ -312,7 +312,7 @@ function Grid:enterFrame(timeDelta)
 		end
 
 		-- Check collision with items
-		if zombie.phase == ZOMBIE.PHASE.MOVE then
+		if zombie.phase == ZOMBIE.PHASE.MOVE and not zombie.isGiant then
 			for itemIndex, item in pairs(self.items) do
 				local mask2 = item.collisionMask
 

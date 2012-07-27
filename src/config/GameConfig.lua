@@ -74,9 +74,8 @@ config = {
 			y = 16
 		},
 		speed = {
-			perZombie = 0.1,
-			perGiant = 0.3,
-			max = 1
+			perZombie = 0.05,
+			max = 0.5
 		},
 		creation = {
 			time = {

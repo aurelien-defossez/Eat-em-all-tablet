@@ -228,7 +228,7 @@ function City:attackCity(zombie)
 			killer = ZOMBIE.KILLER.CITY,
 			hits = hits
 		}
-	elseif zombie.size == 1 then
+	elseif not zombie.isGiant then
 		-- Notify player
 		zombie.player:gainCity(self)
 
