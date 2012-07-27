@@ -15,6 +15,7 @@ GameScene.__index = GameScene
 require("src.utils.Constants")
 require("src.config.GameConfig")
 
+local EventManager = require("src.utils.EventManager")
 local SpriteManager = require("src.utils.SpriteManager")
 local UpperBarPanel = require("src.hud.UpperBarPanel")
 local PlayerControlPanel = require("src.hud.PlayerControlPanel")
@@ -41,7 +42,7 @@ local MapItem = require("src.game.MapItem")
 --
 -- Parameters:
 --  players: The two player objects
-function create(parameters)
+function GameScene.create(parameters)
 	-- Create object
 	self = parameters or {}
 	setmetatable(self, GameScene)
@@ -58,10 +59,11 @@ function create(parameters)
 	background:setFillColor(142, 57, 20)
 
 	-- Initialize managers
+	EventManager.initialize()
 	SpriteManager.initialize()
 
 	-- Initialize groups in invert Z order
-	UpperBarPanel.initialize(self)
+	UpperBarPanel.initialize()
 	PlayerControlPanel.initialize()
 	ArrowsPanel.initialize()
 	ItemsPanel.initialize()
@@ -76,6 +78,9 @@ function create(parameters)
 	Zombie.initialize()
 	PlayerItem.initialize()
 	CityShortcut.initialize()
+
+	-- Listen to events
+	EventManager.addListener("pause", switchPauseCallback)
 
 	-- Sizes
 	local mainHeight = config.screen.height - config.panels.upperBar.height
@@ -118,11 +123,13 @@ function create(parameters)
 end
 
 -- Destroy the scene
-function destroy()
+function GameScene:destroy()
 	self.controlPanel1:destroy()
 	self.controlPanel2:destroy()
 	self.grid:destroy()
 	self.upperBar:destroy()
+
+	EventManager.removeListener("pause", switchPauseCallback)
 end
 
 -----------------------------------------------------------------------------------------
@@ -133,7 +140,7 @@ end
 --
 -- Parameters
 --  system: True if the game has been paused by the system
-function pause(parameters)
+function GameScene:pause(parameters)
 	parameters = parameters or {}
 
 	if parameters.system then
@@ -147,7 +154,7 @@ end
 --
 -- Parameters
 --  system: True if the game has been resumed by the system
-function resume(parameters)
+function GameScene:resume(parameters)
 	parameters = parameters or {}
 
 	if parameters.system then
@@ -161,7 +168,7 @@ end
 --
 -- Parameters
 --  system: True if the game has been paused or resumed by the system
-function switchPause(parameters)
+function GameScene:switchPause(parameters)
 	parameters = parameters or {}
 
 	if parameters.system then
@@ -179,11 +186,16 @@ end
 --
 -- Parameters:
 --  timeDelta: The time in ms since last frame
-function enterFrame(timeDelta)
+function GameScene:enterFrame(timeDelta)
 	if not self.paused.user and not self.paused.system then
 		-- Relay event to grid
 		self.grid:enterFrame(timeDelta)
 	end
+end
+
+-- Switch pause handler, calls the switch pause method on the GameScene instance
+function switchPauseCallback()
+	instance:switchPause()
 end
 
 -----------------------------------------------------------------------------------------

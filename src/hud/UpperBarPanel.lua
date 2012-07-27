@@ -16,14 +16,14 @@ require("src.utils.Constants")
 require("src.config.GameConfig")
 
 local SpriteManager = require("src.utils.SpriteManager")
+local EventManager = require("src.utils.EventManager")
 local HitPointsPanel = require("src.hud.HitPointsPanel")
 
 -----------------------------------------------------------------------------------------
 -- Class initialization
 -----------------------------------------------------------------------------------------
 
-function initialize(GameSceneInstance)
-	GameScene = GameSceneInstance
+function initialize()
 	classGroup = display.newGroup()
 	spriteSet = SpriteManager.getSpriteSet(SpriteManager.MISC)
 
@@ -109,7 +109,11 @@ end
 
 -- Tap handler on the pause button
 function onPauseTap(event)
-	GameScene.switchPause()
+	local event = {
+		name = "pause"
+	}
+
+	EventManager.dispatch(event)
 end
 
 -----------------------------------------------------------------------------------------

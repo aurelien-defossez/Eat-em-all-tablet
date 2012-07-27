@@ -134,6 +134,8 @@ function PlayerItem:useItem(tile)
 	elseif self.type == ITEM.TYPE.FIRE then
 	elseif self.type == ITEM.TYPE.MINE then
 	end
+
+	self:destroy()
 end
 
 -- Move the item to an absolute position on the screen, easing it
@@ -187,8 +189,8 @@ function onItemTouch(event)
 				or self.dropZones == ALLOWED_DROP_ZONE.EMPTY and tile.content == nil
 				or self.dropZones == ALLOWED_DROP_ZONE.EMPTY_EXCEPT_SIGNS and
 					(tile.content == nil or tile:getContentType() == TILE.CONTENT.SIGN) then
-				self.player:removeItem(self)
 				self:useItem(tile)
+				self.player:removeItem(self)
 			else
 				cancel = true
 			end

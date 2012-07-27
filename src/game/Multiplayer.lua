@@ -45,7 +45,7 @@ function scene:createScene(event)
 	}
 
 	-- Create game scene
-	GameScene.create{
+	self.gameScene = GameScene.create{
 		players = self.players
 	}
 end
@@ -68,7 +68,7 @@ end
 
 -- If scene's view is removed, scene:destroyScene() will be called just prior to:
 function scene:destroyScene(event)
-	GameScene.destroy()
+	self.gameScene:destroy()
 	local group = self.view
 end
 
@@ -80,7 +80,7 @@ function scene:enterFrame(event)
 	local timeDelta =  event.time - self.lastFrameTime
 	self.lastFrameTime = event.time
 
-	GameScene.enterFrame(timeDelta)
+	self.gameScene:enterFrame(timeDelta)
 end
 
 -----------------------------------------------------------------------------------------
