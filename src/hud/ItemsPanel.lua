@@ -12,8 +12,10 @@ ItemsPanel.__index = ItemsPanel
 -- Imports
 -----------------------------------------------------------------------------------------
 
-local config = require("GameConfig")
-local TableLayout = require("TableLayout")
+require("src.utils.Constants")
+require("src.config.GameConfig")
+
+local TableLayout = require("src.utils.TableLayout")
 
 -----------------------------------------------------------------------------------------
 -- Class methods

@@ -12,9 +12,11 @@ CitiesPanel.__index = CitiesPanel
 -- Imports
 -----------------------------------------------------------------------------------------
 
-local config = require("GameConfig")
-local CityShortcut = require("CityShortcut")
-local TableLayout = require("TableLayout")
+require("src.utils.Constants")
+require("src.config.GameConfig")
+
+local CityShortcut = require("src.hud.CityShortcut")
+local TableLayout = require("src.utils.TableLayout")
 
 -----------------------------------------------------------------------------------------
 -- Class methods

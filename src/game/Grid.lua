@@ -12,13 +12,15 @@ Grid.__index = Grid
 -- Imports
 -----------------------------------------------------------------------------------------
 
-local collisions = require("collisions")
-local config = require("GameConfig")
-local Tile = require("Tile")
-local Cemetery = require("Cemetery")
-local FortressWall = require("FortressWall")
-local Zombie = require("Zombie")
-local MapItem = require("MapItem")
+require("src.utils.Constants")
+require("src.config.GameConfig")
+
+local Collisions = require("src.lib.Collisions")
+local Tile = require("src.game.Tile")
+local City = require("src.game.City")
+local Cemetery = require("src.game.Cemetery")
+local FortressWall = require("src.game.FortressWall")
+local MapItem = require("src.game.MapItem")
 
 -----------------------------------------------------------------------------------------
 -- Constants
@@ -160,10 +162,19 @@ function Grid:loadMap(parameters)
 			y = city.y
 		}
 
+		local size
+		if city.size == "small" then
+			size = CITY.SIZE.SMALL
+		elseif city.size == "medium" then
+			size = CITY.SIZE.MEDIUM
+		else
+			size = CITY.SIZE.LARGE
+		end
+
 		tile.content = City.create{
 			grid = self,
 			tile = tile,
-			size = city.size,
+			size = size,
 			id = cityId,
 			name = string.char(cityId + ASCII_CAPITAL_A - 1)
 		}
@@ -261,7 +272,7 @@ function Grid:enterFrame(timeDelta)
 				x = math.random(middleTileX - config.item.creation.xoffset, middleTileX + config.item.creation.xoffset),
 				y = math.random(config.panels.grid.nbRows)
 			}
-		until tile.content == nil or tile.content.type == TYPE_SIGN
+		until tile.content == nil or tile.content.type == TILE.CONTENT.SIGN
 
 		local item = MapItem.create{
 			tile = tile,
@@ -283,16 +294,16 @@ function Grid:enterFrame(timeDelta)
 			if zombie.player.id ~= otherZombie.player.id and otherZombie.id > zombie.id then
 				local mask2 = otherZombie.collisionMask
 
-				if collisions.intersectRects(mask1.x, mask1.y, mask1.width, mask1.height,
+				if Collisions.intersectRects(mask1.x, mask1.y, mask1.width, mask1.height,
 					mask2.x, mask2.y, mask2.width, mask2.height) then
 
 					zombie:die{
-						killer = Zombie.KILLER_ZOMBIE,
+						killer = ZOMBIE.KILLER.ZOMBIE,
 						hits = otherZombie.size
 					}
 
 					otherZombie:die{
-						killer = Zombie.KILLER_ZOMBIE,
+						killer = ZOMBIE.KILLER.ZOMBIE,
 						hits = zombie.size
 					}
 					break
@@ -301,11 +312,11 @@ function Grid:enterFrame(timeDelta)
 		end
 
 		-- Check collision with items
-		if zombie.phase == Zombie.PHASE_MOVE then
+		if zombie.phase == ZOMBIE.PHASE.MOVE then
 			for itemIndex, item in pairs(self.items) do
 				local mask2 = item.collisionMask
 
-				if collisions.intersectRects(mask1.x, mask1.y, mask1.width, mask1.height,
+				if Collisions.intersectRects(mask1.x, mask1.y, mask1.width, mask1.height,
 					mask2.x, mask2.y, mask2.width, mask2.height) then
 					
 					zombie:carryItem(item)

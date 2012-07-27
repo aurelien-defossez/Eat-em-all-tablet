@@ -12,9 +12,10 @@ FortressWall.__index = FortressWall
 -- Imports
 -----------------------------------------------------------------------------------------
 
-local config = require("GameConfig")
-local SpriteManager = require("SpriteManager")
-local Tile = require("Tile")
+require("src.utils.Constants")
+require("src.config.GameConfig")
+
+local SpriteManager = require("src.utils.SpriteManager")
 
 -----------------------------------------------------------------------------------------
 -- Class initialization
@@ -44,7 +45,7 @@ function FortressWall.create(parameters)
 	classGroup:insert(self.group)
 
 	-- Initialize attributes
-	self.type = Tile.TYPE_FORTRESS_WALL
+	self.type = TILE.CONTENT.FORTRESS_WALL
 	self.x = self.tile.x
 	self.y = self.tile.y
 
@@ -88,12 +89,12 @@ function FortressWall:enterTile(zombie)
 
 		-- Kill zombie
 		zombie:die{
-			killer = Zombie.KILLER_FORTRESS
+			killer = ZOMBIE.KILLER.FORTRESS
 		}
-	elseif zombie.phase == Zombie.PHASE_MOVE or zombie.phase == Zombie.PHASE_CARRY_ITEM_INIT then
+	elseif zombie.phase == ZOMBIE.PHASE.MOVE or zombie.phase == ZOMBIE.PHASE.CARRY_ITEM_INIT then
 		-- Move backward
 		zombie:changeDirection(self.player.direction)
-	elseif zombie.phase == Zombie.PHASE_CARRY_ITEM then
+	elseif zombie.phase == ZOMBIE.PHASE.CARRY_ITEM then
 		-- Fetch item
 		zombie.item:fetched(self.player)
 	end

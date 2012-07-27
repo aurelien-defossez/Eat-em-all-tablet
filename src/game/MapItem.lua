@@ -12,10 +12,12 @@ MapItem.__index = MapItem
 -- Imports
 -----------------------------------------------------------------------------------------
 
-local config = require("GameConfig")
-local SpriteManager = require("SpriteManager")
-local Tile = require("Tile")
-local PlayerItem = require("PlayerItem")
+require("src.utils.Constants")
+require("src.config.GameConfig")
+
+local SpriteManager = require("src.utils.SpriteManager")
+local Tile = require("src.game.Tile")
+local PlayerItem = require("src.hud.PlayerItem")
 
 -----------------------------------------------------------------------------------------
 -- Class attributes
@@ -127,8 +129,8 @@ function MapItem:fetched(player)
 
 		-- Release zombies from their tasks
 		for index, zombie in pairs(self.zombies) do
-			if zombie.phase == Zombie.PHASE_CARRY_ITEM or zombie.phase == Zombie.PHASE_CARRY_ITEM_INIT then
-				zombie.phase = Zombie.PHASE_MOVE
+			if zombie.phase == ZOMBIE.PHASE.CARRY_ITEM or zombie.phase == ZOMBIE.PHASE.CARRY_ITEM_INIT then
+				zombie.phase = ZOMBIE.PHASE.MOVE
 				zombie:changeDirection(zombie.player.direction)
 			end
 		end
@@ -139,7 +141,7 @@ function MapItem:fetched(player)
 			grid = self.grid,
 			x = self.x,
 			y = self.y,
-			type = math.random(1, PlayerItem.TYPES.COUNT)
+			type = math.random(1, ITEM.TYPE.COUNT)
 		}
 
 		player:gainItem(playerItem)

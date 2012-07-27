@@ -12,10 +12,12 @@ PlayerControlPanel.__index = PlayerControlPanel
 -- Imports
 -----------------------------------------------------------------------------------------
 
-local config = require("GameConfig")
-local ItemsPanel = require("ItemsPanel")
-local ArrowsPanel = require("ArrowsPanel")
-local CitiesPanel = require("CitiesPanel")
+require("src.utils.Constants")
+require("src.config.GameConfig")
+
+local ItemsPanel = require("src.hud.ItemsPanel")
+local ArrowsPanel = require("src.hud.ArrowsPanel")
+local CitiesPanel = require("src.hud.CitiesPanel")
 
 -----------------------------------------------------------------------------------------
 -- Class initialization

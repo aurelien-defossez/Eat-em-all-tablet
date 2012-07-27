@@ -12,21 +12,15 @@ PlayerItem.__index = PlayerItem
 -- Imports
 -----------------------------------------------------------------------------------------
 
-local config = require("GameConfig")
-local SpriteManager = require("SpriteManager")
-local Tile = require("Tile")
+require("src.utils.Constants")
+require("src.config.GameConfig")
+
+local SpriteManager = require("src.utils.SpriteManager")
+local Tile = require("src.game.Tile")
 
 -----------------------------------------------------------------------------------------
 -- Constants
 -----------------------------------------------------------------------------------------
-
-TYPES = {
-	COUNT = 4,
-	SKELETON = 1,
-	GIANT = 2,
-	FIRE = 3,
-	MINE = 4
-}
 
 ALLOWED_DROP_ZONE = {
 	ALL = 1,
@@ -77,16 +71,16 @@ function PlayerItem.create(parameters)
 	self.width_2 = config.item.width / 2
 	self.height_2 = config.item.height / 2
 	
-	if self.type == TYPES.SKELETON then
+	if self.type == ITEM.TYPE.SKELETON then
 		self.typeName = "skeleton"
 		self.dropZones = ALLOWED_DROP_ZONE.CEMETERIES
-	elseif self.type == TYPES.GIANT then
+	elseif self.type == ITEM.TYPE.GIANT then
 		self.typeName = "giant"
 		self.dropZones = ALLOWED_DROP_ZONE.CEMETERIES
-	elseif self.type == TYPES.FIRE then
+	elseif self.type == ITEM.TYPE.FIRE then
 		self.typeName = "fire"
 		self.dropZones = ALLOWED_DROP_ZONE.EMPTY_EXCEPT_SIGNS
-	elseif self.type == TYPES.MINE then
+	elseif self.type == ITEM.TYPE.MINE then
 		self.typeName = "mine"
 		self.dropZones = ALLOWED_DROP_ZONE.EMPTY_EXCEPT_SIGNS
 	end
@@ -131,14 +125,14 @@ end
 -- Parameters:
 --  tile: The tile to use the item on
 function PlayerItem:useItem(tile)
-	if self.type == TYPES.SKELETON then
+	if self.type == ITEM.TYPE.SKELETON then
 		tile.content:quicklySpawnZombies(config.item.skeleton.nbZombies)
-	elseif self.type == TYPES.GIANT then
+	elseif self.type == ITEM.TYPE.GIANT then
 		tile.content:spawn{
 			size = config.item.giant.size
 		}
-	elseif self.type == TYPES.FIRE then
-	elseif self.type == TYPES.MINE then
+	elseif self.type == ITEM.TYPE.FIRE then
+	elseif self.type == ITEM.TYPE.MINE then
 	end
 end
 
@@ -189,10 +183,10 @@ function onItemTouch(event)
 		else
 			-- Check if the drop is a legal drop for this item
 			if self.dropZones == ALLOWED_DROP_ZONE.ALL
-				or self.dropZones == ALLOWED_DROP_ZONE.CEMETERIES and tile:getContentType() == Tile.TYPE_CEMETERY
+				or self.dropZones == ALLOWED_DROP_ZONE.CEMETERIES and tile:getContentType() == TILE.CONTENT.CEMETERY
 				or self.dropZones == ALLOWED_DROP_ZONE.EMPTY and tile.content == nil
 				or self.dropZones == ALLOWED_DROP_ZONE.EMPTY_EXCEPT_SIGNS and
-					(tile.content == nil or tile:getContentType() == Tile.TYPE_SIGN) then
+					(tile.content == nil or tile:getContentType() == TILE.CONTENT.SIGN) then
 				self.player:removeItem(self)
 				self:useItem(tile)
 			else

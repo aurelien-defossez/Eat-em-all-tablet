@@ -1,10 +1,10 @@
 -----------------------------------------------------------------------------------------
 --
--- utils.lua
+-- Utils.lua
 --
 -----------------------------------------------------------------------------------------
 
-local Arrow = require("Arrow")
+require("src.utils.Constants")
 
 -----------------------------------------------------------------------------------------
 -- Methods
@@ -13,18 +13,18 @@ local Arrow = require("Arrow")
 -- Return the reverse direction of the one given
 --
 -- Parameters:
---  direction: The direction as an Arrow constant
+--  direction: The direction as an DIRECTION constant
 --
 -- Returns:
---  The reverse direction, as an Arrow constant
+--  The reverse direction, as an DIRECTION constant
 function getReverseDirection(direction)
-	if direction == Arrow.UP then
-		return Arrow.DOWN
-	elseif direction == Arrow.DOWN then
-		return Arrow.UP
-	elseif direction == Arrow.LEFT then
-		return Arrow.RIGHT
-	elseif direction == Arrow.RIGHT then
-		return Arrow.LEFT
+	if direction == DIRECTION.UP then
+		return DIRECTION.DOWN
+	elseif direction == DIRECTION.DOWN then
+		return DIRECTION.UP
+	elseif direction == DIRECTION.LEFT then
+		return DIRECTION.RIGHT
+	elseif direction == DIRECTION.RIGHT then
+		return DIRECTION.LEFT
 	end
 end

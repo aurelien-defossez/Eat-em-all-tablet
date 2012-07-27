@@ -12,7 +12,9 @@ Player.__index = Player
 -- Imports
 -----------------------------------------------------------------------------------------
 
-local GameScene = require("GameScene")
+require("src.utils.Constants")
+
+local GameScene = require("src.game.GameScene")
 
 -----------------------------------------------------------------------------------------
 -- Initialization and Destruction

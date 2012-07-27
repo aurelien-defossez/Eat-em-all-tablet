@@ -12,10 +12,12 @@ Cemetery.__index = Cemetery
 -- Imports
 -----------------------------------------------------------------------------------------
 
-local config = require("GameConfig")
-local SpriteManager = require("SpriteManager")
-local Zombie = require("Zombie")
-local Tile = require("Tile")
+require("src.utils.Constants")
+require("src.config.GameConfig")
+
+local SpriteManager = require("src.utils.SpriteManager")
+local Zombie = require("src.game.Zombie")
+local Tile = require("src.game.Tile")
 
 -----------------------------------------------------------------------------------------
 -- Class initialization
@@ -46,7 +48,7 @@ function Cemetery.create(parameters)
 	classGroup:insert(self.group)
 
 	-- Initialize attributes
-	self.type = Tile.TYPE_CEMETERY
+	self.type = TILE.CONTENT.CEMETERY
 	self.x = self.tile.x
 	self.y = self.tile.y
 	self.timeSinceLastSpawn = 0
@@ -122,12 +124,12 @@ function Cemetery:enterTile(zombie)
 
 		-- Kill zombie
 		zombie:die{
-			killer = Zombie.KILLER_CEMETERY
+			killer = ZOMBIE.KILLER.CEMETERY
 		}
-	elseif zombie.phase == Zombie.PHASE_MOVE or zombie.phase == Zombie.PHASE_CARRY_ITEM_INIT then
+	elseif zombie.phase == ZOMBIE.PHASE.MOVE or zombie.phase == ZOMBIE.PHASE.CARRY_ITEM_INIT then
 		-- Move backward
 		zombie:changeDirection(self.player.direction)
-	elseif zombie.phase == Zombie.PHASE_CARRY_ITEM then
+	elseif zombie.phase == ZOMBIE.PHASE.CARRY_ITEM then
 		-- Fetch item
 		zombie.item:fetched(self.player)
 	end

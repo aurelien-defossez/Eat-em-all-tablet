@@ -12,17 +12,8 @@ Tile.__index = Tile
 -- Imports
 -----------------------------------------------------------------------------------------
 
-local config = require("GameConfig")
-local Arrow = require("Arrow")
-
------------------------------------------------------------------------------------------
--- Constants
------------------------------------------------------------------------------------------
-
-TYPE_CEMETERY = 1
-TYPE_FORTRESS_WALL = 2
-TYPE_CITY = 3
-TYPE_SIGN = 4
+require("src.utils.Constants")
+require("src.config.GameConfig")
 
 -----------------------------------------------------------------------------------------
 -- Class initialization
@@ -159,11 +150,12 @@ function Tile:reachTileMiddle(zombie)
 	end
 
 	-- First or last row tile 
-	if self.isOnFirstRow and zombie.direction == Arrow.UP or self.isOnLastRow and zombie.direction == Arrow.DOWN then
+	if self.isOnFirstRow and zombie.direction == DIRECTION.UP
+		or self.isOnLastRow and zombie.direction == DIRECTION.DOWN then
 		if math.random() < 0.5 then
-			zombie:changeDirection(Arrow.LEFT)
+			zombie:changeDirection(DIRECTION.LEFT)
 		else
-			zombie:changeDirection(Arrow.RIGHT)
+			zombie:changeDirection(DIRECTION.RIGHT)
 		end
 	end
 end

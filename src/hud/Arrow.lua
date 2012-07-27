@@ -12,10 +12,12 @@ Arrow.__index = Arrow
 -- Imports
 -----------------------------------------------------------------------------------------
 
-local config = require("GameConfig")
-local SpriteManager = require("SpriteManager")
-local Sign = require("Sign")
-local Tile = require("Tile")
+require("src.utils.Constants")
+require("src.config.GameConfig")
+
+local SpriteManager = require("src.utils.SpriteManager")
+local Sign = require("src.game.Sign")
+local Tile = require("src.game.Tile")
 
 -----------------------------------------------------------------------------------------
 -- Class methods
@@ -27,16 +29,6 @@ function initialize()
 end
 
 -----------------------------------------------------------------------------------------
--- Constants
------------------------------------------------------------------------------------------
-
-UP = 0
-DOWN = 180
-RIGHT = 90
-LEFT = 270
-DELETE = 360
-
------------------------------------------------------------------------------------------
 -- Initialization and Destruction
 -----------------------------------------------------------------------------------------
 
@@ -45,7 +37,7 @@ DELETE = 360
 -- Parameters:
 --  player: The arrow owner
 --  grid: The grid
---  direction: The arrow direction, using arrow constants
+--  direction: The arrow direction, using Direction constants
 --  x: X position
 --  y: Y position
 function Arrow.create(parameters)
@@ -63,7 +55,7 @@ function Arrow.create(parameters)
 
 	-- Determine sprite animation
 	local animationName
-	if self.direction ~= DELETE then
+	if self.direction ~= DIRECTION.DELETE then
 		animationName = "arrow_" .. self.player.color
 	else 
 		animationName = "arrow_crossed_" .. self.player.color
@@ -105,15 +97,18 @@ function onArrowTouch(event)
 
 	-- Begin drag by creating a new draggable arrow
 	if event.phase == "began" then
-		local draggedArrow = nil
+		local animationName = nil
 
-		if self.direction ~= DELETE then
-			draggedArrow = display.newImageRect("arrow_up_selected_" .. self.player.color .. ".png",
-				self.width, self.height)
+		if self.direction ~= DIRECTION.DELETE then
+			animationName = "arrow_selected_" .. self.player.color
 		else 
-			draggedArrow = display.newImageRect("arrow_crossed_" .. self.player.color .. ".png",
-				self.width, self.height)
+			animationName = "arrow_crossed_" .. self.player.color 
 		end
+
+		-- Draw arrow
+		draggedArrow = SpriteManager.newSprite(spriteSet)
+		draggedArrow:prepare(animationName)
+		draggedArrow:play()
 
 		draggedArrow.direction = self.direction
 		draggedArrow.player = self.player
@@ -151,10 +146,10 @@ function onDraggedArrowTouch(event)
 		}
 
 		if tile then
-			if arrowSprite.direction ~= DELETE then
+			if arrowSprite.direction ~= DIRECTION.DELETE then
 				-- Create sign
 				if not tile.content
-					or tile:getContentType() == Tile.TYPE_SIGN and tile.content.player == arrowSprite.player then
+					or tile:getContentType() == TILE.CONTENT.SIGN and tile.content.player == arrowSprite.player then
 
 					if tile.content then
 						tile.content:destroy()
@@ -166,7 +161,7 @@ function onDraggedArrowTouch(event)
 						direction = arrowSprite.direction
 					}
 				end
-			elseif tile:getContentType() == Tile.TYPE_SIGN and tile.content.player == arrowSprite.player then
+			elseif tile:getContentType() == TILE.CONTENT.SIGN and tile.content.player == arrowSprite.player then
 				-- Remove sign
 				tile:removeContent()
 			end

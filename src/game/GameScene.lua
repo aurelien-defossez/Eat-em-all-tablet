@@ -12,24 +12,26 @@ GameScene.__index = GameScene
 -- Imports
 -----------------------------------------------------------------------------------------
 
-local config = require("GameConfig")
-local SpriteManager = require("SpriteManager")
-local UpperBarPanel = require("UpperBarPanel")
-local PlayerControlPanel = require("PlayerControlPanel")
-local ArrowsPanel = require("ArrowsPanel")
-local ItemsPanel = require("ItemsPanel")
-local CitiesPanel = require("CitiesPanel")
-local Arrow = require("Arrow")
-local CityShortcut = require("CityShortcut")
-local Grid = require("Grid")
-local Tile = require("Tile")
-local Cemetery = require("Cemetery")
-local FortressWall = require("FortressWall")
-local Zombie = require("Zombie")
-local Sign = require("Sign")
-local City = require("City")
-local MapItem = require("MapItem")
-local PlayerItem = require("PlayerItem")
+require("src.utils.Constants")
+require("src.config.GameConfig")
+
+local SpriteManager = require("src.utils.SpriteManager")
+local UpperBarPanel = require("src.hud.UpperBarPanel")
+local PlayerControlPanel = require("src.hud.PlayerControlPanel")
+local ArrowsPanel = require("src.hud.ArrowsPanel")
+local ItemsPanel = require("src.hud.ItemsPanel")
+local CitiesPanel = require("src.hud.CitiesPanel")
+local PlayerItem = require("src.hud.PlayerItem")
+local Arrow = require("src.hud.Arrow")
+local CityShortcut = require("src.hud.CityShortcut")
+local Grid = require("src.game.Grid")
+local Tile = require("src.game.Tile")
+local Cemetery = require("src.game.Cemetery")
+local FortressWall = require("src.game.FortressWall")
+local Zombie = require("src.game.Zombie")
+local Sign = require("src.game.Sign")
+local City = require("src.game.City")
+local MapItem = require("src.game.MapItem")
 
 -----------------------------------------------------------------------------------------
 -- Initialization and Destruction
@@ -59,7 +61,7 @@ function create(parameters)
 	SpriteManager.initialize()
 
 	-- Initialize groups in invert Z order
-	UpperBarPanel.initialize()
+	UpperBarPanel.initialize(self)
 	PlayerControlPanel.initialize()
 	ArrowsPanel.initialize()
 	ItemsPanel.initialize()

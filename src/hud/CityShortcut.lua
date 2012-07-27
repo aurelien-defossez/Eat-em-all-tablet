@@ -12,8 +12,10 @@ CityShortcut.__index = CityShortcut
 -- Imports
 -----------------------------------------------------------------------------------------
 
-local config = require("GameConfig")
-local SpriteManager = require("SpriteManager")
+require("src.utils.Constants")
+require("src.config.GameConfig")
+
+local SpriteManager = require("src.utils.SpriteManager")
 
 -----------------------------------------------------------------------------------------
 -- Class initialization

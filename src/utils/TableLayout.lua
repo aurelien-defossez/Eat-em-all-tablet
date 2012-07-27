@@ -12,14 +12,8 @@ TableLayout.__index = TableLayout
 -- Imports
 -----------------------------------------------------------------------------------------
 
-local config = require("GameConfig")
-
------------------------------------------------------------------------------------------
--- Constants
------------------------------------------------------------------------------------------
-
-LEFT_TO_RIGHT = 1
-RIGHT_TO_LEFT = 2
+require("src.utils.Constants")
+require("src.config.GameConfig")
 
 -----------------------------------------------------------------------------------------
 -- Initialization and Destruction
@@ -83,7 +77,7 @@ end
 
 -- Reorganize items by sorting them by id and moving them accordingly
 function TableLayout:reorganize()
-	local i = self.direction == LEFT_TO_RIGHT and 0 or self.nbCols - 1
+	local i = self.direction == TABLE_LAYOUT.DIRECTION.LEFT_TO_RIGHT and 0 or self.nbCols - 1
 	local j = 0
 	local orderedItems = {}
 	
@@ -104,7 +98,7 @@ function TableLayout:reorganize()
 		j = j + 1
 
 		if j == self.nbRows then
-			if self.direction == LEFT_TO_RIGHT then
+			if self.direction == TABLE_LAYOUT.DIRECTION.LEFT_TO_RIGHT then
 				i = i + 1
 			else
 				i = i - 1

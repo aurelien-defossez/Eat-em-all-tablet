@@ -12,10 +12,10 @@ Sign.__index = Sign
 -- Imports
 -----------------------------------------------------------------------------------------
 
-local config = require("GameConfig")
-local SpriteManager = require("SpriteManager")
-local Tile = require("Tile")
-local Arrow = require("Arrow")
+require("src.utils.Constants")
+require("src.config.GameConfig")
+
+local SpriteManager = require("src.utils.SpriteManager")
 
 -----------------------------------------------------------------------------------------
 -- Class initialization
@@ -46,7 +46,7 @@ function Sign.create(parameters)
 	classGroup:insert(self.group)
 
 	-- Initialize attributes
-	self.type = Tile.TYPE_SIGN
+	self.type = TILE.CONTENT.SIGN
 	self.x = self.tile.x
 	self.y = self.tile.y
 
@@ -85,10 +85,10 @@ end
 -- Parameters:
 --  zombie: The zombie reaching the middle of the tile
 function Sign:reachTileMiddle(zombie)
-	if zombie.phase == Zombie.PHASE_MOVE and zombie.player.id == self.player.id then
+	if zombie.phase == ZOMBIE.PHASE.MOVE and zombie.player.id == self.player.id then
 		-- Ignore special cases
-		if not (self.tile.isOnFirstRow and self.direction == Arrow.UP)
-			and not (self.tile.isOnLastRow and self.direction == Arrow.DOWN) then
+		if not (self.tile.isOnFirstRow and self.direction == DIRECTION.UP)
+			and not (self.tile.isOnLastRow and self.direction == DIRECTION.DOWN) then
 			zombie:changeDirection(self.direction)
 		end
 	end

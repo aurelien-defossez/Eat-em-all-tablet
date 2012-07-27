@@ -12,8 +12,10 @@ ArrowsPanel.__index = ArrowsPanel
 -- Imports
 -----------------------------------------------------------------------------------------
 
-local config = require("GameConfig")
-local Arrow = require("Arrow")
+require("src.utils.Constants")
+require("src.config.GameConfig")
+
+local Arrow = require("src.hud.Arrow")
 
 -----------------------------------------------------------------------------------------
 -- Class initialization
@@ -58,7 +60,7 @@ function ArrowsPanel.create(parameters)
 	self.arrowUp = Arrow.create{
 		player = self.player,
 		grid = self.grid,
-		direction = Arrow.UP,
+		direction = DIRECTION.UP,
 		x = self.x + self.width / 2,
 		y = self.y
 	}
@@ -66,7 +68,7 @@ function ArrowsPanel.create(parameters)
 	self.arrowDown = Arrow.create{
 		player = self.player,
 		grid = self.grid,
-		direction = Arrow.DOWN,
+		direction = DIRECTION.DOWN,
 		x = self.x + self.width / 2,
 		y = self.y + 2 * config.arrow.height
 	}
@@ -74,7 +76,7 @@ function ArrowsPanel.create(parameters)
 	self.arrowRight = Arrow.create{
 		player = self.player,
 		grid = self.grid,
-		direction = Arrow.RIGHT,
+		direction = DIRECTION.RIGHT,
 		x = self.x + self.width / 2 + config.arrow.width / 2,
 		y = self.y + config.arrow.height
 	}
@@ -82,7 +84,7 @@ function ArrowsPanel.create(parameters)
 	self.arrowLeft = Arrow.create{
 		player = self.player,
 		grid = self.grid,
-		direction = Arrow.LEFT,
+		direction = DIRECTION.LEFT,
 		x = self.x + self.width / 2 - config.arrow.width / 2,
 		y = self.y + config.arrow.height
 	}
@@ -90,7 +92,7 @@ function ArrowsPanel.create(parameters)
 	self.arrowDelete = Arrow.create{
 		player = self.player,
 		grid = self.grid,
-		direction = Arrow.DELETE,
+		direction = DIRECTION.DELETE,
 		x = self.x + self.width / 2,
 		y = self.y + 3 * config.arrow.height
 	}

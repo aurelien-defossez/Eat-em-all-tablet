@@ -12,31 +12,23 @@ Zombie.__index = Zombie
 -- Imports
 -----------------------------------------------------------------------------------------
 
-local utils = require("utils")
-local config = require("GameConfig")
-local SpriteManager = require("SpriteManager")
-local Arrow = require("Arrow")
-local Tile = require("Tile")
+require("src.utils.Constants")
+require("src.config.GameConfig")
+require("src.utils.Utils")
+
+local SpriteManager = require("src.utils.SpriteManager")
+local Tile = require("src.game.Tile")
 
 -----------------------------------------------------------------------------------------
 -- Constants
 -----------------------------------------------------------------------------------------
 
-UP = { x = 0, y = -1 }
-DOWN = { x = 0, y = 1 }
-LEFT = { x = -1, y = 0 }
-RIGHT = { x = 1, y = 0 }
-
-PHASE_MOVE = 1
-PHASE_CARRY_ITEM_INIT = 2
-PHASE_CARRY_ITEM = 3
-PHASE_DEAD = 4
-
-KILLER_ZOMBIE = 1
-KILLER_FORTRESS = 2
-KILLER_CEMETERY = 3
-KILLER_CITY = 4
-KILLER_CITY_ENTER = 4
+DIRECTION_VECTOR = {
+	UP = { x = 0, y = -1 },
+	DOWN = { x = 0, y = 1 },
+	LEFT = { x = -1, y = 0 },
+	RIGHT = { x = 1, y = 0 }	
+}
 
 -----------------------------------------------------------------------------------------
 -- Class initialization
@@ -75,7 +67,7 @@ function Zombie.create(parameters)
 
 	-- Initialize attributes
 	self.id = ctId
-	self.phase = PHASE_MOVE
+	self.phase = ZOMBIE.PHASE.MOVE
 	self.width = config.zombie.width
 	self.height = config.zombie.height
 	self.x = self.tile.x
@@ -88,6 +80,10 @@ function Zombie.create(parameters)
 		self.speed = config.zombie.speed.normal
 	else
 		self.speed = config.zombie.speed.giant
+	end
+
+	if config.debug.fastZombies then
+		self.speed = self.speed * 3
 	end
 
 	ctId = ctId + 1
@@ -111,8 +107,8 @@ function Zombie.create(parameters)
 		self.zombieSprite.y = self.height / 2 +
 			math.random(config.zombie.randomOffsetRange.y[1], config.zombie.randomOffsetRange.y[2])
 	else
-		self.zombieSprite.width = self.width * 1.5
-		self.zombieSprite.height = self.height * 1.5
+		self.zombieSprite.xScale = 1.5
+		self.zombieSprite.yScale = 1.5
 		self.zombieSprite.x = 32
 		self.zombieSprite.y = 20
 	end
@@ -239,7 +235,7 @@ function Zombie:moveTo(parameters)
 	self.group.y = self.y
 
 	if self.x == parameters.x and self.y == parameters.y then
-		self.phase = PHASE_CARRY_ITEM
+		self.phase = ZOMBIE.PHASE.CARRY_ITEM
 	end
 end
 
@@ -250,20 +246,20 @@ end
 function Zombie:changeDirection(direction)
 	self.direction = direction
 
-	if direction == Arrow.UP then
-		self.directionVector = Zombie.UP
-	elseif direction == Arrow.DOWN then
-		self.directionVector = Zombie.DOWN
-	elseif direction == Arrow.LEFT then
-		self.directionVector = Zombie.LEFT
-	elseif direction == Arrow.RIGHT then
-		self.directionVector = Zombie.RIGHT
+	if direction == DIRECTION.UP then
+		self.directionVector = DIRECTION_VECTOR.UP
+	elseif direction == DIRECTION.DOWN then
+		self.directionVector = DIRECTION_VECTOR.DOWN
+	elseif direction == DIRECTION.LEFT then
+		self.directionVector = DIRECTION_VECTOR.LEFT
+	elseif direction == DIRECTION.RIGHT then
+		self.directionVector = DIRECTION_VECTOR.RIGHT
 	end
 end
 
 function Zombie:carryItem(item)
 	self.item = item
-	self.phase = PHASE_CARRY_ITEM_INIT
+	self.phase = ZOMBIE.PHASE.CARRY_ITEM_INIT
 	self:changeDirection(getReverseDirection(self.player.direction))
 
 	local speed
@@ -295,7 +291,7 @@ function Zombie:die(parameters)
 		-- Remove sprite from display
 		self:destroy()
 
-		self.phase = PHASE_DEAD
+		self.phase = ZOMBIE.PHASE.DEAD
 	end
 end
 
@@ -306,19 +302,19 @@ end
 function Zombie:enterFrame(timeDelta)
 	local speedFactor = Tile.width * timeDelta / 1000
 
-	if self.phase == PHASE_MOVE then
+	if self.phase == ZOMBIE.PHASE.MOVE then
 		local movement = self.speed * speedFactor
 
 		self:move{
 			x = movement * self.directionVector.x,
 			y = movement * self.directionVector.y
 		}
-	elseif self.phase == PHASE_CARRY_ITEM_INIT then
+	elseif self.phase == ZOMBIE.PHASE.CARRY_ITEM_INIT then
 		local speed = math.max(self.speed, self.item.actualSpeed)
 		local movement = speed * speedFactor
 		local itemMask = self.item.collisionMask
 
-		if self.player.direction == Arrow.RIGHT then
+		if self.player.direction == DIRECTION.RIGHT then
 			self:moveTo{
 				x = self.item.x - itemMask.width,
 				y = self.item.y,
@@ -331,7 +327,7 @@ function Zombie:enterFrame(timeDelta)
 				maxMovement = movement
 			}
 		end
-	elseif self.phase == PHASE_CARRY_ITEM then
+	elseif self.phase == ZOMBIE.PHASE.CARRY_ITEM then
 		local movement = self.item.actualSpeed * speedFactor
 
 		self:move{

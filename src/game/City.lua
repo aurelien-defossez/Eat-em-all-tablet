@@ -12,18 +12,16 @@ City.__index = City
 -- Imports
 -----------------------------------------------------------------------------------------
 
-local config = require("GameConfig")
-local SpriteManager = require("SpriteManager")
-local Zombie = require("Zombie")
-local Tile = require("Tile")
+require("src.utils.Constants")
+require("src.config.GameConfig")
+
+local SpriteManager = require("src.utils.SpriteManager")
+local Zombie = require("src.game.Zombie")
 
 -----------------------------------------------------------------------------------------
 -- Constants
 -----------------------------------------------------------------------------------------
 
-SIZE_SMALL = 1
-SIZE_MEDIUM = 2
-SIZE_LARGE = 3
 
 -----------------------------------------------------------------------------------------
 -- Class initialization
@@ -56,7 +54,7 @@ function City.create(parameters)
 	classGroup:insert(self.group)
 
 	-- Initialize attributes
-	self.type = Tile.TYPE_CITY
+	self.type = TILE.CONTENT.CITY
 	self.x = self.tile.x
 	self.y = self.tile.y
 	self.player = nil
@@ -64,12 +62,12 @@ function City.create(parameters)
 	self.timeSinceLastSpawn = 0
 	self.timeSinceLastExit = 0
 
-	if self.size == SIZE_SMALL then
+	if self.size == CITY.SIZE.SMALL then
 		self.inhabitants = config.city.small.inhabitants
 		self.spawnPeriod = config.city.small.spawnPeriod
 		self.maxInhabitants = config.city.small.maxInhabitants
 		self.exitPeriod = config.city.small.exitPeriod
-	elseif self.size == SIZE_MEDIUM then
+	elseif self.size == CITY.SIZE.MEDIUM then
 		self.inhabitants = config.city.medium.inhabitants
 		self.spawnPeriod = config.city.medium.spawnPeriod
 		self.maxInhabitants = config.city.medium.maxInhabitants
@@ -194,7 +192,7 @@ end
 -- Parameters:
 --  zombie: The zombie entering the tile
 function City:enterTile(zombie)
-	if zombie.phase == Zombie.PHASE_MOVE and (self.player == nil or zombie.player ~= self.player) then
+	if zombie.phase == ZOMBIE.PHASE.MOVE and (self.player == nil or zombie.player ~= self.player) then
 		self:attackCity(zombie)
 	end
 end
@@ -204,14 +202,14 @@ end
 -- Parameters:
 --  zombie: The zombie reaching the middle of the tile
 function City:reachTileMiddle(zombie)
-	if zombie.phase == Zombie.PHASE_MOVE then
+	if zombie.phase == ZOMBIE.PHASE.MOVE then
 		if not self.player or zombie.player ~= self.player then
 			self:attackCity(zombie)
 		elseif self.inhabitants < self.maxInhabitants and zombie.size == 1 then
 			-- Enforce city
 			self:addInhabitants(zombie.size)
 			zombie:die{
-				killer = Zombie.KILLER_CITY_ENTER
+				killer = ZOMBIE.KILLER.CITY_ENTER
 			}
 		end
 	end
@@ -227,7 +225,7 @@ function City:attackCity(zombie)
 		local hits = math.min(zombie.size, self.inhabitants)
 		self:addInhabitants(-hits)
 		zombie:die{
-			killer = Zombie.KILLER_CITY,
+			killer = ZOMBIE.KILLER.CITY,
 			hits = hits
 		}
 	elseif zombie.size == 1 then
@@ -238,7 +236,7 @@ function City:attackCity(zombie)
 		self.player = zombie.player
 		self:addInhabitants(zombie.size)
 		zombie:die{
-			killer = Zombie.KILLER_CITY_ENTER
+			killer = ZOMBIE.KILLER.CITY_ENTER
 		}
 
 		self:updateSprite()
@@ -250,7 +248,7 @@ end
 -- Parameters:
 --  timeDelta: The time in ms since last frame
 function City:enterFrame(timeDelta)
-	if self.player ~= nil then
+	if self.player then
 		self.timeSinceLastSpawn = self.timeSinceLastSpawn + timeDelta
 		self.timeSinceLastExit = self.timeSinceLastExit + timeDelta
 

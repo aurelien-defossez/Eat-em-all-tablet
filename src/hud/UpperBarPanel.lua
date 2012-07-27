@@ -12,16 +12,18 @@ UpperBarPanel.__index = UpperBarPanel
 -- Imports
 -----------------------------------------------------------------------------------------
 
-local config = require("GameConfig")
-local SpriteManager = require("SpriteManager")
-local GameScene = require("GameScene")
-local HitPointsPanel = require("HitPointsPanel")
+require("src.utils.Constants")
+require("src.config.GameConfig")
+
+local SpriteManager = require("src.utils.SpriteManager")
+local HitPointsPanel = require("src.hud.HitPointsPanel")
 
 -----------------------------------------------------------------------------------------
 -- Class initialization
 -----------------------------------------------------------------------------------------
 
-function initialize()
+function initialize(GameSceneInstance)
+	GameScene = GameSceneInstance
 	classGroup = display.newGroup()
 	spriteSet = SpriteManager.getSpriteSet(SpriteManager.MISC)
 
@@ -56,7 +58,7 @@ function UpperBarPanel.create(parameters)
 		x = 0,
 		y = 0,
 		width = self.hpWidth,
-		direction = HitPointsPanel.FORWARD
+		direction = HIT_POINTS_PANEL.DIRECTION.FORWARD
 	}
 
 	self.hitPoints[2] = HitPointsPanel.create{
@@ -65,7 +67,7 @@ function UpperBarPanel.create(parameters)
 		x = self.hpWidth + config.panels.upperBar.menuButton.width,
 		y = 0,
 		width = self.hpWidth,
-		direction = HitPointsPanel.REVERSE
+		direction = HIT_POINTS_PANEL.DIRECTION.REVERSE
 	}
 
 	self.players[1].hitPointsPanel = self.hitPoints[1]

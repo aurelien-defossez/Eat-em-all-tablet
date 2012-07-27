@@ -11,11 +11,11 @@ local scene = storyboard.newScene()
 -- Imports
 -----------------------------------------------------------------------------------------
 
-local config = require("GameConfig")
-local Player = require("Player")
-local Arrow = require("Arrow")
-local TableLayout = require("TableLayout")
-local GameScene = require("GameScene")
+require("src.utils.Constants")
+require("src.config.GameConfig")
+
+local Player = require("src.game.Player")
+local GameScene = require("src.game.GameScene")
 
 -----------------------------------------------------------------------------------------
 -- Initialization and Destruction
@@ -31,16 +31,16 @@ function scene:createScene(event)
 	self.players[1] = Player.create{
 		id = 1,
 		color = "red",
-		direction = Arrow.RIGHT,
-		tableLayoutDirection = TableLayout.LEFT_TO_RIGHT,
+		direction = DIRECTION.RIGHT,
+		tableLayoutDirection = TABLE_LAYOUT.DIRECTION.LEFT_TO_RIGHT,
 		hitPoints = config.player.hitPoints
 	}
 
 	self.players[2] = Player.create{
 		id = 2,
 		color = "blue",
-		direction = Arrow.LEFT,
-		tableLayoutDirection = TableLayout.RIGHT_TO_LEFT,
+		direction = DIRECTION.LEFT,
+		tableLayoutDirection = TABLE_LAYOUT.DIRECTION.RIGHT_TO_LEFT,
 		hitPoints = config.player.hitPoints
 	}
 

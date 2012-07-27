@@ -12,9 +12,12 @@ SpriteManager.__index = SpriteManager
 -- Imports
 -----------------------------------------------------------------------------------------
 
-local config = require("GameConfig")
-local spriteApi = require("sprite")
-local spritesheetData = require("spritesheetData")
+require("src.utils.Constants")
+require("src.config.GameConfig")
+
+local Sprite = require("sprite")
+
+local SpritesheetData = require("src.utils.SpritesheetData")
 
 -----------------------------------------------------------------------------------------
 -- Constants
@@ -43,12 +46,12 @@ spriteSheetIndex = nil
 -- Initializes the sprite manager
 function initialize()
 	-- Load sprite sheet
-	local data = spritesheetData.getSpriteSheetData()
-	spriteSheet = spriteApi.newSpriteSheetFromData("spritesheet.png", data)
+	local spritesheetData = SpritesheetData.getSpriteSheetData()
+	spriteSheet = Sprite.newSpriteSheetFromData("images/bin/spritesheet.png", spritesheetData)
 	spriteSheetIndex = {}
 
 	-- Initalize the index array to simply get an array index from its name
-	for key, value in pairs(data.frames) do
+	for key, value in pairs(spritesheetData.frames) do
 		spriteSheetIndex[value.name] = key
 	end
 
@@ -75,7 +78,7 @@ end
 -- Returns:
 --  The sprite set containing all these animations
 function loadSpriteSet(sprites)
-	local spriteSet = spriteApi.newSpriteSet(spriteSheet, 1, 1)
+	local spriteSet = Sprite.newSpriteSet(spriteSheet, 1, 1)
 
 	for spriteName, animation in pairs(sprites) do
 		local firstSpriteName
@@ -91,7 +94,7 @@ function loadSpriteSet(sprites)
 		end
 	
 		-- Add the animation to the sprite set
-		spriteApi.add(spriteSet, spriteName, spriteSheetIndex[firstSpriteName .. ".png"], frameCount, period)
+		Sprite.add(spriteSet, spriteName, spriteSheetIndex[firstSpriteName .. ".png"], frameCount, period)
 	end
 	
 	return spriteSet
@@ -116,7 +119,7 @@ end
 -- Returns:
 --  A new instance of the sprite set
 function newSprite(spriteSet)
-	return spriteApi.newSprite(spriteSet)
+	return Sprite.newSprite(spriteSet)
 end
 
 -----------------------------------------------------------------------------------------
