@@ -67,10 +67,10 @@ end
 -- Remove an item from the list
 --
 -- Parameters:
---  item: The item to remove
-function TableLayout:removeItem(item)
-	self.items[item.id]:destroy()
-	self.items[item.id] = nil
+--  item: The item id to remove
+function TableLayout:removeItem(itemId)
+	self.items[itemId]:destroy()
+	self.items[itemId] = nil
 
 	self:reorganize()
 end
@@ -90,7 +90,7 @@ function TableLayout:reorganize()
 
 	-- Move items to their new place
 	for index, item in ipairs(orderedItems) do
-		item:moveTo{
+		item:transitionTo{
 			x = self.x + i * self.itemWidth,
 			y = self.y + j * self.itemHeight
 		}

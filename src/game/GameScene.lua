@@ -80,7 +80,7 @@ function GameScene.create(parameters)
 	CityShortcut.initialize()
 
 	-- Listen to events
-	EventManager.addListener("pause", switchPauseCallback)
+	EventManager.addListener("pause", pauseCallback)
 
 	-- Sizes
 	local mainHeight = config.screen.height - config.panels.upperBar.height
@@ -129,7 +129,7 @@ function GameScene:destroy()
 	self.grid:destroy()
 	self.upperBar:destroy()
 
-	EventManager.removeListener("pause", switchPauseCallback)
+	EventManager.removeListener("pause", pauseCallback)
 end
 
 -----------------------------------------------------------------------------------------
@@ -194,8 +194,14 @@ function GameScene:enterFrame(timeDelta)
 end
 
 -- Switch pause handler, calls the switch pause method on the GameScene instance
-function switchPauseCallback()
-	instance:switchPause()
+function pauseCallback(event)
+	if event.switch then
+		instance:switchPause(event)
+	elseif event.status then
+		instance:pause(event)
+	else
+		instance:resume(event)
+	end
 end
 
 -----------------------------------------------------------------------------------------

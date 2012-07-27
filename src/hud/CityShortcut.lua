@@ -109,7 +109,7 @@ end
 -----------------------------------------------------------------------------------------
 
 -- Move the shortcut to an absolute position on the screen, easing it
-function CityShortcut:moveTo(parameters)
+function CityShortcut:transitionTo(parameters)
 	transition.to(self.group, {
 		transition = easing.outExpo,
 		time = config.city.easingTime,

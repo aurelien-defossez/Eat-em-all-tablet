@@ -86,7 +86,7 @@ end
 -- Parameters:
 --  item: The item to remove
 function ItemsPanel:removeItem(item)
-	self.tableLayout:removeItem(item)
+	self.tableLayout:removeItem(item.id)
 end
 
 -----------------------------------------------------------------------------------------

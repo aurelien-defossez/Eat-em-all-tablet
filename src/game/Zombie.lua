@@ -12,9 +12,9 @@ Zombie.__index = Zombie
 -- Imports
 -----------------------------------------------------------------------------------------
 
+require("src.utils.Utils")
 require("src.utils.Constants")
 require("src.config.GameConfig")
-require("src.utils.Utils")
 
 local SpriteManager = require("src.utils.SpriteManager")
 local Tile = require("src.game.Tile")

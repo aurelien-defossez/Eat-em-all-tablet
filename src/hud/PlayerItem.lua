@@ -134,8 +134,6 @@ function PlayerItem:useItem(tile)
 	elseif self.type == ITEM.TYPE.FIRE then
 	elseif self.type == ITEM.TYPE.MINE then
 	end
-
-	self:destroy()
 end
 
 -- Move the item to an absolute position on the screen, easing it
@@ -144,7 +142,7 @@ end
 --  x: The X target position
 --  y: The y target position
 --  easingTimeL The time took to make the easing (Default is config.item.easingTime.reorganize)
-function PlayerItem:moveTo(parameters)
+function PlayerItem:transitionTo(parameters)
 	transition.to(self.group, {
 		transition = easing.outExpo,
 		time = parameters.easingTime or config.item.easingTime.reorganize,
@@ -202,7 +200,7 @@ function onItemTouch(event)
 	if cancel then
 		display.getCurrentStage():setFocus(nil, event.id)
 
-		self:moveTo{
+		self:transitionTo{
 			x = self.x,
 			y = self.y,
 			easingTime = config.item.easingTime.cancel

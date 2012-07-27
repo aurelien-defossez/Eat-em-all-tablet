@@ -93,7 +93,7 @@ end
 -- Parameters:
 --  city: The city lost
 function CitiesPanel:loseCity(city)
-	self.tableLayout:removeItem(city)
+	self.tableLayout:removeItem(city.id)
 end
 
 -----------------------------------------------------------------------------------------

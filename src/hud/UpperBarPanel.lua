@@ -109,11 +109,11 @@ end
 
 -- Tap handler on the pause button
 function onPauseTap(event)
-	local event = {
-		name = "pause"
+	EventManager.dispatch{
+		name = "pause",
+		system = false,
+		switch = true
 	}
-
-	EventManager.dispatch(event)
 end
 
 -----------------------------------------------------------------------------------------
