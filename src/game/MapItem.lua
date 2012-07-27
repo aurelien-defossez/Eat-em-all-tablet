@@ -31,7 +31,7 @@ ctId = 1
 
 function initialize()
 	classGroup = display.newGroup()
-	spriteSet = SpriteManager.getSpriteSet(SpriteManager.ITEM)
+	spriteSet = SpriteManager.getSpriteSet(SPRITE_SET.ITEM)
 end
 
 -----------------------------------------------------------------------------------------

@@ -25,7 +25,7 @@ local HitPointsPanel = require("src.hud.HitPointsPanel")
 
 function initialize()
 	classGroup = display.newGroup()
-	spriteSet = SpriteManager.getSpriteSet(SpriteManager.MISC)
+	spriteSet = SpriteManager.getSpriteSet(SPRITE_SET.MISC)
 
 	HitPointsPanel.initialize()
 end

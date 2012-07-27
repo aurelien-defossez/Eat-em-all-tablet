@@ -25,7 +25,7 @@ local Tile = require("src.game.Tile")
 
 function initialize()
 	classGroup = display.newGroup()
-	spriteSet = SpriteManager.getSpriteSet(SpriteManager.ARROW)
+	spriteSet = SpriteManager.getSpriteSet(SPRITE_SET.ARROW)
 end
 
 -----------------------------------------------------------------------------------------

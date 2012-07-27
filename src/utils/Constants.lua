@@ -63,6 +63,16 @@ ZOMBIE = {
 -- Utils constants
 -----------------------------------------------------------------------------------------
 
+SPRITE_SET = {
+	ARROW = 1,
+	CEMETERY = 2,
+	CITY = 3,
+	FORTRESS_WALL = 4,
+	ITEM = 5,
+	ZOMBIE = 6,
+	MISC = 42
+}
+
 TABLE_LAYOUT = {
 	DIRECTION = {
 		LEFT_TO_RIGHT = 1,

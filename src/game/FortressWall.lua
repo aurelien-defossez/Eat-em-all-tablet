@@ -23,7 +23,7 @@ local SpriteManager = require("src.utils.SpriteManager")
 
 function initialize()
 	classGroup = display.newGroup()
-	spriteSet = SpriteManager.getSpriteSet(SpriteManager.FORTRESS_WALL)
+	spriteSet = SpriteManager.getSpriteSet(SPRITE_SET.FORTRESS_WALL)
 end
 
 -----------------------------------------------------------------------------------------

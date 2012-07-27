@@ -36,7 +36,7 @@ DIRECTION_VECTOR = {
 
 function initialize()
 	classGroup = display.newGroup()
-	spriteSet = SpriteManager.getSpriteSet(SpriteManager.ZOMBIE)
+	spriteSet = SpriteManager.getSpriteSet(SPRITE_SET.ZOMBIE)
 end
 
 -----------------------------------------------------------------------------------------

@@ -20,18 +20,6 @@ local Sprite = require("sprite")
 local SpritesheetData = require("src.utils.SpritesheetData")
 
 -----------------------------------------------------------------------------------------
--- Constants
------------------------------------------------------------------------------------------
-
-ARROW = 1
-CEMETERY = 2
-CITY = 3
-FORTRESS_WALL = 4
-ITEM = 5
-ZOMBIE = 6
-MISC = 42
-
------------------------------------------------------------------------------------------
 -- Class attributes
 -----------------------------------------------------------------------------------------
 
@@ -57,13 +45,13 @@ function initialize()
 
 	-- Load sprite sets
 	spriteSets = {}
-	spriteSets[ARROW] = loadSpriteSet(config.sprites.arrow)
-	spriteSets[CEMETERY] = loadSpriteSet(config.sprites.cemetery)
-	spriteSets[CITY] = loadSpriteSet(config.sprites.city)
-	spriteSets[FORTRESS_WALL] = loadSpriteSet(config.sprites.fortressWall)
-	spriteSets[ITEM] = loadSpriteSet(config.sprites.item)
-	spriteSets[ZOMBIE] = loadSpriteSet(config.sprites.zombie)
-	spriteSets[MISC] = loadSpriteSet(config.sprites.misc)
+	spriteSets[SPRITE_SET.ARROW] = loadSpriteSet(config.sprites.arrow)
+	spriteSets[SPRITE_SET.CEMETERY] = loadSpriteSet(config.sprites.cemetery)
+	spriteSets[SPRITE_SET.CITY] = loadSpriteSet(config.sprites.city)
+	spriteSets[SPRITE_SET.FORTRESS_WALL] = loadSpriteSet(config.sprites.fortressWall)
+	spriteSets[SPRITE_SET.ITEM] = loadSpriteSet(config.sprites.item)
+	spriteSets[SPRITE_SET.ZOMBIE] = loadSpriteSet(config.sprites.zombie)
+	spriteSets[SPRITE_SET.MISC] = loadSpriteSet(config.sprites.misc)
 end
 
 -----------------------------------------------------------------------------------------

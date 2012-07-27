@@ -23,7 +23,7 @@ local SpriteManager = require("src.utils.SpriteManager")
 
 function initialize()
 	classGroup = display.newGroup()
-	spriteSet = SpriteManager.getSpriteSet(SpriteManager.CITY)
+	spriteSet = SpriteManager.getSpriteSet(SPRITE_SET.CITY)
 end
 
 -----------------------------------------------------------------------------------------
