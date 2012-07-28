@@ -16,7 +16,6 @@ require("src.utils.Constants")
 require("src.config.GameConfig")
 
 local SpriteManager = require("src.utils.SpriteManager")
-local EventManager = require("src.utils.EventManager")
 local HitPointsPanel = require("src.hud.HitPointsPanel")
 
 -----------------------------------------------------------------------------------------
@@ -109,8 +108,8 @@ end
 
 -- Tap handler on the pause button
 function onPauseTap(event)
-	EventManager.dispatch{
-		name = "pause",
+	Runtime:dispatchEvent{
+		name = "gamePause",
 		system = false,
 		switch = true
 	}

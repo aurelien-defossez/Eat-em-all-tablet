@@ -17,7 +17,6 @@ require("src.utils.Constants")
 require("src.utils.Utils")
 require("src.config.GameConfig")
 
-local EventManager = require("src.utils.EventManager")
 local SpriteManager = require("src.utils.SpriteManager")
 local UpperBarPanel = require("src.hud.UpperBarPanel")
 local PlayerControlPanel = require("src.hud.PlayerControlPanel")
@@ -65,7 +64,6 @@ function GameScene.create(parameters)
 	background:setFillColor(142, 57, 20)
 
 	-- Initialize managers
-	EventManager.initialize()
 	SpriteManager.initialize()
 
 	-- Initialize groups in invert Z order
@@ -87,7 +85,7 @@ function GameScene.create(parameters)
 	CityShortcut.initialize()
 
 	-- Listen to events
-	EventManager.addListener("pause", self)
+	Runtime:addEventListener("gamePause", self)
 
 	-- Sizes
 	local mainHeight = config.screen.height - config.panels.upperBar.height
@@ -136,7 +134,7 @@ function GameScene:destroy()
 	self.grid:destroy()
 	self.upperBar:destroy()
 
-	EventManager.removeListener("pause", self)
+	Runtime:removeEventListener("gamePause", self)
 end
 
 -----------------------------------------------------------------------------------------
@@ -150,7 +148,7 @@ end
 --   switch: If true, then switches the pause status
 --   status: If true, then pauses the game, resumes otherwise (overriden by switch if true)
 --   system: Tells whether the event is a system event
-function GameScene:pause(event)
+function GameScene:gamePause(event)
 	if event.switch then
 		if event.system then
 			self.paused.system = not self.paused.system

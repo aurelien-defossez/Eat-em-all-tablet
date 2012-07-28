@@ -9,7 +9,6 @@ system.activate("multitouch")
 
 -- include the Corona "storyboard" module
 local storyboard = require("storyboard")
-local EventManager = require("src.utils.EventManager")
 local GameScene = require("src.game.GameScene")
 
 -- Jump 30 lines in the debug console
@@ -27,7 +26,7 @@ end
 -- Parameters:
 --  pauseStatus: True if the game has to be paused, false to resume
 local pause = function(pauseStatus)
-	EventManager.dispatch{
+	Runtime:dispatchEvent{
 		name = "pause",
 		system = true,
 		switch = false,
