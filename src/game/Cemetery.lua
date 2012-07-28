@@ -62,7 +62,7 @@ function Cemetery.create(parameters)
 	if config.debug.immediateSpawn then
 		self.timeSinceLastSpawn = config.cemetery.spawnPeriod.normal
 	end
-
+	
 	-- Draw the sprite
 	self.cemeterySprite = SpriteManager.newSprite(spriteSet)
 	self.cemeterySprite:prepare("cemetery_" .. self.player.color)
@@ -76,11 +76,21 @@ function Cemetery.create(parameters)
 	-- Add to group
 	self.group:insert(self.cemeterySprite)
 
+	-- Register to the tile
+	self.contentId = self.tile:addContent(self)
+
+	-- Listen to events
+	self.tile:addEventListener(TILE.EVENT.ENTER_TILE, self)
+
 	return self
 end
 
 -- Destroy the cemetery
 function Cemetery:destroy()
+	self.tile:removeEventListener(TILE.EVENT.ENTER_TILE, self)
+
+	self.tile:removeContent(self.contentId)
+
 	self.group:removeSelf()
 end
 
@@ -116,8 +126,11 @@ end
 -- Enter tile handler, called when a zombie enters the tile
 --
 -- Parameters:
---  zombie: The zombie entering the tile
-function Cemetery:enterTile(zombie)
+--  event: The tile event, with these values:
+--   zombie: The zombie entering the tile
+function Cemetery:enterTile(event)
+	local zombie = event.zombie
+
 	if zombie.player.id ~= self.player.id then
 		-- Lose HP
 		self.player:addHPs(-zombie.size)

@@ -16,6 +16,7 @@ require("src.utils.Constants")
 require("src.config.GameConfig")
 
 local TableLayout = require("src.utils.TableLayout")
+local PlayerItem = require("src.hud.PlayerItem")
 
 -----------------------------------------------------------------------------------------
 -- Class methods
@@ -33,6 +34,7 @@ end
 --
 -- Parameters:
 --  player: The items panel owner
+--  grid: The grid
 --  x: X position
 --  y: Y position
 function ItemsPanel.create(parameters)
@@ -56,6 +58,19 @@ function ItemsPanel.create(parameters)
 		itemHeight = config.item.height,
 		direction = self.player.tableLayoutDirection
 	}
+
+	-- Start with items
+	if config.debug.startWithItems then
+		for key, itemId in pairs({ ITEM.SKELETON, ITEM.GIANT, ITEM.FIRE, ITEM.MINE }) do
+			self:gainItem(PlayerItem.create{
+				player = self.player,
+				grid = self.grid,
+				x = self.x,
+				y = self.y,
+				type = itemId
+			})
+		end
+	end
 
 	-- Register itself to the player
 	self.player.itemsPanel = self

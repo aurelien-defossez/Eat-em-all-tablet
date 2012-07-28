@@ -167,7 +167,7 @@ function Zombie:move(parameters)
 		y = self.y + self.height / 2 + config.zombie.tileColliderOffset.y * self.directionVector.y
 	}
 
-	-- Determine the tile the zombie is on and send events (enter, leave and reachMiddle)
+	-- Determine the tile the zombie is on and send events (enter, leave and reachCenter)
 	if self.tile:isInside(tileCollider) then
 		-- Staying on the same tile, checking if we passed through middle
 		if self.directionVector.x ~= 0 then
@@ -176,7 +176,7 @@ function Zombie:move(parameters)
 
 			if (tileCollider.x - parameters.x) * self.directionVector.x < middle
 				and tileCollider.x * self.directionVector.x >= middle then
-				self.tile:reachTileMiddle(self)
+				self.tile:reachTileCenter(self)
 			end
 		else
 			-- Middle is negative when going from bottom to up, to facilitate further calculations
@@ -184,7 +184,7 @@ function Zombie:move(parameters)
 
 			if (tileCollider.y - parameters.y) * self.directionVector.y < middle
 				and tileCollider.y * self.directionVector.y >= middle then
-				self.tile:reachTileMiddle(self)
+				self.tile:reachTileCenter(self)
 			end
 		end
 	else
@@ -280,6 +280,14 @@ function Zombie:die(parameters)
 	self.hitPoints = self.hitPoints - parameters.hits
 
 	if self.hitPoints <= 0 then
+		-- Remove from the item carriers
+		if self.phase == ZOMBIE.PHASE.CARRY_ITEM_INIT or self.phase == ZOMBIE.PHASE.CARRY_ITEM then
+			self.item:detachZombie({
+				zombie = self,
+				speed = config.item.speed.perZombie * self.directionVector.x
+			})
+		end
+
 		-- Remove zombie from the zombies list
 		self.grid:removeZombie(self)
 

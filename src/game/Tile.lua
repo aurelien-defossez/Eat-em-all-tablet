@@ -16,6 +16,12 @@ require("src.utils.Constants")
 require("src.config.GameConfig")
 
 -----------------------------------------------------------------------------------------
+-- Class attributes
+-----------------------------------------------------------------------------------------
+
+contentId = 0
+
+-----------------------------------------------------------------------------------------
 -- Class initialization
 -----------------------------------------------------------------------------------------
 
@@ -55,6 +61,7 @@ function Tile.create(parameters)
 	-- Initialize attributes
 	self.isOnFirstRow = (self.yGrid == 1)
 	self.isOnLastRow = (self.yGrid == config.panels.grid.nbRows)
+	self.contents = {}
 
 	-- Position group
 	self.group.x = self.x
@@ -73,8 +80,8 @@ end
 
 -- Destroy the tile
 function Tile:destroy()
-	if self.content then
-		self.content:destroy()
+	for contentId, content in pairs(self.contents) do
+		content:destroy()
 	end
 
 	self.group:removeSelf()
@@ -84,27 +91,35 @@ end
 -- Methods
 -----------------------------------------------------------------------------------------
 
--- Return the content type, if exist
---
--- Returns:
---  The content type, as defined by the cell content, if cell has content
-function Tile:getContentType()
-	if self.content then
-		return self.content.type
-	else
-		return nil
-	end
+function Tile:addContent(content)
+	contentId = contentId + 1
+	self.contents[contentId] = content
+
+	return contentId 
 end
 
--- Remove the tile content, if exists
-function Tile:removeContent()
-	if self.content then
-		if self.content.destroy then
-			self.content:destroy()
-		end
+function Tile:removeContent(contentId)
+	self.contents[contentId] = nil
+end
 
-		self.content = nil
+function Tile:hasNoContent()
+	return (next(self.contents) == nil)
+end
+
+function Tile:getContentForType(contentTypes)
+	for key, contentType in ipairs(contentTypes) do
+		for contentId, content in pairs(self.contents) do
+			if content.type == contentType then
+				return content
+			end
+		end
 	end
+	
+	return nil
+end
+
+function Tile:hasContentType(contentTypes)
+	return (self:getContentForType(contentTypes) ~= nil)
 end
 
 -- Check if a pixel is in the tile
@@ -120,14 +135,33 @@ function Tile:isInside(parameters)
 		and parameters.y >= self.y and parameters.y < self.y + self.height)
 end
 
+-- Add an event listener to this tile
+--
+-- parameters:
+--  name: The event name to listen to
+--  object: The object to call the method on
+function Tile:addEventListener(name, object)
+	self.group:addEventListener(name, object)
+end
+
+-- Remove an event listener from this tile
+--
+-- parameters:
+--  name: The event name listened to
+--  object: The object provided when adding the event listener
+function Tile:removeEventListener(name, object)
+	self.group:removeEventListener(name, object)
+end
+
 -- Enter tile handler, called when a zombie enters the tile
 --
 -- Parameters:
 --  zombie: The zombie entering the tile
 function Tile:enterTile(zombie)
-	if self.content and self.content.enterTile then
-		self.content:enterTile(zombie)
-	end
+	self.group:dispatchEvent{
+		name = TILE.EVENT.ENTER_TILE,
+		zombie = zombie
+	}
 end
 
 -- Leave tile handler, called when a zombie leaves the tile
@@ -135,19 +169,21 @@ end
 -- Parameters:
 --  zombie: The zombie leaving the tile
 function Tile:leaveTile(zombie)
-	if self.content and self.content.leaveTile then
-		self.content:leaveTile(zombie)
-	end
+	self.group:dispatchEvent{
+		name = TILE.EVENT.LEAVE_TILE,
+		zombie = zombie
+	}
 end
 
--- Reach middle tile handler, called when a zombie reaches the middle of the tile
+-- Reach center tile handler, called when a zombie reaches the middle of the tile
 --
 -- Parameters:
 --  zombie: The zombie reaching the middle of the tile
-function Tile:reachTileMiddle(zombie)
-	if self.content and self.content.reachTileMiddle then
-		self.content:reachTileMiddle(zombie)
-	end
+function Tile:reachTileCenter(zombie)
+	self.group:dispatchEvent{
+		name = TILE.EVENT.REACH_TILE_CENTER,
+		zombie = zombie
+	}
 
 	-- First or last row tile 
 	if self.isOnFirstRow and zombie.direction == DIRECTION.UP
@@ -165,8 +201,10 @@ end
 -- Parameters:
 --  timeDelta: The time in ms since last frame
 function Tile:enterFrame(timeDelta)
-	if self.content and self.content.enterFrame then
-		self.content:enterFrame(timeDelta)
+	for contentId, content in pairs(self.contents) do
+		if content.enterFrame then
+			content:enterFrame(timeDelta)
+		end
 	end
 end
 

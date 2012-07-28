@@ -3,10 +3,11 @@ config = {
 		oneCemetery = false,
 		oneZombie = false,
 		randomGiants = false,
-		fastZombies = true,
+		fastZombies = false,
 		immediateSpawn = true,
 		immediateItemSpawn = false,
-		showCollisionMask = false
+		showCollisionMask = false,
+		startWithItems = true
 	},
 
 	screen = {
@@ -94,6 +95,9 @@ config = {
 		},
 		giant = {
 			size = 8
+		},
+		fire = {
+			duration = 10000
 		}
 	},
 
@@ -215,6 +219,12 @@ config = {
 			item_giant = {},
 			item_mine = {},
 			item_skeleton = {}
+		},
+		fire = {
+			fire = {
+				frameCount = 3,
+				period = 500
+			}
 		},
 		zombie = {
 			zombie_blue = {},

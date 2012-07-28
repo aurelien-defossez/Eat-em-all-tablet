@@ -14,6 +14,7 @@ GameScene.__index = GameScene
 
 require("src.utils.jsonReader")
 require("src.utils.Constants")
+require("src.utils.Utils")
 require("src.config.GameConfig")
 
 local EventManager = require("src.utils.EventManager")
@@ -28,6 +29,7 @@ local Arrow = require("src.hud.Arrow")
 local CityShortcut = require("src.hud.CityShortcut")
 local Grid = require("src.game.Grid")
 local Tile = require("src.game.Tile")
+local Fire = require("src.game.Fire")
 local Cemetery = require("src.game.Cemetery")
 local FortressWall = require("src.game.FortressWall")
 local Zombie = require("src.game.Zombie")
@@ -55,6 +57,9 @@ function GameScene.create(parameters)
 		user = false
 	}
 
+	-- Print debug messages
+	printDebugMessages()
+
 	-- Draw the background
 	local background = display.newRect(0, 0, config.screen.width, config.screen.height)
 	background:setFillColor(142, 57, 20)
@@ -77,11 +82,12 @@ function GameScene.create(parameters)
 	Sign.initialize()
 	MapItem.initialize()
 	Zombie.initialize()
+	Fire.initialize()
 	PlayerItem.initialize()
 	CityShortcut.initialize()
 
 	-- Listen to events
-	EventManager.addListener("pause", pauseCallback)
+	EventManager.addListener("pause", self)
 
 	-- Sizes
 	local mainHeight = config.screen.height - config.panels.upperBar.height
@@ -130,52 +136,33 @@ function GameScene:destroy()
 	self.grid:destroy()
 	self.upperBar:destroy()
 
-	EventManager.removeListener("pause", pauseCallback)
+	EventManager.removeListener("pause", self)
 end
 
 -----------------------------------------------------------------------------------------
 -- Methods - Game control
 -----------------------------------------------------------------------------------------
 
--- Pause the game
+-- Pause handler
 --
--- Parameters
---  system: True if the game has been paused by the system
-function GameScene:pause(parameters)
-	parameters = parameters or {}
-
-	if parameters.system then
-		self.paused.system = true
+-- Parameters:
+--  event: The event object, with these data:
+--   switch: If true, then switches the pause status
+--   status: If true, then pauses the game, resumes otherwise (overriden by switch if true)
+--   system: Tells whether the event is a system event
+function GameScene:pause(event)
+	if event.switch then
+		if event.system then
+			self.paused.system = not self.paused.system
+		else
+			self.paused.user = not self.paused.user
+		end
 	else
-		self.paused.user = true
-	end
-end
-
--- Resume the game
---
--- Parameters
---  system: True if the game has been resumed by the system
-function GameScene:resume(parameters)
-	parameters = parameters or {}
-
-	if parameters.system then
-		self.paused.system = false
-	else
-		self.paused.user = false
-	end
-end
-
--- Pause or resume the game depending on the current pause state
---
--- Parameters
---  system: True if the game has been paused or resumed by the system
-function GameScene:switchPause(parameters)
-	parameters = parameters or {}
-
-	if parameters.system then
-		self.paused.system = not self.paused.system
-	else
-		self.paused.user = not self.paused.user
+		if event.system then
+			self.paused.system = (event.status == true)
+		else
+			self.paused.user = (event.status == true)
+		end
 	end
 end
 
@@ -191,23 +178,6 @@ function GameScene:enterFrame(timeDelta)
 	if not self.paused.user and not self.paused.system then
 		-- Relay event to grid
 		self.grid:enterFrame(timeDelta)
-	end
-end
-
--- Pause handler
---
--- Parameters:
---  event: The event object, with these data:
---   switch: If true, then switches the pause status
---   status: If true, then pauses the game, resumes otherwise (overriden by switch if true)
---   system: Tells whether the event is a system event
-function pauseCallback(event)
-	if event.switch then
-		instance:switchPause(event)
-	elseif event.status then
-		instance:pause(event)
-	else
-		instance:resume(event)
 	end
 end
 

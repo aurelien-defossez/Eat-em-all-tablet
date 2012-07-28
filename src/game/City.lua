@@ -122,11 +122,23 @@ function City.create(parameters)
 	-- Play neutral animation
 	self:updateSprite()
 
+	-- Register to the tile
+	self.contentId = self.tile:addContent(self)
+
+	-- Listen to events
+	self.tile:addEventListener(TILE.EVENT.ENTER_TILE, self)
+	self.tile:addEventListener(TILE.EVENT.REACH_TILE_CENTER, self)
+
 	return self
 end
 
 -- Destroy the city
 function City:destroy()
+	self.tile:removeEventListener(TILE.EVENT.ENTER_TILE, self)
+	self.tile:removeEventListener(TILE.EVENT.REACH_TILE_CENTER, self)
+
+	self.tile:removeContent(self.contentId)
+
 	self.group:removeSelf()
 end
 
@@ -190,18 +202,24 @@ end
 -- Enter tile handler, called when a zombie enters the tile
 --
 -- Parameters:
---  zombie: The zombie entering the tile
-function City:enterTile(zombie)
-	if zombie.phase == ZOMBIE.PHASE.MOVE and (self.player == nil or zombie.player ~= self.player) then
+--  event: The tile event, with these values:
+--   zombie: The zombie entering the tile
+function City:enterTile(event)
+	local zombie = event.zombie
+	
+	if zombie.phase == ZOMBIE.PHASE.MOVE and (not self.player or zombie.player ~= self.player) then
 		self:attackCity(zombie)
 	end
 end
 
--- Reach middle tile handler, called when a zombie reaches the middle of the tile
+-- Reach center tile handler, called when a zombie reaches the middle of the tile
 --
 -- Parameters:
---  zombie: The zombie reaching the middle of the tile
-function City:reachTileMiddle(zombie)
+--  event: The tile event, with these values:
+--   zombie: The zombie entering the tile
+function City:reachTileCenter(event)
+	local zombie = event.zombie
+	
 	if zombie.phase == ZOMBIE.PHASE.MOVE then
 		if not self.player or zombie.player ~= self.player then
 			self:attackCity(zombie)

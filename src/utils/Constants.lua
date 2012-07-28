@@ -25,13 +25,11 @@ CITY = {
 }
 
 ITEM = {
-	TYPE = {
-		COUNT = 4,
-		SKELETON = 1,
-		GIANT = 2,
-		FIRE = 3,
-		MINE = 4
-	}
+	COUNT = 4,
+	SKELETON = 1,
+	GIANT = 2,
+	FIRE = 3,
+	MINE = 4
 }
 
 TILE = {
@@ -39,7 +37,23 @@ TILE = {
 		CEMETERY = 1,
 		CITY = 2,
 		FORTRESS_WALL = 3,
-		SIGN = 4
+		SIGN = 4,
+		FIRE = 5,
+		MINE = 6
+	},
+	EVENT = {
+		ENTER_TILE = "enterTile",
+		LEAVE_TILE = "leaveTile",
+		REACH_TILE_CENTER = "reachTileCenter"
+	}
+}
+
+CONTENT_GROUP = {
+	PRIMARY = {
+		TILE.CONTENT.CEMETERY,
+		TILE.CONTENT.CITY,
+		TILE.CONTENT.FORTRESS_WALL,
+		TILE.CONTENT.SIGN
 	}
 }
 
@@ -55,7 +69,8 @@ ZOMBIE = {
 		FORTRESS = 2,
 		CEMETERY = 3,
 		CITY = 4,
-		CITY_ENTER = 5
+		CITY_ENTER = 5,
+		FIRE = 6
 	}
 }
 
@@ -70,6 +85,7 @@ SPRITE_SET = {
 	FORTRESS_WALL = 4,
 	ITEM = 5,
 	ZOMBIE = 6,
+	FIRE = 7,
 	MISC = 42
 }
 

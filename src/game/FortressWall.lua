@@ -66,11 +66,21 @@ function FortressWall.create(parameters)
 	-- Add to group
 	self.group:insert(self.wallSprite)
 
+	-- Register to the tile
+	self.contentId = self.tile:addContent(self)
+
+	-- Listen to events
+	self.tile:addEventListener(TILE.EVENT.ENTER_TILE, self)
+
 	return self
 end
 
 -- Destroy the wall
 function FortressWall:destroy()
+	self.tile:removeEventListener(TILE.EVENT.ENTER_TILE, self)
+
+	self.tile:removeContent(self.contentId)
+
 	self.group:removeSelf()
 end
 
@@ -81,8 +91,11 @@ end
 -- Enter tile handler, called when a zombie enters the tile
 --
 -- Parameters:
---  zombie: The zombie entering the tile
-function FortressWall:enterTile(zombie)
+--  event: The tile event, with these values:
+--   zombie: The zombie entering the tile
+function FortressWall:enterTile(event)
+	local zombie = event.zombie
+
 	if zombie.player.id ~= self.player.id then
 		-- Lose HP
 		self.player:addHPs(-zombie.size)

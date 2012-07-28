@@ -65,7 +65,11 @@ function Grid.create(parameters)
 
 	self.items = {}
 
-	self.timeUntilItemCreation = config.debug.immediateItemSpawn and 0 or config.item.creation.time.first
+	self.timeUntilItemCreation = config.item.creation.time.first
+
+	if config.debug.immediateItemSpawn then
+		self.timeUntilItemCreation = 0
+	end
 
 	self.matrix = {}
 	for x = 1, config.panels.grid.nbRows + 1 do
@@ -117,7 +121,7 @@ function Grid:loadMap(parameters)
 				y = cemetery.y
 			}
 
-			tile.content = Cemetery.create{
+			Cemetery.create{
 				grid = self,
 				tile = tile,
 				player = self.players[cemetery.playerId]
@@ -139,15 +143,15 @@ function Grid:loadMap(parameters)
 			y = y
 		}
 
-		if leftTile.content == nil then
-			leftTile.content = FortressWall.create{
+		if leftTile:hasNoContent() then
+			FortressWall.create{
 				tile = leftTile,
 				player = self.players[1]
 			}
 		end
 
-		if rightTile.content == nil then
-			rightTile.content = FortressWall.create{
+		if rightTile:hasNoContent() then
+			FortressWall.create{
 				tile = rightTile,
 				player = self.players[2]
 			}
@@ -171,7 +175,7 @@ function Grid:loadMap(parameters)
 			size = CITY.SIZE.LARGE
 		end
 
-		tile.content = City.create{
+		City.create{
 			grid = self,
 			tile = tile,
 			size = size,
@@ -266,13 +270,16 @@ function Grid:enterFrame(timeDelta)
 	if self.timeUntilItemCreation <= 0 then
 		local middleTileX = math.ceil(config.panels.grid.nbCols / 2)
 		local tile
+		local triesCount = 0
 
 		repeat
 			tile = self:getTile{
 				x = math.random(middleTileX - config.item.creation.xoffset, middleTileX + config.item.creation.xoffset),
 				y = math.random(config.panels.grid.nbRows)
 			}
-		until tile.content == nil or tile.content.type == TILE.CONTENT.SIGN
+
+			triesCount = triesCount + 1
+		until tile:hasNoContent() or tile:hasContentType{TILE.CONTENT.SIGN} or triesCount > 42
 
 		local item = MapItem.create{
 			tile = tile,

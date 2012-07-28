@@ -123,6 +123,12 @@ function MapItem:attachZombie(parameters)
 	self.actualSpeed = math.max(-maxSpeed, math.min(self.speed, maxSpeed))
 end
 
+function detachZombie(parameters)
+	self.zombies[parameters.zombie.id] = nil
+	self.speed = self.speed - parameters.speed
+	self.actualSpeed = math.max(-maxSpeed, math.min(self.speed, maxSpeed))
+end
+
 function MapItem:fetched(player)
 	if not self.alreadyFetched then
 		self.alreadyFetched = true
@@ -141,13 +147,13 @@ function MapItem:fetched(player)
 			grid = self.grid,
 			x = self.x,
 			y = self.y,
-			type = math.random(1, ITEM.TYPE.COUNT)
+			type = math.random(1, ITEM.COUNT)
 		}
 
 		player:gainItem(playerItem)
 		self.grid:removeItem(self)
 
-		self.group:removeSelf()
+		self:destroy()
 	end
 end
 

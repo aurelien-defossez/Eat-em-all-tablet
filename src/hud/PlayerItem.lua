@@ -17,17 +17,7 @@ require("src.config.GameConfig")
 
 local SpriteManager = require("src.utils.SpriteManager")
 local Tile = require("src.game.Tile")
-
------------------------------------------------------------------------------------------
--- Constants
------------------------------------------------------------------------------------------
-
-ALLOWED_DROP_ZONE = {
-	ALL = 1,
-	CEMETERIES = 2,
-	EMPTY_EXCEPT_SIGNS = 3,
-	EMPTY = 4
-}
+local Fire = require("src.game.Fire")
 
 -----------------------------------------------------------------------------------------
 -- Class attributes
@@ -71,18 +61,14 @@ function PlayerItem.create(parameters)
 	self.width_2 = config.item.width / 2
 	self.height_2 = config.item.height / 2
 	
-	if self.type == ITEM.TYPE.SKELETON then
+	if self.type == ITEM.SKELETON then
 		self.typeName = "skeleton"
-		self.dropZones = ALLOWED_DROP_ZONE.CEMETERIES
-	elseif self.type == ITEM.TYPE.GIANT then
+	elseif self.type == ITEM.GIANT then
 		self.typeName = "giant"
-		self.dropZones = ALLOWED_DROP_ZONE.CEMETERIES
-	elseif self.type == ITEM.TYPE.FIRE then
+	elseif self.type == ITEM.FIRE then
 		self.typeName = "fire"
-		self.dropZones = ALLOWED_DROP_ZONE.EMPTY_EXCEPT_SIGNS
-	elseif self.type == ITEM.TYPE.MINE then
+	elseif self.type == ITEM.MINE then
 		self.typeName = "mine"
-		self.dropZones = ALLOWED_DROP_ZONE.EMPTY_EXCEPT_SIGNS
 	end
 
 	ctId = ctId + 1
@@ -125,14 +111,16 @@ end
 -- Parameters:
 --  tile: The tile to use the item on
 function PlayerItem:useItem(tile)
-	if self.type == ITEM.TYPE.SKELETON then
-		tile.content:quicklySpawnZombies(config.item.skeleton.nbZombies)
-	elseif self.type == ITEM.TYPE.GIANT then
-		tile.content:spawn{
+	if self.type == ITEM.SKELETON then
+		local cemetery = tile:getContentForType{TILE.CONTENT.CEMETERY}
+		cemetery:quicklySpawnZombies(config.item.skeleton.nbZombies)
+	elseif self.type == ITEM.GIANT then
+		local cemetery = tile:getContentForType{TILE.CONTENT.CEMETERY}
+		cemetery:spawn{
 			size = config.item.giant.size
 		}
-	elseif self.type == ITEM.TYPE.FIRE then
-	elseif self.type == ITEM.TYPE.MINE then
+	elseif self.type == ITEM.FIRE then
+	elseif self.type == ITEM.MINE then
 	end
 end
 
@@ -161,6 +149,7 @@ end
 -- Touch handler on the item
 function onItemTouch(event)
 	local self = event.target.item
+	local itemUsed = false
 	local cancel = false
 
 	-- Begin drag
@@ -178,22 +167,46 @@ function onItemTouch(event)
 			y = event.y
 		}
 
-		if tile == nil then
-			cancel = true
-		else
-			-- Check if the drop is a legal drop for this item
-			if self.dropZones == ALLOWED_DROP_ZONE.ALL
-				or self.dropZones == ALLOWED_DROP_ZONE.CEMETERIES and tile:getContentType() == TILE.CONTENT.CEMETERY
-				or self.dropZones == ALLOWED_DROP_ZONE.EMPTY and tile.content == nil
-				or self.dropZones == ALLOWED_DROP_ZONE.EMPTY_EXCEPT_SIGNS and
-					(tile.content == nil or tile:getContentType() == TILE.CONTENT.SIGN) then
-				self:useItem(tile)
-				self.player:removeItem(self)
-			else
-				cancel = true
+		if tile then
+			-- Use skeleton or giant iten if the drop tile contains a cemetery
+			if self.type == ITEM.SKELETON or self.type == ITEM.GIANT then
+				local cemetery = tile:getContentForType{TILE.CONTENT.CEMETERY}
+
+				if cemetery then
+					itemUsed = true
+
+					if self.type == ITEM.SKELETON then
+						cemetery:quicklySpawnZombies(config.item.skeleton.nbZombies)
+					elseif self.type == ITEM.GIANT then
+						cemetery:spawn{
+							size = config.item.giant.size
+						}
+					end
+				end
+			-- Use fire if the drop tile does not contain a cemetery, a city or a fortress wall
+			elseif self.type == ITEM.FIRE then
+				if not tile:hasContentType{
+					TILE.CONTENT.CEMETERY,
+					TILE.CONTENT.CITY,
+					TILE.CONTENT.FORTRESS_WALL,
+					TILE.CONTENT.FIRE
+				} then
+					itemUsed = true
+
+					Fire.create{
+						tile = tile
+					}
+				end
+			elseif self.type == ITEM.MINE then
 			end
 		end
-	elseif event.phase == "cancelled" then
+
+		if itemUsed then
+			self.player:removeItem(self)
+		else
+			cancel = true
+		end
+	elseif event.phase == "ended" then
 		cancel = true
 	end
 

@@ -146,24 +146,26 @@ function onDraggedArrowTouch(event)
 		}
 
 		if tile then
+			local sign = tile:getContentForType{TILE.CONTENT.SIGN}
+
 			if arrowSprite.direction ~= DIRECTION.DELETE then
 				-- Create sign
-				if not tile.content
-					or tile:getContentType() == TILE.CONTENT.SIGN and tile.content.player == arrowSprite.player then
+				if not tile:hasContentType(CONTENT_GROUP.PRIMARY)
+					or (sign and sign.player == arrowSprite.player) then
 
-					if tile.content then
-						tile.content:destroy()
+					if sign then
+						sign:destroy()
 					end
 
-					tile.content = Sign.create{
+					Sign.create{
 						tile = tile,
 						player = arrowSprite.player,
 						direction = arrowSprite.direction
 					}
 				end
-			elseif tile:getContentType() == TILE.CONTENT.SIGN and tile.content.player == arrowSprite.player then
+			elseif sign and sign.player == arrowSprite.player then
 				-- Remove sign
-				tile:removeContent()
+				sign:destroy()
 			end
 		end
 
