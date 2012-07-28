@@ -88,8 +88,7 @@ function PlayerItem.create(parameters)
 	self.itemSprite.y = Tile.height_2
 
 	-- Handle events
-	self.itemSprite.item = self
-	self.itemSprite:addEventListener("touch", onItemTouch)
+	self.itemSprite:addEventListener("touch", self)
 
 	-- Add to group
 	self.group:insert(self.itemSprite)
@@ -143,12 +142,14 @@ function PlayerItem:transitionTo(parameters)
 end
 
 -----------------------------------------------------------------------------------------
--- Private Methods
+-- Event listeners
 -----------------------------------------------------------------------------------------
 
--- Touch handler on the item
-function onItemTouch(event)
-	local self = event.target.item
+-- Touch handler on an item
+--
+-- Parameters:
+--  event: The touch event
+function PlayerItem:touch(event)
 	local itemUsed = false
 	local cancel = false
 

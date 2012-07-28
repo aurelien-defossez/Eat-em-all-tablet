@@ -245,6 +245,10 @@ function Grid:getTile(parameters)
 	end
 end
 
+-----------------------------------------------------------------------------------------
+-- Event listeners
+-----------------------------------------------------------------------------------------
+
 -- Enter frame handler
 --
 -- Parameters:
@@ -351,7 +355,7 @@ end
 --
 -- Returns:
 --  The 1-D array index
-function Grid.getIndex(x, y)
+function getIndex(x, y)
 	return x * config.panels.grid.nbCols + y
 end
 

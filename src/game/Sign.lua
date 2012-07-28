@@ -87,7 +87,7 @@ function Sign:destroy()
 end
 
 -----------------------------------------------------------------------------------------
--- Methods
+-- Event listeners
 -----------------------------------------------------------------------------------------
 
 -- Reach center tile handler, called when a zombie reaches the middle of the tile

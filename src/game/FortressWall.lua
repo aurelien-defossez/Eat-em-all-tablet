@@ -85,7 +85,7 @@ function FortressWall:destroy()
 end
 
 -----------------------------------------------------------------------------------------
--- Methods
+-- Event listeners
 -----------------------------------------------------------------------------------------
 
 -- Enter tile handler, called when a zombie enters the tile

@@ -59,6 +59,7 @@ function City.create(parameters)
 	self.y = self.tile.y
 	self.player = nil
 	self.gateOpened = false
+
 	self.timeSinceLastSpawn = 0
 	self.timeSinceLastExit = 0
 
@@ -99,8 +100,7 @@ function City.create(parameters)
 	self.citySprite.y = self.tile.height / 2
 	
 	-- Handle events
-	self.citySprite.city = self
-	self.citySprite:addEventListener("touch", onCityTouch)
+	self.citySprite:addEventListener("touch", self)
 
 	-- Insert into group
 	self.cityGroup:insert(self.citySprite)
@@ -127,7 +127,6 @@ function City.create(parameters)
 
 	-- Listen to events
 	self.tile:addEventListener(TILE.EVENT.ENTER_TILE, self)
-	self.tile:addEventListener(TILE.EVENT.REACH_TILE_CENTER, self)
 
 	return self
 end
@@ -135,7 +134,6 @@ end
 -- Destroy the city
 function City:destroy()
 	self.tile:removeEventListener(TILE.EVENT.ENTER_TILE, self)
-	self.tile:removeEventListener(TILE.EVENT.REACH_TILE_CENTER, self)
 
 	self.tile:removeContent(self.contentId)
 
@@ -205,19 +203,6 @@ end
 --  event: The tile event, with these values:
 --   zombie: The zombie entering the tile
 function City:enterTile(event)
-	local zombie = event.zombie
-	
-	if zombie.phase == ZOMBIE.PHASE.MOVE and (not self.player or zombie.player ~= self.player) then
-		self:attackCity(zombie)
-	end
-end
-
--- Reach center tile handler, called when a zombie reaches the middle of the tile
---
--- Parameters:
---  event: The tile event, with these values:
---   zombie: The zombie entering the tile
-function City:reachTileCenter(event)
 	local zombie = event.zombie
 	
 	if zombie.phase == ZOMBIE.PHASE.MOVE then
@@ -290,15 +275,16 @@ function City:enterFrame(timeDelta)
 end
 
 -----------------------------------------------------------------------------------------
--- Private Methods
+-- Event listeners
 -----------------------------------------------------------------------------------------
 
 -- Touch handler on a city
-function onCityTouch(event)
-	local city = event.target.city
-	
+--
+-- Parameters:
+--  event: The touch event
+function City:touch(event)
 	-- Open the gates while the finger touches the city
-	city.gateOpened = city.player and city.tile:isInside(event)
+	self.gateOpened = self.tile:isInside(event)
 		and event.phase ~= "ended" and event.phase ~= "cancelled"
 
 	-- Focus this object in order to track this finger properly

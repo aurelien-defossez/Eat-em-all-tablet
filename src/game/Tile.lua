@@ -91,6 +91,13 @@ end
 -- Methods
 -----------------------------------------------------------------------------------------
 
+-- Add a content to the tile
+--
+-- Parameters:
+--  content: The content to add to the tile
+--
+-- Returns:
+--  The content id needed to remove it afterward
 function Tile:addContent(content)
 	contentId = contentId + 1
 	self.contents[contentId] = content
@@ -98,14 +105,29 @@ function Tile:addContent(content)
 	return contentId 
 end
 
+-- Remove a content from the tile
+--
+-- Parameters:
+--  contentId: The content id, as given by the addContent method
 function Tile:removeContent(contentId)
 	self.contents[contentId] = nil
 end
 
+-- Tells whether the tile has at least one content
+--
+-- Returns:
+--  True of the tile has ne content
 function Tile:hasNoContent()
 	return (next(self.contents) == nil)
 end
 
+-- Return the first content that matches one of the given content types
+--
+-- Parameters:
+--  contentTypes: The list of content types to look for
+--
+-- Returns:
+--  The first content that matches one of the given content type, or nil otherwise
 function Tile:getContentForType(contentTypes)
 	for key, contentType in ipairs(contentTypes) do
 		for contentId, content in pairs(self.contents) do
@@ -118,6 +140,13 @@ function Tile:getContentForType(contentTypes)
 	return nil
 end
 
+-- Tells whether any of the tile contents match one of the given content types
+--
+-- Parameters:
+--  contentTypes: The list of content types to look for
+--
+-- Returns:
+--  True if any content matches one of the given content type
 function Tile:hasContentType(contentTypes)
 	return (self:getContentForType(contentTypes) ~= nil)
 end
@@ -131,6 +160,8 @@ end
 -- Returns:
 --  True if the pixel is inside the tile coordinates
 function Tile:isInside(parameters)
+	-- print("("..parameters.x.." >= "..self.x.." and "..parameters.x.." < "..self.x + self.width.. " and "..parameters.y.." >= "..self.y.." and "..parameters.y.." < "..self.y + self.height..")")
+
 	return (parameters.x >= self.x and parameters.x < self.x + self.width
 		and parameters.y >= self.y and parameters.y < self.y + self.height)
 end
@@ -201,6 +232,10 @@ function Tile:reachTileCenter(zombie)
 		end
 	end
 end
+
+-----------------------------------------------------------------------------------------
+-- Event listeners
+-----------------------------------------------------------------------------------------
 
 -- Enter frame handler
 --

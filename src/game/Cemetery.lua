@@ -123,6 +123,10 @@ function Cemetery:quicklySpawnZombies(nbZombies)
 	self.nbQuickZombies = self.nbQuickZombies + nbZombies
 end
 
+-----------------------------------------------------------------------------------------
+-- Event listeners
+-----------------------------------------------------------------------------------------
+
 -- Enter tile handler, called when a zombie enters the tile
 --
 -- Parameters:

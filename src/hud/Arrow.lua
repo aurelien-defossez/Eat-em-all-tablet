@@ -73,8 +73,7 @@ function Arrow.create(parameters)
 	self.arrowSprite:rotate(self.direction or 0)
 	
 	-- Handle events
-	self.arrowSprite.arrow = self
-	self.arrowSprite:addEventListener("touch", onArrowTouch)
+	self.arrowSprite:addEventListener("touch", self)
 
 	-- Add to group
 	self.group:insert(self.arrowSprite)
@@ -88,13 +87,14 @@ function Arrow:destroy()
 end
 
 -----------------------------------------------------------------------------------------
--- Callbacks
+-- Event listeners
 -----------------------------------------------------------------------------------------
 
 -- Touch handler on one of the four arrows of the control panel
-function onArrowTouch(event)
-	local self = event.target.arrow
-
+--
+-- Parameters:
+--  event: The touch event
+function Arrow:touch(event)
 	-- Begin drag by creating a new draggable arrow
 	if event.phase == "began" then
 		local animationName = nil
@@ -126,21 +126,24 @@ function onArrowTouch(event)
 end
 
 -- Touch handler on a draggable arrow
+--
+-- Parameters:
+--  event: The touch event
 function onDraggedArrowTouch(event)
-	local arrowSprite = event.target
+	local draggedArrowSprite = event.target
 
 	-- Follow the finger movement
 	if event.phase == "moved" then
-		arrowSprite.x = event.x
-		arrowSprite.y = event.y
+		draggedArrowSprite.x = event.x
+		draggedArrowSprite.y = event.y
 
 		-- Focus this object in order to track this finger properly
-		display.getCurrentStage():setFocus(arrowSprite, event.id)
+		display.getCurrentStage():setFocus(draggedArrowSprite, event.id)
 
 	-- Drop the arrow
 	elseif event.phase == "ended" then
 		-- Locate drop tile
-		local tile = arrowSprite.grid:getTileByPixels{
+		local tile = draggedArrowSprite.grid:getTileByPixels{
 			x = event.x,
 			y = event.y
 		}
@@ -148,10 +151,10 @@ function onDraggedArrowTouch(event)
 		if tile then
 			local sign = tile:getContentForType{TILE.CONTENT.SIGN}
 
-			if arrowSprite.direction ~= DIRECTION.DELETE then
+			if draggedArrowSprite.direction ~= DIRECTION.DELETE then
 				-- Create sign
 				if not tile:hasContentType(CONTENT_GROUP.PRIMARY)
-					or (sign and sign.player == arrowSprite.player) then
+					or (sign and sign.player == draggedArrowSprite.player) then
 
 					if sign then
 						sign:destroy()
@@ -159,25 +162,25 @@ function onDraggedArrowTouch(event)
 
 					Sign.create{
 						tile = tile,
-						player = arrowSprite.player,
-						direction = arrowSprite.direction
+						player = draggedArrowSprite.player,
+						direction = draggedArrowSprite.direction
 					}
 				end
-			elseif sign and sign.player == arrowSprite.player then
+			elseif sign and sign.player == draggedArrowSprite.player then
 				-- Remove sign
 				sign:destroy()
 			end
 		end
 
 		-- Remove dragged sprite
-		arrowSprite:removeSelf()
+		draggedArrowSprite:removeSelf()
 
 		-- Remove focus
 		display.getCurrentStage():setFocus(nil, event.id)
 
 	-- Delete the arrow
 	elseif event.phase == "cancelled" then
-		arrowSprite:removeSelf()
+		draggedArrowSprite:removeSelf()
 		display.getCurrentStage():setFocus(nil, event.id)
 	end
 end

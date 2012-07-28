@@ -73,8 +73,7 @@ function CityShortcut.create(parameters)
 	self.citySprite.y = self.city.tile.height / 2
 
 	-- Handle events
-	self.citySprite.cityShortcut = self
-	self.citySprite:addEventListener("touch", onCityTouch)
+	self.citySprite:addEventListener("touch", self)
 
 	-- Inhabitants count text
 	self.inhabitantsText = display.newText(self.city.inhabitants, config.city.inhabitantsText.x,
@@ -140,15 +139,16 @@ function CityShortcut:isInside(parameters)
 end
 
 -----------------------------------------------------------------------------------------
--- Private Methods
+-- Event listeners
 -----------------------------------------------------------------------------------------
 
 -- Touch handler on a city
-function onCityTouch(event)
-	local cityShortcut = event.target.cityShortcut
-
+--
+-- Parameters:
+--  event: The touch event
+function CityShortcut:touch(event)
 	-- Open the gates while the finger touches the city
-	cityShortcut.city.gateOpened = cityShortcut:isInside(event)
+	self.city.gateOpened = self:isInside(event)
 		and event.phase ~= "ended" and event.phase ~= "cancelled"
 
 	-- Focus this object in order to track this finger properly
