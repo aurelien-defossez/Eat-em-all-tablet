@@ -57,7 +57,6 @@ function MapItem.create(parameters)
 	self.x = self.tile.x
 	self.y = self.tile.y
 	self.speed = 0
-	self.actualSpeed = 0
 	self.zombies = {}
 	self.alreadyFetched = false
 
@@ -123,7 +122,6 @@ end
 function MapItem:attachZombie(parameters)
 	self.zombies[parameters.zombie.id] = parameters.zombie
 	self.speed = self.speed + parameters.speed
-	self:updateSpeed()
 end
 
 -- Detach a zombie from this item
@@ -131,16 +129,9 @@ end
 -- Parameters:
 --  zombie: The zombie to detach
 --  speed: The speed added by this zombie
-function MapItemdetachZombie(parameters)
+function MapItem:detachZombie(parameters)
 	self.zombies[parameters.zombie.id] = nil
 	self.speed = self.speed - parameters.speed
-	self:updateSpeed()
-end
-
--- Update the speed of the item, bounding it to its maximum speed
-function MapItem:updateSpeed()
-	local maxSpeed = config.item.speed.max
-	self.actualSpeed = math.max(-maxSpeed, math.min(self.speed, maxSpeed))
 end
 
 -- Item is fetched by a player, giving this item to him
@@ -182,8 +173,8 @@ end
 -- Parameters:
 --  timeDelta: The time in ms since last frame
 function MapItem:enterFrame(timeDelta)
-	if self.actualSpeed ~= 0 then
-		local movement = timeDelta / 1000 * self.actualSpeed * Tile.width
+	if self.speed ~= 0 then
+		local movement = timeDelta / 1000 * self.speed * Tile.width
 
 		self.x = self.x + movement
 		self.group.x = self.x

@@ -325,10 +325,10 @@ function Zombie:die(parameters)
 	if self.hitPoints <= 0 then
 		-- Remove from the item carriers
 		if self.phase == ZOMBIE.PHASE.CARRY_ITEM_INIT or self.phase == ZOMBIE.PHASE.CARRY_ITEM then
-			self.item:detachZombie({
+			self.item:detachZombie{
 				zombie = self,
 				speed = config.item.speed.perZombie * self.directionVector.x
-			})
+			}
 		end
 
 		-- Remove zombie from the zombies list
@@ -356,7 +356,7 @@ function Zombie:enterFrame(timeDelta)
 			y = movement * self.directionVector.y
 		}
 	elseif self.phase == ZOMBIE.PHASE.CARRY_ITEM_INIT then
-		local speed = math.max(self.speed, self.item.actualSpeed)
+		local speed = math.max(self.speed, self.item.speed)
 		local movement = speed * speedFactor
 		local itemMask = self.item.collisionMask
 
@@ -374,7 +374,7 @@ function Zombie:enterFrame(timeDelta)
 			}
 		end
 	elseif self.phase == ZOMBIE.PHASE.CARRY_ITEM then
-		local movement = self.item.actualSpeed * speedFactor
+		local movement = self.item.speed * speedFactor
 
 		self:move{
 			x = movement,

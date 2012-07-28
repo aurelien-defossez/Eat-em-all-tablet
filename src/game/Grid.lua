@@ -321,13 +321,17 @@ function Grid:enterFrame(timeDelta)
 		-- Check collision with items
 		if zombie.phase == ZOMBIE.PHASE.MOVE and not zombie.isGiant then
 			for itemIndex, item in pairs(self.items) do
-				local mask2 = item.collisionMask
+				-- Determine if the current zombie can make the item carry process faster
+				if item.speed < config.item.speed.max and zombie.player.direction == DIRECTION.LEFT
+					or item.speed > -config.item.speed.max and zombie.player.direction == DIRECTION.RIGHT then
+					local mask2 = item.collisionMask
 
-				if Collisions.intersectRects(mask1.x, mask1.y, mask1.width, mask1.height,
-					mask2.x, mask2.y, mask2.width, mask2.height) then
-					
-					zombie:carryItem(item)
-					break
+					if Collisions.intersectRects(mask1.x, mask1.y, mask1.width, mask1.height,
+						mask2.x, mask2.y, mask2.width, mask2.height) then
+						
+						zombie:carryItem(item)
+						break
+					end
 				end
 			end
 		end
