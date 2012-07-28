@@ -158,6 +158,7 @@ function GameScene:pause(event)
 			self.paused.user = not self.paused.user
 		end
 	else
+		-- Compare with true to force the boolean conversion
 		if event.system then
 			self.paused.system = (event.status == true)
 		else
@@ -178,6 +179,13 @@ function GameScene:enterFrame(timeDelta)
 	if not self.paused.user and not self.paused.system then
 		-- Relay event to grid
 		self.grid:enterFrame(timeDelta)
+
+		if config.debug.frameByFrame then
+			self:pause{
+				status = true,
+				system = false
+			}
+		end
 	end
 end
 

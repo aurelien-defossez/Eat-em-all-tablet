@@ -7,7 +7,8 @@ config = {
 		immediateSpawn = true,
 		immediateItemSpawn = true,
 		showCollisionMask = false,
-		startWithItems = true
+		startWithItems = true,
+		frameByFrame = false
 	},
 
 	screen = {

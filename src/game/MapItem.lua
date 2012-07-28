@@ -155,7 +155,9 @@ function MapItem:fetched(player)
 		for index, zombie in pairs(self.zombies) do
 			if zombie.phase == ZOMBIE.PHASE.CARRY_ITEM or zombie.phase == ZOMBIE.PHASE.CARRY_ITEM_INIT then
 				zombie.phase = ZOMBIE.PHASE.MOVE
-				zombie:changeDirection(zombie.player.direction)
+				zombie:changeDirection{
+					direction = zombie.player.direction
+				}
 			end
 		end
 

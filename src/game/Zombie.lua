@@ -90,7 +90,10 @@ function Zombie.create(parameters)
 
 	ctId = ctId + 1
 
-	self:changeDirection(self.direction)
+	self:changeDirection{
+		direction = self.player.direction
+	}
+
 	self:computeCollisionMask()
 
 	-- Position group
@@ -163,8 +166,8 @@ function Zombie:move(parameters)
 
 	-- Determine tile collider
 	local tileCollider = {
-		x = self.x + self.width / 2 + config.zombie.tileColliderOffset.x * self.directionVector.x,
-		y = self.y + self.height / 2 + config.zombie.tileColliderOffset.y * self.directionVector.y
+		x = self.x + self.width / 2,
+		y = self.y + self.height / 2
 	}
 
 	-- Determine the tile the zombie is on and send events (enter, leave and reachCenter)
@@ -245,24 +248,64 @@ end
 --
 -- Parameters:
 --  direction: The new direction
-function Zombie:changeDirection(direction)
-	self.direction = direction
+--  correctPosition: True if the position has to be corrected so the zombie stay on the tile center
+function Zombie:changeDirection(parameters)
+	self.direction = parameters.direction
 
-	if direction == DIRECTION.UP then
+	-- Update the direction vector
+	if self.direction == DIRECTION.UP then
 		self.directionVector = DIRECTION_VECTOR.UP
-	elseif direction == DIRECTION.DOWN then
+	elseif self.direction == DIRECTION.DOWN then
 		self.directionVector = DIRECTION_VECTOR.DOWN
-	elseif direction == DIRECTION.LEFT then
+	elseif self.direction == DIRECTION.LEFT then
 		self.directionVector = DIRECTION_VECTOR.LEFT
-	elseif direction == DIRECTION.RIGHT then
+	elseif self.direction == DIRECTION.RIGHT then
 		self.directionVector = DIRECTION_VECTOR.RIGHT
+	end
+
+	if parameters.correctPosition then
+		-- Compute the offset between the zombie position and the tile center and correct the zombie position
+		if self.direction == DIRECTION.UP or self.direction == DIRECTION.DOWN then
+			local tileCenter = self.tile.x
+			local centerOffset = math.abs(self.x - tileCenter)
+
+			-- print("--------------")
+			-- print("tileCenter="..tileCenter)
+			-- print("self.x="..self.x)
+			-- print("self.y="..self.y)
+			-- print("centerOffset="..centerOffset)
+
+			self.x = tileCenter
+			self.y = self.y + centerOffset * self.directionVector.y
+			
+			-- print("self.x="..self.x)
+			-- print("self.y="..self.y)
+		else
+			local tileCenter = self.tile.y
+			local centerOffset = math.abs(self.y - tileCenter)
+
+			-- print("--------------")
+			-- print("tileCenter="..tileCenter)
+			-- print("self.x="..self.x)
+			-- print("self.y="..self.y)
+			-- print("centerOffset="..centerOffset)
+
+			self.y = tileCenter
+			self.x = self.x + centerOffset * self.directionVector.x
+
+			-- print("self.x="..self.x)
+			-- print("self.y="..self.y)
+		end
 	end
 end
 
 function Zombie:carryItem(item)
 	self.item = item
 	self.phase = ZOMBIE.PHASE.CARRY_ITEM_INIT
-	self:changeDirection(getReverseDirection(self.player.direction))
+
+	self:changeDirection{
+		direction = getReverseDirection(self.player.direction)
+	}
 
 	item:attachZombie({
 		zombie = self,

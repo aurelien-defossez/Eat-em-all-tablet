@@ -189,9 +189,15 @@ function Tile:reachTileCenter(zombie)
 	if self.isOnFirstRow and zombie.direction == DIRECTION.UP
 		or self.isOnLastRow and zombie.direction == DIRECTION.DOWN then
 		if math.random() < 0.5 then
-			zombie:changeDirection(DIRECTION.LEFT)
+			zombie:changeDirection{
+				direction = DIRECTION.LEFT,
+				correctPosition = true
+			}
 		else
-			zombie:changeDirection(DIRECTION.RIGHT)
+			zombie:changeDirection{
+				direction = DIRECTION.RIGHT,
+				correctPosition = true
+			}
 		end
 	end
 end

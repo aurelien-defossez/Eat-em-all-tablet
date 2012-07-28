@@ -99,10 +99,13 @@ function Sign:reachTileCenter(event)
 	local zombie = event.zombie
 
 	if zombie.phase == ZOMBIE.PHASE.MOVE and zombie.player.id == self.player.id then
-		-- Ignore special cases
+		-- Ignore direction on special cases
 		if not (self.tile.isOnFirstRow and self.direction == DIRECTION.UP)
 			and not (self.tile.isOnLastRow and self.direction == DIRECTION.DOWN) then
-			zombie:changeDirection(self.direction)
+			zombie:changeDirection{
+				direction = self.direction,
+				correctPosition = true
+			}
 		end
 	end
 end

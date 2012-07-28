@@ -106,7 +106,9 @@ function FortressWall:enterTile(event)
 		}
 	elseif zombie.phase == ZOMBIE.PHASE.MOVE or zombie.phase == ZOMBIE.PHASE.CARRY_ITEM_INIT then
 		-- Move backward
-		zombie:changeDirection(self.player.direction)
+		zombie:changeDirection{
+			direction = self.player.direction
+		}
 	elseif zombie.phase == ZOMBIE.PHASE.CARRY_ITEM then
 		-- Fetch item
 		zombie.item:fetched(self.player)

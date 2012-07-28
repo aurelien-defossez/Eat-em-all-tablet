@@ -63,4 +63,8 @@ function printDebugMessages()
 	if config.debug.startWithItems then
 		print("Debug: Starting with the four different items")
 	end
+
+	if config.debug.frameByFrame then
+		print("Debug:Frame by frame mode enabled")
+	end
 end
