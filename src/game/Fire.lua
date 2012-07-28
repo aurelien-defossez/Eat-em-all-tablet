@@ -76,6 +76,7 @@ function Fire.create(parameters)
 
 	return self
 end
+
 -- Destroy the item
 function Fire:destroy()
 	self.tile:removeEventListener(TILE.EVENT.ENTER_TILE, self)

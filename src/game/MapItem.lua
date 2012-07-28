@@ -115,20 +115,38 @@ function MapItem:computeCollisionMask()
 	}
 end
 
+-- Attach a zombie to this item
+--
+-- Parameters:
+--  zombie: The zombie to attach
+--  speed: The speed added by this zombie
 function MapItem:attachZombie(parameters)
-	local maxSpeed = config.item.speed.max
-
 	self.zombies[parameters.zombie.id] = parameters.zombie
 	self.speed = self.speed + parameters.speed
-	self.actualSpeed = math.max(-maxSpeed, math.min(self.speed, maxSpeed))
+	self:updateSpeed()
 end
 
-function detachZombie(parameters)
+-- Detach a zombie from this item
+--
+-- Parameters:
+--  zombie: The zombie to detach
+--  speed: The speed added by this zombie
+function MapItemdetachZombie(parameters)
 	self.zombies[parameters.zombie.id] = nil
 	self.speed = self.speed - parameters.speed
+	self:updateSpeed()
+end
+
+-- Update the speed of the item, bounding it to its maximum speed
+function MapItem:updateSpeed()
+	local maxSpeed = config.item.speed.max
 	self.actualSpeed = math.max(-maxSpeed, math.min(self.speed, maxSpeed))
 end
 
+-- Item is fetched by a player, giving this item to him
+--
+-- Parameters:
+--  player: The player fetching the item
 function MapItem:fetched(player)
 	if not self.alreadyFetched then
 		self.alreadyFetched = true

@@ -3,9 +3,9 @@ config = {
 		oneCemetery = false,
 		oneZombie = false,
 		randomGiants = false,
-		fastZombies = false,
+		fastZombies = true,
 		immediateSpawn = true,
-		immediateItemSpawn = false,
+		immediateItemSpawn = true,
 		showCollisionMask = false,
 		startWithItems = true
 	},
