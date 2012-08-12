@@ -12,10 +12,10 @@ GameScene.__index = GameScene
 -- Imports
 -----------------------------------------------------------------------------------------
 
-require("src.utils.jsonReader")
 require("src.utils.Constants")
 require("src.utils.Utils")
 require("src.config.GameConfig")
+require("src.config.Maps")
 
 local SpriteManager = require("src.utils.SpriteManager")
 local UpperBarPanel = require("src.hud.UpperBarPanel")
@@ -105,7 +105,7 @@ function GameScene.create(parameters)
 	}
 
 	-- Load default map
-	self.grid:loadMap(readJson("maps/map_test.json"))
+	self.grid:loadMap(maps.default)
 	
 	-- Create player control panels
 	self.controlPanel1 = PlayerControlPanel.create{
