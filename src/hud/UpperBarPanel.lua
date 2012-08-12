@@ -127,6 +127,10 @@ function onPauseTap(event)
 				Button.create{
 					text = "Resume",
 					actionPerformed = onResumeTap
+				},
+				Button.create{
+					text = "Quit",
+					actionPerformed = onQuitTap
 				}
 			}
 		})
@@ -136,7 +140,6 @@ function onPauseTap(event)
 end
 
 function onClose()
-	print("onClose")
 	Runtime:dispatchEvent{
 		name = "gamePause",
 		system = false,
@@ -145,8 +148,13 @@ function onClose()
 end
 
 function onResumeTap()
-	print("onResumeTap")
 	WindowManager.removeTopWindow()
+end
+
+function onQuitTap()
+	Runtime:dispatchEvent{
+		name = "gameQuit",
+	}
 end
 
 -----------------------------------------------------------------------------------------

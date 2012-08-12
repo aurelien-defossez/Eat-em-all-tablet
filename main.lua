@@ -17,11 +17,6 @@ for i = 1, 30 do
 	print("")
 end
 
--- Exit application
-local exit = function()
-	-- os.exit();
-end
-
 -- Pauses the game
 --
 -- Parameters:
@@ -45,7 +40,9 @@ local systemEventListener = function(event)
 		-- Start the multiplayer game
 		storyboard.gotoScene("src.game.Multiplayer")
 	elseif event.type == "applicationExit" then
-		exit()
+		Runtime:dispatchEvent{
+			name = "gameQuit",
+		}
 		return true
 	elseif event.type == "applicationSuspend" then
 		pause(true)

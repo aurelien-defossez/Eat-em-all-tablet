@@ -90,7 +90,7 @@ end
 
 -- Destroy the grid
 function Grid:destroy()
-	for index, tile in paris(self.matrix) do
+	for index, tile in pairs(self.matrix) do
 		tile:destroy()
 	end
 end

@@ -92,6 +92,7 @@ function GameScene.create(parameters)
 
 	-- Listen to events
 	Runtime:addEventListener("gamePause", self)
+	Runtime:addEventListener("gameQuit", self)
 
 	-- Sizes
 	local mainHeight = config.screen.height - config.panels.upperBar.height
@@ -135,12 +136,16 @@ end
 
 -- Destroy the scene
 function GameScene:destroy()
-	self.controlPanel1:destroy()
-	self.controlPanel2:destroy()
-	self.grid:destroy()
-	self.upperBar:destroy()
+	if not self.alreadyDestroyed then
+		self.alreadyDestroyed = true
 
-	Runtime:removeEventListener("gamePause", self)
+		self.controlPanel1:destroy()
+		self.controlPanel2:destroy()
+		self.grid:destroy()
+		self.upperBar:destroy()
+
+		Runtime:removeEventListener("gamePause", self)
+	end
 end
 
 -----------------------------------------------------------------------------------------
@@ -152,23 +157,19 @@ end
 -- Parameters:
 --  event: The event object, with these data:
 --   switch: If true, then switches the pause status
---   status: If true, then pauses the game, resumes otherwise (overriden by switch if true)
 --   system: Tells whether the event is a system event
 function GameScene:gamePause(event)
-	if event.switch then
-		if event.system then
-			self.paused.system = not self.paused.system
-		else
-			self.paused.user = not self.paused.user
-		end
+	if event.system then
+		self.paused.system = (event.status == true)
 	else
-		-- Compare with true to force the boolean conversion
-		if event.system then
-			self.paused.system = (event.status == true)
-		else
-			self.paused.user = (event.status == true)
-		end
+		self.paused.user = (event.status == true)
 	end
+end
+
+function GameScene:gameQuit(event)
+	self:destroy()
+
+	os.exit()
 end
 
 -----------------------------------------------------------------------------------------
