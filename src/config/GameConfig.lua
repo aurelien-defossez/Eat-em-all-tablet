@@ -13,7 +13,9 @@ config = {
 
 	screen = {
 		width = display.contentWidth,
-		height = display.contentHeight
+		width_2 = display.contentWidth / 2,
+		height = display.contentHeight,
+		height_2 = display.contentHeight / 2
 	},
 
 	player = {

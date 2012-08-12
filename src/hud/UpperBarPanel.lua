@@ -16,6 +16,9 @@ require("src.utils.Constants")
 require("src.config.GameConfig")
 
 local SpriteManager = require("src.utils.SpriteManager")
+local MenuWindow = require("src.hud.MenuWindow")
+local Button = require("src.hud.Button")
+local WindowManager = require("src.utils.WindowManager")
 local HitPointsPanel = require("src.hud.HitPointsPanel")
 
 -----------------------------------------------------------------------------------------
@@ -108,10 +111,33 @@ end
 
 -- Tap handler on the pause button
 function onPauseTap(event)
+	local window = WindowManager.getTopWindow()
+
+	if not window then
+		Runtime:dispatchEvent{
+			name = "gamePause",
+			system = false,
+			status = true
+		}
+
+		WindowManager.addWindow(MenuWindow.create{
+			buttons = {
+				Button.create{
+					text = "Resume",
+					actionPerformed = onResumeTap
+				}
+			}
+		})
+	end
+end
+
+function onResumeTap()
+	WindowManager.removeTopWindow()
+
 	Runtime:dispatchEvent{
 		name = "gamePause",
 		system = false,
-		switch = true
+		status = false
 	}
 end
 

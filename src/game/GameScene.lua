@@ -18,6 +18,7 @@ require("src.config.GameConfig")
 require("src.config.Maps")
 
 local SpriteManager = require("src.utils.SpriteManager")
+local WindowManager = require("src.utils.WindowManager")
 local UpperBarPanel = require("src.hud.UpperBarPanel")
 local PlayerControlPanel = require("src.hud.PlayerControlPanel")
 local ArrowsPanel = require("src.hud.ArrowsPanel")
@@ -26,6 +27,8 @@ local CitiesPanel = require("src.hud.CitiesPanel")
 local PlayerItem = require("src.hud.PlayerItem")
 local Arrow = require("src.hud.Arrow")
 local CityShortcut = require("src.hud.CityShortcut")
+local MenuWindow = require("src.hud.MenuWindow")
+local Button = require("src.hud.Button")
 local Grid = require("src.game.Grid")
 local Tile = require("src.game.Tile")
 local Fire = require("src.game.Fire")
@@ -65,6 +68,7 @@ function GameScene.create(parameters)
 
 	-- Initialize managers
 	SpriteManager.initialize()
+	WindowManager.initialize()
 
 	-- Initialize groups in invert Z order
 	UpperBarPanel.initialize()
@@ -83,6 +87,8 @@ function GameScene.create(parameters)
 	Fire.initialize()
 	PlayerItem.initialize()
 	CityShortcut.initialize()
+	MenuWindow.initialize()
+	Button.initialize()
 
 	-- Listen to events
 	Runtime:addEventListener("gamePause", self)
