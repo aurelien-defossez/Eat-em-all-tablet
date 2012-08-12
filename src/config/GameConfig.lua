@@ -182,6 +182,20 @@ config = {
 		}
 	},
 
+	windows = {
+		width = 400,
+		xpadding = 20,
+		ypadding = 20,
+		title = {
+			height = 30
+		},
+		buttons = {
+			width = 360,
+			height = 30,
+			ypadding = 10
+		}
+	},
+
 	sprites = {
 		arrow = {
 			arrow_blue = {},

@@ -41,40 +41,60 @@ function MenuWindow.create(parameters)
 	classGroup:insert(self.group)
 	
 	-- Initialize attributes
-	self.width = 400
-	self.height = 200
+	self.width = config.windows.width
+	self.height = 2 * config.windows.ypadding + config.windows.title.height +
+		table.getn(self.buttons) * (config.windows.buttons.ypadding + config.windows.buttons.height)
 	self.x = (config.screen.width - self.width) / 2
 	self.y = (config.screen.height - self.height) / 2
 
 	-- Draw background
-	local background = display.newRect(self.x, self.y, self.width, self.height)
+	local background = display.newRect(0, 0, self.width, self.height)
 	background.strokeWidth = 3
 	background:setFillColor(204, 109, 0)
 	background:setStrokeColor(135, 72, 0)
 	
-	-- Add background to group
+	-- Title
+	local windowTitle = display.newText(self.title, 0, 0, native.systemFontBold, 30)
+	windowTitle:setTextColor(255, 255, 255)
+	windowTitle:setReferencePoint(display.CenterReferencePoint)
+	windowTitle.x = self.width / 2
+	windowTitle.y = config.windows.ypadding + config.windows.title.height / 2
+
+	-- Add to group
 	self.group:insert(background)
+	self.group:insert(windowTitle)
 
 	-- Position buttons
-	local offset = 10
+	local offset = config.windows.title.height + config.windows.ypadding + config.windows.buttons.ypadding
 	for key, button in pairs(self.buttons) do
 		button:moveTo{
-			x = self.x + 10,
+			x = self.x + config.windows.xpadding,
 			y = self.y + offset
 		}
 
-		offset = offset + 40
+		offset = offset + config.windows.buttons.height + config.windows.buttons.ypadding
 	end
+
+	-- Position group
+	self.group.x = self.x
+	self.group.y = self.y
 
 	return self
 end
 
 -- Destroy the panel
 function MenuWindow:destroy()
+	-- Send close callback
+	if self.onClose then
+		self.onClose()
+	end
+
+	-- Destroy buttons
 	for key, button in pairs(self.buttons) do
 		button:destroy()
 	end
 
+	-- Remove display group
 	self.group:removeSelf()
 end
 

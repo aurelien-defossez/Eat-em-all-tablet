@@ -48,12 +48,20 @@ function addWindow(window)
 end
 
 function removeTopWindow()
-	local window = table.remove(windows)
-	window:destroy()
+	if table.getn(windows) > 0 then
+		local window = table.remove(windows)
+		window:destroy()
 
-	local lastWindow = getTopWindow()
-	if lastWindow then
-		lastWindow:show()
+		local lastWindow = getTopWindow()
+		if lastWindow then
+			lastWindow:show()
+		end
+	end
+end
+
+function removeAllWindows()
+	while getTopWindow() do
+		removeTopWindow()
 	end
 end
 

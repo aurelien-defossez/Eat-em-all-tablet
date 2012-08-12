@@ -44,8 +44,8 @@ function Button.create(parameters)
 	-- Initialize attributes
 	self.x = self.x or 0
 	self.y = self.y or 0
-	self.height = 30
-	self.width = 380
+	self.height = config.windows.buttons.height
+	self.width = config.windows.buttons.width
 
 	-- Position group
 	self.group.x = self.x
@@ -58,26 +58,26 @@ function Button.create(parameters)
 	self.background:setStrokeColor(230, 150, 20)
 
 	-- Text
-	self.text = display.newText(self.text, self.x, self.y, native.systemFontBold, 24)
-	self.text:setTextColor(255, 255, 255)
-	self.text:setReferencePoint(display.CenterReferencePoint)
-	self.text.x = self.width / 2
-	self.text.y = self.height / 2
+	self.buttonText = display.newText(self.text, 0, 0, native.systemFontBold, 24)
+	self.buttonText:setTextColor(255, 255, 255)
+	self.buttonText:setReferencePoint(display.CenterReferencePoint)
+	self.buttonText.x = self.width / 2
+	self.buttonText.y = self.height / 2
 
 	-- Add listener on tap
-	self.text:addEventListener("tap", self)
+	self.buttonText:addEventListener("tap", self)
 	self.background:addEventListener("tap", self)
 	
 	-- Add to group
 	self.group:insert(self.background)
-	self.group:insert(self.text)
+	self.group:insert(self.buttonText)
 	
 	return self
 end
 
 -- Destroy the panel
 function Button:destroy()
-	self.text:removeEventListener("tap", self)
+	self.buttonText:removeEventListener("tap", self)
 	self.background:removeEventListener("tap", self)
 
 	self.group:removeSelf()

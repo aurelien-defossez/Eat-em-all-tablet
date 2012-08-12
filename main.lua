@@ -10,6 +10,7 @@ system.activate("multitouch")
 -- include the Corona "storyboard" module
 local storyboard = require("storyboard")
 local GameScene = require("src.game.GameScene")
+local WindowManager = require("src.utils.WindowManager")
 
 -- Jump 30 lines in the debug console
 for i = 1, 30 do
@@ -61,7 +62,9 @@ end
 local keyListener = function(event)
 	print("Key event: "..event.keyName.." ("..event.phase..")")
 	if event.keyName == "back" and event.phase == "up" then
-		pause(true)
+		if WindowManager.getTopWindow() then
+			WindowManager.removeTopWindow()
+		end
 
 		-- We caught the event so we return true
 		return true

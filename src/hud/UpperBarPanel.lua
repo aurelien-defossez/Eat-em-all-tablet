@@ -121,6 +121,8 @@ function onPauseTap(event)
 		}
 
 		WindowManager.addWindow(MenuWindow.create{
+			title = "Pause",
+			onClose = onClose,
 			buttons = {
 				Button.create{
 					text = "Resume",
@@ -128,17 +130,23 @@ function onPauseTap(event)
 				}
 			}
 		})
+	else
+		WindowManager.removeAllWindows()
 	end
 end
 
-function onResumeTap()
-	WindowManager.removeTopWindow()
-
+function onClose()
+	print("onClose")
 	Runtime:dispatchEvent{
 		name = "gamePause",
 		system = false,
 		status = false
 	}
+end
+
+function onResumeTap()
+	print("onResumeTap")
+	WindowManager.removeTopWindow()
 end
 
 -----------------------------------------------------------------------------------------
