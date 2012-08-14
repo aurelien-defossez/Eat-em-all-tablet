@@ -5,7 +5,7 @@
 -----------------------------------------------------------------------------------------
 
 local storyboard = require("storyboard")
-local scene = storyboard.newScene()
+local Multiplayer = storyboard.newScene()
 
 -----------------------------------------------------------------------------------------
 -- Imports
@@ -22,7 +22,13 @@ local GameScene = require("src.game.GameScene")
 -----------------------------------------------------------------------------------------
 
 -- Called when the scene's view does not exist:
-function scene:createScene(event)
+function Multiplayer:createScene(event)
+	-- Initialize attributes
+	self.paused = {
+		system = false,
+		user = false
+	}
+
 	-- Enter frame time
 	self.lastFrameTime = 0
 
@@ -51,36 +57,67 @@ function scene:createScene(event)
 end
 
 -- Called immediately after scene has moved onscreen:
-function scene:enterScene(event)
+function Multiplayer:enterScene(event)
 	local group = self.view
 
-	-- Bind enter frame event
-	Runtime:addEventListener("enterFrame", self);
+	-- Bind evente
+	Runtime:addEventListener("enterFrame", self)
+	Runtime:addEventListener("gamePause", self)
+	Runtime:addEventListener("gameQuit", self)
 end
 
 -- Called when scene is about to move offscreen:
-function scene:exitScene(event)
+function Multiplayer:exitScene(event)
 	local group = self.view
 
 	-- Unbind events
 	Runtime:removeEventListener("enterFrame", self)
+	Runtime:removeEventListener("gamePause", self)
+	Runtime:removeEventListener("gameQuit", self)
 end
 
 -- If scene's view is removed, scene:destroyScene() will be called just prior to:
-function scene:destroyScene(event)
+function Multiplayer:destroyScene(event)
 	self.gameScene:destroy()
-	local group = self.view
+	self.players[1]:destroy()
+	self.players[2]:destroy()
 end
 
 -----------------------------------------------------------------------------------------
--- Enter Frame
+-- Callbacks
 -----------------------------------------------------------------------------------------
 
-function scene:enterFrame(event)
+-- Pause handler
+--
+-- Parameters:
+--  event: The event object, with these data:
+--   switch: If true, then switches the pause status
+--   system: Tells whether the event is a system event
+function Multiplayer:gamePause(event)
+	if event.system then
+		self.paused.system = (event.status == true)
+	else
+		self.paused.user = (event.status == true)
+	end
+end
+
+-- Quit handler
+--
+-- Parameters:
+--  event: The event object
+function Multiplayer:gameQuit(event)
+	storyboard.removeScene("src.game.Multiplayer")
+
+	os.exit()
+end
+
+function Multiplayer:enterFrame(event)
 	local timeDelta =  event.time - self.lastFrameTime
 	self.lastFrameTime = event.time
 
-	self.gameScene:enterFrame(timeDelta)
+	if not self.paused.user and not self.paused.system then
+		self.gameScene:enterFrame(timeDelta)
+	end
 end
 
 -----------------------------------------------------------------------------------------
@@ -88,20 +125,20 @@ end
 -----------------------------------------------------------------------------------------
 
 -- "createScene" event is dispatched if scene's view does not exist
-scene:addEventListener("createScene", scene)
+Multiplayer:addEventListener("createScene", Multiplayer)
 
 -- "enterScene" event is dispatched whenever scene transition has finished
-scene:addEventListener("enterScene", scene)
+Multiplayer:addEventListener("enterScene", Multiplayer)
 
 -- "exitScene" event is dispatched whenever before next scene's transition begins
-scene:addEventListener("exitScene", scene)
+Multiplayer:addEventListener("exitScene", Multiplayer)
 
 -- "destroyScene" event is dispatched before view is unloaded, which can be
 -- automatically unloaded in low memory situations, or explicitly via a call to
 -- storyboard.purgeScene() or storyboard.removeScene().
-scene:addEventListener("destroyScene", scene)
+Multiplayer:addEventListener("destroyScene", Multiplayer)
 
 
 -----------------------------------------------------------------------------------------
 
-return scene
+return Multiplayer

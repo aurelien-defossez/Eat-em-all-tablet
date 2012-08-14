@@ -191,7 +191,7 @@ config = {
 		},
 		buttons = {
 			width = 360,
-			height = 30,
+			height = 40,
 			ypadding = 10
 		}
 	},

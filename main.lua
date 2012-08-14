@@ -30,6 +30,12 @@ local pause = function(pauseStatus)
 	}
 end
 
+local quit = function()
+	Runtime:dispatchEvent{
+		name = "gameQuit",
+	}
+end
+
 -- System event listener
 local systemEventListener = function(event)
 	print("System event: "..event.type)
@@ -40,9 +46,7 @@ local systemEventListener = function(event)
 		-- Start the multiplayer game
 		storyboard.gotoScene("src.game.Multiplayer")
 	elseif event.type == "applicationExit" then
-		Runtime:dispatchEvent{
-			name = "gameQuit",
-		}
+		quit()
 		return true
 	elseif event.type == "applicationSuspend" then
 		pause(true)
@@ -61,6 +65,8 @@ local keyListener = function(event)
 	if event.keyName == "back" and event.phase == "up" then
 		if WindowManager.getTopWindow() then
 			WindowManager.removeTopWindow()
+		else
+			quit()
 		end
 
 		-- We caught the event so we return true
@@ -71,7 +77,7 @@ local keyListener = function(event)
 end
 
 -- Add the key callback
-Runtime:addEventListener("key", keyListener);
+Runtime:addEventListener("key", keyListener)
  
 -- Setup a system event listener
 Runtime:addEventListener("system", systemEventListener)

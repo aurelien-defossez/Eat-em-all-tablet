@@ -53,12 +53,6 @@ function GameScene.create(parameters)
 	setmetatable(self, GameScene)
 	instance = self
 
-	-- Initialize attributes
-	self.paused = {
-		system = false,
-		user = false
-	}
-
 	-- Print debug messages
 	printDebugMessages()
 
@@ -89,10 +83,6 @@ function GameScene.create(parameters)
 	CityShortcut.initialize()
 	MenuWindow.initialize()
 	Button.initialize()
-
-	-- Listen to events
-	Runtime:addEventListener("gamePause", self)
-	Runtime:addEventListener("gameQuit", self)
 
 	-- Sizes
 	local mainHeight = config.screen.height - config.panels.upperBar.height
@@ -136,40 +126,10 @@ end
 
 -- Destroy the scene
 function GameScene:destroy()
-	if not self.alreadyDestroyed then
-		self.alreadyDestroyed = true
-
-		self.controlPanel1:destroy()
-		self.controlPanel2:destroy()
-		self.grid:destroy()
-		self.upperBar:destroy()
-
-		Runtime:removeEventListener("gamePause", self)
-	end
-end
-
------------------------------------------------------------------------------------------
--- Methods - Game control
------------------------------------------------------------------------------------------
-
--- Pause handler
---
--- Parameters:
---  event: The event object, with these data:
---   switch: If true, then switches the pause status
---   system: Tells whether the event is a system event
-function GameScene:gamePause(event)
-	if event.system then
-		self.paused.system = (event.status == true)
-	else
-		self.paused.user = (event.status == true)
-	end
-end
-
-function GameScene:gameQuit(event)
-	self:destroy()
-
-	os.exit()
+	self.controlPanel1:destroy()
+	self.controlPanel2:destroy()
+	self.grid:destroy()
+	self.upperBar:destroy()
 end
 
 -----------------------------------------------------------------------------------------
@@ -181,16 +141,14 @@ end
 -- Parameters:
 --  timeDelta: The time in ms since last frame
 function GameScene:enterFrame(timeDelta)
-	if not self.paused.user and not self.paused.system then
-		-- Relay event to grid
-		self.grid:enterFrame(timeDelta)
+	-- Relay event to grid
+	self.grid:enterFrame(timeDelta)
 
-		if config.debug.frameByFrame then
-			self:pause{
-				status = true,
-				system = false
-			}
-		end
+	if config.debug.frameByFrame then
+		self:pause{
+			status = true,
+			system = false
+		}
 	end
 end
 
