@@ -47,6 +47,7 @@ function addWindow(window)
 	table.insert(windows, window)
 end
 
+-- Remove the top window (equivalent to a pop of the windows stack)
 function removeTopWindow()
 	if table.getn(windows) > 0 then
 		local window = table.remove(windows)
@@ -59,12 +60,14 @@ function removeTopWindow()
 	end
 end
 
+-- Remove all windows from the stack
 function removeAllWindows()
 	while getTopWindow() do
 		removeTopWindow()
 	end
 end
 
+-- Return the top window currently displayed
 function getTopWindow()
 	local windowsCount = table.getn(windows)
 	

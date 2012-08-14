@@ -58,8 +58,6 @@ end
 
 -- Called immediately after scene has moved onscreen:
 function Multiplayer:enterScene(event)
-	local group = self.view
-
 	-- Bind evente
 	Runtime:addEventListener("enterFrame", self)
 	Runtime:addEventListener("gamePause", self)
@@ -68,8 +66,6 @@ end
 
 -- Called when scene is about to move offscreen:
 function Multiplayer:exitScene(event)
-	local group = self.view
-
 	-- Unbind events
 	Runtime:removeEventListener("enterFrame", self)
 	Runtime:removeEventListener("gamePause", self)

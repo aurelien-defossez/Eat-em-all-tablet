@@ -102,11 +102,23 @@ end
 -- Methods
 -----------------------------------------------------------------------------------------
 
+-- Show the window
 function MenuWindow:show()
 	self.group.isVisible = true
+
+	-- Add button listeners
+	for key, button in pairs(self.buttons) do
+		button:addListeners()
+	end
 end
 
+-- Hide the window
 function MenuWindow:hide()
+	-- Remove button listeners
+	for key, button in pairs(self.buttons) do
+		button:removeListeners()
+	end
+
 	self.group.isVisible = false
 end
 

@@ -84,10 +84,6 @@ function Zombie.create(parameters)
 		self.isGiant = true
 	end
 
-	if config.debug.fastZombies then
-		self.speed = self.speed * 3
-	end
-
 	ctId = ctId + 1
 
 	self:changeDirection{
@@ -120,17 +116,6 @@ function Zombie.create(parameters)
 
 	-- Add to group
 	self.group:insert(self.zombieSprite)
-
-	-- Draw collision mask
-	if config.debug.showCollisionMask then
-		self.collisionMaskDebug = display.newRect(config.zombie.mask.x, config.zombie.mask.y,
-			config.zombie.mask.width, config.zombie.mask.height)
-		self.collisionMaskDebug.strokeWidth = 3
-		self.collisionMaskDebug:setStrokeColor(255, 0, 0)
-		self.collisionMaskDebug:setFillColor(0, 0, 0, 0)
-
-		self.group:insert(self.collisionMaskDebug)
-	end
 
 	return self
 end
@@ -222,6 +207,12 @@ function Zombie:move(parameters)
 	self.group.y = self.y
 end
 
+-- Move the zombie to a certain position
+--
+-- Parameters:
+--  x: The X position to move to
+--  y: The Y position to move to
+--  maxMovement: The maximal number of pixels to move from
 function Zombie:moveTo(parameters)
 	if self.x < parameters.x then
 		self.x = math.min(self.x + parameters.maxMovement, parameters.x)
@@ -269,32 +260,14 @@ function Zombie:changeDirection(parameters)
 			local tileCenter = self.tile.x
 			local centerOffset = math.abs(self.x - tileCenter)
 
-			-- print("--------------")
-			-- print("tileCenter="..tileCenter)
-			-- print("self.x="..self.x)
-			-- print("self.y="..self.y)
-			-- print("centerOffset="..centerOffset)
-
 			self.x = tileCenter
 			self.y = self.y + centerOffset * self.directionVector.y
-			
-			-- print("self.x="..self.x)
-			-- print("self.y="..self.y)
 		else
 			local tileCenter = self.tile.y
 			local centerOffset = math.abs(self.y - tileCenter)
 
-			-- print("--------------")
-			-- print("tileCenter="..tileCenter)
-			-- print("self.x="..self.x)
-			-- print("self.y="..self.y)
-			-- print("centerOffset="..centerOffset)
-
 			self.y = tileCenter
 			self.x = self.x + centerOffset * self.directionVector.x
-
-			-- print("self.x="..self.x)
-			-- print("self.y="..self.y)
 		end
 	end
 end
@@ -352,6 +325,10 @@ end
 function Zombie:enterFrame(timeDelta)
 	local speedFactor = Tile.width * timeDelta / 1000
 
+	if config.debug.fastZombies then
+		speedFactor = speedFactor * 3
+	end
+
 	if self.phase == ZOMBIE.PHASE.MOVE then
 		local movement = self.speed * speedFactor
 
@@ -384,6 +361,23 @@ function Zombie:enterFrame(timeDelta)
 			x = movement,
 			y = 0
 		}
+	end
+
+	-- Draw collision mask
+	if config.debug.showCollisionMask and not self.collisionMaskDebug then
+		self.collisionMaskDebug = display.newRect(config.zombie.mask.x, config.zombie.mask.y,
+			config.zombie.mask.width, config.zombie.mask.height)
+		self.collisionMaskDebug.strokeWidth = 3
+		self.collisionMaskDebug:setStrokeColor(255, 0, 0)
+		self.collisionMaskDebug:setFillColor(0, 0, 0, 0)
+
+		self.group:insert(self.collisionMaskDebug)
+	end
+
+	-- Remove collision mask
+	if not config.debug.showCollisionMask and self.collisionMaskDebug then
+		self.collisionMaskDebug:removeSelf()
+		self.collisionMaskDebug = nil
 	end
 end
 

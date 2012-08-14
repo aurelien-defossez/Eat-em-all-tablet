@@ -110,6 +110,9 @@ end
 -----------------------------------------------------------------------------------------
 
 -- Tap handler on the pause button
+--
+-- Parameters:
+--  event: The event thrown
 function onPauseTap(event)
 	local window = WindowManager.getTopWindow()
 
@@ -129,6 +132,10 @@ function onPauseTap(event)
 					actionPerformed = onResumeTap
 				},
 				Button.create{
+					text = "Debug",
+					actionPerformed = onDebugTap
+				},
+				Button.create{
 					text = "Quit",
 					actionPerformed = onQuitTap
 				}
@@ -139,6 +146,7 @@ function onPauseTap(event)
 	end
 end
 
+-- Close handler when the main pause window is closed
 function onClose()
 	Runtime:dispatchEvent{
 		name = "gamePause",
@@ -147,14 +155,76 @@ function onClose()
 	}
 end
 
-function onResumeTap()
+-- Handler for the "Resume" button
+--
+-- Parameters:
+--  button: The button pressed
+function onResumeTap(button)
 	WindowManager.removeTopWindow()
 end
 
-function onQuitTap()
+-- Handler for the "Debug" button
+--
+-- Parameters:
+--  button: The button pressed
+function onDebugTap(button)
+	WindowManager.addWindow(MenuWindow.create{
+		title = "Debug",
+		buttons = {
+			Button.create{
+				text = "Only giants",
+				actionPerformed = onDebugOnlyGiantsTap,
+				selected = config.debug.onlyGiants
+			},
+			Button.create{
+				text = "Fast zombies",
+				actionPerformed = onDebugFastZombiesTap,
+				selected = config.debug.fastZombies
+			},
+			Button.create{
+				text = "Show collision masks",
+				actionPerformed = onDebugCollisionMaskTap,
+				selected = config.debug.showCollisionMask
+			}
+		}
+	})
+end
+
+-- Handler for the "Quit" button
+--
+-- Parameters:
+--  button: The button pressed
+function onQuitTap(button)
 	Runtime:dispatchEvent{
-		name = "gameQuit",
+		name = "gameQuit"
 	}
+end
+
+-- Handler for the "Only Giants" button of the debug menu
+--
+-- Parameters:
+--  button: The button pressed
+function onDebugOnlyGiantsTap(button)
+	config.debug.onlyGiants = not config.debug.onlyGiants
+	button:setSelected(not button.selected)
+end
+
+-- Handler for the "Fast Zombies" button of the debug menu
+--
+-- Parameters:
+--  button: The button pressed
+function onDebugFastZombiesTap(button)
+	config.debug.fastZombies = not config.debug.fastZombies
+	button:setSelected(not button.selected)
+end
+
+-- Handler for the "Show collision masks" button of the debug menu
+--
+-- Parameters:
+--  button: The button pressed
+function onDebugCollisionMaskTap(button)
+	config.debug.showCollisionMask = not config.debug.showCollisionMask
+	button:setSelected(not button.selected)
 end
 
 -----------------------------------------------------------------------------------------

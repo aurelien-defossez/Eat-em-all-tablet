@@ -3,6 +3,7 @@ config = {
 		oneCemetery = false,
 		oneZombie = false,
 		randomGiants = false,
+		onlyGiants = false,
 		fastZombies = true,
 		immediateSpawn = true,
 		immediateItemSpawn = true,
@@ -191,7 +192,7 @@ config = {
 		},
 		buttons = {
 			width = 360,
-			height = 40,
+			height = 60,
 			ypadding = 10
 		}
 	},

@@ -46,6 +46,7 @@ function Button.create(parameters)
 	self.y = self.y or 0
 	self.height = config.windows.buttons.height
 	self.width = config.windows.buttons.width
+	self.selected = self.selected or false
 
 	-- Position group
 	self.group.x = self.x
@@ -54,8 +55,6 @@ function Button.create(parameters)
 	-- Draw background
 	self.background = display.newRect(self.x, self.y, self.width, self.height)
 	self.background.strokeWidth = 3
-	self.background:setFillColor(136, 52, 0)
-	self.background:setStrokeColor(230, 150, 20)
 
 	-- Text
 	self.buttonText = display.newText(self.text, 0, 0, native.systemFontBold, 24)
@@ -64,9 +63,11 @@ function Button.create(parameters)
 	self.buttonText.x = self.width / 2
 	self.buttonText.y = self.height / 2
 
-	-- Add listener on tap
-	self.buttonText:addEventListener("tap", self)
-	self.background:addEventListener("tap", self)
+	-- Set color depending on state
+	self:setSelected(self.selected)
+
+	-- Add listeners
+	self:addListeners()
 	
 	-- Add to group
 	self.group:insert(self.background)
@@ -75,17 +76,25 @@ function Button.create(parameters)
 	return self
 end
 
--- Destroy the panel
+-- Destroy the button
 function Button:destroy()
-	self.buttonText:removeEventListener("tap", self)
-	self.background:removeEventListener("tap", self)
-
+	self:removeListeners()
 	self.group:removeSelf()
 end
 
 -----------------------------------------------------------------------------------------
 -- Methods
 -----------------------------------------------------------------------------------------
+
+-- Add all the button listeners
+function Button:addListeners()
+	self.background:addEventListener("tap", self)
+end
+
+-- Remove all the button listeners
+function Button:removeListeners()
+	self.background:removeEventListener("tap", self)
+end
 
 -- Move the button
 --
@@ -100,6 +109,22 @@ function Button:moveTo(parameters)
 	self.group.y = self.y
 end
 
+-- Sets the button state, thus changing its appearance
+--
+-- Parameters:
+--  selected: True if the button is selected
+function Button:setSelected(selected)
+	self.selected = selected
+
+	if self.selected then
+		self.background:setFillColor(180, 68, 0)
+		self.background:setStrokeColor(255, 180, 40)
+	else
+		self.background:setFillColor(136, 52, 0)
+		self.background:setStrokeColor(230, 150, 20)
+	end
+end
+
 -----------------------------------------------------------------------------------------
 -- Callbacks
 -----------------------------------------------------------------------------------------
@@ -109,7 +134,7 @@ end
 -- Parameters:
 --  evemt: The event thrown
 function Button:tap(event)
-	self.actionPerformed()
+	self.actionPerformed(self)
 end
 
 -----------------------------------------------------------------------------------------

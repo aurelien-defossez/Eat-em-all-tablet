@@ -167,7 +167,7 @@ function Cemetery:enterFrame(timeDelta)
 		self.timeSinceLastSpawn = self.timeSinceLastSpawn - config.cemetery.spawnPeriod.normal
 
 		local size = 1
-		if config.debug.randomGiants and math.random() < 0.2 then
+		if config.debug.onlyGiants or config.debug.randomGiants and math.random() < 0.2 then
 			size = config.item.giant.size
 		end
 

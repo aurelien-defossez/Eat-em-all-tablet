@@ -81,17 +81,6 @@ function MapItem.create(parameters)
 	-- Add to group
 	self.group:insert(self.itemSprite)
 
-	-- Draw collision mask
-	if config.debug.showCollisionMask then
-		self.collisionMaskDebug = display.newRect(config.item.mask.x, config.item.mask.y,
-			config.item.mask.width, config.item.mask.height)
-		self.collisionMaskDebug.strokeWidth = 3
-		self.collisionMaskDebug:setStrokeColor(255, 0, 0)
-		self.collisionMaskDebug:setFillColor(0, 0, 0, 0)
-
-		self.group:insert(self.collisionMaskDebug)
-	end
-
 	return self
 end
 
@@ -184,6 +173,23 @@ function MapItem:enterFrame(timeDelta)
 		self.group.x = self.x
 
 		self:computeCollisionMask()
+	end
+
+	-- Draw collision mask
+	if config.debug.showCollisionMask and not self.collisionMaskDebug then
+		self.collisionMaskDebug = display.newRect(config.item.mask.x, config.item.mask.y,
+			config.item.mask.width, config.item.mask.height)
+		self.collisionMaskDebug.strokeWidth = 3
+		self.collisionMaskDebug:setStrokeColor(255, 0, 0)
+		self.collisionMaskDebug:setFillColor(0, 0, 0, 0)
+
+		self.group:insert(self.collisionMaskDebug)
+	end
+
+	-- Remove collision mask
+	if not config.debug.showCollisionMask and self.collisionMaskDebug then
+		self.collisionMaskDebug:removeSelf()
+		self.collisionMaskDebug = nil
 	end
 end
 
