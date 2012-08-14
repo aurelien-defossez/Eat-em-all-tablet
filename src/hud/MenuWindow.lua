@@ -108,7 +108,8 @@ function MenuWindow:show()
 
 	-- Add button listeners
 	for key, button in pairs(self.buttons) do
-		button:addListeners()
+		button:enable()
+		button:show()
 	end
 end
 
@@ -116,7 +117,8 @@ end
 function MenuWindow:hide()
 	-- Remove button listeners
 	for key, button in pairs(self.buttons) do
-		button:removeListeners()
+		button:disable()
+		button:hide()
 	end
 
 	self.group.isVisible = false

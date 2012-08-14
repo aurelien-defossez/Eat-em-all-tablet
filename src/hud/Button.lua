@@ -66,8 +66,8 @@ function Button.create(parameters)
 	-- Set color depending on state
 	self:setSelected(self.selected)
 
-	-- Add listeners
-	self:addListeners()
+	-- Enable the button to receive events
+	self:enable()
 	
 	-- Add to group
 	self.group:insert(self.background)
@@ -78,7 +78,7 @@ end
 
 -- Destroy the button
 function Button:destroy()
-	self:removeListeners()
+	self:disable()
 	self.group:removeSelf()
 end
 
@@ -86,13 +86,23 @@ end
 -- Methods
 -----------------------------------------------------------------------------------------
 
--- Add all the button listeners
-function Button:addListeners()
+-- Show the button
+function Button:show()
+	self.group.isVisible = true
+end
+
+-- Hide the button
+function Button:hide()
+	self.group.isVisible = false
+end
+
+-- Enable the button
+function Button:enable()
 	self.background:addEventListener("tap", self)
 end
 
--- Remove all the button listeners
-function Button:removeListeners()
+-- Disable the button
+function Button:disable()
 	self.background:removeEventListener("tap", self)
 end
 
