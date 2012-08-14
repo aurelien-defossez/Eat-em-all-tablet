@@ -186,14 +186,14 @@ function onDebugTap(button)
 		title = "Debug",
 		buttons = {
 			Button.create{
+				text = "Fast mode",
+				actionPerformed = onDebugFastModeTap,
+				selected = config.debug.fastMode
+			},
+			Button.create{
 				text = "Only giants",
 				actionPerformed = onDebugOnlyGiantsTap,
 				selected = config.debug.onlyGiants
-			},
-			Button.create{
-				text = "Fast zombies",
-				actionPerformed = onDebugFastZombiesTap,
-				selected = config.debug.fastZombies
 			},
 			Button.create{
 				text = "Show collision masks",
@@ -214,21 +214,21 @@ function onQuitTap(button)
 	}
 end
 
+-- Handler for the "Fast mode" button of the debug menu
+--
+-- Parameters:
+--  button: The button pressed
+function onDebugFastModeTap(button)
+	config.debug.fastMode = not config.debug.fastMode
+	button:setSelected(not button.selected)
+end
+
 -- Handler for the "Only Giants" button of the debug menu
 --
 -- Parameters:
 --  button: The button pressed
 function onDebugOnlyGiantsTap(button)
 	config.debug.onlyGiants = not config.debug.onlyGiants
-	button:setSelected(not button.selected)
-end
-
--- Handler for the "Fast Zombies" button of the debug menu
---
--- Parameters:
---  button: The button pressed
-function onDebugFastZombiesTap(button)
-	config.debug.fastZombies = not config.debug.fastZombies
 	button:setSelected(not button.selected)
 end
 

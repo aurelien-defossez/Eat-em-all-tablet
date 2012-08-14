@@ -325,8 +325,8 @@ end
 function Zombie:enterFrame(timeDelta)
 	local speedFactor = Tile.width * timeDelta / 1000
 
-	if config.debug.fastZombies then
-		speedFactor = speedFactor * 3
+	if config.debug.fastMode then
+		speedFactor = speedFactor * config.debug.fastModeRatio
 	end
 
 	if self.phase == ZOMBIE.PHASE.MOVE then

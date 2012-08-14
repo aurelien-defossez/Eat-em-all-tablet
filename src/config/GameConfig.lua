@@ -1,15 +1,17 @@
 config = {
 	debug = {
+		fastMode = true,
 		oneCemetery = false,
 		oneZombie = false,
 		randomGiants = false,
 		onlyGiants = false,
-		fastZombies = true,
 		immediateSpawn = true,
 		immediateItemSpawn = true,
 		showCollisionMask = false,
 		startWithItems = true,
-		frameByFrame = false
+		frameByFrame = false,
+
+		fastModeRatio = 3
 	},
 
 	screen = {
