@@ -160,8 +160,6 @@ end
 -- Returns:
 --  True if the pixel is inside the tile coordinates
 function Tile:isInside(parameters)
-	-- print("("..parameters.x.." >= "..self.x.." and "..parameters.x.." < "..self.x + self.width.. " and "..parameters.y.." >= "..self.y.." and "..parameters.y.." < "..self.y + self.height..")")
-
 	return (parameters.x >= self.x and parameters.x < self.x + self.width
 		and parameters.y >= self.y and parameters.y < self.y + self.height)
 end

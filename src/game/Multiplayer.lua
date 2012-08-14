@@ -23,6 +23,16 @@ local GameScene = require("src.game.GameScene")
 
 -- Called when the scene's view does not exist:
 function Multiplayer:createScene(event)
+	-- Do nothing
+end
+
+-- If scene's view is removed, scene:destroyScene() will be called just prior to:
+function Multiplayer:destroyScene(event)
+	-- Do nothing
+end
+
+-- Called immediately after scene has moved onscreen:
+function Multiplayer:enterScene(event)
 	-- Initialize attributes
 	self.paused = {
 		system = false,
@@ -30,7 +40,7 @@ function Multiplayer:createScene(event)
 	}
 
 	-- Enter frame time
-	self.lastFrameTime = 0
+	self.lastFrameTime = -1
 
 	-- Create players
 	self.players = {}
@@ -54,13 +64,11 @@ function Multiplayer:createScene(event)
 	self.gameScene = GameScene.create{
 		players = self.players
 	}
-end
 
--- Called immediately after scene has moved onscreen:
-function Multiplayer:enterScene(event)
-	-- Bind evente
+	-- Bind events
 	Runtime:addEventListener("enterFrame", self)
 	Runtime:addEventListener("gamePause", self)
+	Runtime:addEventListener("gameRestart", self)
 	Runtime:addEventListener("gameQuit", self)
 end
 
@@ -69,11 +77,10 @@ function Multiplayer:exitScene(event)
 	-- Unbind events
 	Runtime:removeEventListener("enterFrame", self)
 	Runtime:removeEventListener("gamePause", self)
+	Runtime:removeEventListener("gameRestart", self)
 	Runtime:removeEventListener("gameQuit", self)
-end
 
--- If scene's view is removed, scene:destroyScene() will be called just prior to:
-function Multiplayer:destroyScene(event)
+	-- Destroy objects
 	self.gameScene:destroy()
 	self.players[1]:destroy()
 	self.players[2]:destroy()
@@ -87,14 +94,22 @@ end
 --
 -- Parameters:
 --  event: The event object, with these data:
---   switch: If true, then switches the pause status
---   system: Tells whether the event is a system event
+--   status: Determines the pause status, default is false
+--   system: Tells whether the event is a system event, default is false
 function Multiplayer:gamePause(event)
 	if event.system then
 		self.paused.system = (event.status == true)
 	else
 		self.paused.user = (event.status == true)
 	end
+end
+
+-- Restart handler
+--
+-- Parameters:
+--  event: The event object, with these data
+function Multiplayer:gameRestart(event)
+	storyboard.reloadScene()
 end
 
 -- Quit handler
@@ -108,11 +123,15 @@ function Multiplayer:gameQuit(event)
 end
 
 function Multiplayer:enterFrame(event)
-	local timeDelta =  event.time - self.lastFrameTime
-	self.lastFrameTime = event.time
+	if self.lastFrameTime == -1 then
+		self.lastFrameTime = event.time
+	else
+		local timeDelta =  event.time - self.lastFrameTime
+		self.lastFrameTime = event.time
 
-	if not self.paused.user and not self.paused.system then
-		self.gameScene:enterFrame(timeDelta)
+		if not self.paused.user and not self.paused.system then
+			self.gameScene:enterFrame(timeDelta)
+		end
 	end
 end
 

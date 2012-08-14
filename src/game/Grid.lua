@@ -90,6 +90,17 @@ end
 
 -- Destroy the grid
 function Grid:destroy()
+	-- Destroy items
+	for index, item in pairs(self.items) do
+		item:destroy()
+	end
+
+	-- Destroy zombies
+	for index, zombie in pairs(self.zombies) do
+		zombie:destroy()
+	end
+
+	-- Destroy tiles
 	for index, tile in pairs(self.matrix) do
 		tile:destroy()
 	end

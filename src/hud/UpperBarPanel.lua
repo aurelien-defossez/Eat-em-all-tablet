@@ -132,6 +132,10 @@ function onPauseTap(event)
 					actionPerformed = onResumeTap
 				},
 				Button.create{
+					text = "Restart",
+					actionPerformed = onRestartTap
+				},
+				Button.create{
 					text = "Debug",
 					actionPerformed = onDebugTap
 				},
@@ -161,6 +165,16 @@ end
 --  button: The button pressed
 function onResumeTap(button)
 	WindowManager.removeTopWindow()
+end
+
+-- Handler for the "Restart" button
+--
+-- Parameters:
+--  button: The button pressed
+function onRestartTap(button)
+	Runtime:dispatchEvent{
+		name = "gameRestart"
+	}
 end
 
 -- Handler for the "Debug" button
