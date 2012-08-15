@@ -67,6 +67,7 @@ function Multiplayer:enterScene(event)
 
 	-- Bind events
 	Runtime:addEventListener("enterFrame", self)
+	Runtime:addEventListener("tap", self)
 	Runtime:addEventListener("gamePause", self)
 	Runtime:addEventListener("gameRestart", self)
 	Runtime:addEventListener("gameQuit", self)
@@ -76,6 +77,7 @@ end
 function Multiplayer:exitScene(event)
 	-- Unbind events
 	Runtime:removeEventListener("enterFrame", self)
+	Runtime:removeEventListener("tap", self)
 	Runtime:removeEventListener("gamePause", self)
 	Runtime:removeEventListener("gameRestart", self)
 	Runtime:removeEventListener("gameQuit", self)
@@ -122,6 +124,10 @@ function Multiplayer:gameQuit(event)
 	os.exit()
 end
 
+-- Enter frame handler
+--
+-- Parameters:
+--  event: The event object
 function Multiplayer:enterFrame(event)
 	if self.lastFrameTime == -1 then
 		self.lastFrameTime = event.time
@@ -133,6 +139,21 @@ function Multiplayer:enterFrame(event)
 			self.gameScene:enterFrame(timeDelta)
 		end
 	end
+end
+
+-- Tap handler
+--
+-- Parameters:
+--  event: The event object
+function Multiplayer:tap(event)
+	if config.debug.frameByFrame then
+		Runtime:dispatchEvent{
+			name = "gamePause",
+			status = false
+		}
+	end
+	
+	return true
 end
 
 -----------------------------------------------------------------------------------------

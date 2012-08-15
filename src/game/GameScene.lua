@@ -145,7 +145,8 @@ function GameScene:enterFrame(timeDelta)
 	self.grid:enterFrame(timeDelta)
 
 	if config.debug.frameByFrame then
-		self:pause{
+		Runtime:dispatchEvent{
+			name = "gamePause",
 			status = true,
 			system = false
 		}

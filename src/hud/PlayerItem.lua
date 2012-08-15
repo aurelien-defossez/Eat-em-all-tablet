@@ -220,6 +220,8 @@ function PlayerItem:touch(event)
 			easingTime = config.item.easingTime.cancel
 		}
 	end
+	
+	return true
 end
 
 -----------------------------------------------------------------------------------------

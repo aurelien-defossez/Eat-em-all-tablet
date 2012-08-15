@@ -66,8 +66,8 @@ function Button.create(parameters)
 	-- Set color depending on state
 	self:setSelected(self.selected)
 
-	-- Enable the button to receive events
-	self:enable()
+	-- Bind events
+	self.background:addEventListener("tap", self)
 	
 	-- Add to group
 	self.group:insert(self.background)
@@ -78,7 +78,7 @@ end
 
 -- Destroy the button
 function Button:destroy()
-	self:disable()
+	self.background:removeEventListener("tap", self)
 	self.group:removeSelf()
 end
 
@@ -94,16 +94,6 @@ end
 -- Hide the button
 function Button:hide()
 	self.group.isVisible = false
-end
-
--- Enable the button
-function Button:enable()
-	self.background:addEventListener("tap", self)
-end
-
--- Disable the button
-function Button:disable()
-	self.background:removeEventListener("tap", self)
 end
 
 -- Move the button
@@ -145,6 +135,8 @@ end
 --  evemt: The event thrown
 function Button:tap(event)
 	self.actionPerformed(self)
+
+	return true
 end
 
 -----------------------------------------------------------------------------------------

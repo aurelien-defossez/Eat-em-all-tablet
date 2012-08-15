@@ -148,8 +148,8 @@ config = {
 			menuButton = {
 				width = 100,
 				pause = {
-					width = 32,
-					height = 32
+					width = 46,
+					height = 46
 				}
 			}
 		},

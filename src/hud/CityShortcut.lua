@@ -153,6 +153,8 @@ function CityShortcut:touch(event)
 
 	-- Focus this object in order to track this finger properly
 	display.getCurrentStage():setFocus(event.target, event.id)
+
+	return true
 end
 
 -----------------------------------------------------------------------------------------

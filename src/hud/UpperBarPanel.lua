@@ -89,7 +89,7 @@ function UpperBarPanel.create(parameters)
 	self.pauseSprite.x = self.hpWidth + config.panels.upperBar.menuButton.width / 2
 	self.pauseSprite.y = config.panels.upperBar.height / 2
 
-	-- Add listener on pause tap
+	-- Add listener on tap
 	self.pauseSprite:addEventListener("tap", onPauseTap)
 
 	-- Add to group
@@ -132,12 +132,12 @@ function onPauseTap(event)
 					actionPerformed = onResumeTap
 				},
 				Button.create{
-					text = "Restart",
-					actionPerformed = onRestartTap
-				},
-				Button.create{
 					text = "Debug",
 					actionPerformed = onDebugTap
+				},
+				Button.create{
+					text = "Restart",
+					actionPerformed = onRestartTap
 				},
 				Button.create{
 					text = "Quit",
@@ -186,6 +186,11 @@ function onDebugTap(button)
 		title = "Debug",
 		buttons = {
 			Button.create{
+				text = "Frame by frame mode",
+				actionPerformed = onDebugFrameByFrameTap,
+				selected = config.debug.frameByFrame
+			},
+			Button.create{
 				text = "Fast mode",
 				actionPerformed = onDebugFastModeTap,
 				selected = config.debug.fastMode
@@ -212,6 +217,15 @@ function onQuitTap(button)
 	Runtime:dispatchEvent{
 		name = "gameQuit"
 	}
+end
+
+-- Handler for the "Frame by frame mode" button of the debug menu
+--
+-- Parameters:
+--  button: The button pressed
+function onDebugFrameByFrameTap(button)
+	config.debug.frameByFrame = not config.debug.frameByFrame
+	button:setSelected(not button.selected)
 end
 
 -- Handler for the "Fast mode" button of the debug menu

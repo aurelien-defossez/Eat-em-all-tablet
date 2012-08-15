@@ -123,6 +123,8 @@ function Arrow:touch(event)
 		-- Handle events
 		draggedArrow:addEventListener("touch", onDraggedArrowTouch)
 	end
+
+	return true
 end
 
 -- Touch handler on a draggable arrow
@@ -183,6 +185,8 @@ function onDraggedArrowTouch(event)
 		draggedArrowSprite:removeSelf()
 		display.getCurrentStage():setFocus(nil, event.id)
 	end
+
+	return true
 end
 
 -----------------------------------------------------------------------------------------
