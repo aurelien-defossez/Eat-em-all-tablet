@@ -246,6 +246,23 @@ config = {
 				period = 500
 			}
 		},
+		mine = {
+			mine_create = {
+				frameCount = 15,
+				period = 500,
+				loop = false
+			},
+			mine_triggered = {
+				frameCount = 6,
+				period = 200,
+				loop = false
+			},
+			mine_explode = {
+				frameCount = 5,
+				period = 500,
+				loop = false
+			}
+		},
 		zombie = {
 			zombie_blue = {},
 			zombie_red = {}

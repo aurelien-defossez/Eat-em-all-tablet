@@ -31,7 +31,6 @@ spriteSheetIndex = nil
 -- Initialization and Destruction
 -----------------------------------------------------------------------------------------
 
--- Initializes the sprite manager
 function initialize()
 	-- Load sprite sheet
 	local spritesheetData = SpritesheetData.getSpriteSheetData()
@@ -52,6 +51,7 @@ function initialize()
 	spriteSets[SPRITE_SET.ITEM] = loadSpriteSet(config.sprites.item)
 	spriteSets[SPRITE_SET.ZOMBIE] = loadSpriteSet(config.sprites.zombie)
 	spriteSets[SPRITE_SET.FIRE] = loadSpriteSet(config.sprites.fire)
+	spriteSets[SPRITE_SET.MINE] = loadSpriteSet(config.sprites.mine)
 	spriteSets[SPRITE_SET.MISC] = loadSpriteSet(config.sprites.misc)
 end
 
@@ -74,16 +74,18 @@ function loadSpriteSet(sprites)
 		local frameCount = animation.frameCount or 1
 		-- Set the period to 10 minutes if no period is defined (= steady frame)
 		local period = animation.period or 600000
+		-- Set the loop parameter to 0 (loop indefinitely) by default or 1 (one loop) if loop is false
+		local loop = (animation.loop == false) and 1 or 0
 
 		-- Rename sprite as the first sprite of the animation if it is one
 		if frameCount == 1 then
 			firstSpriteName = spriteName
 		else
-			firstSpriteName = spriteName .. "_1"
+			firstSpriteName = spriteName .. "_01"
 		end
-	
+		
 		-- Add the animation to the sprite set
-		Sprite.add(spriteSet, spriteName, spriteSheetIndex[firstSpriteName .. ".png"], frameCount, period)
+		Sprite.add(spriteSet, spriteName, spriteSheetIndex[firstSpriteName .. ".png"], frameCount, period, loop)
 	end
 	
 	return spriteSet

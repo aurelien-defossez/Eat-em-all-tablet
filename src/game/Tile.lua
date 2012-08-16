@@ -193,6 +193,17 @@ function Tile:enterTile(zombie)
 	}
 end
 
+-- In tile handler, called while a zombie is in a tile
+--
+-- Parameters:
+--  zombie: The zombie in the tile
+function Tile:inTile(zombie)
+	self.group:dispatchEvent{
+		name = TILE.EVENT.IN_TILE,
+		zombie = zombie
+	}
+end
+
 -- Leave tile handler, called when a zombie leaves the tile
 --
 -- Parameters:

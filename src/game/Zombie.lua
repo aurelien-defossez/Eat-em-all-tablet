@@ -184,6 +184,9 @@ function Zombie:move(parameters)
 		self.tile:enterTile(self)
 	end
 
+	-- In tile event
+	self.tile:inTile(self)
+
 	-- Correct trajectory
 	if self.directionVector.x ~= 0 then
 		if self.y > self.tile.y + 0.5 then

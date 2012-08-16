@@ -18,6 +18,7 @@ require("src.config.GameConfig")
 local SpriteManager = require("src.utils.SpriteManager")
 local Tile = require("src.game.Tile")
 local Fire = require("src.game.Fire")
+local Mine = require("src.game.Mine")
 
 -----------------------------------------------------------------------------------------
 -- Class attributes
@@ -105,24 +106,6 @@ end
 -- Methods
 -----------------------------------------------------------------------------------------
 
--- Use the item on the specified tile
---
--- Parameters:
---  tile: The tile to use the item on
-function PlayerItem:useItem(tile)
-	if self.type == ITEM.SKELETON then
-		local cemetery = tile:getContentForType{TILE.CONTENT.CEMETERY}
-		cemetery:quicklySpawnZombies(config.item.skeleton.nbZombies)
-	elseif self.type == ITEM.GIANT then
-		local cemetery = tile:getContentForType{TILE.CONTENT.CEMETERY}
-		cemetery:spawn{
-			size = config.item.giant.size
-		}
-	elseif self.type == ITEM.FIRE then
-	elseif self.type == ITEM.MINE then
-	end
-end
-
 -- Move the item to an absolute position on the screen, easing it
 --
 -- Parameters:
@@ -184,7 +167,7 @@ function PlayerItem:touch(event)
 						}
 					end
 				end
-			-- Use fire if the drop tile does not contain a cemetery, a city or a fortress wall
+			-- Use fire if the drop tile does not contain a cemetery, a city, a fortress wall or a fire
 			elseif self.type == ITEM.FIRE then
 				if not tile:hasContentType{
 					TILE.CONTENT.CEMETERY,
@@ -198,7 +181,19 @@ function PlayerItem:touch(event)
 						tile = tile
 					}
 				end
+			-- Use mine if the drop tile does not contain a cemetery, a city or a fortress wall
 			elseif self.type == ITEM.MINE then
+				if not tile:hasContentType{
+					TILE.CONTENT.CEMETERY,
+					TILE.CONTENT.CITY,
+					TILE.CONTENT.FORTRESS_WALL
+				} then
+					itemUsed = true
+
+					Mine.create{
+						tile = tile
+					}
+				end
 			end
 		end
 

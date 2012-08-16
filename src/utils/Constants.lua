@@ -44,7 +44,8 @@ TILE = {
 	EVENT = {
 		ENTER_TILE = "enterTile",
 		LEAVE_TILE = "leaveTile",
-		REACH_TILE_CENTER = "reachTileCenter"
+		REACH_TILE_CENTER = "reachTileCenter",
+		IN_TILE = "inTile"
 	}
 }
 
@@ -70,7 +71,8 @@ ZOMBIE = {
 		CEMETERY = 3,
 		CITY = 4,
 		CITY_ENTER = 5,
-		FIRE = 6
+		FIRE = 6,
+		MINE = 7
 	}
 }
 
@@ -86,6 +88,7 @@ SPRITE_SET = {
 	ITEM = 5,
 	ZOMBIE = 6,
 	FIRE = 7,
+	MINE = 8,
 	MISC = 42
 }
 
