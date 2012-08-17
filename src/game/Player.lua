@@ -55,7 +55,10 @@ function Player:addHPs(nbHPs)
 
 	if self.hitPoints <= 0 then
 		print("Player " .. self.id .. " has lost")
-		GameScene.switchPause()
+		Runtime:dispatchEvent{
+			name = "gamePause",
+			status = true
+		}
 	end
 end
 

@@ -275,6 +275,10 @@ function Zombie:changeDirection(parameters)
 	end
 end
 
+-- Make azombie carry an item
+--
+-- Parameters:
+--  item: The item to carry
 function Zombie:carryItem(item)
 	self.item = item
 	self.phase = ZOMBIE.PHASE.CARRY_ITEM_INIT
@@ -283,10 +287,10 @@ function Zombie:carryItem(item)
 		direction = getReverseDirection(self.player.direction)
 	}
 
-	item:attachZombie({
+	item:attachZombie{
 		zombie = self,
 		speed = config.item.speed.perZombie * self.directionVector.x
-	})
+	}
 end
 
 -- Kills the zombie
@@ -295,25 +299,27 @@ end
 --  killer: The killer type, as possible Zombie constant types
 --  hits: The number of hits the zombie takes (Default is all)
 function Zombie:die(parameters)
-	parameters.hits = parameters.hits or self.hitPoints
-	self.hitPoints = self.hitPoints - parameters.hits
+	if self.phase ~= ZOMBIE.PHASE.DEAD then
+		parameters.hits = parameters.hits or self.hitPoints
+		self.hitPoints = self.hitPoints - parameters.hits
 
-	if self.hitPoints <= 0 then
-		-- Remove from the item carriers
-		if self.phase == ZOMBIE.PHASE.CARRY_ITEM_INIT or self.phase == ZOMBIE.PHASE.CARRY_ITEM then
-			self.item:detachZombie{
-				zombie = self,
-				speed = config.item.speed.perZombie * self.directionVector.x
-			}
+		if self.hitPoints <= 0 then
+			self.phase = ZOMBIE.PHASE.DEAD
+
+			-- Remove from the item carriers
+			if self.phase == ZOMBIE.PHASE.CARRY_ITEM_INIT or self.phase == ZOMBIE.PHASE.CARRY_ITEM then
+				self.item:detachZombie{
+					zombie = self,
+					speed = config.item.speed.perZombie * self.directionVector.x
+				}
+			end
+
+			-- Remove zombie from the zombies list
+			self.grid:removeZombie(self)
+
+			-- Remove sprite from display
+			self:destroy()
 		end
-
-		-- Remove zombie from the zombies list
-		self.grid:removeZombie(self)
-
-		-- Remove sprite from display
-		self:destroy()
-
-		self.phase = ZOMBIE.PHASE.DEAD
 	end
 end
 

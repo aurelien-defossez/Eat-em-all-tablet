@@ -259,7 +259,7 @@ config = {
 			},
 			mine_explode = {
 				frameCount = 5,
-				period = 500,
+				period = 800,
 				loop = false
 			}
 		},
