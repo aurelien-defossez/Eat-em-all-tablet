@@ -86,6 +86,9 @@ function Zombie.create(parameters)
 
 	ctId = ctId + 1
 
+	-- Draw sprite
+	self.zombieSprite = SpriteManager.newSprite(spriteSet)
+
 	self:changeDirection{
 		direction = self.player.direction
 	}
@@ -95,11 +98,6 @@ function Zombie.create(parameters)
 	-- Position group
 	self.group.x = self.x
 	self.group.y = self.y
-
-	-- Draw sprite
-	self.zombieSprite = SpriteManager.newSprite(spriteSet)
-	self.zombieSprite:prepare("zombie_" .. self.player.color)
-	self.zombieSprite:play()
 
 	-- Position sprite
 	if not self.isGiant then
@@ -245,16 +243,21 @@ end
 --  correctPosition: True if the position has to be corrected so the zombie stay on the tile center
 function Zombie:changeDirection(parameters)
 	self.direction = parameters.direction
+	local directionName
 
 	-- Update the direction vector
 	if self.direction == DIRECTION.UP then
 		self.directionVector = DIRECTION_VECTOR.UP
+		directionName = "up"
 	elseif self.direction == DIRECTION.DOWN then
 		self.directionVector = DIRECTION_VECTOR.DOWN
+		directionName = "down"
 	elseif self.direction == DIRECTION.LEFT then
 		self.directionVector = DIRECTION_VECTOR.LEFT
+		directionName = "left"
 	elseif self.direction == DIRECTION.RIGHT then
 		self.directionVector = DIRECTION_VECTOR.RIGHT
+		directionName = "right"
 	end
 
 	if parameters.correctPosition then
@@ -273,6 +276,10 @@ function Zombie:changeDirection(parameters)
 			self.x = self.x + centerOffset * self.directionVector.x
 		end
 	end
+
+	-- Draw sprite
+	self.zombieSprite:prepare("zombie_" .. directionName .. "_" .. self.player.color)
+	self.zombieSprite:play()
 end
 
 -- Make azombie carry an item

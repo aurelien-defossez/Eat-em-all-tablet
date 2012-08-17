@@ -12,7 +12,7 @@ function getSpriteSheetData()
 			{
 				name = "arrow_blue.png",
 				spriteColorRect = { x = 0, y = 0, width = 64, height = 64 }, 
-				textureRect = { x = 66, y = 0, width = 64, height = 64 }, 
+				textureRect = { x = 132, y = 0, width = 64, height = 64 }, 
 				spriteSourceSize = { width = 64, height = 64 }, 
 				spriteTrimmed = true,
 				textureRotated = false
@@ -21,7 +21,7 @@ function getSpriteSheetData()
 			{
 				name = "arrow_crossed_blue.png",
 				spriteColorRect = { x = 0, y = 0, width = 64, height = 64 }, 
-				textureRect = { x = 0, y = 0, width = 64, height = 64 }, 
+				textureRect = { x = 66, y = 0, width = 64, height = 64 }, 
 				spriteSourceSize = { width = 64, height = 64 }, 
 				spriteTrimmed = true,
 				textureRotated = false
@@ -30,7 +30,7 @@ function getSpriteSheetData()
 			{
 				name = "arrow_crossed_red.png",
 				spriteColorRect = { x = 0, y = 0, width = 64, height = 64 }, 
-				textureRect = { x = 0, y = 132, width = 64, height = 64 }, 
+				textureRect = { x = 0, y = 0, width = 64, height = 64 }, 
 				spriteSourceSize = { width = 64, height = 64 }, 
 				spriteTrimmed = true,
 				textureRotated = false
@@ -39,7 +39,7 @@ function getSpriteSheetData()
 			{
 				name = "arrow_red.png",
 				spriteColorRect = { x = 0, y = 0, width = 64, height = 64 }, 
-				textureRect = { x = 66, y = 66, width = 64, height = 64 }, 
+				textureRect = { x = 0, y = 66, width = 64, height = 64 }, 
 				spriteSourceSize = { width = 64, height = 64 }, 
 				spriteTrimmed = true,
 				textureRotated = false
@@ -48,7 +48,7 @@ function getSpriteSheetData()
 			{
 				name = "arrow_selected_blue.png",
 				spriteColorRect = { x = 0, y = 0, width = 64, height = 64 }, 
-				textureRect = { x = 66, y = 132, width = 64, height = 64 }, 
+				textureRect = { x = 62, y = 314, width = 64, height = 64 }, 
 				spriteSourceSize = { width = 64, height = 64 }, 
 				spriteTrimmed = true,
 				textureRotated = false
@@ -57,7 +57,7 @@ function getSpriteSheetData()
 			{
 				name = "arrow_selected_red.png",
 				spriteColorRect = { x = 0, y = 0, width = 64, height = 64 }, 
-				textureRect = { x = 0, y = 66, width = 64, height = 64 }, 
+				textureRect = { x = 124, y = 66, width = 64, height = 64 }, 
 				spriteSourceSize = { width = 64, height = 64 }, 
 				spriteTrimmed = true,
 				textureRotated = false
@@ -66,7 +66,7 @@ function getSpriteSheetData()
 			{
 				name = "cemetery_blue.png",
 				spriteColorRect = { x = 17, y = 3, width = 32, height = 58 }, 
-				textureRect = { x = 166, y = 198, width = 32, height = 58 }, 
+				textureRect = { x = 282, y = 66, width = 32, height = 58 }, 
 				spriteSourceSize = { width = 64, height = 64 }, 
 				spriteTrimmed = true,
 				textureRotated = false
@@ -75,7 +75,7 @@ function getSpriteSheetData()
 			{
 				name = "cemetery_red.png",
 				spriteColorRect = { x = 17, y = 3, width = 32, height = 58 }, 
-				textureRect = { x = 132, y = 198, width = 32, height = 58 }, 
+				textureRect = { x = 248, y = 66, width = 32, height = 58 }, 
 				spriteSourceSize = { width = 64, height = 64 }, 
 				spriteTrimmed = true,
 				textureRotated = false
@@ -84,7 +84,7 @@ function getSpriteSheetData()
 			{
 				name = "city1_blue.png",
 				spriteColorRect = { x = 13, y = 16, width = 40, height = 48 }, 
-				textureRect = { x = 372, y = 100, width = 40, height = 48 }, 
+				textureRect = { x = 322, y = 58, width = 40, height = 48 }, 
 				spriteSourceSize = { width = 64, height = 64 }, 
 				spriteTrimmed = true,
 				textureRotated = false
@@ -93,7 +93,7 @@ function getSpriteSheetData()
 			{
 				name = "city1_grey.png",
 				spriteColorRect = { x = 13, y = 16, width = 40, height = 48 }, 
-				textureRect = { x = 424, y = 84, width = 40, height = 48 }, 
+				textureRect = { x = 292, y = 262, width = 40, height = 48 }, 
 				spriteSourceSize = { width = 64, height = 64 }, 
 				spriteTrimmed = true,
 				textureRotated = false
@@ -102,7 +102,7 @@ function getSpriteSheetData()
 			{
 				name = "city1_red.png",
 				spriteColorRect = { x = 13, y = 16, width = 40, height = 48 }, 
-				textureRect = { x = 310, y = 136, width = 40, height = 48 }, 
+				textureRect = { x = 250, y = 262, width = 40, height = 48 }, 
 				spriteSourceSize = { width = 64, height = 64 }, 
 				spriteTrimmed = true,
 				textureRotated = false
@@ -111,7 +111,7 @@ function getSpriteSheetData()
 			{
 				name = "city2_blue.png",
 				spriteColorRect = { x = 3, y = 1, width = 60, height = 62 }, 
-				textureRect = { x = 248, y = 66, width = 60, height = 62 }, 
+				textureRect = { x = 66, y = 250, width = 60, height = 62 }, 
 				spriteSourceSize = { width = 64, height = 64 }, 
 				spriteTrimmed = true,
 				textureRotated = false
@@ -120,7 +120,7 @@ function getSpriteSheetData()
 			{
 				name = "city2_grey.png",
 				spriteColorRect = { x = 3, y = 1, width = 60, height = 62 }, 
-				textureRect = { x = 248, y = 130, width = 60, height = 62 }, 
+				textureRect = { x = 186, y = 132, width = 60, height = 62 }, 
 				spriteSourceSize = { width = 64, height = 64 }, 
 				spriteTrimmed = true,
 				textureRotated = false
@@ -129,7 +129,7 @@ function getSpriteSheetData()
 			{
 				name = "city2_red.png",
 				spriteColorRect = { x = 3, y = 1, width = 60, height = 62 }, 
-				textureRect = { x = 306, y = 0, width = 60, height = 62 }, 
+				textureRect = { x = 0, y = 366, width = 60, height = 62 }, 
 				spriteSourceSize = { width = 64, height = 64 }, 
 				spriteTrimmed = true,
 				textureRotated = false
@@ -138,7 +138,7 @@ function getSpriteSheetData()
 			{
 				name = "city3_blue_01.png",
 				spriteColorRect = { x = 6, y = 0, width = 56, height = 64 }, 
-				textureRect = { x = 190, y = 0, width = 56, height = 64 }, 
+				textureRect = { x = 256, y = 0, width = 56, height = 64 }, 
 				spriteSourceSize = { width = 64, height = 64 }, 
 				spriteTrimmed = true,
 				textureRotated = false
@@ -147,7 +147,7 @@ function getSpriteSheetData()
 			{
 				name = "city3_blue_02.png",
 				spriteColorRect = { x = 6, y = 0, width = 56, height = 64 }, 
-				textureRect = { x = 190, y = 66, width = 56, height = 64 }, 
+				textureRect = { x = 66, y = 118, width = 56, height = 64 }, 
 				spriteSourceSize = { width = 64, height = 64 }, 
 				spriteTrimmed = true,
 				textureRotated = false
@@ -156,7 +156,7 @@ function getSpriteSheetData()
 			{
 				name = "city3_grey.png",
 				spriteColorRect = { x = 6, y = 0, width = 56, height = 64 }, 
-				textureRect = { x = 132, y = 132, width = 56, height = 64 }, 
+				textureRect = { x = 184, y = 196, width = 56, height = 64 }, 
 				spriteSourceSize = { width = 64, height = 64 }, 
 				spriteTrimmed = true,
 				textureRotated = false
@@ -165,7 +165,7 @@ function getSpriteSheetData()
 			{
 				name = "city3_red_01.png",
 				spriteColorRect = { x = 6, y = 0, width = 56, height = 64 }, 
-				textureRect = { x = 132, y = 0, width = 56, height = 64 }, 
+				textureRect = { x = 66, y = 184, width = 56, height = 64 }, 
 				spriteSourceSize = { width = 64, height = 64 }, 
 				spriteTrimmed = true,
 				textureRotated = false
@@ -174,7 +174,7 @@ function getSpriteSheetData()
 			{
 				name = "city3_red_02.png",
 				spriteColorRect = { x = 6, y = 0, width = 56, height = 64 }, 
-				textureRect = { x = 190, y = 132, width = 56, height = 64 }, 
+				textureRect = { x = 190, y = 66, width = 56, height = 64 }, 
 				spriteSourceSize = { width = 64, height = 64 }, 
 				spriteTrimmed = true,
 				textureRotated = false
@@ -183,7 +183,7 @@ function getSpriteSheetData()
 			{
 				name = "fire_01.png",
 				spriteColorRect = { x = 0, y = 5, width = 64, height = 58 }, 
-				textureRect = { x = 66, y = 198, width = 64, height = 58 }, 
+				textureRect = { x = 0, y = 194, width = 64, height = 58 }, 
 				spriteSourceSize = { width = 64, height = 64 }, 
 				spriteTrimmed = true,
 				textureRotated = false
@@ -192,7 +192,7 @@ function getSpriteSheetData()
 			{
 				name = "fire_02.png",
 				spriteColorRect = { x = 0, y = 3, width = 64, height = 60 }, 
-				textureRect = { x = 256, y = 194, width = 64, height = 60 }, 
+				textureRect = { x = 0, y = 132, width = 64, height = 60 }, 
 				spriteSourceSize = { width = 64, height = 64 }, 
 				spriteTrimmed = true,
 				textureRotated = false
@@ -201,7 +201,7 @@ function getSpriteSheetData()
 			{
 				name = "fire_03.png",
 				spriteColorRect = { x = 0, y = 5, width = 64, height = 58 }, 
-				textureRect = { x = 0, y = 198, width = 64, height = 58 }, 
+				textureRect = { x = 0, y = 254, width = 64, height = 58 }, 
 				spriteSourceSize = { width = 64, height = 64 }, 
 				spriteTrimmed = true,
 				textureRotated = false
@@ -210,7 +210,7 @@ function getSpriteSheetData()
 			{
 				name = "fortress_wall_blue.png",
 				spriteColorRect = { x = 4, y = 0, width = 56, height = 64 }, 
-				textureRect = { x = 132, y = 66, width = 56, height = 64 }, 
+				textureRect = { x = 198, y = 0, width = 56, height = 64 }, 
 				spriteSourceSize = { width = 64, height = 64 }, 
 				spriteTrimmed = true,
 				textureRotated = false
@@ -219,7 +219,7 @@ function getSpriteSheetData()
 			{
 				name = "fortress_wall_red.png",
 				spriteColorRect = { x = 4, y = 0, width = 56, height = 64 }, 
-				textureRect = { x = 248, y = 0, width = 56, height = 64 }, 
+				textureRect = { x = 242, y = 196, width = 56, height = 64 }, 
 				spriteSourceSize = { width = 64, height = 64 }, 
 				spriteTrimmed = true,
 				textureRotated = false
@@ -228,7 +228,7 @@ function getSpriteSheetData()
 			{
 				name = "item.png",
 				spriteColorRect = { x = 13, y = 13, width = 38, height = 38 }, 
-				textureRect = { x = 322, y = 186, width = 38, height = 38 }, 
+				textureRect = { x = 368, y = 0, width = 38, height = 38 }, 
 				spriteSourceSize = { width = 64, height = 64 }, 
 				spriteTrimmed = true,
 				textureRotated = false
@@ -237,7 +237,7 @@ function getSpriteSheetData()
 			{
 				name = "item_fire.png",
 				spriteColorRect = { x = 13, y = 13, width = 38, height = 38 }, 
-				textureRect = { x = 414, y = 134, width = 38, height = 38 }, 
+				textureRect = { x = 328, y = 194, width = 38, height = 38 }, 
 				spriteSourceSize = { width = 64, height = 64 }, 
 				spriteTrimmed = true,
 				textureRotated = false
@@ -246,7 +246,7 @@ function getSpriteSheetData()
 			{
 				name = "item_giant.png",
 				spriteColorRect = { x = 13, y = 13, width = 38, height = 38 }, 
-				textureRect = { x = 474, y = 96, width = 38, height = 38 }, 
+				textureRect = { x = 356, y = 148, width = 38, height = 38 }, 
 				spriteSourceSize = { width = 64, height = 64 }, 
 				spriteTrimmed = true,
 				textureRotated = false
@@ -255,7 +255,7 @@ function getSpriteSheetData()
 			{
 				name = "item_mine.png",
 				spriteColorRect = { x = 13, y = 13, width = 38, height = 38 }, 
-				textureRect = { x = 474, y = 56, width = 38, height = 38 }, 
+				textureRect = { x = 344, y = 108, width = 38, height = 38 }, 
 				spriteSourceSize = { width = 64, height = 64 }, 
 				spriteTrimmed = true,
 				textureRotated = false
@@ -264,7 +264,7 @@ function getSpriteSheetData()
 			{
 				name = "item_skeleton.png",
 				spriteColorRect = { x = 13, y = 13, width = 38, height = 38 }, 
-				textureRect = { x = 372, y = 150, width = 38, height = 38 }, 
+				textureRect = { x = 368, y = 40, width = 38, height = 38 }, 
 				spriteSourceSize = { width = 64, height = 64 }, 
 				spriteTrimmed = true,
 				textureRotated = false
@@ -273,7 +273,7 @@ function getSpriteSheetData()
 			{
 				name = "mine_create_01.png",
 				spriteColorRect = { x = 19, y = 1, width = 26, height = 42 }, 
-				textureRect = { x = 454, y = 136, width = 26, height = 42 }, 
+				textureRect = { x = 300, y = 152, width = 26, height = 42 }, 
 				spriteSourceSize = { width = 64, height = 64 }, 
 				spriteTrimmed = true,
 				textureRotated = false
@@ -282,7 +282,7 @@ function getSpriteSheetData()
 			{
 				name = "mine_create_02.png",
 				spriteColorRect = { x = 19, y = 5, width = 26, height = 42 }, 
-				textureRect = { x = 482, y = 136, width = 26, height = 42 }, 
+				textureRect = { x = 316, y = 108, width = 26, height = 42 }, 
 				spriteSourceSize = { width = 64, height = 64 }, 
 				spriteTrimmed = true,
 				textureRotated = false
@@ -291,7 +291,7 @@ function getSpriteSheetData()
 			{
 				name = "mine_create_03.png",
 				spriteColorRect = { x = 19, y = 9, width = 26, height = 44 }, 
-				textureRect = { x = 392, y = 190, width = 26, height = 44 }, 
+				textureRect = { x = 340, y = 0, width = 26, height = 44 }, 
 				spriteSourceSize = { width = 64, height = 64 }, 
 				spriteTrimmed = true,
 				textureRotated = false
@@ -300,7 +300,7 @@ function getSpriteSheetData()
 			{
 				name = "mine_create_04.png",
 				spriteColorRect = { x = 19, y = 13, width = 26, height = 40 }, 
-				textureRect = { x = 420, y = 174, width = 26, height = 40 }, 
+				textureRect = { x = 328, y = 152, width = 26, height = 40 }, 
 				spriteSourceSize = { width = 64, height = 64 }, 
 				spriteTrimmed = true,
 				textureRotated = false
@@ -309,7 +309,7 @@ function getSpriteSheetData()
 			{
 				name = "mine_create_05.png",
 				spriteColorRect = { x = 19, y = 17, width = 26, height = 36 }, 
-				textureRect = { x = 420, y = 216, width = 26, height = 36 }, 
+				textureRect = { x = 300, y = 196, width = 26, height = 36 }, 
 				spriteSourceSize = { width = 64, height = 64 }, 
 				spriteTrimmed = true,
 				textureRotated = false
@@ -318,7 +318,7 @@ function getSpriteSheetData()
 			{
 				name = "mine_create_06.png",
 				spriteColorRect = { x = 18, y = 21, width = 28, height = 32 }, 
-				textureRect = { x = 362, y = 190, width = 28, height = 32 }, 
+				textureRect = { x = 384, y = 80, width = 28, height = 32 }, 
 				spriteSourceSize = { width = 64, height = 64 }, 
 				spriteTrimmed = true,
 				textureRotated = false
@@ -327,7 +327,7 @@ function getSpriteSheetData()
 			{
 				name = "mine_create_07.png",
 				spriteColorRect = { x = 20, y = 25, width = 24, height = 28 }, 
-				textureRect = { x = 488, y = 0, width = 24, height = 28 }, 
+				textureRect = { x = 408, y = 30, width = 24, height = 28 }, 
 				spriteSourceSize = { width = 64, height = 64 }, 
 				spriteTrimmed = true,
 				textureRotated = false
@@ -336,7 +336,7 @@ function getSpriteSheetData()
 			{
 				name = "mine_create_08.png",
 				spriteColorRect = { x = 22, y = 29, width = 20, height = 24 }, 
-				textureRect = { x = 352, y = 226, width = 20, height = 24 }, 
+				textureRect = { x = 124, y = 224, width = 20, height = 24 }, 
 				spriteSourceSize = { width = 64, height = 64 }, 
 				spriteTrimmed = true,
 				textureRotated = false
@@ -345,7 +345,7 @@ function getSpriteSheetData()
 			{
 				name = "mine_create_09.png",
 				spriteColorRect = { x = 22, y = 29, width = 20, height = 24 }, 
-				textureRect = { x = 488, y = 30, width = 20, height = 24 }, 
+				textureRect = { x = 146, y = 224, width = 20, height = 24 }, 
 				spriteSourceSize = { width = 64, height = 64 }, 
 				spriteTrimmed = true,
 				textureRotated = false
@@ -354,7 +354,7 @@ function getSpriteSheetData()
 			{
 				name = "mine_create_10.png",
 				spriteColorRect = { x = 23, y = 33, width = 18, height = 20 }, 
-				textureRect = { x = 352, y = 116, width = 18, height = 20 }, 
+				textureRect = { x = 364, y = 80, width = 18, height = 20 }, 
 				spriteSourceSize = { width = 64, height = 64 }, 
 				spriteTrimmed = true,
 				textureRotated = false
@@ -363,7 +363,7 @@ function getSpriteSheetData()
 			{
 				name = "mine_create_11.png",
 				spriteColorRect = { x = 27, y = 35, width = 10, height = 18 }, 
-				textureRect = { x = 474, y = 34, width = 10, height = 18 }, 
+				textureRect = { x = 172, y = 166, width = 10, height = 18 }, 
 				spriteSourceSize = { width = 64, height = 64 }, 
 				spriteTrimmed = true,
 				textureRotated = false
@@ -372,7 +372,7 @@ function getSpriteSheetData()
 			{
 				name = "mine_create_12.png",
 				spriteColorRect = { x = 29, y = 37, width = 6, height = 16 }, 
-				textureRect = { x = 466, y = 84, width = 6, height = 16 }, 
+				textureRect = { x = 176, y = 238, width = 6, height = 16 }, 
 				spriteSourceSize = { width = 64, height = 64 }, 
 				spriteTrimmed = true,
 				textureRotated = false
@@ -381,7 +381,7 @@ function getSpriteSheetData()
 			{
 				name = "mine_create_13.png",
 				spriteColorRect = { x = 29, y = 41, width = 8, height = 12 }, 
-				textureRect = { x = 332, y = 116, width = 8, height = 12 }, 
+				textureRect = { x = 168, y = 224, width = 8, height = 12 }, 
 				spriteSourceSize = { width = 64, height = 64 }, 
 				spriteTrimmed = true,
 				textureRotated = false
@@ -390,7 +390,7 @@ function getSpriteSheetData()
 			{
 				name = "mine_create_14.png",
 				spriteColorRect = { x = 30, y = 45, width = 6, height = 6 }, 
-				textureRect = { x = 466, y = 120, width = 6, height = 6 }, 
+				textureRect = { x = 176, y = 256, width = 6, height = 6 }, 
 				spriteSourceSize = { width = 64, height = 64 }, 
 				spriteTrimmed = true,
 				textureRotated = false
@@ -399,7 +399,7 @@ function getSpriteSheetData()
 			{
 				name = "mine_create_15.png",
 				spriteColorRect = { x = 29, y = 49, width = 6, height = 2 }, 
-				textureRect = { x = 248, y = 194, width = 6, height = 2 }, 
+				textureRect = { x = 168, y = 246, width = 6, height = 2 }, 
 				spriteSourceSize = { width = 64, height = 64 }, 
 				spriteTrimmed = true,
 				textureRotated = false
@@ -408,7 +408,7 @@ function getSpriteSheetData()
 			{
 				name = "mine_explode_01.png",
 				spriteColorRect = { x = 19, y = 26, width = 28, height = 28 }, 
-				textureRect = { x = 322, y = 226, width = 28, height = 28 }, 
+				textureRect = { x = 408, y = 0, width = 28, height = 28 }, 
 				spriteSourceSize = { width = 64, height = 64 }, 
 				spriteTrimmed = true,
 				textureRotated = false
@@ -417,7 +417,7 @@ function getSpriteSheetData()
 			{
 				name = "mine_explode_02.png",
 				spriteColorRect = { x = 10, y = 5, width = 46, height = 48 }, 
-				textureRect = { x = 426, y = 34, width = 46, height = 48 }, 
+				textureRect = { x = 128, y = 250, width = 46, height = 48 }, 
 				spriteSourceSize = { width = 64, height = 64 }, 
 				spriteTrimmed = true,
 				textureRotated = false
@@ -426,7 +426,7 @@ function getSpriteSheetData()
 			{
 				name = "mine_explode_03.png",
 				spriteColorRect = { x = 6, y = 0, width = 56, height = 50 }, 
-				textureRect = { x = 368, y = 0, width = 56, height = 50 }, 
+				textureRect = { x = 66, y = 66, width = 56, height = 50 }, 
 				spriteSourceSize = { width = 64, height = 64 }, 
 				spriteTrimmed = true,
 				textureRotated = false
@@ -435,7 +435,7 @@ function getSpriteSheetData()
 			{
 				name = "mine_explode_04.png",
 				spriteColorRect = { x = 2, y = 0, width = 60, height = 50 }, 
-				textureRect = { x = 310, y = 64, width = 60, height = 50 }, 
+				textureRect = { x = 0, y = 314, width = 60, height = 50 }, 
 				spriteSourceSize = { width = 64, height = 64 }, 
 				spriteTrimmed = true,
 				textureRotated = false
@@ -444,7 +444,7 @@ function getSpriteSheetData()
 			{
 				name = "mine_explode_05.png",
 				spriteColorRect = { x = 2, y = 16, width = 60, height = 32 }, 
-				textureRect = { x = 426, y = 0, width = 60, height = 32 }, 
+				textureRect = { x = 124, y = 132, width = 60, height = 32 }, 
 				spriteSourceSize = { width = 64, height = 64 }, 
 				spriteTrimmed = true,
 				textureRotated = false
@@ -453,7 +453,7 @@ function getSpriteSheetData()
 			{
 				name = "mine_triggered_01.png",
 				spriteColorRect = { x = 29, y = 49, width = 6, height = 2 }, 
-				textureRect = { x = 368, y = 60, width = 6, height = 2 }, 
+				textureRect = { x = 314, y = 58, width = 6, height = 2 }, 
 				spriteSourceSize = { width = 64, height = 64 }, 
 				spriteTrimmed = true,
 				textureRotated = false
@@ -462,7 +462,7 @@ function getSpriteSheetData()
 			{
 				name = "mine_triggered_02.png",
 				spriteColorRect = { x = 30, y = 45, width = 6, height = 6 }, 
-				textureRect = { x = 368, y = 52, width = 6, height = 6 }, 
+				textureRect = { x = 168, y = 238, width = 6, height = 6 }, 
 				spriteSourceSize = { width = 64, height = 64 }, 
 				spriteTrimmed = true,
 				textureRotated = false
@@ -471,7 +471,7 @@ function getSpriteSheetData()
 			{
 				name = "mine_triggered_03.png",
 				spriteColorRect = { x = 29, y = 41, width = 8, height = 12 }, 
-				textureRect = { x = 322, y = 116, width = 8, height = 12 }, 
+				textureRect = { x = 300, y = 126, width = 8, height = 12 }, 
 				spriteSourceSize = { width = 64, height = 64 }, 
 				spriteTrimmed = true,
 				textureRotated = false
@@ -480,7 +480,7 @@ function getSpriteSheetData()
 			{
 				name = "mine_triggered_04.png",
 				spriteColorRect = { x = 29, y = 37, width = 6, height = 16 }, 
-				textureRect = { x = 466, y = 102, width = 6, height = 16 }, 
+				textureRect = { x = 172, y = 206, width = 6, height = 16 }, 
 				spriteSourceSize = { width = 64, height = 64 }, 
 				spriteTrimmed = true,
 				textureRotated = false
@@ -489,7 +489,7 @@ function getSpriteSheetData()
 			{
 				name = "mine_triggered_05.png",
 				spriteColorRect = { x = 27, y = 35, width = 10, height = 18 }, 
-				textureRect = { x = 310, y = 116, width = 10, height = 18 }, 
+				textureRect = { x = 172, y = 186, width = 10, height = 18 }, 
 				spriteSourceSize = { width = 64, height = 64 }, 
 				spriteTrimmed = true,
 				textureRotated = false
@@ -498,7 +498,7 @@ function getSpriteSheetData()
 			{
 				name = "mine_triggered_06.png",
 				spriteColorRect = { x = 23, y = 33, width = 18, height = 20 }, 
-				textureRect = { x = 352, y = 138, width = 18, height = 20 }, 
+				textureRect = { x = 384, y = 114, width = 18, height = 20 }, 
 				spriteSourceSize = { width = 64, height = 64 }, 
 				spriteTrimmed = true,
 				textureRotated = false
@@ -507,25 +507,79 @@ function getSpriteSheetData()
 			{
 				name = "pause.png",
 				spriteColorRect = { x = 0, y = 0, width = 46, height = 46 }, 
-				textureRect = { x = 376, y = 52, width = 46, height = 46 }, 
+				textureRect = { x = 128, y = 300, width = 46, height = 46 }, 
 				spriteSourceSize = { width = 46, height = 46 }, 
 				spriteTrimmed = true,
 				textureRotated = false
 			},
 		
 			{
-				name = "zombie_blue.png",
-				spriteColorRect = { x = 21, y = 6, width = 26, height = 56 }, 
-				textureRect = { x = 228, y = 198, width = 26, height = 56 }, 
+				name = "zombie_down_blue.png",
+				spriteColorRect = { x = 22, y = 7, width = 20, height = 56 }, 
+				textureRect = { x = 150, y = 166, width = 20, height = 56 }, 
 				spriteSourceSize = { width = 64, height = 64 }, 
 				spriteTrimmed = true,
 				textureRotated = false
 			},
 		
 			{
-				name = "zombie_red.png",
-				spriteColorRect = { x = 21, y = 6, width = 26, height = 56 }, 
-				textureRect = { x = 200, y = 198, width = 26, height = 56 }, 
+				name = "zombie_down_red.png",
+				spriteColorRect = { x = 22, y = 7, width = 20, height = 56 }, 
+				textureRect = { x = 228, y = 262, width = 20, height = 56 }, 
+				spriteSourceSize = { width = 64, height = 64 }, 
+				spriteTrimmed = true,
+				textureRotated = false
+			},
+		
+			{
+				name = "zombie_left_blue.png",
+				spriteColorRect = { x = 18, y = 7, width = 24, height = 56 }, 
+				textureRect = { x = 248, y = 126, width = 24, height = 56 }, 
+				spriteSourceSize = { width = 64, height = 64 }, 
+				spriteTrimmed = true,
+				textureRotated = false
+			},
+		
+			{
+				name = "zombie_left_red.png",
+				spriteColorRect = { x = 18, y = 7, width = 24, height = 56 }, 
+				textureRect = { x = 274, y = 126, width = 24, height = 56 }, 
+				spriteSourceSize = { width = 64, height = 64 }, 
+				spriteTrimmed = true,
+				textureRotated = false
+			},
+		
+			{
+				name = "zombie_right_blue.png",
+				spriteColorRect = { x = 23, y = 7, width = 24, height = 56 }, 
+				textureRect = { x = 124, y = 166, width = 24, height = 56 }, 
+				spriteSourceSize = { width = 64, height = 64 }, 
+				spriteTrimmed = true,
+				textureRotated = false
+			},
+		
+			{
+				name = "zombie_right_red.png",
+				spriteColorRect = { x = 23, y = 7, width = 24, height = 56 }, 
+				textureRect = { x = 314, y = 0, width = 24, height = 56 }, 
+				spriteSourceSize = { width = 64, height = 64 }, 
+				spriteTrimmed = true,
+				textureRotated = false
+			},
+		
+			{
+				name = "zombie_up_blue.png",
+				spriteColorRect = { x = 22, y = 7, width = 20, height = 56 }, 
+				textureRect = { x = 184, y = 262, width = 20, height = 56 }, 
+				spriteSourceSize = { width = 64, height = 64 }, 
+				spriteTrimmed = true,
+				textureRotated = false
+			},
+		
+			{
+				name = "zombie_up_red.png",
+				spriteColorRect = { x = 22, y = 7, width = 20, height = 56 }, 
+				textureRect = { x = 206, y = 262, width = 20, height = 56 }, 
 				spriteSourceSize = { width = 64, height = 64 }, 
 				spriteTrimmed = true,
 				textureRotated = false
