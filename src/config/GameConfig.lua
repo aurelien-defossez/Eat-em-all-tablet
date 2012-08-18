@@ -264,14 +264,16 @@ config = {
 			}
 		},
 		zombie = {
-			zombie_right_red = {},
-			zombie_left_red = {},
-			zombie_up_red = {},
-			zombie_down_red = {},
-			zombie_right_blue = {},
-			zombie_left_blue = {},
-			zombie_up_blue = {},
-			zombie_down_blue = {}
+			zombie_move_right_red = {},
+			zombie_move_left_red = {},
+			zombie_move_up_red = {},
+			zombie_move_down_red = {},
+			zombie_carry_left_red = {},
+			zombie_move_right_blue = {},
+			zombie_move_left_blue = {},
+			zombie_move_up_blue = {},
+			zombie_move_down_blue = {},
+			zombie_carry_right_blue = {}
 		},
 		misc = {
 			pause = {}

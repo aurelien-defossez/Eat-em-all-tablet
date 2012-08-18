@@ -233,6 +233,7 @@ function Zombie:moveTo(parameters)
 
 	if self.x == parameters.x and self.y == parameters.y then
 		self.phase = ZOMBIE.PHASE.CARRY_ITEM
+		self:updateSprite()
 	end
 end
 
@@ -243,21 +244,16 @@ end
 --  correctPosition: True if the position has to be corrected so the zombie stay on the tile center
 function Zombie:changeDirection(parameters)
 	self.direction = parameters.direction
-	local directionName
 
 	-- Update the direction vector
 	if self.direction == DIRECTION.UP then
 		self.directionVector = DIRECTION_VECTOR.UP
-		directionName = "up"
 	elseif self.direction == DIRECTION.DOWN then
 		self.directionVector = DIRECTION_VECTOR.DOWN
-		directionName = "down"
 	elseif self.direction == DIRECTION.LEFT then
 		self.directionVector = DIRECTION_VECTOR.LEFT
-		directionName = "left"
 	elseif self.direction == DIRECTION.RIGHT then
 		self.directionVector = DIRECTION_VECTOR.RIGHT
-		directionName = "right"
 	end
 
 	if parameters.correctPosition then
@@ -277,8 +273,32 @@ function Zombie:changeDirection(parameters)
 		end
 	end
 
-	-- Draw sprite
-	self.zombieSprite:prepare("zombie_" .. directionName .. "_" .. self.player.color)
+	self:updateSprite()
+end
+
+-- Update the zombie sprite depending on the phase and the direction
+function Zombie:updateSprite()
+	local directionName
+	local phaseName
+
+	-- Update the direction vector
+	if self.direction == DIRECTION.UP then
+		directionName = "up"
+	elseif self.direction == DIRECTION.DOWN then
+		directionName = "down"
+	elseif self.direction == DIRECTION.LEFT then
+		directionName = "left"
+	elseif self.direction == DIRECTION.RIGHT then
+		directionName = "right"
+	end
+
+	if self.phase == ZOMBIE.PHASE.CARRY_ITEM then
+		phaseName = "carry"
+	else
+		phaseName = "move"
+	end
+
+	self.zombieSprite:prepare("zombie_" .. phaseName .. "_" .. directionName .. "_" .. self.player.color)
 	self.zombieSprite:play()
 end
 
@@ -312,6 +332,8 @@ function Zombie:die(parameters)
 
 		if self.hitPoints <= 0 then
 			self.phase = ZOMBIE.PHASE.DEAD
+
+			self:updateSprite()
 
 			-- Remove from the item carriers
 			if self.phase == ZOMBIE.PHASE.CARRY_ITEM_INIT or self.phase == ZOMBIE.PHASE.CARRY_ITEM then
