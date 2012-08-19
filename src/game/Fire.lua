@@ -71,16 +71,14 @@ function Fire.create(parameters)
 	self.contentId = self.tile:addContent(self)
 
 	-- Listen to events
-	self.tile:addEventListener(TILE.EVENT.ENTER_TILE, self)
-	self.tile:addEventListener(TILE.EVENT.REACH_TILE_CENTER, self)
+	self.tile:addEventListener(TILE.EVENT.IN_TILE, self)
 
 	return self
 end
 
 -- Destroy the item
 function Fire:destroy()
-	self.tile:removeEventListener(TILE.EVENT.ENTER_TILE, self)
-	self.tile:removeEventListener(TILE.EVENT.REACH_TILE_CENTER, self)
+	self.tile:removeEventListener(TILE.EVENT.IN_TILE, self)
 
 	self.tile:removeContent(self.contentId)
 
@@ -91,25 +89,12 @@ end
 -- Event listeners
 -----------------------------------------------------------------------------------------
 
--- Enter tile handler, called when a zombie enters the tile
+-- In tile handler, called when a zombie is in the tile
 --
 -- Parameters:
 --  event: The tile event, with these values:
 --   zombie: The zombie entering the tile
-function Fire:enterTile(event)
-	local zombie = event.zombie
-
-	zombie:die{
-		killer = ZOMBIE.KILLER.FIRE
-	}
-end
-
--- Reach center tile handler, called when a zombie reaches the middle of the tile
---
--- Parameters:
---  event: The tile event, with these values:
---   zombie: The zombie entering the tile
-function Fire:reachTileCenter(event)
+function Fire:inTile(event)
 	local zombie = event.zombie
 
 	zombie:die{

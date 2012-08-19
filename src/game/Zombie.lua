@@ -331,8 +331,6 @@ function Zombie:die(parameters)
 		self.hitPoints = self.hitPoints - parameters.hits
 
 		if self.hitPoints <= 0 then
-			self.phase = ZOMBIE.PHASE.DEAD
-
 			self:updateSprite()
 
 			-- Remove from the item carriers
@@ -342,6 +340,8 @@ function Zombie:die(parameters)
 					speed = config.item.speed.perZombie * self.directionVector.x
 				}
 			end
+			
+			self.phase = ZOMBIE.PHASE.DEAD
 
 			-- Remove zombie from the zombies list
 			self.grid:removeZombie(self)
