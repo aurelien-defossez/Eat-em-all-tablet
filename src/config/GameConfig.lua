@@ -1,12 +1,12 @@
 config = {
 	debug = {
-		fastMode = true,
+		fastMode = false,
 		oneCemetery = false,
 		oneZombie = false,
 		randomGiants = false,
 		onlyGiants = false,
-		immediateSpawn = true,
-		immediateItemSpawn = true,
+		immediateSpawn = false,
+		immediateItemSpawn = false,
 		showCollisionMask = false,
 		startWithItems = true,
 		frameByFrame = false,
@@ -52,7 +52,7 @@ config = {
 			y = 27
 		},
 		small = {
-			inhabitants = 1,
+			inhabitants = 5,
 			spawnPeriod = 5000,
 			maxInhabitants = 50,
 			exitPeriod = 400

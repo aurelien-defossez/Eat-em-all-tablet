@@ -23,27 +23,27 @@ maps = {
 		cities = {
 			{
 				x = 3,
-				y = 3,
-				size = "small"
-			}, {
-				x = 5,
-				y = 8,
+				y = 1,
 				size = "small"
 			}, {
 				x = 4,
 				y = 7,
 				size = "small"
 			}, {
-				x = 4,
-				y = 6,
+				x = 9,
+				y = 9,
 				size = "small"
 			}, {
-				x = 6,
-				y = 6,
+				x = 7,
+				y = 2,
+				size = "small"
+			}, {
+				x = 4,
+				y = 5,
 				size = "medium"
 			}, {
-				x = 8,
-				y = 5,
+				x = 7,
+				y = 6,
 				size = "medium"
 			}, {
 				x = 6,

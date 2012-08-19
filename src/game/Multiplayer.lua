@@ -121,7 +121,7 @@ end
 function Multiplayer:gameQuit(event)
 	storyboard.removeScene("src.game.Multiplayer")
 
-	os.exit()
+	-- os.exit()
 end
 
 -- Enter frame handler
