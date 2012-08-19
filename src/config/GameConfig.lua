@@ -104,7 +104,7 @@ config = {
 			size = 8
 		},
 		fire = {
-			duration = 10000
+			duration = 3000
 		}
 	},
 
