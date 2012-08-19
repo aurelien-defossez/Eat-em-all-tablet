@@ -31,6 +31,10 @@ function Player.create(parameters)
 	-- Create object
 	local self = parameters or {}
 	setmetatable(self, Player)
+
+	-- Initialize attributes
+	self.signs = {}
+	self.signsCount = 0
 	
 	return self
 end
@@ -92,6 +96,38 @@ end
 --  item: The item to remove
 function Player:removeItem(item)
 	self.itemsPanel:removeItem(item)
+end
+
+-- Add a sign under the control of the player
+--
+-- Parameters:
+--  newSign: The new sign
+function Player:addSign(newSign)
+	self.signs[newSign.id] = newSign
+	self.signsCount = self.signsCount + 1
+
+	-- Remove excess sign
+	if self.signsCount > config.player.maxSigns then
+		local signToDelete = nil
+
+		-- Find the oldest sign
+		for signId, sign in pairs(self.signs) do
+			if sign and (not signToDelete or signId < signToDelete.id) then
+				signToDelete = sign
+			end
+		end
+
+		signToDelete:destroy()
+	end
+end
+
+-- Remove a sign from the player's control
+--
+-- Parameters:
+--  sign: The sign to remove
+function Player:removeSign(sign)
+	self.signs[sign.id] = nil
+	self.signsCount = self.signsCount - 1
 end
 
 -----------------------------------------------------------------------------------------

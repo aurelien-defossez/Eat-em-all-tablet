@@ -22,7 +22,8 @@ config = {
 	},
 
 	player = {
-		hitPoints = 100
+		hitPoints = 100,
+		maxSigns = 4
 	},
 
 	arrow = {

@@ -18,6 +18,12 @@ require("src.config.GameConfig")
 local SpriteManager = require("src.utils.SpriteManager")
 
 -----------------------------------------------------------------------------------------
+-- Class attributes
+-----------------------------------------------------------------------------------------
+
+ctId = 1
+
+-----------------------------------------------------------------------------------------
 -- Class initialization
 -----------------------------------------------------------------------------------------
 
@@ -49,6 +55,9 @@ function Sign.create(parameters)
 	self.type = TILE.CONTENT.SIGN
 	self.x = self.tile.x
 	self.y = self.tile.y
+	self.id = ctId
+
+	ctId = ctId + 1
 
 	-- Position group
 	self.group.x = self.x
@@ -68,8 +77,9 @@ function Sign.create(parameters)
 	-- Add to group
 	self.group:insert(self.signSprite)
 
-	-- Register to the tile
+	-- Register to the tile and player
 	self.contentId = self.tile:addContent(self)
+	self.player:addSign(self)
 
 	-- Listen to events
 	self.tile:addEventListener(TILE.EVENT.REACH_TILE_CENTER, self)
@@ -81,6 +91,7 @@ end
 function Sign:destroy()
 	self.tile:removeEventListener(TILE.EVENT.REACH_TILE_CENTER, self)
 
+	self.player:removeSign(self)
 	self.tile:removeContent(self.contentId)
 
 	self.group:removeSelf()
