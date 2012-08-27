@@ -84,6 +84,7 @@ function Mine.create(parameters)
 	self.tile:addEventListener(TILE.EVENT.ENTER_TILE, self)
 	self.tile:addEventListener(TILE.EVENT.IN_TILE, self)
 	self.tile:addEventListener(TILE.EVENT.REACH_TILE_CENTER, self)
+	Runtime:addEventListener("spritePause", self)
 
 	return self
 end
@@ -95,6 +96,7 @@ function Mine:destroy()
 	self.tile:removeEventListener(TILE.EVENT.ENTER_TILE, self)
 	self.tile:removeEventListener(TILE.EVENT.IN_TILE, self)
 	self.tile:removeEventListener(TILE.EVENT.REACH_TILE_CENTER, self)
+	Runtime:removeEventListener("spritePause", self)
 
 	self.tile:removeContent(self.contentId)
 
@@ -163,6 +165,18 @@ function Mine:sprite(event)
 		elseif self.phase == PHASE_EXPLODE then
 			self:destroy()
 		end
+	end
+end
+
+-- Pause the sprite animation
+-- Parameters:
+--  event: The tile event, with these values:
+--   status: If true, then pauses the animation, otherwise resumes it
+function Mine:spritePause(event)
+	if event.status then
+		self.mineSprite:pause()
+	elseif self.phase ~= PHASE_IDLE then
+		self.mineSprite:play()
 	end
 end
 

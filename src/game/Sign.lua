@@ -83,6 +83,7 @@ function Sign.create(parameters)
 
 	-- Listen to events
 	self.tile:addEventListener(TILE.EVENT.REACH_TILE_CENTER, self)
+	Runtime:addEventListener("spritePause", self)
 
 	return self
 end
@@ -90,6 +91,7 @@ end
 -- Destroy the sign
 function Sign:destroy()
 	self.tile:removeEventListener(TILE.EVENT.REACH_TILE_CENTER, self)
+	Runtime:removeEventListener("spritePause", self)
 
 	self.player:removeSign(self)
 	self.tile:removeContent(self.contentId)
@@ -118,6 +120,18 @@ function Sign:reachTileCenter(event)
 				correctPosition = true
 			}
 		end
+	end
+end
+
+-- Pause the sprite animation
+-- Parameters:
+--  event: The tile event, with these values:
+--   status: If true, then pauses the animation, otherwise resumes it
+function Sign:spritePause(event)
+	if event.status then
+		self.signSprite:pause()
+	else
+		self.signSprite:play()
 	end
 end
 

@@ -127,6 +127,7 @@ function City.create(parameters)
 
 	-- Listen to events
 	self.tile:addEventListener(TILE.EVENT.ENTER_TILE, self)
+	Runtime:addEventListener("spritePause", self)
 
 	return self
 end
@@ -134,6 +135,7 @@ end
 -- Destroy the city
 function City:destroy()
 	self.tile:removeEventListener(TILE.EVENT.ENTER_TILE, self)
+	Runtime:removeEventListener("spritePause", self)
 
 	self.tile:removeContent(self.contentId)
 
@@ -302,6 +304,18 @@ function City:touch(event)
 	display.getCurrentStage():setFocus(event.target, event.id)
 	
 	return true
+end
+
+-- Pause the sprite animation
+-- Parameters:
+--  event: The tile event, with these values:
+--   status: If true, then pauses the animation, otherwise resumes it
+function City:spritePause(event)
+	if event.status then
+		self.citySprite:pause()
+	else
+		self.citySprite:play()
+	end
 end
 
 -----------------------------------------------------------------------------------------

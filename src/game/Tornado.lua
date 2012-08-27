@@ -84,6 +84,7 @@ function Tornado.create(parameters)
 
 	-- Listen to events
 	self.tile:addEventListener(TILE.EVENT.REACH_TILE_CENTER, self)
+	Runtime:addEventListener("spritePause", self)
 
 	return self
 end
@@ -91,6 +92,7 @@ end
 -- Destroy the item
 function Tornado:destroy()
 	self.tile:removeEventListener(TILE.EVENT.REACH_TILE_CENTER, self)
+	Runtime:removeEventListener("spritePause", self)
 
 	self.tile:removeContent(self.contentId)
 
@@ -131,6 +133,17 @@ function Tornado:enterFrame(timeDelta)
 	end
 end
 
+-- Pause the sprite animation
+-- Parameters:
+--  event: The tile event, with these values:
+--   status: If true, then pauses the animation, otherwise resumes it
+function Tornado:spritePause(event)
+	if event.status then
+		self.tornadoSprite:pause()
+	else
+		self.tornadoSprite:play()
+	end
+end
 
 -----------------------------------------------------------------------------------------
 

@@ -113,6 +113,9 @@ function Zombie.create(parameters)
 		self.zombieSprite.y = 20
 	end
 
+	-- Listen to events
+	Runtime:addEventListener("spritePause", self)
+
 	-- Add to group
 	self.group:insert(self.zombieSprite)
 
@@ -121,6 +124,8 @@ end
 
 -- Destroy the zombie
 function Zombie:destroy()
+	Runtime:removeEventListener("spritePause", self)
+
 	self.group:removeSelf()
 end
 
@@ -425,6 +430,18 @@ function Zombie:enterFrame(timeDelta)
 	if not config.debug.showCollisionMask and self.collisionMaskDebug then
 		self.collisionMaskDebug:removeSelf()
 		self.collisionMaskDebug = nil
+	end
+end
+
+-- Pause the sprite animation
+-- Parameters:
+--  event: The tile event, with these values:
+--   status: If true, then pauses the animation, otherwise resumes it
+function Zombie:spritePause(event)
+	if event.status then
+		self.zombieSprite:pause()
+	else
+		self.zombieSprite:play()
 	end
 end
 

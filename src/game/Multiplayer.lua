@@ -104,6 +104,12 @@ function Multiplayer:gamePause(event)
 	else
 		self.paused.user = (event.status == true)
 	end
+	local paused = self.paused.user or self.paused.system
+
+	Runtime:dispatchEvent{
+		name = "spritePause",
+		status = self.paused.user or self.paused.system
+	}
 end
 
 -- Restart handler

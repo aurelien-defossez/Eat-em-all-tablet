@@ -80,11 +80,16 @@ function MapItem.create(parameters)
 	-- Add to group
 	self.group:insert(self.itemSprite)
 
+	-- Listen to events
+	Runtime:addEventListener("spritePause", self)
+
 	return self
 end
 
 -- Destroy the item
 function MapItem:destroy()
+	Runtime:removeEventListener("spritePause", self)
+
 	self.group:removeSelf()
 end
 
@@ -189,6 +194,17 @@ function MapItem:enterFrame(timeDelta)
 	end
 end
 
+-- Pause the sprite animation
+-- Parameters:
+--  event: The tile event, with these values:
+--   status: If true, then pauses the animation, otherwise resumes it
+function MapItem:spritePause(event)
+	if event.status then
+		self.itemSprite:pause()
+	else
+		self.itemSprite:play()
+	end
+end
 
 -----------------------------------------------------------------------------------------
 

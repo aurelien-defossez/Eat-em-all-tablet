@@ -81,6 +81,7 @@ function Cemetery.create(parameters)
 
 	-- Listen to events
 	self.tile:addEventListener(TILE.EVENT.ENTER_TILE, self)
+	Runtime:addEventListener("spritePause", self)
 
 	return self
 end
@@ -88,6 +89,7 @@ end
 -- Destroy the cemetery
 function Cemetery:destroy()
 	self.tile:removeEventListener(TILE.EVENT.ENTER_TILE, self)
+	Runtime:removeEventListener("spritePause", self)
 
 	self.tile:removeContent(self.contentId)
 
@@ -185,6 +187,18 @@ function Cemetery:enterFrame(timeDelta)
 		self:spawn{
 			size = 1
 		}
+	end
+end
+
+-- Pause the sprite animation
+-- Parameters:
+--  event: The tile event, with these values:
+--   status: If true, then pauses the animation, otherwise resumes it
+function Cemetery:spritePause(event)
+	if event.status then
+		self.cemeterySprite:pause()
+	else
+		self.cemeterySprite:play()
 	end
 end
 

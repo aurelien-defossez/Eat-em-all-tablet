@@ -71,6 +71,7 @@ function FortressWall.create(parameters)
 
 	-- Listen to events
 	self.tile:addEventListener(TILE.EVENT.ENTER_TILE, self)
+	Runtime:addEventListener("spritePause", self)
 
 	return self
 end
@@ -78,6 +79,7 @@ end
 -- Destroy the wall
 function FortressWall:destroy()
 	self.tile:removeEventListener(TILE.EVENT.ENTER_TILE, self)
+	Runtime:removeEventListener("spritePause", self)
 
 	self.tile:removeContent(self.contentId)
 
@@ -112,6 +114,18 @@ function FortressWall:enterTile(event)
 		zombie:changeDirection{
 			direction = self.player.direction
 		}
+	end
+end
+
+-- Pause the sprite animation
+-- Parameters:
+--  event: The tile event, with these values:
+--   status: If true, then pauses the animation, otherwise resumes it
+function FortressWall:spritePause(event)
+	if event.status then
+		self.wallSprite:pause()
+	else
+		self.wallSprite:play()
 	end
 end
 
