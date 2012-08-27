@@ -50,7 +50,7 @@ function initialize()
 	spriteSets[SPRITE_SET.FORTRESS_WALL] = loadSpriteSet(config.sprites.fortressWall)
 	spriteSets[SPRITE_SET.ITEM] = loadSpriteSet(config.sprites.item)
 	spriteSets[SPRITE_SET.ZOMBIE] = loadSpriteSet(config.sprites.zombie)
-	spriteSets[SPRITE_SET.FIRE] = loadSpriteSet(config.sprites.fire)
+	spriteSets[SPRITE_SET.TORNADO] = loadSpriteSet(config.sprites.tornado)
 	spriteSets[SPRITE_SET.MINE] = loadSpriteSet(config.sprites.mine)
 	spriteSets[SPRITE_SET.MISC] = loadSpriteSet(config.sprites.misc)
 end

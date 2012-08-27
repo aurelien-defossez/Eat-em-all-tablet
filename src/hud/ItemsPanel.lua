@@ -61,7 +61,7 @@ function ItemsPanel.create(parameters)
 
 	-- Start with items
 	if config.debug.startWithItems then
-		for key, itemId in pairs({ ITEM.SKELETON, ITEM.GIANT, ITEM.FIRE, ITEM.MINE }) do
+		for key, itemId in pairs({ ITEM.SKELETON, ITEM.GIANT, ITEM.TORNADO, ITEM.MINE }) do
 			self:gainItem(PlayerItem.create{
 				player = self.player,
 				grid = self.grid,

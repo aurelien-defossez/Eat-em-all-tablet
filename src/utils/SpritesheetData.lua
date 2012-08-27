@@ -181,7 +181,7 @@ function getSpriteSheetData()
 			},
 		
 			{
-				name = "fire_01.png",
+				name = "tornado_01.png",
 				spriteColorRect = { x = 0, y = 5, width = 64, height = 58 }, 
 				textureRect = { x = 0, y = 254, width = 64, height = 58 }, 
 				spriteSourceSize = { width = 64, height = 64 }, 
@@ -190,7 +190,7 @@ function getSpriteSheetData()
 			},
 		
 			{
-				name = "fire_02.png",
+				name = "tornado_02.png",
 				spriteColorRect = { x = 0, y = 3, width = 64, height = 60 }, 
 				textureRect = { x = 0, y = 132, width = 64, height = 60 }, 
 				spriteSourceSize = { width = 64, height = 64 }, 
@@ -199,7 +199,7 @@ function getSpriteSheetData()
 			},
 		
 			{
-				name = "fire_03.png",
+				name = "tornado_03.png",
 				spriteColorRect = { x = 0, y = 5, width = 64, height = 58 }, 
 				textureRect = { x = 0, y = 194, width = 64, height = 58 }, 
 				spriteSourceSize = { width = 64, height = 64 }, 
@@ -235,7 +235,7 @@ function getSpriteSheetData()
 			},
 		
 			{
-				name = "item_fire.png",
+				name = "item_tornado.png",
 				spriteColorRect = { x = 13, y = 13, width = 38, height = 38 }, 
 				textureRect = { x = 128, y = 348, width = 38, height = 38 }, 
 				spriteSourceSize = { width = 64, height = 64 }, 

@@ -101,8 +101,8 @@ config = {
 		giant = {
 			size = 8
 		},
-		fire = {
-			duration = 3000
+		tornado = {
+			duration = 5000
 		}
 	},
 
@@ -234,15 +234,15 @@ config = {
 		},
 		item = {
 			item = {},
-			item_fire = {},
+			item_tornado = {},
 			item_giant = {},
 			item_mine = {},
 			item_skeleton = {}
 		},
-		fire = {
-			fire = {
+		tornado = {
+			tornado = {
 				frameCount = 3,
-				period = 500
+				period = 400
 			}
 		},
 		mine = {

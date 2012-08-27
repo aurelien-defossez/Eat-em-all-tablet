@@ -1,12 +1,12 @@
 -----------------------------------------------------------------------------------------
 --
--- Fire.lua
+-- Tornado.lua
 --
 -----------------------------------------------------------------------------------------
 
-module("Fire", package.seeall)
+module("Tornado", package.seeall)
 
-Fire.__index = Fire
+Tornado.__index = Tornado
 
 -----------------------------------------------------------------------------------------
 -- Imports
@@ -24,48 +24,48 @@ local Tile = require("src.game.Tile")
 
 function initialize()
 	classGroup = display.newGroup()
-	spriteSet = SpriteManager.getSpriteSet(SPRITE_SET.FIRE)
+	spriteSet = SpriteManager.getSpriteSet(SPRITE_SET.TORNADO)
 end
 
 -----------------------------------------------------------------------------------------
 -- Initialization and Destruction
 -----------------------------------------------------------------------------------------
 
--- Creates a fire
+-- Creates a tornado
 --
 -- Parameters:
---  tile: The tile on fire
-function Fire.create(parameters)
+--  tile: The tile on tornado
+function Tornado.create(parameters)
 	-- Create object
 	local self = parameters or {}
-	setmetatable(self, Fire)
+	setmetatable(self, Tornado)
 
 	-- Create group
 	self.group = display.newGroup()
 	classGroup:insert(self.group)
 
 	-- Initialize attributes
-	self.type = TILE.CONTENT.FIRE
+	self.type = TILE.CONTENT.TORNADO
 	self.x = self.tile.x
 	self.y = self.tile.y
-	self.lifeSpan = config.item.fire.duration
+	self.lifeSpan = config.item.tornado.duration
 
 	-- Position group
 	self.group.x = self.x
 	self.group.y = self.y
 
 	-- Draw the sprite
-	self.fireSprite = SpriteManager.newSprite(spriteSet)
-	self.fireSprite:prepare("fire")
-	self.fireSprite:play()
+	self.tornadoSprite = SpriteManager.newSprite(spriteSet)
+	self.tornadoSprite:prepare("tornado")
+	self.tornadoSprite:play()
 
 	-- Position sprite
-	self.fireSprite:setReferencePoint(display.CenterReferencePoint)
-	self.fireSprite.x = Tile.width_2
-	self.fireSprite.y = Tile.height_2
+	self.tornadoSprite:setReferencePoint(display.CenterReferencePoint)
+	self.tornadoSprite.x = Tile.width_2
+	self.tornadoSprite.y = Tile.height_2
 
 	-- Add to group
-	self.group:insert(self.fireSprite)
+	self.group:insert(self.tornadoSprite)
 
 	-- Register to the tile
 	self.contentId = self.tile:addContent(self)
@@ -77,7 +77,7 @@ function Fire.create(parameters)
 end
 
 -- Destroy the item
-function Fire:destroy()
+function Tornado:destroy()
 	self.tile:removeEventListener(TILE.EVENT.IN_TILE, self)
 
 	self.tile:removeContent(self.contentId)
@@ -94,19 +94,19 @@ end
 -- Parameters:
 --  event: The tile event, with these values:
 --   zombie: The zombie entering the tile
-function Fire:inTile(event)
+function Tornado:inTile(event)
 	local zombie = event.zombie
 
-	zombie:die{
-		killer = ZOMBIE.KILLER.FIRE
-	}
+	-- zombie:die{
+	-- 	killer = ZOMBIE.KILLER.TORNADO
+	-- }
 end
 
 -- Enter frame handler
 --
 -- Parameters:
 --  timeDelta: The time in ms since last frame
-function Fire:enterFrame(timeDelta)
+function Tornado:enterFrame(timeDelta)
 	self.lifeSpan = self.lifeSpan - timeDelta
 
 	if self.lifeSpan <= 0 then
@@ -117,4 +117,4 @@ end
 
 -----------------------------------------------------------------------------------------
 
-return Fire
+return Tornado

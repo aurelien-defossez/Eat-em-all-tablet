@@ -15,7 +15,10 @@
    id="svg2985"
    version="1.1"
    inkscape:version="0.48.3.1 r9886"
-   sodipodi:docname="item.svg">
+   sodipodi:docname="tornado_03.svg"
+   inkscape:export-filename="D:\Work\Eat-em-all-tablet\images\tornado_03.png"
+   inkscape:export-xdpi="90"
+   inkscape:export-ydpi="90">
   <defs
      id="defs2987">
     <linearGradient
@@ -87,26 +90,18 @@
      id="layer1"
      inkscape:label="Layer 1"
      inkscape:groupmode="layer">
-    <rect
-       style="fill:url(#radialGradient3821);fill-opacity:1;stroke:#000000;stroke-width:0.71059167000000001;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
-       id="rect3037"
-       width="35.562138"
-       height="35.743954"
-       x="13.855296"
-       y="13.855296"
-       ry="4.0319157" />
-    <flowRoot
-       xml:space="preserve"
-       id="flowRoot3807"
-       style="font-size:40px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#673b05;fill-opacity:1;stroke:none;font-family:sans-serif"
-       transform="matrix(0.79529747,0,0,0.80936343,16.679792,13.818741)"><flowRegion
-         id="flowRegion3809"><rect
-           id="rect3811"
-           width="62.909092"
-           height="61.090908"
-           x="-0.90909094"
-           y="-0.36363637"
-           style="fill:#673b05;fill-opacity:1" /></flowRegion><flowPara
-         id="flowPara3813"
-         style="font-weight:normal">火</flowPara></flowRoot>  </g>
+    <path
+       sodipodi:type="spiral"
+       style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       id="path3025"
+       sodipodi:cx="31.272728"
+       sodipodi:cy="29.636364"
+       sodipodi:expansion="1"
+       sodipodi:revolution="3.1002824"
+       sodipodi:radius="31.383524"
+       sodipodi:argument="-18.562782"
+       sodipodi:t0="0"
+       d="m 31.272728,29.636364 c 1.460441,0.430688 0.139972,2.181131 -0.715831,2.427349 -2.319173,0.667234 -4.094845,-1.801821 -4.138867,-3.859011 -0.07874,-3.679832 3.593692,-6.115653 7.002191,-5.850384 5.002111,0.389292 8.17683,5.402815 7.561902,10.145371 -0.819603,6.32108 -7.217139,10.254037 -13.288551,9.273419 C 20.05332,40.5391 15.354274,32.739392 16.708635,25.341377 18.348948,16.38139 27.560152,10.912199 36.283546,12.644923 46.563765,14.686878 52.805498,25.314994 50.691518,35.363013 48.250845,46.963849 36.202386,53.979669 24.830247,51.482503 11.908501,48.645064 4.1175349,35.173954 6.9992402,22.478052 10.232078,8.2351692 25.127468,-0.33170012 39.146871,2.9355274 54.711066,6.5627693 64.0544,22.883632 60.400913,38.226338 58.891589,44.564698 55.321512,50.325055 50.36364,54.545452"
+       transform="matrix(-1,0,0,-1,66.501469,59.878221)" />
+  </g>
 </svg>

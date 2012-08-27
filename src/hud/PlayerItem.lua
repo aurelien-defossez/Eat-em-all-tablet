@@ -17,7 +17,7 @@ require("src.config.GameConfig")
 
 local SpriteManager = require("src.utils.SpriteManager")
 local Tile = require("src.game.Tile")
-local Fire = require("src.game.Fire")
+local Tornado = require("src.game.Tornado")
 local Mine = require("src.game.Mine")
 
 -----------------------------------------------------------------------------------------
@@ -66,8 +66,8 @@ function PlayerItem.create(parameters)
 		self.typeName = "skeleton"
 	elseif self.type == ITEM.GIANT then
 		self.typeName = "giant"
-	elseif self.type == ITEM.FIRE then
-		self.typeName = "fire"
+	elseif self.type == ITEM.TORNADO then
+		self.typeName = "tornado"
 	elseif self.type == ITEM.MINE then
 		self.typeName = "mine"
 	end

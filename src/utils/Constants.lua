@@ -28,7 +28,7 @@ ITEM = {
 	COUNT = 4,
 	SKELETON = 1,
 	GIANT = 2,
-	FIRE = 3,
+	TORNADO = 3,
 	MINE = 4
 }
 
@@ -38,7 +38,7 @@ TILE = {
 		CITY = 2,
 		FORTRESS_WALL = 3,
 		SIGN = 4,
-		FIRE = 5,
+		TORNADO = 5,
 		MINE = 6
 	},
 	EVENT = {
@@ -71,7 +71,7 @@ ZOMBIE = {
 		CEMETERY = 3,
 		CITY = 4,
 		CITY_ENTER = 5,
-		FIRE = 6,
+		TORNADO = 6,
 		MINE = 7
 	}
 }
@@ -87,7 +87,7 @@ SPRITE_SET = {
 	FORTRESS_WALL = 4,
 	ITEM = 5,
 	ZOMBIE = 6,
-	FIRE = 7,
+	TORNADO = 7,
 	MINE = 8,
 	MISC = 42
 }
