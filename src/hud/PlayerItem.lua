@@ -172,17 +172,17 @@ function PlayerItem:touch(event)
 						size = config.item.giant.size
 					}
 				end
-			-- Use fire if the drop tile does not contain a cemetery, a city, a fortress wall or another fire
-			elseif self.type == ITEM.FIRE then
+			-- Use tornado if the drop tile does not contain a cemetery, a city, a fortress wall or another tornado
+			elseif self.type == ITEM.TORNADO then
 				if not tile:hasContentType{
 					TILE.CONTENT.CEMETERY,
 					TILE.CONTENT.CITY,
 					TILE.CONTENT.FORTRESS_WALL,
-					TILE.CONTENT.FIRE
+					TILE.CONTENT.TORNADO
 				} then
 					itemUsed = true
 
-					Fire.create{
+					Tornado.create{
 						tile = tile
 					}
 				end

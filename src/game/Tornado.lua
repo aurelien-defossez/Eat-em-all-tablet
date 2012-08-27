@@ -12,11 +12,23 @@ Tornado.__index = Tornado
 -- Imports
 -----------------------------------------------------------------------------------------
 
+require("src.utils.Utils")
 require("src.utils.Constants")
 require("src.config.GameConfig")
 
 local SpriteManager = require("src.utils.SpriteManager")
 local Tile = require("src.game.Tile")
+
+-----------------------------------------------------------------------------------------
+-- Constants
+-----------------------------------------------------------------------------------------
+
+RANDOM_DIRECTION = {
+	DIRECTION.UP,
+	DIRECTION.DOWN,
+	DIRECTION.RIGHT,
+	DIRECTION.LEFT
+}
 
 -----------------------------------------------------------------------------------------
 -- Class initialization
@@ -71,14 +83,14 @@ function Tornado.create(parameters)
 	self.contentId = self.tile:addContent(self)
 
 	-- Listen to events
-	self.tile:addEventListener(TILE.EVENT.IN_TILE, self)
+	self.tile:addEventListener(TILE.EVENT.REACH_TILE_CENTER, self)
 
 	return self
 end
 
 -- Destroy the item
 function Tornado:destroy()
-	self.tile:removeEventListener(TILE.EVENT.IN_TILE, self)
+	self.tile:removeEventListener(TILE.EVENT.REACH_TILE_CENTER, self)
 
 	self.tile:removeContent(self.contentId)
 
@@ -89,17 +101,22 @@ end
 -- Event listeners
 -----------------------------------------------------------------------------------------
 
--- In tile handler, called when a zombie is in the tile
+-- Reach center tile handler, called when a zombie reaches the middle of the tile
 --
 -- Parameters:
 --  event: The tile event, with these values:
 --   zombie: The zombie entering the tile
-function Tornado:inTile(event)
+function Tornado:reachTileCenter(event)
 	local zombie = event.zombie
 
-	-- zombie:die{
-	-- 	killer = ZOMBIE.KILLER.TORNADO
-	-- }
+	if zombie.phase == ZOMBIE.PHASE.MOVE then
+		-- Block direction so a sign cannot rectify the trajectory
+		zombie:changeDirection{
+			direction = RANDOM_DIRECTION[math.random(#RANDOM_DIRECTION)],
+			correctPosition = true,
+			block = true
+		}
+	end
 end
 
 -- Enter frame handler

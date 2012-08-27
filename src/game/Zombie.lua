@@ -75,6 +75,7 @@ function Zombie.create(parameters)
 	self.direction = self.player.direction
 	self.size = self.size or 1
 	self.hitPoints = self.size
+	self.directionBlocked = false
 
 	if self.size == 1 then
 		self.speed = config.zombie.speed.normal
@@ -177,6 +178,8 @@ function Zombie:move(parameters)
 		-- Leave tile
 		self.tile:leaveTile(self)
 
+		self.directionBlocked = false
+
 		-- Find new tile and enter it
 		self.tile = self.grid:getTileByPixels(tileCollider)
 		self.tile:enterTile(self)
@@ -244,39 +247,47 @@ end
 --
 -- Parameters:
 --  direction: The new direction
---  correctPosition: True if the position has to be corrected so the zombie stay on the tile center
+--  correctPosition: If true, then the position has to be corrected so the zombie stay on the tile center
+--  block: If true, then the direction can't be modified by any other object during this frame
+--  force: If true, then the direction is set even if it is supposed to be blocked
 function Zombie:changeDirection(parameters)
-	self.direction = parameters.direction
+	if not self.directionBlocked or parameters.force then
+		self.direction = parameters.direction
 
-	-- Update the direction vector
-	if self.direction == DIRECTION.UP then
-		self.directionVector = DIRECTION_VECTOR.UP
-	elseif self.direction == DIRECTION.DOWN then
-		self.directionVector = DIRECTION_VECTOR.DOWN
-	elseif self.direction == DIRECTION.LEFT then
-		self.directionVector = DIRECTION_VECTOR.LEFT
-	elseif self.direction == DIRECTION.RIGHT then
-		self.directionVector = DIRECTION_VECTOR.RIGHT
-	end
-
-	if parameters.correctPosition then
-		-- Compute the offset between the zombie position and the tile center and correct the zombie position
-		if self.direction == DIRECTION.UP or self.direction == DIRECTION.DOWN then
-			local tileCenter = self.tile.x
-			local centerOffset = math.abs(self.x - tileCenter)
-
-			self.x = tileCenter
-			self.y = self.y + centerOffset * self.directionVector.y
-		else
-			local tileCenter = self.tile.y
-			local centerOffset = math.abs(self.y - tileCenter)
-
-			self.y = tileCenter
-			self.x = self.x + centerOffset * self.directionVector.x
+		-- Update the direction vector
+		if self.direction == DIRECTION.UP then
+			self.directionVector = DIRECTION_VECTOR.UP
+		elseif self.direction == DIRECTION.DOWN then
+			self.directionVector = DIRECTION_VECTOR.DOWN
+		elseif self.direction == DIRECTION.LEFT then
+			self.directionVector = DIRECTION_VECTOR.LEFT
+		elseif self.direction == DIRECTION.RIGHT then
+			self.directionVector = DIRECTION_VECTOR.RIGHT
 		end
-	end
 
-	self:updateSprite()
+		if parameters.correctPosition then
+			-- Compute the offset between the zombie position and the tile center and correct the zombie position
+			if self.direction == DIRECTION.UP or self.direction == DIRECTION.DOWN then
+				local tileCenter = self.tile.x
+				local centerOffset = math.abs(self.x - tileCenter)
+
+				self.x = tileCenter
+				self.y = self.y + centerOffset * self.directionVector.y
+			else
+				local tileCenter = self.tile.y
+				local centerOffset = math.abs(self.y - tileCenter)
+
+				self.y = tileCenter
+				self.x = self.x + centerOffset * self.directionVector.x
+			end
+		end
+
+		if parameters.block then
+			self.directionBlocked = true
+		end
+
+		self:updateSprite()
+	end
 end
 
 -- Update the zombie sprite depending on the phase and the direction
@@ -314,7 +325,8 @@ function Zombie:carryItem(item)
 	self.phase = ZOMBIE.PHASE.CARRY_ITEM_INIT
 
 	self:changeDirection{
-		direction = getReverseDirection(self.player.direction)
+		direction = getReverseDirection(self.player.direction),
+		force = true
 	}
 
 	item:attachZombie(self)
