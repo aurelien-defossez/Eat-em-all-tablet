@@ -152,22 +152,27 @@ function PlayerItem:touch(event)
 		}
 
 		if tile then
-			-- Use skeleton or giant iten if the drop tile contains a cemetery
+			-- Use skeleton or giant everywhere
 			if self.type == ITEM.SKELETON or self.type == ITEM.GIANT then
+				itemUsed = true
+
+				-- Look for a cemetery on the current tile
 				local cemetery = tile:getContentForType{TILE.CONTENT.CEMETERY}
 
-				if cemetery then
-					itemUsed = true
-
-					if self.type == ITEM.SKELETON then
-						cemetery:quicklySpawnZombies(config.item.skeleton.nbZombies)
-					elseif self.type == ITEM.GIANT then
-						cemetery:spawn{
-							size = config.item.giant.size
-						}
-					end
+				-- If it's not a cemetery or not a player's, pick a random cemetery from the player
+				if not cemetery or cemetery.player.id ~= self.player.id then
+					cemetery = self.player.cemeteries[math.random(#self.player.cemeteries)]
 				end
-			-- Use fire if the drop tile does not contain a cemetery, a city, a fortress wall or a fire
+
+				-- Spawn zombies or giant
+				if self.type == ITEM.SKELETON then
+					cemetery:quicklySpawnZombies(config.item.skeleton.nbZombies)
+				elseif self.type == ITEM.GIANT then
+					cemetery:spawn{
+						size = config.item.giant.size
+					}
+				end
+			-- Use fire if the drop tile does not contain a cemetery, a city, a fortress wall or another fire
 			elseif self.type == ITEM.FIRE then
 				if not tile:hasContentType{
 					TILE.CONTENT.CEMETERY,

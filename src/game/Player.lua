@@ -35,6 +35,7 @@ function Player.create(parameters)
 	-- Initialize attributes
 	self.signs = {}
 	self.signsCount = 0
+	self.cemeteries = {}
 	
 	return self
 end
@@ -47,6 +48,14 @@ end
 -----------------------------------------------------------------------------------------
 -- Methods
 -----------------------------------------------------------------------------------------
+
+-- Add a cemetery to the player
+--
+-- Parameters:
+--  cemetery: The cemetery to add
+function Player:addCemetery(cemetery)
+	table.insert(self.cemeteries, cemetery)
+end
 
 -- Add HPs to the player
 --
