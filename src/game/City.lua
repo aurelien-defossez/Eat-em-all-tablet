@@ -163,7 +163,9 @@ function City:addInhabitants(nb)
 	self.inhabitants = self.inhabitants + nb
 
 	if self.inhabitants > self.maxInhabitants then
-		self:spawn()
+		self:spawn{
+			free = false
+		}
 	elseif self.inhabitants == 0 then
 		-- Notify player
 		if self.player then
@@ -185,7 +187,10 @@ function City:addInhabitants(nb)
 end
 
 -- Spawn a zombie
-function City:spawn()
+--
+-- Parameters:
+--  free: If true, then this spawn is free and does not take an inhabitant
+function City:spawn(parameters)
 	local zombie = Zombie.create{
 		player = self.player,
 		tile = self.tile,
@@ -194,7 +199,9 @@ function City:spawn()
 
 	self.grid:addZombie(zombie)
 
-	self:addInhabitants(-1)
+	if not parameters.free then
+		self:addInhabitants(-1)
+	end
 end
 
 -- Enter tile handler, called when a zombie enters the tile
@@ -258,14 +265,18 @@ function City:enterFrame(timeDelta)
 		-- Count spawn time
 		if self.timeSinceLastSpawn >= self.spawnPeriod then
 			self.timeSinceLastSpawn = self.timeSinceLastSpawn - self.spawnPeriod
-			self:addInhabitants(1)
+			self:spawn{
+				free = true
+			}
 		end
 
 		-- Count exit time
 		if self.gateOpened then
 			if self.timeSinceLastExit >= self.exitPeriod then
 				self.timeSinceLastExit = self.timeSinceLastExit - self.exitPeriod
-				self:spawn()
+				self:spawn{
+					free = false
+				}
 			end
 		elseif self.timeSinceLastExit > self.exitPeriod then
 			-- Prepare next exit

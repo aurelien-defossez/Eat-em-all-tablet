@@ -55,19 +55,19 @@ config = {
 		small = {
 			inhabitants = 5,
 			spawnPeriod = 5000,
-			maxInhabitants = 50,
+			maxInhabitants = 10,
 			exitPeriod = 400
 		},
 		medium = {
 			inhabitants = 15,
 			spawnPeriod = 3500,
-			maxInhabitants = 75,
+			maxInhabitants = 25,
 			exitPeriod = 300
 		},
 		large = {
 			inhabitants = 40,
 			spawnPeriod = 2000,
-			maxInhabitants = 99,
+			maxInhabitants = 50,
 			exitPeriod = 200
 		}
 	},
