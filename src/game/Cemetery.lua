@@ -143,14 +143,14 @@ function Cemetery:enterTile(event)
 		zombie:die{
 			killer = ZOMBIE.KILLER.CEMETERY
 		}
-	elseif zombie.phase == ZOMBIE.PHASE.MOVE or zombie.phase == ZOMBIE.PHASE.CARRY_ITEM_INIT then
+	elseif zombie.phase == ZOMBIE.PHASE.CARRY_ITEM then
+		-- Fetch item
+		zombie.item:fetched(self.player)
+	else
 		-- Move backward
 		zombie:changeDirection{
 			direction = self.player.direction
 		}
-	elseif zombie.phase == ZOMBIE.PHASE.CARRY_ITEM then
-		-- Fetch item
-		zombie.item:fetched(self.player)
 	end
 end
 

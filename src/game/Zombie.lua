@@ -233,6 +233,9 @@ function Zombie:moveTo(parameters)
 
 	if self.x == parameters.x and self.y == parameters.y then
 		self.phase = ZOMBIE.PHASE.CARRY_ITEM
+
+		self.item:startMotion()
+
 		self:updateSprite()
 	end
 end
@@ -314,10 +317,7 @@ function Zombie:carryItem(item)
 		direction = getReverseDirection(self.player.direction)
 	}
 
-	item:attachZombie{
-		zombie = self,
-		speed = config.item.speed.perZombie * self.directionVector.x
-	}
+	item:attachZombie(self)
 end
 
 -- Kills the zombie
@@ -335,10 +335,7 @@ function Zombie:die(parameters)
 
 			-- Remove from the item carriers
 			if self.phase == ZOMBIE.PHASE.CARRY_ITEM_INIT or self.phase == ZOMBIE.PHASE.CARRY_ITEM then
-				self.item:detachZombie{
-					zombie = self,
-					speed = config.item.speed.perZombie * self.directionVector.x
-				}
+				self.item:detachZombie(self)
 			end
 			
 			self.phase = ZOMBIE.PHASE.DEAD

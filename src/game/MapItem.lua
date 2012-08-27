@@ -56,9 +56,8 @@ function MapItem.create(parameters)
 	self.id = ctId
 	self.x = self.tile.x
 	self.y = self.tile.y
+	self.zombie = nil
 	self.speed = 0
-	self.zombies = {}
-	self.alreadyFetched = false
 
 	self:computeCollisionMask()
 
@@ -107,20 +106,22 @@ end
 --
 -- Parameters:
 --  zombie: The zombie to attach
---  speed: The speed added by this zombie
-function MapItem:attachZombie(parameters)
-	self.zombies[parameters.zombie.id] = parameters.zombie
-	self.speed = self.speed + parameters.speed
+function MapItem:attachZombie(zombie)
+	self.zombie = zombie
 end
 
 -- Detach a zombie from this item
 --
 -- Parameters:
 --  zombie: The zombie to detach
---  speed: The speed added by this zombie
-function MapItem:detachZombie(parameters)
-	self.zombies[parameters.zombie.id] = nil
-	self.speed = self.speed - parameters.speed
+function MapItem:detachZombie(zombie)
+	self.zombie = nil
+	self.speed = 0
+end
+
+-- Start the motion of the item being carried by the zombie
+function MapItem:startMotion()
+	self.speed = self.config.item.speed * self.zombie.directionVector.x
 end
 
 -- Item is fetched by a player, giving this item to him
@@ -128,33 +129,24 @@ end
 -- Parameters:
 --  player: The player fetching the item
 function MapItem:fetched(player)
-	if not self.alreadyFetched then
-		self.alreadyFetched = true
+	self.zombie.phase = ZOMBIE.PHASE.MOVE
+	self.zombie:changeDirection{
+		direction = self.zombie.player.direction
+	}
 
-		-- Release zombies from their tasks
-		for index, zombie in pairs(self.zombies) do
-			if zombie.phase == ZOMBIE.PHASE.CARRY_ITEM or zombie.phase == ZOMBIE.PHASE.CARRY_ITEM_INIT then
-				zombie.phase = ZOMBIE.PHASE.MOVE
-				zombie:changeDirection{
-					direction = zombie.player.direction
-				}
-			end
-		end
+	-- Create player item
+	local playerItem = PlayerItem.create{
+		player = player,
+		grid = self.grid,
+		x = self.x,
+		y = self.y,
+		type = math.random(1, ITEM.COUNT)
+	}
 
-		-- Create player item
-		local playerItem = PlayerItem.create{
-			player = player,
-			grid = self.grid,
-			x = self.x,
-			y = self.y,
-			type = math.random(1, ITEM.COUNT)
-		}
+	player:gainItem(playerItem)
+	self.grid:removeItem(self)
 
-		player:gainItem(playerItem)
-		self.grid:removeItem(self)
-
-		self:destroy()
-	end
+	self:destroy()
 end
 
 -----------------------------------------------------------------------------------------

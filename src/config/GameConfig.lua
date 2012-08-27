@@ -81,10 +81,8 @@ config = {
 			x = 16,
 			y = 16
 		},
-		speed = {
-			perZombie = 0.05,
-			max = 0.5
-		},
+		speed = 0.1,
+		maxZombies = 2,
 		creation = {
 			time = {
 				first = 10000,
