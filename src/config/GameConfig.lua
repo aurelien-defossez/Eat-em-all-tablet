@@ -241,7 +241,7 @@ config = {
 		},
 		tornado = {
 			tornado = {
-				frameCount = 3,
+				frameCount = 4,
 				period = 400
 			}
 		},
