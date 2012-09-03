@@ -97,6 +97,9 @@ function ArrowsPanel.create(parameters)
 		y = self.y + 3 * config.arrow.height
 	}
 
+	-- Register itself to the player
+	self.player.arrowsPanel = self
+
 	return self
 end
 
@@ -109,6 +112,26 @@ function ArrowsPanel:destroy()
 	self.arrowDelete:destroy()
 
 	self.group:removeSelf()
+end
+
+-----------------------------------------------------------------------------------------
+-- Methods
+-----------------------------------------------------------------------------------------
+
+-- Enable the dragging of the panel arrows
+function ArrowsPanel:enable()
+	self.arrowUp:enable()
+	self.arrowDown:enable()
+	self.arrowRight:enable()
+	self.arrowLeft:enable()
+end
+
+-- Disable the dragging of the panel arrows
+function ArrowsPanel:disable()
+	self.arrowUp:disable()
+	self.arrowDown:disable()
+	self.arrowRight:disable()
+	self.arrowLeft:disable()
 end
 
 -----------------------------------------------------------------------------------------

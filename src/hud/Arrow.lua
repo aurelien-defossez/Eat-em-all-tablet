@@ -52,19 +52,11 @@ function Arrow.create(parameters)
 	-- Initialize attributes
 	self.width = config.arrow.width
 	self.height = config.arrow.height
-
-	-- Determine sprite animation
-	local animationName
-	if self.direction ~= DIRECTION.DELETE then
-		animationName = "arrow_" .. self.player.color
-	else 
-		animationName = "arrow_crossed_" .. self.player.color
-	end
+	self.enabled = true
 
 	-- Draw sprite
 	self.arrowSprite = SpriteManager.newSprite(spriteSet)
-	self.arrowSprite:prepare(animationName)
-	self.arrowSprite:play()
+	self:drawSprite()
 
 	-- Position sprite
 	self.arrowSprite:setReferencePoint(display.CenterReferencePoint)
@@ -83,7 +75,40 @@ end
 
 -- Destroy the arrow
 function Arrow:destroy()
+	self.arrowSprite:removeEventListener("touch", self)
+
 	self.group:removeSelf()
+end
+
+-----------------------------------------------------------------------------------------
+-- Methods
+-----------------------------------------------------------------------------------------
+
+-- Enable the dragging of the arrow
+function Arrow:enable()
+	self.enabled = true
+	self:drawSprite()
+end
+
+-- Disable the dragging of the arrow
+function Arrow:disable()
+	self.enabled = false
+	self:drawSprite()
+end
+
+-- Draw the sprite according to the arrow state
+function Arrow:drawSprite()
+	local animationName
+	local disabled = self.enabled and "" or "disabled_"
+
+	if self.direction ~= DIRECTION.DELETE then
+		animationName = "arrow_" .. disabled .. self.player.color
+	else 
+		animationName = "arrow_crossed_" .. self.player.color
+	end
+
+	self.arrowSprite:prepare(animationName)
+	self.arrowSprite:play()
 end
 
 -----------------------------------------------------------------------------------------
@@ -96,7 +121,7 @@ end
 --  event: The touch event
 function Arrow:touch(event)
 	-- Begin drag by creating a new draggable arrow
-	if event.phase == "began" then
+	if self.enabled and event.phase == "began" then
 		local animationName = nil
 
 		if self.direction ~= DIRECTION.DELETE then

@@ -116,17 +116,8 @@ function Player:addSign(newSign)
 	self.signsCount = self.signsCount + 1
 
 	-- Remove excess sign
-	if self.signsCount > config.player.maxSigns then
-		local signToDelete = nil
-
-		-- Find the oldest sign
-		for signId, sign in pairs(self.signs) do
-			if sign and (not signToDelete or signId < signToDelete.id) then
-				signToDelete = sign
-			end
-		end
-
-		signToDelete:destroy()
+	if self.signsCount == config.player.maxSigns then
+		self.arrowsPanel:disable()
 	end
 end
 
@@ -137,6 +128,10 @@ end
 function Player:removeSign(sign)
 	self.signs[sign.id] = nil
 	self.signsCount = self.signsCount - 1
+
+	if self.signsCount == config.player.maxSigns - 1 then
+		self.arrowsPanel:enable()
+	end
 end
 
 -----------------------------------------------------------------------------------------

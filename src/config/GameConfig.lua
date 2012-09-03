@@ -23,7 +23,7 @@ config = {
 
 	player = {
 		hitPoints = 100,
-		maxSigns = 6
+		maxSigns = 5
 	},
 
 	arrow = {
@@ -204,6 +204,8 @@ config = {
 			arrow_red = {},
 			arrow_selected_blue = {},
 			arrow_selected_red = {},
+			arrow_disabled_blue = {},
+			arrow_disabled_red = {},
 			arrow_crossed_blue = {},
 			arrow_crossed_red = {}
 		},
