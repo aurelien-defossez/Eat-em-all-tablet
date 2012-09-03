@@ -6,7 +6,6 @@ config = {
 		randomGiants = false,
 		onlyGiants = false,
 		immediateSpawn = false,
-		immediateItemSpawn = false,
 		fastItemSpawn = true,
 		showCollisionMask = false,
 		startWithItems = true,
@@ -14,6 +13,8 @@ config = {
 
 		fastModeRatio = 3
 	},
+
+	fps = 30,
 
 	screen = {
 		width = display.contentWidth,
@@ -84,13 +85,8 @@ config = {
 			y = 16
 		},
 		speed = 0.1,
-		maxZombies = 2,
 		creation = {
-			time = {
-				first = 10000,
-				min = 5000,
-				max = 20000,
-			},
+			factor = 0.5,
 			xoffset = 2
 		},
 		easingTime = {

@@ -21,6 +21,7 @@ local City = require("src.game.City")
 local Cemetery = require("src.game.Cemetery")
 local FortressWall = require("src.game.FortressWall")
 local MapItem = require("src.game.MapItem")
+local PlayerItem = require("src.hud.PlayerItem")
 
 -----------------------------------------------------------------------------------------
 -- Constants
@@ -64,12 +65,7 @@ function Grid.create(parameters)
 	self.nbZombies = 0
 
 	self.items = {}
-
-	self.timeUntilItemCreation = config.item.creation.time.first
-
-	if config.debug.immediateItemSpawn then
-		self.timeUntilItemCreation = 0
-	end
+	self.itemMaxLog = math.log(2 * config.player.maxItems)
 
 	self.matrix = {}
 	for x = 1, config.panels.grid.nbRows + 1 do
@@ -282,8 +278,14 @@ function Grid:enterFrame(timeDelta)
 	end
 
 	-- Create item
-	self.timeUntilItemCreation = self.timeUntilItemCreation - timeDelta
-	if self.timeUntilItemCreation <= 0 then
+	-- pLog = log(ct) / log(max)
+	-- pLogInvert = 1 - pLog
+	-- pPerSecond = creationFactor / fps
+	-- pTotal = pLogInvert * pPerSecond
+	local itemCount = MapItem.ct + PlayerItem.ct
+	local probaFactor = config.item.creation.factor / config.fps
+	local probaItemSpawn = (1 - math.log(itemCount) / math.log(2 * config.player.maxItems)) * probaFactor
+	if itemCount == 0 or math.random() < probaItemSpawn then
 		local middleTileX = math.ceil(config.panels.grid.nbCols / 2)
 		local tile
 		local triesCount = 0
@@ -303,13 +305,6 @@ function Grid:enterFrame(timeDelta)
 		}
 
 		self.items[item.id] = item
-
-		self.timeUntilItemCreation = self.timeUntilItemCreation +
-			math.random(config.item.creation.time.min, config.item.creation.time.max)
-
-		if config.debug.fastItemSpawn then
-			self.timeUntilItemCreation = self.timeUntilItemCreation / 10
-		end
 	end
 
 	-- Check for collisions

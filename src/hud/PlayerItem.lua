@@ -25,6 +25,7 @@ local Mine = require("src.game.Mine")
 -----------------------------------------------------------------------------------------
 
 ctId = 1
+ct = 0
 
 -----------------------------------------------------------------------------------------
 -- Class initialization
@@ -73,6 +74,7 @@ function PlayerItem.create(parameters)
 	end
 
 	ctId = ctId + 1
+	ct = ct + 1
 
 	-- Position group
 	self.group.x = self.x
@@ -99,6 +101,10 @@ end
 
 -- Destroy the item
 function PlayerItem:destroy()
+	ct = ct - 1
+
+	self.itemSprite:removeEventListener("touch", self)
+
 	self.group:removeSelf()
 end
 

@@ -24,6 +24,7 @@ local PlayerItem = require("src.hud.PlayerItem")
 -----------------------------------------------------------------------------------------
 
 ctId = 1
+ct = 0
 
 -----------------------------------------------------------------------------------------
 -- Class initialization
@@ -62,6 +63,7 @@ function MapItem.create(parameters)
 	self:computeCollisionMask()
 
 	ctId = ctId + 1
+	ct = ct + 1
 
 	-- Position group
 	self.group.x = self.x
@@ -88,6 +90,8 @@ end
 
 -- Destroy the item
 function MapItem:destroy()
+	ct = ct - 1
+
 	Runtime:removeEventListener("spritePause", self)
 
 	self.group:removeSelf()

@@ -99,7 +99,6 @@ end
 function Player:gainItem(item)
 	self.itemsPanel:gainItem(item)
 	self.itemCount = self.itemCount + 1
-	print("player " .. self.id.." has "..self.itemCount.." items")
 end
 
 -- Remove an item from the list
@@ -109,7 +108,6 @@ end
 function Player:removeItem(item)
 	self.itemsPanel:removeItem(item)
 	self.itemCount = self.itemCount - 1
-	print("player " .. self.id.." has "..self.itemCount.." items")
 end
 
 -- Add a sign under the control of the player
