@@ -7,6 +7,7 @@ config = {
 		onlyGiants = false,
 		immediateSpawn = false,
 		immediateItemSpawn = false,
+		fastItemSpawn = true,
 		showCollisionMask = false,
 		startWithItems = true,
 		frameByFrame = false,
@@ -23,7 +24,8 @@ config = {
 
 	player = {
 		hitPoints = 100,
-		maxSigns = 5
+		maxSigns = 5,
+		maxItems = 4
 	},
 
 	arrow = {

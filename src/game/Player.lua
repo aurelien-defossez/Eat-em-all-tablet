@@ -36,6 +36,7 @@ function Player.create(parameters)
 	self.signs = {}
 	self.signsCount = 0
 	self.cemeteries = {}
+	self.itemCount = 0
 	
 	return self
 end
@@ -97,6 +98,8 @@ end
 --  item: The item
 function Player:gainItem(item)
 	self.itemsPanel:gainItem(item)
+	self.itemCount = self.itemCount + 1
+	print("player " .. self.id.." has "..self.itemCount.." items")
 end
 
 -- Remove an item from the list
@@ -105,6 +108,8 @@ end
 --  item: The item to remove
 function Player:removeItem(item)
 	self.itemsPanel:removeItem(item)
+	self.itemCount = self.itemCount - 1
+	print("player " .. self.id.." has "..self.itemCount.." items")
 end
 
 -- Add a sign under the control of the player

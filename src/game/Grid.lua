@@ -306,6 +306,10 @@ function Grid:enterFrame(timeDelta)
 
 		self.timeUntilItemCreation = self.timeUntilItemCreation +
 			math.random(config.item.creation.time.min, config.item.creation.time.max)
+
+		if config.debug.fastItemSpawn then
+			self.timeUntilItemCreation = self.timeUntilItemCreation / 10
+		end
 	end
 
 	-- Check for collisions
@@ -335,7 +339,9 @@ function Grid:enterFrame(timeDelta)
 		end
 
 		-- Check collision with items
-		if zombie.phase == ZOMBIE.PHASE.MOVE and not zombie.isGiant then
+		if zombie.phase == ZOMBIE.PHASE.MOVE
+			and zombie.player.itemCount < config.player.maxItems
+			and not zombie.isGiant then
 			for itemIndex, item in pairs(self.items) do
 				-- Determine if the current zombie can make the item carry process faster
 				if not item.zombie then

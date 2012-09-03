@@ -59,10 +59,13 @@ function ItemsPanel.create(parameters)
 		direction = self.player.tableLayoutDirection
 	}
 
+	-- Register itself to the player
+	self.player.itemsPanel = self
+
 	-- Start with items
 	if config.debug.startWithItems then
 		for key, itemId in pairs({ ITEM.SKELETON, ITEM.GIANT, ITEM.TORNADO, ITEM.MINE }) do
-			self:gainItem(PlayerItem.create{
+			self.player:gainItem(PlayerItem.create{
 				player = self.player,
 				grid = self.grid,
 				x = self.x,
@@ -71,9 +74,6 @@ function ItemsPanel.create(parameters)
 			})
 		end
 	end
-
-	-- Register itself to the player
-	self.player.itemsPanel = self
 	
 	return self
 end

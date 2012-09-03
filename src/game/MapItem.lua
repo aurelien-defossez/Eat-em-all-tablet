@@ -139,19 +139,23 @@ function MapItem:fetched(player)
 		direction = self.zombie.player.direction
 	}
 
-	-- Create player item
-	local playerItem = PlayerItem.create{
-		player = player,
-		grid = self.grid,
-		x = self.x,
-		y = self.y,
-		type = math.random(1, ITEM.COUNT)
-	}
+	self:detachZombie(self.zombie)
 
-	player:gainItem(playerItem)
-	self.grid:removeItem(self)
+	if player.itemCount < config.player.maxItems then
+		-- Create player item
+		local playerItem = PlayerItem.create{
+			player = player,
+			grid = self.grid,
+			x = self.x,
+			y = self.y,
+			type = math.random(1, ITEM.COUNT)
+		}
 
-	self:destroy()
+		player:gainItem(playerItem)
+		self.grid:removeItem(self)
+
+		self:destroy()
+	end
 end
 
 -----------------------------------------------------------------------------------------
