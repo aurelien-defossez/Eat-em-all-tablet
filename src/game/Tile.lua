@@ -71,6 +71,7 @@ function Tile.create(parameters)
 	local borders = display.newRect(0, 0, self.width, self.height)
 	borders.strokeWidth = config.panels.grid.lineWidth
 	borders:setFillColor(122, 47, 15)
+	borders:setStrokeColor(152, 67, 35)
 
 	-- Add to group
 	self.group:insert(borders)

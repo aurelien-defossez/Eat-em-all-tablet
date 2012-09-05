@@ -46,7 +46,12 @@ function Multiplayer:enterScene(event)
 	self.players = {}
 	self.players[1] = Player.create{
 		id = 1,
-		color = "red",
+		color = {
+			name = "red",
+			r = config.player.colors.p1.r,
+			g = config.player.colors.p1.g,
+			b = config.player.colors.p1.b
+		},
 		direction = DIRECTION.RIGHT,
 		tableLayoutDirection = TABLE_LAYOUT.DIRECTION.LEFT_TO_RIGHT,
 		hitPoints = config.player.hitPoints
@@ -54,7 +59,12 @@ function Multiplayer:enterScene(event)
 
 	self.players[2] = Player.create{
 		id = 2,
-		color = "blue",
+		color = {
+			name = "blue",
+			r = config.player.colors.p2.r,
+			g = config.player.colors.p2.g,
+			b = config.player.colors.p2.b
+		},
 		direction = DIRECTION.LEFT,
 		tableLayoutDirection = TABLE_LAYOUT.DIRECTION.RIGHT_TO_LEFT,
 		hitPoints = config.player.hitPoints

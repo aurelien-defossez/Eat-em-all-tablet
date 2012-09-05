@@ -65,7 +65,7 @@ function Sign.create(parameters)
 
 	-- Draw sprite
 	self.signSprite = SpriteManager.newSprite(spriteSet)
-	self.signSprite:prepare("arrow_" .. self.player.color)
+	self.signSprite:prepare("arrow_" .. self.player.color.name)
 	self.signSprite:play()
 
 	-- Position sprite

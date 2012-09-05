@@ -26,7 +26,19 @@ config = {
 	player = {
 		hitPoints = 100,
 		maxSigns = 5,
-		maxItems = 4
+		maxItems = 4,
+		colors = {
+			p1 = {
+				r = 250,
+				g = 64,
+				b = 64
+			},
+			p2 = {
+				r = 64,
+				g = 96,
+				b = 250
+			}
+		}
 	},
 
 	arrow = {
@@ -47,13 +59,17 @@ config = {
 		width = 64,
 		height = 64,
 		easingTime = 1500,
-		inhabitantsText = {
-			x = 24,
-			y = 45
-		},
 		nameText = {
 			x = 27,
 			y = 27
+		},
+		bars = {
+			offset = {
+				x = 50,
+				y = 16
+			},
+			maxHeight = 50,
+			width = 10
 		},
 		small = {
 			inhabitants = 5,
@@ -62,15 +78,15 @@ config = {
 			exitPeriod = 400
 		},
 		medium = {
-			inhabitants = 15,
+			inhabitants = 12,
 			spawnPeriod = 3500,
-			maxInhabitants = 25,
+			maxInhabitants = 20,
 			exitPeriod = 300
 		},
 		large = {
-			inhabitants = 40,
+			inhabitants = 30,
 			spawnPeriod = 2000,
-			maxInhabitants = 50,
+			maxInhabitants = 30,
 			exitPeriod = 200
 		}
 	},
@@ -97,7 +113,7 @@ config = {
 			nbZombies = 5
 		},
 		giant = {
-			size = 8
+			size = 6
 		},
 		tornado = {
 			duration = 5000

@@ -54,17 +54,15 @@ function CityShortcut.create(parameters)
 
 	-- Add to groups
 	self.cityGroup = display.newGroup()
-	self.textGroup = display.newGroup()
 	
 	self.group:insert(self.cityGroup)
-	self.group:insert(self.textGroup)
 
 	-- Register shortcut to city
 	self.city.shortcut = self
 
 	-- Draw sprite
 	self.citySprite = SpriteManager.newSprite(spriteSet)
-	self.citySprite:prepare("city" .. self.city.size .. "_" .. self.player.color)
+	self.citySprite:prepare("city" .. self.city.size .. "_" .. self.player.color.name)
 	self.citySprite:play()
 
 	-- Position sprite
@@ -75,20 +73,8 @@ function CityShortcut.create(parameters)
 	-- Handle events
 	self.citySprite:addEventListener("touch", self)
 
-	-- Inhabitants count text
-	self.inhabitantsText = display.newText(self.city.inhabitants, config.city.inhabitantsText.x,
-		config.city.inhabitantsText.y, native.systemFontBold, 16)
-	self.inhabitantsText:setTextColor(0, 0, 0)
-
-	-- Name text
-	self.nameText = display.newText(self.city.name, config.city.nameText.x, config.city.nameText.y,
-		native.systemFontBold, 16)
-	self.nameText:setTextColor(0, 0, 0)
-
-	-- Add texts to group
+	-- Add to group
 	self.cityGroup:insert(self.citySprite)
-	self.textGroup:insert(self.inhabitantsText)
-	self.textGroup:insert(self.nameText)
 
 	-- Position group
 	self.group.x = self.x
@@ -122,7 +108,7 @@ end
 
 -- Update the number of inhabitants from the linked city
 function CityShortcut:updateInhabitants()
-	self.inhabitantsText.text = self.city.inhabitants
+	-- self.inhabitantsText.text = self.city.inhabitants
 end
 
 -- Check if a pixel is in the city shortcut

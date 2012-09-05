@@ -65,7 +65,7 @@ function Cemetery.create(parameters)
 	
 	-- Draw the sprite
 	self.cemeterySprite = SpriteManager.newSprite(spriteSet)
-	self.cemeterySprite:prepare("cemetery_" .. self.player.color)
+	self.cemeterySprite:prepare("cemetery_" .. self.player.color.name)
 	self.cemeterySprite:play()
 
 	-- Position sprite

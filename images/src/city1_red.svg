@@ -14,8 +14,8 @@
    id="svg5455"
    version="1.1"
    inkscape:version="0.48.3.1 r9886"
-   sodipodi:docname="city1_grey.svg"
-   inkscape:export-filename="D:\Work\eat-em-all-tablet\city1_grey.png"
+   sodipodi:docname="city1_red.svg"
+   inkscape:export-filename="D:\Work\Eat-em-all-tablet\images\city1_red.png"
    inkscape:export-xdpi="90"
    inkscape:export-ydpi="90">
   <defs
@@ -28,7 +28,7 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="5.5"
-     inkscape:cx="2.9398446"
+     inkscape:cx="-53.787428"
      inkscape:cy="37.811693"
      inkscape:current-layer="layer1"
      showgrid="true"
@@ -56,18 +56,26 @@
      inkscape:label="Layer 1"
      inkscape:groupmode="layer">
     <rect
-       style="fill:#ffa8a8;fill-opacity:1;stroke:#1d0b00;stroke-width:1.57704365000000000;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       style="fill:#ffa8a8;fill-opacity:1;stroke:#1d0b00;stroke-width:1.65377975000000000;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
        id="rect5475"
        width="35.895557"
-       height="22.835241"
-       x="14.587701"
-       y="39.205391"
-       ry="0.49032393" />
+       height="25.111551"
+       x="8.0422459"
+       y="37.1931"
+       ry="0.53920138" />
     <path
-       style="fill:#c65151;fill-opacity:1;stroke:#1d0b00;stroke-width:1.77164137000000000;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1"
-       d="m 50.442662,39.158284 -0.545689,0.975755 -34.680502,0 -0.545689,-0.975755 18.066674,-21.649466 z"
+       style="fill:#c65151;fill-opacity:1;stroke:#1d0b00;stroke-width:1.68643665000000010;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1"
+       d="m 43.897208,37.48959 -0.545689,0.884157 -34.6805026,0 L 8.1253274,37.48959 26.192002,17.872454 z"
        id="rect5477"
        inkscape:connector-curvature="0"
        sodipodi:nodetypes="cccccc" />
+    <rect
+       style="fill:#c65151;fill-opacity:1;stroke:#000000;stroke-width:1.09099030000000010;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       id="rect3817"
+       width="8.5309229"
+       height="12.882237"
+       x="17.098175"
+       y="48.922516"
+       ry="0.37037107" />
   </g>
 </svg>

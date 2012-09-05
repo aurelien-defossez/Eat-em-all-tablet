@@ -317,7 +317,7 @@ function Zombie:updateSprite()
 		phaseName = "move"
 	end
 
-	self.zombieSprite:prepare("zombie_" .. phaseName .. "_" .. directionName .. "_" .. self.player.color)
+	self.zombieSprite:prepare("zombie_" .. phaseName .. "_" .. directionName .. "_" .. self.player.color.name)
 	self.zombieSprite:play()
 end
 

@@ -77,10 +77,10 @@ function City.create(parameters)
 
 	-- Add to groups
 	self.cityGroup = display.newGroup()
-	self.textGroup = display.newGroup()
+	self.barGroup = display.newGroup()
 
 	self.group:insert(self.cityGroup)
-	self.group:insert(self.textGroup)
+	self.group:insert(self.barGroup)
 
 	-- Position group
 	self.group.x = self.x
@@ -93,26 +93,34 @@ function City.create(parameters)
 	self.citySprite:setReferencePoint(display.CenterReferencePoint)
 	self.citySprite.x = self.tile.width / 2
 	self.citySprite.y = self.tile.height / 2
+
+	-- Bars
+	self.barHeight = config.city.bars.maxHeight * self.maxInhabitants / config.city.large.maxInhabitants
+	self.pixelsPerInhabitant = self.maxInhabitants / self.barHeight
+
+	self.backgroundBar = display.newRect(0, 0, 0, 0)
+	self.backgroundBar.width = config.city.bars.width
+	self.backgroundBar.height = self.barHeight
+	self.backgroundBar:setReferencePoint(display.BottomLeftReferencePoint)
+	self.backgroundBar.x = config.city.bars.offset.x
+	self.backgroundBar.y = config.city.bars.offset.y + config.city.bars.maxHeight
+	self.backgroundBar.strokeWidth = 0
+	self.backgroundBar:setFillColor(165, 165, 165)
+	self.backgroundBar:setStrokeColor(20, 20, 20)
+
+	self.inhabitantsBar = display.newRect(0, 0, 0, 0)
+	self.inhabitantsBar.width = config.city.bars.width
+	self.inhabitantsBar.strokeWidth = 0
+
+	self:updateInhabitants()
+
+	-- Add to group
+	self.cityGroup:insert(self.citySprite)
+	self.barGroup:insert(self.backgroundBar)
+	self.barGroup:insert(self.inhabitantsBar)
 	
 	-- Handle events
 	self.citySprite:addEventListener("touch", self)
-
-	-- Insert into group
-	self.cityGroup:insert(self.citySprite)
-
-	-- Inhabitants count text
-	self.inhabitantsText = display.newText(self.inhabitants, config.city.inhabitantsText.x,
-		config.city.inhabitantsText.y, native.systemFontBold, 16)
-	self.inhabitantsText:setTextColor(0, 0, 0)
-
-	-- Name text
-	self.nameText = display.newText(self.name, config.city.nameText.x, config.city.nameText.y,
-		native.systemFontBold, 16)
-	self.nameText:setTextColor(0, 0, 0)
-
-	-- Add texts to group
-	self.textGroup:insert(self.inhabitantsText)
-	self.textGroup:insert(self.nameText)
 
 	-- Play neutral animation
 	self:updateSprite()
@@ -146,13 +154,23 @@ function City:updateSprite()
 	local animationName;
 	
 	if self.player then
-		animationName = "city" .. self.size .. "_" .. self.player.color
+		animationName = "city" .. self.size .. "_" .. self.player.color.name
+		self.inhabitantsBar:setFillColor(self.player.color.r, self.player.color.g, self.player.color.b)
 	else
 		animationName = "city" .. self.size .. "_grey"
+		self.inhabitantsBar:setFillColor(57, 57, 57)
 	end
 	
 	self.citySprite:prepare(animationName)
 	self.citySprite:play()
+end
+
+-- Update the number of inhabitants graphically
+function City:updateInhabitants()
+	self.inhabitantsBar.height = self.barHeight - (1 - self.inhabitants / self.maxInhabitants) * self.barHeight
+	self.inhabitantsBar:setReferencePoint(display.BottomLeftReferencePoint)
+	self.inhabitantsBar.x = config.city.bars.offset.x
+	self.inhabitantsBar.y = config.city.bars.offset.y + config.city.bars.maxHeight
 end
 
 -- Add inhabitants to the city
@@ -175,7 +193,7 @@ function City:addInhabitants(nb)
 		self:updateSprite()
 	end
 
-	self.inhabitantsText.text = self.inhabitants
+	self:updateInhabitants()
 
 	-- Notify shortcut
 	if self.shortcut then

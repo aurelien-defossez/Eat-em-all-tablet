@@ -55,7 +55,7 @@ function FortressWall.create(parameters)
 
 	-- Draw sprite
 	self.wallSprite = SpriteManager.newSprite(spriteSet)
-	self.wallSprite:prepare("fortress_wall_" .. self.player.color)
+	self.wallSprite:prepare("fortress_wall_" .. self.player.color.name)
 	self.wallSprite:play()
 
 	-- Position sprite

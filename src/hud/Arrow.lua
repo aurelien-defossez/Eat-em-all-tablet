@@ -102,9 +102,9 @@ function Arrow:drawSprite()
 	local disabled = self.enabled and "" or "disabled_"
 
 	if self.direction ~= DIRECTION.DELETE then
-		animationName = "arrow_" .. disabled .. self.player.color
+		animationName = "arrow_" .. disabled .. self.player.color.name
 	else 
-		animationName = "arrow_crossed_" .. self.player.color
+		animationName = "arrow_crossed_" .. self.player.color.name
 	end
 
 	self.arrowSprite:prepare(animationName)
@@ -125,9 +125,9 @@ function Arrow:touch(event)
 		local animationName = nil
 
 		if self.direction ~= DIRECTION.DELETE then
-			animationName = "arrow_selected_" .. self.player.color
+			animationName = "arrow_selected_" .. self.player.color.name
 		else 
-			animationName = "arrow_crossed_" .. self.player.color 
+			animationName = "arrow_crossed_" .. self.player.color.name
 		end
 
 		-- Draw arrow
