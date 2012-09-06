@@ -255,6 +255,9 @@ end
 --  direction: The new direction
 --  correctPosition: If true, then the position has to be corrected so the zombie stay on the tile center
 --  priority: The direction priority, to prevent less priority directions to occur
+--
+-- Returns:
+--  True if the zombie did follow the direction, false otherwise
 function Zombie:changeDirection(parameters)
 	if parameters.priority > self.directionPriority then
 		self.direction = parameters.direction
@@ -289,6 +292,10 @@ function Zombie:changeDirection(parameters)
 		end
 
 		self:updateSprite()
+
+		return true
+	else
+		return false
 	end
 end
 

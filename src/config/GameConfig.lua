@@ -116,7 +116,7 @@ config = {
 			size = 6
 		},
 		tornado = {
-			duration = 5000
+			duration = 10000
 		}
 	},
 

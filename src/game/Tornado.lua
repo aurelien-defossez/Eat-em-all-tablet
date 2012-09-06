@@ -61,6 +61,7 @@ function Tornado.create(parameters)
 	self.x = self.tile.x
 	self.y = self.tile.y
 	self.lifeSpan = config.item.tornado.duration
+	self.nextDirection = RANDOM_DIRECTION[math.random(#RANDOM_DIRECTION)]
 
 	-- Position group
 	self.group.x = self.x
@@ -113,11 +114,23 @@ function Tornado:reachTileCenter(event)
 
 	if zombie.phase == ZOMBIE.PHASE.MOVE then
 		-- Block direction so a sign cannot rectify the trajectory
-		zombie:changeDirection{
-			direction = RANDOM_DIRECTION[math.random(#RANDOM_DIRECTION)],
+		local hasFollowed = zombie:changeDirection{
+			direction = self.nextDirection,
 			priority = ZOMBIE.PRIORITY.TORNADO,
 			correctPosition = true
 		}
+
+		if hasFollowed then
+			if self.nextDirection == DIRECTION.UP then
+				self.nextDirection = DIRECTION.LEFT
+			elseif self.nextDirection == DIRECTION.LEFT then
+				self.nextDirection = DIRECTION.DOWN
+			elseif self.nextDirection == DIRECTION.DOWN then
+				self.nextDirection = DIRECTION.RIGHT
+			elseif self.nextDirection == DIRECTION.RIGHT then
+				self.nextDirection = DIRECTION.UP
+			end
+		end
 	end
 end
 
