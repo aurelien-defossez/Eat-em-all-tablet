@@ -230,7 +230,7 @@ function City:enterTile(event)
 	if zombie.phase == ZOMBIE.PHASE.MOVE then
 		if not self.player or zombie.player ~= self.player then
 			self:attackCity(zombie)
-		elseif self.inhabitants < self.maxInhabitants and zombie.size == 1 then
+		elseif zombie.size == 1 then
 			-- Enforce city
 			self:addInhabitants(zombie.size)
 			zombie:die{
