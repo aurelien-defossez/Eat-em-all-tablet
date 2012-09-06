@@ -37,8 +37,8 @@ function TableLayout.create(parameters)
 	
 	-- Initialize attributes
 	self.items = {}
-	self.nbRows = math.floor(self.height / self.itemHeight)
-	self.nbCols = math.floor(self.width / self.itemWidth)
+	self.nbRows = self.nbRows or math.floor(self.height / self.itemHeight)
+	self.nbCols = self.nbCols or math.floor(self.width / self.itemWidth)
 
 	return self
 end

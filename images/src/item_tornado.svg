@@ -52,7 +52,7 @@
        fx="31.636365"
        fy="31.727273"
        r="18.136365"
-       gradientTransform="matrix(1,0,0,1.0050125,0,-0.15903212)"
+       gradientTransform="matrix(1.2693267,0,0,1.2756892,-8.5205173,-8.7468649)"
        gradientUnits="userSpaceOnUse" />
   </defs>
   <sodipodi:namedview
@@ -69,10 +69,10 @@
      showgrid="true"
      inkscape:document-units="px"
      inkscape:grid-bbox="true"
-     inkscape:window-width="1440"
-     inkscape:window-height="878"
-     inkscape:window-x="1912"
-     inkscape:window-y="172"
+     inkscape:window-width="1920"
+     inkscape:window-height="1028"
+     inkscape:window-x="-8"
+     inkscape:window-y="-8"
      inkscape:window-maximized="1" />
   <metadata
      id="metadata2990">
@@ -82,7 +82,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -91,13 +91,13 @@
      inkscape:label="Layer 1"
      inkscape:groupmode="layer">
     <rect
-       style="fill:url(#radialGradient3821);fill-opacity:1;stroke:#000000;stroke-width:0.71059167000000001;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       style="fill:url(#radialGradient3821);fill-opacity:1;stroke:#000000;stroke-width:0.90197295;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
        id="rect3037"
-       width="35.562138"
-       height="35.743954"
-       x="13.855296"
-       y="13.855296"
-       ry="4.0319157" />
+       width="45.139969"
+       height="45.370754"
+       x="9.0663795"
+       y="9.0418959"
+       ry="5.1178184" />
     <path
        sodipodi:type="spiral"
        style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
@@ -110,6 +110,6 @@
        sodipodi:argument="-17.138838"
        sodipodi:t0="0"
        d="m 31.636364,31.272728 c -0.113103,0.803049 -1.138296,0.243735 -1.334721,-0.187985 -0.5323,-1.169936 0.63022,-2.297936 1.710691,-2.481457 1.93271,-0.328277 3.502317,1.416837 3.628193,3.233397 0.184728,2.665874 -2.209399,4.729314 -4.756103,4.774929 -3.394356,0.0608 -5.965162,-3.003451 -5.921665,-6.278809 0.05474,-4.121703 3.798062,-7.205429 7.801515,-7.068401 4.848717,0.165958 8.448225,4.592958 8.215137,9.324221 -0.274685,5.575628 -5.388027,9.692604 -10.846927,9.361873 -6.302515,-0.381841 -10.93804,-6.183211 -10.50861,-12.369633 0.487947,-7.029405 6.978478,-12.184216 13.892339,-11.655346 7.756308,0.593313 13.430932,7.773806 12.802083,15.415045 -0.698142,8.483224 -8.569181,14.678051 -16.937751,13.948819 -3.457214,-0.30126 -6.770492,-1.733345 -9.380546,-4.016655"
-       transform="translate(-0.54545455,-0.72727273)" />
+       transform="matrix(1.2693267,0,0,1.2693267,-9.2128773,-9.4681479)" />
   </g>
 </svg>

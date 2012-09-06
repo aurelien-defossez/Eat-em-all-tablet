@@ -174,7 +174,7 @@ config = {
 			items = {
 				width = 2 * 64,
 				ypadding = 8,
-				nbRows = 3,
+				nbRows = 2,
 				nbCols = 2
 			},
 			arrows = {

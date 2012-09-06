@@ -56,6 +56,8 @@ function ItemsPanel.create(parameters)
 		height = self.height,
 		itemWidth = config.item.width,
 		itemHeight = config.item.height,
+		nbRows = config.panels.controls.items.nbRows,
+		nbCols = config.panels.controls.items.nbCols,
 		direction = self.player.tableLayoutDirection
 	}
 

@@ -55,6 +55,8 @@ function CitiesPanel.create(parameters)
 		height = self.height,
 		itemWidth = config.city.width,
 		itemHeight = config.city.height,
+		nbRows = config.panels.controls.cities.nbRows,
+		nbCols = config.panels.controls.cities.nbCols,
 		direction = self.player.tableLayoutDirection
 	}
 
