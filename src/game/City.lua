@@ -169,7 +169,11 @@ end
 
 -- Update the number of inhabitants graphically
 function City:updateInhabitants()
-	self.inhabitantsBar.height = self.barHeight - (1 - self.inhabitants / self.maxInhabitants) * self.barHeight
+	local newHeight = self.barHeight - (1 - (self.inhabitants / self.maxInhabitants)) * self.barHeight
+	
+	self.inhabitantsBar.height = newHeight
+	self.inhabitantsBar.isVisible = (newHeight > 0)
+
 	self.inhabitantsBar:setReferencePoint(display.BottomLeftReferencePoint)
 	self.inhabitantsBar.x = config.city.bars.offset.x
 	self.inhabitantsBar.y = config.city.bars.offset.y + config.city.bars.maxHeight
@@ -177,6 +181,7 @@ end
 
 -- Add inhabitants to the city
 function City:addInhabitants(nb)
+	print("addInhabitants "..nb)
 	self.inhabitants = self.inhabitants + nb
 
 	if self.inhabitants > self.maxInhabitants then
@@ -250,7 +255,7 @@ end
 function City:reachTileCenter(event)
 	local zombie = event.zombie
 
-	if zombie.phase == ZOMBIE.PHASE.MOVE and zombie.player.id == self.player.id then
+	if zombie.phase == ZOMBIE.PHASE.MOVE and self.player and zombie.player.id == self.player.id then
 		zombie:changeDirection{
 			direction = self.player.direction,
 			priority = ZOMBIE.PRIORITY.CITY,
