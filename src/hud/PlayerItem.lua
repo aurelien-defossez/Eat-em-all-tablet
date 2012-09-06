@@ -178,11 +178,10 @@ function PlayerItem:touch(event)
 						size = config.item.giant.size
 					}
 				end
-			-- Use tornado if the drop tile does not contain a cemetery, a city, a fortress wall or another tornado
+			-- Use tornado if the drop tile does not contain a cemetery, a fortress wall or another tornado
 			elseif self.type == ITEM.TORNADO then
 				if not tile:hasContentType{
 					TILE.CONTENT.CEMETERY,
-					TILE.CONTENT.CITY,
 					TILE.CONTENT.FORTRESS_WALL,
 					TILE.CONTENT.TORNADO
 				} then

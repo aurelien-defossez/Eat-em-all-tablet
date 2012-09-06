@@ -117,6 +117,7 @@ function Sign:reachTileCenter(event)
 			and not (self.tile.isOnLastRow and self.direction == DIRECTION.DOWN) then
 			zombie:changeDirection{
 				direction = self.direction,
+				priority = ZOMBIE.PRIORITY.SIGN,
 				correctPosition = true
 			}
 		end

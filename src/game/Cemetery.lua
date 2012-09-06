@@ -151,7 +151,8 @@ function Cemetery:enterTile(event)
 	else
 		-- Move backward
 		zombie:changeDirection{
-			direction = self.player.direction
+			direction = self.player.direction,
+			priority = ZOMBIE.PRIORITY.DEFAULT
 		}
 	end
 end

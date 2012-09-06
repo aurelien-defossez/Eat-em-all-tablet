@@ -73,6 +73,15 @@ ZOMBIE = {
 		CITY_ENTER = 5,
 		TORNADO = 6,
 		MINE = 7
+	},
+	PRIORITY = {
+		NO_DIRECTION = 0,
+		DEFAULT = 1,
+		CITY = 2,
+		SIGN = 3,
+		TORNADO = 4,
+		ITEM = 5,
+		WALL = 6
 	}
 }
 

@@ -140,7 +140,8 @@ end
 function MapItem:fetched(player)
 	self.zombie.phase = ZOMBIE.PHASE.MOVE
 	self.zombie:changeDirection{
-		direction = self.zombie.player.direction
+		direction = self.zombie.player.direction,
+		priority = ZOMBIE.PRIORITY.DEFAULT
 	}
 
 	self:detachZombie(self.zombie)

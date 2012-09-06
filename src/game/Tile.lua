@@ -232,14 +232,14 @@ function Tile:reachTileCenter(zombie)
 		if math.random() < 0.5 then
 			zombie:changeDirection{
 				direction = DIRECTION.LEFT,
-				correctPosition = true,
-				force = true
+				priority = ZOMBIE.PRIORITY.WALL,
+				correctPosition = true
 			}
 		else
 			zombie:changeDirection{
 				direction = DIRECTION.RIGHT,
-				correctPosition = true,
-				force = true
+				priority = ZOMBIE.PRIORITY.WALL,
+				correctPosition = true
 			}
 		end
 	end

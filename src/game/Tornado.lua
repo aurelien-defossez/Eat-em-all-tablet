@@ -115,8 +115,8 @@ function Tornado:reachTileCenter(event)
 		-- Block direction so a sign cannot rectify the trajectory
 		zombie:changeDirection{
 			direction = RANDOM_DIRECTION[math.random(#RANDOM_DIRECTION)],
-			correctPosition = true,
-			block = true
+			priority = ZOMBIE.PRIORITY.TORNADO,
+			correctPosition = true
 		}
 	end
 end

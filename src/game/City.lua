@@ -130,6 +130,7 @@ function City.create(parameters)
 
 	-- Listen to events
 	self.tile:addEventListener(TILE.EVENT.ENTER_TILE, self)
+	self.tile:addEventListener(TILE.EVENT.REACH_TILE_CENTER, self)
 	Runtime:addEventListener("spritePause", self)
 
 	return self
@@ -138,6 +139,7 @@ end
 -- Destroy the city
 function City:destroy()
 	self.tile:removeEventListener(TILE.EVENT.ENTER_TILE, self)
+	self.tile:removeEventListener(TILE.EVENT.REACH_TILE_CENTER, self)
 	Runtime:removeEventListener("spritePause", self)
 
 	self.tile:removeContent(self.contentId)
@@ -230,7 +232,7 @@ function City:enterTile(event)
 	if zombie.phase == ZOMBIE.PHASE.MOVE then
 		if not self.player or zombie.player ~= self.player then
 			self:attackCity(zombie)
-		elseif zombie.size == 1 then
+		elseif self.inhabitants < self.maxInhabitants and zombie.size == 1 then
 			-- Enforce city
 			self:addInhabitants(zombie.size)
 			zombie:die{
@@ -239,6 +241,24 @@ function City:enterTile(event)
 		end
 	end
 end
+
+-- Reach center tile handler, called when a zombie reaches the middle of the tile
+--
+-- Parameters:
+--  event: The tile event, with these values:
+--   zombie: The zombie entering the tile
+function City:reachTileCenter(event)
+	local zombie = event.zombie
+
+	if zombie.phase == ZOMBIE.PHASE.MOVE and zombie.player.id == self.player.id then
+		zombie:changeDirection{
+			direction = self.player.direction,
+			priority = ZOMBIE.PRIORITY.CITY,
+			correctPosition = true
+		}
+	end
+end
+
 
 -- Make the city receive an attack by the given zombie
 --

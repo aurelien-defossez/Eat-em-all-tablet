@@ -75,7 +75,7 @@ function Zombie.create(parameters)
 	self.direction = self.player.direction
 	self.size = self.size or 1
 	self.hitPoints = self.size
-	self.directionBlocked = false
+	self.directionPriority = ZOMBIE.PRIORITY.NO_DIRECTION
 
 	if self.size == 1 then
 		self.speed = config.zombie.speed.normal
@@ -91,7 +91,8 @@ function Zombie.create(parameters)
 	self.zombieSprite = SpriteManager.newSprite(spriteSet)
 
 	self:changeDirection{
-		direction = self.player.direction
+		direction = self.player.direction,
+		priority = ZOMBIE.PRIORITY.DEFAULT
 	}
 
 	self:computeCollisionMask()
@@ -183,7 +184,7 @@ function Zombie:move(parameters)
 		-- Leave tile
 		self.tile:leaveTile(self)
 
-		self.directionBlocked = false
+		self.directionPriority = ZOMBIE.PRIORITY.NO_DIRECTION
 
 		-- Find new tile and enter it
 		self.tile = self.grid:getTileByPixels(tileCollider)
@@ -253,11 +254,11 @@ end
 -- Parameters:
 --  direction: The new direction
 --  correctPosition: If true, then the position has to be corrected so the zombie stay on the tile center
---  block: If true, then the direction can't be modified by any other object during this frame
---  force: If true, then the direction is set even if it is supposed to be blocked
+--  priority: The direction priority, to prevent less priority directions to occur
 function Zombie:changeDirection(parameters)
-	if not self.directionBlocked or parameters.force then
+	if parameters.priority > self.directionPriority then
 		self.direction = parameters.direction
+		self.directionPriority = parameters.priority
 
 		-- Update the direction vector
 		if self.direction == DIRECTION.UP then
@@ -285,10 +286,6 @@ function Zombie:changeDirection(parameters)
 				self.y = tileCenter
 				self.x = self.x + centerOffset * self.directionVector.x
 			end
-		end
-
-		if parameters.block then
-			self.directionBlocked = true
 		end
 
 		self:updateSprite()
@@ -331,7 +328,7 @@ function Zombie:carryItem(item)
 
 	self:changeDirection{
 		direction = getReverseDirection(self.player.direction),
-		force = true
+		priority = ZOMBIE.PRIORITY.ITEM
 	}
 
 	item:attachZombie(self)
