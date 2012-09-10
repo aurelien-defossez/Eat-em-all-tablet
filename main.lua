@@ -46,7 +46,7 @@ local systemEventListener = function(event)
 		-- Start the multiplayer game
 		storyboard.gotoScene("src.game.Multiplayer")
 	elseif event.type == "applicationExit" then
-		quit()
+		-- quit()
 		return true
 	elseif event.type == "applicationSuspend" then
 		pause(true)
@@ -61,7 +61,6 @@ end
 
 -- Key listener
 local keyListener = function(event)
-	print("Key event: "..event.keyName.." ("..event.phase..")")
 	if event.keyName == "back" and event.phase == "up" then
 		if WindowManager.getTopWindow() then
 			WindowManager.removeTopWindow()

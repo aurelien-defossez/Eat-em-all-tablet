@@ -167,6 +167,14 @@ function onResumeTap(button)
 	WindowManager.removeTopWindow()
 end
 
+-- Handler for the "Back" button
+--
+-- Parameters:
+--  button: The button pressed
+function onBackTap(button)
+	WindowManager.removeTopWindow()
+end
+
 -- Handler for the "Restart" button
 --
 -- Parameters:
@@ -185,6 +193,10 @@ function onDebugTap(button)
 	WindowManager.addWindow(MenuWindow.create{
 		title = "Debug",
 		buttons = {
+			Button.create{
+				text = "Back",
+				actionPerformed = onBackTap
+			},
 			Button.create{
 				text = "Frame by frame mode",
 				actionPerformed = onDebugFrameByFrameTap,
