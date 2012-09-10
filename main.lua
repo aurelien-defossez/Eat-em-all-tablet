@@ -44,7 +44,7 @@ local systemEventListener = function(event)
 		math.randomseed(os.time())
 
 		-- Start the multiplayer game
-		storyboard.gotoScene("src.game.Multiplayer")
+		storyboard.gotoScene("src.hud.Welcome")
 	elseif event.type == "applicationExit" then
 		-- quit()
 		return true

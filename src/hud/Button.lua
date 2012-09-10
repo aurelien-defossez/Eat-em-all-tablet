@@ -32,6 +32,7 @@ end
 -- Parameters:
 --  text: The text to display
 --  actionPerformed: The action performed when the button is tapped
+--  selected: Tells whether the button is selected
 function Button.create(parameters)
 	-- Create object
 	local self = parameters or {}

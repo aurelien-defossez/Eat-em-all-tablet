@@ -6,9 +6,9 @@ config = {
 		randomGiants = false,
 		onlyGiants = false,
 		immediateSpawn = false,
-		fastItemSpawn = true,
+		fastItemSpawn = false,
 		showCollisionMask = false,
-		startWithItems = true,
+		startWithItems = false,
 		frameByFrame = false,
 
 		fastModeRatio = 3

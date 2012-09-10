@@ -159,14 +159,6 @@ function onClose()
 	}
 end
 
--- Handler for the "Resume" button
---
--- Parameters:
---  button: The button pressed
-function onResumeTap(button)
-	WindowManager.removeTopWindow()
-end
-
 -- Handler for the "Back" button
 --
 -- Parameters:
@@ -175,12 +167,20 @@ function onBackTap(button)
 	WindowManager.removeTopWindow()
 end
 
+-- Handler for the "Resume" button
+--
+-- Parameters:
+--  button: The button pressed
+function onResumeTap(button)
+	WindowManager.removeAllWindows()
+end
+
 -- Handler for the "Restart" button
 --
 -- Parameters:
 --  button: The button pressed
 function onRestartTap(button)
-	WindowManager.removeTopWindow()
+	WindowManager.removeAllWindows()
 	
 	Runtime:dispatchEvent{
 		name = "gameRestart"

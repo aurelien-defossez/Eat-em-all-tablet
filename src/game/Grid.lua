@@ -284,6 +284,11 @@ function Grid:enterFrame(timeDelta)
 	-- pTotal = pLogInvert * pPerSecond
 	local itemCount = MapItem.ct + PlayerItem.ct
 	local probaFactor = config.item.creation.factor / config.fps
+
+	if config.debug.fastItemSpawn then
+		probaFactor = probaFactor * 4
+	end
+
 	local probaItemSpawn = (1 - math.log(itemCount) / math.log(2 * config.player.maxItems)) * probaFactor
 	if itemCount == 0 or math.random() < probaItemSpawn then
 		local middleTileX = math.ceil(config.panels.grid.nbCols / 2)
