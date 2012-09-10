@@ -179,7 +179,11 @@ config = {
 			},
 			arrows = {
 				width = 2 * 64,
-				height = 4 * 64
+				height = 4 * 64,
+				counter = {
+					xoffset = 15,
+					yoffset = 10
+				}
 			},
 			cities = {
 				ypadding = 8,
@@ -263,7 +267,7 @@ config = {
 		},
 		mine = {
 			mine_create = {
-				frameCount = 15,
+				frameCount = 14,
 				period = 500,
 				loop = false
 			},

@@ -97,6 +97,24 @@ function ArrowsPanel.create(parameters)
 		y = self.y + 3 * config.arrow.height
 	}
 
+	-- Create arrow counter
+	self.signCounter = display.newText(config.player.maxSigns, config.panels.controls.arrows.counter.xoffset,
+		config.panels.controls.arrows.counter.yoffset, native.systemFontBold, 32)
+	self.signCounter:setReferencePoint(display.BottomCenterReferencePoint)
+	self.signCounter:setTextColor(0, 0, 0)
+	self.group:insert(self.signCounter)
+
+	-- Position counter depending on player's side
+	if self.player.id == 1 then
+		self.signCounter.x = self.width - config.panels.controls.arrows.counter.xoffset
+	else
+		self.signCounter.x = config.panels.controls.arrows.counter.xoffset
+	end
+
+	-- Position group
+	self.group.x = self.x
+	self.group.y = self.y
+
 	-- Register itself to the player
 	self.player.arrowsPanel = self
 
@@ -132,6 +150,14 @@ function ArrowsPanel:disable()
 	self.arrowDown:disable()
 	self.arrowRight:disable()
 	self.arrowLeft:disable()
+end
+
+-- Update the sign count
+--
+-- Parameters:
+--  signCount: The new value
+function ArrowsPanel:updateSignCount(signCount)
+	self.signCounter.text = signCount
 end
 
 -----------------------------------------------------------------------------------------

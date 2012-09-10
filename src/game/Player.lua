@@ -118,10 +118,12 @@ function Player:addSign(newSign)
 	self.signs[newSign.id] = newSign
 	self.signsCount = self.signsCount + 1
 
-	-- Remove excess sign
 	if self.signsCount == config.player.maxSigns then
 		self.arrowsPanel:disable()
 	end
+
+	-- Display number of remaining signs
+	self.arrowsPanel:updateSignCount(config.player.maxSigns - self.signsCount)
 end
 
 -- Remove a sign from the player's control
@@ -135,6 +137,9 @@ function Player:removeSign(sign)
 	if self.signsCount == config.player.maxSigns - 1 then
 		self.arrowsPanel:enable()
 	end
+
+	-- Display number of remaining signs
+	self.arrowsPanel:updateSignCount(config.player.maxSigns - self.signsCount)
 end
 
 -----------------------------------------------------------------------------------------
