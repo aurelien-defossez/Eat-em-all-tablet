@@ -65,7 +65,7 @@ function Grid.create(parameters)
 	self.nbZombies = 0
 
 	self.items = {}
-	self.itemMaxLog = math.log(2 * config.player.maxItems)
+	self.lastItemSpawnTime = 0	
 
 	self.matrix = {}
 	for x = 1, config.panels.grid.nbRows + 1 do
@@ -278,38 +278,37 @@ function Grid:enterFrame(timeDelta)
 	end
 
 	-- Create item
-	-- pLog = log(ct) / log(max)
-	-- pLogInvert = 1 - pLog
-	-- pPerSecond = creationFactor / fps
-	-- pTotal = pLogInvert * pPerSecond
-	local itemCount = MapItem.ct + PlayerItem.ct
-	local probaFactor = config.item.creation.factor / config.fps
+	if config.debug.fastItemSpawn or self.lastItemSpawnTime >= config.item.creation.minTime then
+		-- pLog = log(ct) / log(max)
+		-- pLogInvert = 1 - pLog
+		-- pPerSecond = creationFactor / fps
+		-- pTotal = pLogInvert * pPerSecond
+		local itemCount = MapItem.ct + PlayerItem.ct
+		local probaFactor = config.item.creation.factor / config.fps
+		local probaItemSpawn = (1 - math.log(itemCount) / math.log(2 * config.player.maxItems)) * probaFactor
 
-	if config.debug.fastItemSpawn then
-		probaFactor = probaFactor * 4
-	end
+		if itemCount == 0 or math.random() < probaItemSpawn then
+			local middleTileX = math.ceil(config.panels.grid.nbCols / 2)
+			local tile
+			local triesCount = 0
 
-	local probaItemSpawn = (1 - math.log(itemCount) / math.log(2 * config.player.maxItems)) * probaFactor
-	if itemCount == 0 or math.random() < probaItemSpawn then
-		local middleTileX = math.ceil(config.panels.grid.nbCols / 2)
-		local tile
-		local triesCount = 0
+			repeat
+				tile = self:getTile{
+					x = math.random(middleTileX - config.item.creation.xoffset, middleTileX + config.item.creation.xoffset),
+					y = math.random(config.panels.grid.nbRows)
+				}
 
-		repeat
-			tile = self:getTile{
-				x = math.random(middleTileX - config.item.creation.xoffset, middleTileX + config.item.creation.xoffset),
-				y = math.random(config.panels.grid.nbRows)
+				triesCount = triesCount + 1
+			until tile:hasNoContent() or tile:hasContentType{TILE.CONTENT.SIGN} or triesCount > 42
+
+			local item = MapItem.create{
+				tile = tile,
+				grid = self
 			}
 
-			triesCount = triesCount + 1
-		until tile:hasNoContent() or tile:hasContentType{TILE.CONTENT.SIGN} or triesCount > 42
-
-		local item = MapItem.create{
-			tile = tile,
-			grid = self
-		}
-
-		self.items[item.id] = item
+			self.items[item.id] = item
+			self.lastItemSpawnTime = 0
+		end
 	end
 
 	-- Check for collisions
@@ -357,6 +356,8 @@ function Grid:enterFrame(timeDelta)
 			end
 		end
 	end
+
+	self.lastItemSpawnTime = self.lastItemSpawnTime + timeDelta
 end
 
 -----------------------------------------------------------------------------------------

@@ -181,7 +181,6 @@ end
 
 -- Add inhabitants to the city
 function City:addInhabitants(nb)
-	print("addInhabitants "..nb)
 	self.inhabitants = self.inhabitants + nb
 
 	if self.inhabitants > self.maxInhabitants then

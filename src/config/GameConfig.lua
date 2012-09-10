@@ -103,6 +103,7 @@ config = {
 		speed = 0.1,
 		creation = {
 			factor = 0.5,
+			minTime = 6000,
 			xoffset = 2
 		},
 		easingTime = {
