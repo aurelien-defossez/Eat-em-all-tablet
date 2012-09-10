@@ -180,6 +180,8 @@ end
 -- Parameters:
 --  button: The button pressed
 function onRestartTap(button)
+	WindowManager.removeTopWindow()
+	
 	Runtime:dispatchEvent{
 		name = "gameRestart"
 	}

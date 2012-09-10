@@ -84,11 +84,6 @@ end
 
 -- Destroy the panel
 function MenuWindow:destroy()
-	-- Send close callback
-	if self.onClose then
-		self.onClose()
-	end
-
 	-- Destroy buttons
 	for key, button in pairs(self.buttons) do
 		button:destroy()
@@ -96,6 +91,11 @@ function MenuWindow:destroy()
 
 	-- Remove display group
 	self.group:removeSelf()
+
+	-- Send close callback
+	if self.onClose then
+		self.onClose()
+	end
 end
 
 -----------------------------------------------------------------------------------------
