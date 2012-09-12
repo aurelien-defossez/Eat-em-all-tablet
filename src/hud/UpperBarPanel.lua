@@ -15,6 +15,7 @@ UpperBarPanel.__index = UpperBarPanel
 require("src.utils.Constants")
 require("src.config.GameConfig")
 
+local storyboard = require("storyboard")
 local SpriteManager = require("src.utils.SpriteManager")
 local MenuWindow = require("src.hud.MenuWindow")
 local Button = require("src.hud.Button")
@@ -187,6 +188,16 @@ function onRestartTap(button)
 	}
 end
 
+-- Handler for the "Quit" button
+--
+-- Parameters:
+--  button: The button pressed
+function onQuitTap(button)
+	WindowManager.removeAllWindows()
+
+	storyboard.gotoScene("src.hud.Welcome")
+end
+
 -- Handler for the "Debug" button
 --
 -- Parameters:
@@ -221,16 +232,6 @@ function onDebugTap(button)
 			}
 		}
 	})
-end
-
--- Handler for the "Quit" button
---
--- Parameters:
---  button: The button pressed
-function onQuitTap(button)
-	Runtime:dispatchEvent{
-		name = "gameQuit"
-	}
 end
 
 -- Handler for the "Frame by frame mode" button of the debug menu

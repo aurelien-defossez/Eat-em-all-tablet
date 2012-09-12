@@ -72,22 +72,25 @@ config = {
 			width = 10
 		},
 		small = {
-			inhabitants = 5,
+			inhabitants = 0,
 			spawnPeriod = 5000,
 			maxInhabitants = 10,
-			exitPeriod = 400
+			exitPeriod = 400,
+			requiredInhabitants = 5
 		},
 		medium = {
-			inhabitants = 12,
+			inhabitants = 0,
 			spawnPeriod = 3500,
 			maxInhabitants = 20,
-			exitPeriod = 300
+			exitPeriod = 300,
+			requiredInhabitants = 15
 		},
 		large = {
-			inhabitants = 30,
+			inhabitants = 0,
 			spawnPeriod = 2000,
 			maxInhabitants = 30,
-			exitPeriod = 200
+			exitPeriod = 200,
+			requiredInhabitants = 25
 		}
 	},
 
@@ -117,7 +120,7 @@ config = {
 			size = 6
 		},
 		tornado = {
-			duration = 10000
+			duration = 15000
 		}
 	},
 
@@ -137,8 +140,8 @@ config = {
 		},
 		-- speed in tiles per seconds
 		speed = {
-			normal = 0.5,
-			giant = 0.2
+			normal = 0.25,
+			giant = 0.1
 		},
 		tileColliderOffset = {
 			x = 4,

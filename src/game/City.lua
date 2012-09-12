@@ -54,6 +54,7 @@ function City.create(parameters)
 	self.y = self.tile.y
 	self.player = nil
 	self.gateOpened = false
+	self.spawning = false
 
 	self.timeSinceLastSpawn = 0
 	self.timeSinceLastExit = 0
@@ -63,16 +64,19 @@ function City.create(parameters)
 		self.spawnPeriod = config.city.small.spawnPeriod
 		self.maxInhabitants = config.city.small.maxInhabitants
 		self.exitPeriod = config.city.small.exitPeriod
+		self.requiredInhabitants = config.city.small.requiredInhabitants
 	elseif self.size == CITY.SIZE.MEDIUM then
 		self.inhabitants = config.city.medium.inhabitants
 		self.spawnPeriod = config.city.medium.spawnPeriod
 		self.maxInhabitants = config.city.medium.maxInhabitants
 		self.exitPeriod = config.city.medium.exitPeriod
+		self.requiredInhabitants = config.city.medium.requiredInhabitants
 	else
 		self.inhabitants = config.city.large.inhabitants
 		self.spawnPeriod = config.city.large.spawnPeriod
 		self.maxInhabitants = config.city.large.maxInhabitants
 		self.exitPeriod = config.city.large.exitPeriod
+		self.requiredInhabitants = config.city.large.requiredInhabitants
 	end
 
 	-- Add to groups
@@ -154,17 +158,27 @@ end
 -- Update the city sprite animation
 function City:updateSprite()
 	local animationName;
-	
+
+	-- Update bar color
 	if self.player then
-		animationName = "city" .. self.size .. "_" .. self.player.color.name
 		self.inhabitantsBar:setFillColor(self.player.color.r, self.player.color.g, self.player.color.b)
 	else
-		animationName = "city" .. self.size .. "_grey"
 		self.inhabitantsBar:setFillColor(57, 57, 57)
+	end
+	
+	-- Update sprite color
+	if not self.spawning or not self.player then
+		animationName = "city" .. self.size .. "_grey"
+	else
+		animationName = "city" .. self.size .. "_" .. self.player.color.name
 	end
 	
 	self.citySprite:prepare(animationName)
 	self.citySprite:play()
+
+	if self.shortcut then
+		self.shortcut:updateSprite(animationName)
+	end
 end
 
 -- Update the number of inhabitants graphically
@@ -183,6 +197,17 @@ end
 function City:addInhabitants(nb)
 	self.inhabitants = self.inhabitants + nb
 
+	-- Update the spawning faculty of the city
+	local aboveThreshold = (self.inhabitants >= self.requiredInhabitants)
+	if not self.spawning and aboveThreshold then
+		self.timeSinceLastExit = 0
+		self.spawning = true
+		self:updateSprite()
+	elseif self.spawning and not aboveThreshold then
+		self.spawning = false
+		self:updateSprite()
+	end
+
 	if self.inhabitants > self.maxInhabitants then
 		self:spawn{
 			free = false
@@ -195,6 +220,7 @@ function City:addInhabitants(nb)
 
 		self.player = nil
 		self.gateOpened = false
+		self.spawning = false
 
 		self:updateSprite()
 	end
@@ -298,15 +324,18 @@ end
 --  timeDelta: The time in ms since last frame
 function City:enterFrame(timeDelta)
 	if self.player then
-		self.timeSinceLastSpawn = self.timeSinceLastSpawn + timeDelta
 		self.timeSinceLastExit = self.timeSinceLastExit + timeDelta
 
 		-- Count spawn time
-		if self.timeSinceLastSpawn >= self.spawnPeriod then
-			self.timeSinceLastSpawn = self.timeSinceLastSpawn - self.spawnPeriod
-			self:spawn{
-				free = true
-			}
+		if self.spawning then
+			self.timeSinceLastSpawn = self.timeSinceLastSpawn + timeDelta
+
+			if self.timeSinceLastSpawn >= self.spawnPeriod then
+				self.timeSinceLastSpawn = self.timeSinceLastSpawn - self.spawnPeriod
+				self:spawn{
+					free = true
+				}
+			end
 		end
 
 		-- Count exit time

@@ -106,6 +106,15 @@ function CityShortcut:transitionTo(parameters)
 	self.y = parameters.y
 end
 
+-- Update the city sprite animation
+--
+-- Parameters:
+--  animationName: The animation name
+function CityShortcut:updateSprite(animationName)
+	self.citySprite:prepare(animationName)
+	self.citySprite:play()
+end
+
 -- Update the number of inhabitants from the linked city
 function CityShortcut:updateInhabitants()
 	-- self.inhabitantsText.text = self.city.inhabitants
