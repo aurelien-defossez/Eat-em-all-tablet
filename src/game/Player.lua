@@ -81,7 +81,7 @@ end
 -- Parameters:
 --  The city controlled
 function Player:gainCity(city)
-	self.citiesPanel:gainCity(city)
+	-- self.citiesPanel:gainCity(city)
 end
 
 -- Lose the control of a city
@@ -89,7 +89,7 @@ end
 -- Parameters:
 --  The city lost
 function Player:loseCity(city)
-	self.citiesPanel:loseCity(city)
+	-- self.citiesPanel:loseCity(city)
 end
 
 -- Add an item

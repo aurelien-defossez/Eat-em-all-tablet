@@ -124,7 +124,7 @@ function City.create(parameters)
 	self.barGroup:insert(self.inhabitantsBar)
 	
 	-- Handle events
-	self.citySprite:addEventListener("touch", self)
+	-- self.citySprite:addEventListener("touch", self)
 
 	-- Play neutral animation
 	self:updateSprite()
@@ -145,6 +145,7 @@ function City:destroy()
 	self.tile:removeEventListener(TILE.EVENT.ENTER_TILE, self)
 	self.tile:removeEventListener(TILE.EVENT.REACH_TILE_CENTER, self)
 	Runtime:removeEventListener("spritePause", self)
+	-- self.citySprite:removeEventListener("touch", self)
 
 	self.tile:removeContent(self.contentId)
 

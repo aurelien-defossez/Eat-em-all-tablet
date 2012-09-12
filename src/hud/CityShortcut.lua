@@ -71,7 +71,7 @@ function CityShortcut.create(parameters)
 	self.citySprite.y = self.city.tile.height / 2
 
 	-- Handle events
-	self.citySprite:addEventListener("touch", self)
+	-- self.citySprite:addEventListener("touch", self)
 
 	-- Add to group
 	self.cityGroup:insert(self.citySprite)
@@ -85,6 +85,7 @@ end
 
 -- Destroy the shortcut, by notifying its linked city and removing every sprite
 function CityShortcut:destroy()
+	-- self.citySprite:removeEventListener("touch", self)
 	self.city.shortcut = nil
 	self.group:removeSelf()
 end
