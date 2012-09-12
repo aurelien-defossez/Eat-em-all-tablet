@@ -175,10 +175,6 @@ function MapItem:enterFrame(timeDelta)
 	if self.speed ~= 0 then
 		local movement = timeDelta / 1000 * self.speed * Tile.width
 
-		if config.debug.fastMode then
-			movement = movement * config.debug.fastModeRatio
-		end
-
 		self.x = self.x + movement
 		self.group.x = self.x
 
