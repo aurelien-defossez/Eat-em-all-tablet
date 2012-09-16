@@ -45,7 +45,7 @@ function initialize()
 		spawning = {
 			name = "spawning",
 			attributes = {
-				canMove = false,
+				stateNameForSprite = "move",
 				canAttack = false,
 				isAttackable = false
 			},
@@ -59,7 +59,7 @@ function initialize()
 		moving = {
 			name = "moving",
 			attributes = {
-				canMove = true,
+				stateNameForSprite = "move",
 				canAttack = true,
 				isAttackable = true,
 				followSigns = true
@@ -103,7 +103,6 @@ function initialize()
 		attackingWall = {
 			name = "attackingWall",
 			attributes = {
-				canMove = false,
 				canAttack = false,
 				isAttackable = false
 			},
@@ -118,7 +117,6 @@ function initialize()
 		attackingCemetery = {
 			name = "attackingCemetery",
 			attributes = {
-				canMove = false,
 				canAttack = false,
 				isAttackable = false
 			},
@@ -133,7 +131,6 @@ function initialize()
 		attackingCity = {
 			name = "attackingCity",
 			attributes = {
-				canMove = false,
 				canAttack = false,
 				isAttackable = false
 			},
@@ -148,7 +145,6 @@ function initialize()
 		enforcingCity = {
 			name = "enforcingCity",
 			attributes = {
-				canMove = false,
 				canAttack = false,
 				isAttackable = false
 			},
@@ -163,7 +159,6 @@ function initialize()
 		attackingZombie = {
 			name = "attackingZombie",
 			attributes = {
-				canMove = false,
 				canAttack = false,
 				isAttackable = true
 			},
@@ -180,7 +175,6 @@ function initialize()
 		positioningOnItem = {
 			name = "positioningOnItem",
 			attributes = {
-				canMove = true,
 				canAttack = false,
 				isAttackable = true,
 				followSigns = false
@@ -199,7 +193,7 @@ function initialize()
 		fetchingItem = {
 			name = "fetchingItem",
 			attributes = {
-				canMove = true,
+				stateNameForSprite = "carry",
 				canAttack = false,
 				isAttackable = true,
 				followSigns = false
@@ -223,7 +217,6 @@ function initialize()
 		goingToDie = {
 			name = "goingToDie",
 			attributes = {
-				canMove = false,
 				canAttack = true,
 				isAttackable = false
 			},
@@ -241,7 +234,6 @@ function initialize()
 		dying = {
 			name = "dying",
 			attributes = {
-				canMove = false,
 				canAttack = false,
 				isAttackable = false
 			},
@@ -255,7 +247,6 @@ function initialize()
 		dead = {
 			name = "dead",
 			attributes = {
-				canMove = false,
 				canAttack = false,
 				isAttackable = false
 			},
@@ -301,10 +292,10 @@ function Zombie.create(parameters)
 	self.size = self.size or 1
 	self.directionPriority = ZOMBIE.PRIORITY.NO_DIRECTION
 	self.timer = 0
-	self.canMove = false
 	self.canAttack = false
 	self.isAttackable = false
 	self.followSigns = false
+	self.stateNameForSprite = nil
 	self.stateMachine = FiniteStateMachine.create{
 		states = STATES,
 		initialState = "spawning",
@@ -552,8 +543,6 @@ end
 -- Update the zombie sprite depending on the phase and the direction
 function Zombie:updateSprite()
 	local directionName
-	local stateName
-	local state = self.stateMachine.currentState.name
 
 	-- Update the direction vector
 	if self.direction == DIRECTION.UP then
@@ -566,13 +555,7 @@ function Zombie:updateSprite()
 		directionName = "right"
 	end
 
-	if state == "fetchingItem" then
-		stateName = "carry"
-	else
-		stateName = "move"
-	end
-
-	self.zombieSprite:prepare("zombie_" .. stateName .. "_" .. directionName .. "_" .. self.player.color.name)
+	self.zombieSprite:prepare("zombie_" .. self.stateNameForSprite .. "_" .. directionName .. "_" .. self.player.color.name)
 	self.zombieSprite:play()
 end
 
@@ -739,45 +722,43 @@ end
 -- Parameters:
 --  timeDelta: The time in ms since last frame
 function Zombie:enterFrame(timeDelta)
+	local state = self.stateMachine.currentState.name
+	local speedFactor = Tile.width * timeDelta / 1000
+
 	-- Move
-	if self.canMove then
-		local state = self.stateMachine.currentState.name
-		local speedFactor = Tile.width * timeDelta / 1000
+	if state == "moving" then
+		local movement = self.speed * speedFactor
 
-		if state == "moving" then
-			local movement = self.speed * speedFactor
+		self:move{
+			x = movement * self.directionVector.x,
+			y = movement * self.directionVector.y
+		}
+	-- Get in position to fetch the item
+	elseif state == "positioningOnItem" then
+		local movement = self.speed * speedFactor
+		local itemMask = self.item.collisionMask
 
-			self:move{
-				x = movement * self.directionVector.x,
-				y = movement * self.directionVector.y
+		if self.player.direction == DIRECTION.RIGHT then
+			self:moveTo{
+				x = self.item.x - itemMask.width,
+				y = self.item.y,
+				maxMovement = movement
 			}
-		-- Get in position to fetch the item
-		elseif state == "positioningOnItem" then
-			local movement = self.speed * speedFactor
-			local itemMask = self.item.collisionMask
-
-			if self.player.direction == DIRECTION.RIGHT then
-				self:moveTo{
-					x = self.item.x - itemMask.width,
-					y = self.item.y,
-					maxMovement = movement
-				}
-			else
-				self:moveTo{
-					x = self.item.x + itemMask.width,
-					y = self.item.y,
-					maxMovement = movement
-				}
-			end
-		-- Carry the item to the fortress
-		elseif state == "fetchingItem" then
-			local movement = self.item.speed * speedFactor
-
-			self:move{
-				x = movement,
-				y = 0
+		else
+			self:moveTo{
+				x = self.item.x + itemMask.width,
+				y = self.item.y,
+				maxMovement = movement
 			}
 		end
+	-- Carry the item to the fortress
+	elseif state == "fetchingItem" then
+		local movement = self.item.speed * speedFactor
+
+		self:move{
+			x = movement,
+			y = 0
+		}
 	end
 
 	-- Timer cooldown

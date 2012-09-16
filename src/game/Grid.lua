@@ -367,7 +367,7 @@ end
 -- Parameters:
 --  zombie: The zombie to check collisions with
 function Grid:checkitemsCollsion(zombie)
-	if zombie.canMove then
+	if zombie.canAttack then
 		local mask1 = zombie.collisionMask
 
 		-- Check collision with items
