@@ -152,7 +152,9 @@ function Multiplayer:enterFrame(event)
 		self.lastFrameTime = event.time
 
 		if not self.paused.user and not self.paused.system then
-			if config.debug.fastMode then
+			if config.debug.superFastMode then
+				timeDelta = timeDelta * config.debug.superFastModeRatio
+			elseif config.debug.fastMode then
 				timeDelta = timeDelta * config.debug.fastModeRatio
 			end
 

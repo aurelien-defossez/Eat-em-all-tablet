@@ -74,15 +74,21 @@ function Zombie.create(parameters)
 	self.y = self.tile.y
 	self.direction = self.player.direction
 	self.size = self.size or 1
-	self.hitPoints = self.size
 	self.directionPriority = ZOMBIE.PRIORITY.NO_DIRECTION
+	self.attackCooldownCounter = 0
 
 	if self.size == 1 then
-		self.speed = config.zombie.speed.normal
 		self.isGiant = false
+		self.speed = config.zombie.speed.normal
+		self.hitPoints = config.zombie.hitPoints.normal
+		self.strength = config.zombie.strength.normal
+		self.attackCooldown = config.zombie.attackCooldown.normal
 	else
-		self.speed = config.zombie.speed.giant
 		self.isGiant = true
+		self.speed = config.zombie.speed.giant
+		self.hitPoints = config.zombie.hitPoints.giant
+		self.strength = config.zombie.strength.giant
+		self.attackCooldown = config.zombie.attackCooldown.giant
 	end
 
 	ctId = ctId + 1
@@ -103,10 +109,15 @@ function Zombie.create(parameters)
 
 	-- Position sprite
 	if not self.isGiant then
-		self.zombieSprite.x = self.width / 2 +
-			math.random(config.zombie.randomOffsetRange.x[1], config.zombie.randomOffsetRange.x[2])
-		self.zombieSprite.y = self.height / 2 +
-			math.random(config.zombie.randomOffsetRange.y[1], config.zombie.randomOffsetRange.y[2])
+		if config.debug.soberZombies then
+			self.zombieSprite.x = self.width / 2
+			self.zombieSprite.y = self.height / 2
+		else
+			self.zombieSprite.x = self.width / 2 +
+				math.random(config.zombie.randomOffsetRange.x[1], config.zombie.randomOffsetRange.x[2])
+			self.zombieSprite.y = self.height / 2 +
+				math.random(config.zombie.randomOffsetRange.y[1], config.zombie.randomOffsetRange.y[2])
+		end
 	else
 		self.zombieSprite.xScale = 1.5
 		self.zombieSprite.yScale = 1.5
@@ -341,32 +352,51 @@ function Zombie:carryItem(item)
 	item:attachZombie(self)
 end
 
--- Kills the zombie
+function Zombie:attack(otherZombie)
+	if self.phase ~= ZOMBIE.PHASE.DYING then
+		self.phase = ZOMBIE.PHASE.ATTACKING
+	end
+
+	self.attackCooldownCounter = self.attackCooldown
+
+	otherZombie:die{
+		killer = ZOMBIE.KILLER.ZOMBIE,
+		hits = self.strength
+	}
+end
+
+-- Hits the zombie. It does not actually kill it, if it can sustain the given damage.
 --
 -- Parameters
 --  killer: The killer type, as possible Zombie constant types
 --  hits: The number of hits the zombie takes (Default is all)
 function Zombie:die(parameters)
-	if self.phase ~= ZOMBIE.PHASE.DEAD then
+	if self.phase ~= ZOMBIE.PHASE.DYING and self.phase ~= ZOMBIE.PHASE.DEAD then
 		parameters.hits = parameters.hits or self.hitPoints
 		self.hitPoints = self.hitPoints - parameters.hits
 
 		if self.hitPoints <= 0 then
 			self:updateSprite()
 
-			-- Remove from the item carriers
+			-- Drop the item
 			if self.phase == ZOMBIE.PHASE.CARRY_ITEM_INIT or self.phase == ZOMBIE.PHASE.CARRY_ITEM then
 				self.item:detachZombie(self)
 			end
 			
-			self.phase = ZOMBIE.PHASE.DEAD
-
-			-- Remove zombie from the zombies list
-			self.grid:removeZombie(self)
-
-			-- Remove sprite from display
-			self:destroy()
+			self.phase = ZOMBIE.PHASE.DYING
 		end
+	end
+end
+
+function Zombie:finalizeDeath()
+	if self.phase == ZOMBIE.PHASE.DYING then
+		self.phase = ZOMBIE.PHASE.DEAD
+
+		-- Remove zombie from the zombies list
+		self.grid:removeZombie(self)
+
+		-- Remove sprite from display
+		self:destroy()
 	end
 end
 
@@ -381,6 +411,7 @@ end
 function Zombie:enterFrame(timeDelta)
 	local speedFactor = Tile.width * timeDelta / 1000
 
+	-- Move normally
 	if self.phase == ZOMBIE.PHASE.MOVE then
 		local movement = self.speed * speedFactor
 
@@ -388,6 +419,7 @@ function Zombie:enterFrame(timeDelta)
 			x = movement * self.directionVector.x,
 			y = movement * self.directionVector.y
 		}
+	-- Get in position to fetch the item
 	elseif self.phase == ZOMBIE.PHASE.CARRY_ITEM_INIT then
 		local speed = math.max(self.speed, self.item.speed)
 		local movement = speed * speedFactor
@@ -406,6 +438,7 @@ function Zombie:enterFrame(timeDelta)
 				maxMovement = movement
 			}
 		end
+	-- Carry the item to the fortress
 	elseif self.phase == ZOMBIE.PHASE.CARRY_ITEM then
 		local movement = self.item.speed * speedFactor
 
@@ -413,6 +446,15 @@ function Zombie:enterFrame(timeDelta)
 			x = movement,
 			y = 0
 		}
+	end
+
+	-- Cooldown of the attack
+	if self.phase == ZOMBIE.PHASE.ATTACKING then
+		self.attackCooldownCounter = self.attackCooldownCounter - timeDelta
+
+		if self.attackCooldownCounter <= 0 then
+			self.phase = ZOMBIE.PHASE.MOVE
+		end
 	end
 
 	-- Draw collision mask

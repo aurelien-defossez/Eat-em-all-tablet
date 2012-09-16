@@ -47,12 +47,12 @@ function Welcome:enterScene(event)
 		title = "Eat'em All!",
 		buttons = {
 			Button.create{
-				text = "Debug",
-				actionPerformed = onDebugTap
-			},
-			Button.create{
 				text = "Start game",
 				actionPerformed = onStartTap
+			},
+			Button.create{
+				text = "Debug",
+				actionPerformed = onDebugTap
 			},
 			Button.create{
 				text = "Quit",

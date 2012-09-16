@@ -139,7 +139,7 @@ function Cemetery:enterTile(event)
 
 	if zombie.player.id ~= self.player.id then
 		-- Lose HP
-		self.player:addHPs(-zombie.size)
+		self.player:addHPs(-zombie.strength)
 
 		-- Kill zombie
 		zombie:die{

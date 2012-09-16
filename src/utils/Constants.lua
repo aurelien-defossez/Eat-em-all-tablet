@@ -63,7 +63,9 @@ ZOMBIE = {
 		MOVE = 1,
 		CARRY_ITEM_INIT = 2,
 		CARRY_ITEM = 3,
-		DEAD = 4
+		ATTACKING = 4,
+		DYING = 5,
+		DEAD = 6
 	},
 	KILLER = {
 		ZOMBIE = 1,

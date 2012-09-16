@@ -1,6 +1,7 @@
 config = {
 	debug = {
 		fastMode = false,
+		superFastMode = false,
 		oneCemetery = false,
 		oneZombie = false,
 		randomGiants = false,
@@ -9,9 +10,12 @@ config = {
 		fastItemSpawn = false,
 		showCollisionMask = false,
 		startWithItems = false,
+		noItems = false,
+		soberZombies = false,
 		frameByFrame = false,
 
-		fastModeRatio = 3
+		fastModeRatio = 3,
+		superFastModeRatio = 8
 	},
 
 	fps = 30,
@@ -24,7 +28,7 @@ config = {
 	},
 
 	player = {
-		hitPoints = 100,
+		hitPoints = 1000,
 		maxSigns = 5,
 		maxItems = 4,
 		colors = {
@@ -128,13 +132,25 @@ config = {
 	zombie = {
 		width = 64,
 		height = 64,
+		hitPoints = {
+			normal = 100,
+			giant = 360
+		},
+		strength = {
+			normal = 10,
+			giant = 60
+		},
+		attackCooldown = {
+			normal = 500,
+			giant = 1000
+		},
 		mask = {
 			width = 16,
 			height = 50,
 			x = 24,
 			y = 7
 		},
-		-- speed in tiles per seconds
+		-- In tiles per seconds
 		speed = {
 			normal = 0.25,
 			giant = 0.1

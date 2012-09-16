@@ -278,83 +278,91 @@ function Grid:enterFrame(timeDelta)
 	end
 
 	-- Create item
-	if config.debug.fastItemSpawn or self.lastItemSpawnTime >= config.item.creation.minTime then
-		-- pLog = log(ct) / log(max)
-		-- pLogInvert = 1 - pLog
-		-- pPerSecond = creationFactor / fps
-		-- pTotal = pLogInvert * pPerSecond
-		local itemCount = MapItem.ct + PlayerItem.ct
-		local probaFactor = config.item.creation.factor / config.fps
-		local probaItemSpawn = (1 - math.log(itemCount) / math.log(2 * config.player.maxItems)) * probaFactor
+	if not config.debug.noItems then
+		if config.debug.fastItemSpawn or self.lastItemSpawnTime >= config.item.creation.minTime then
+			-- pLog = log(ct) / log(max)
+			-- pLogInvert = 1 - pLog
+			-- pPerSecond = creationFactor / fps
+			-- pTotal = pLogInvert * pPerSecond
+			local itemCount = MapItem.ct + PlayerItem.ct
+			local probaFactor = config.item.creation.factor / config.fps
+			local probaItemSpawn = (1 - math.log(itemCount) / math.log(2 * config.player.maxItems)) * probaFactor
 
-		if itemCount == 0 or math.random() < probaItemSpawn then
-			local middleTileX = math.ceil(config.panels.grid.nbCols / 2)
-			local tile
-			local triesCount = 0
+			if itemCount == 0 or math.random() < probaItemSpawn then
+				local middleTileX = math.ceil(config.panels.grid.nbCols / 2)
+				local tile
+				local triesCount = 0
 
-			repeat
-				tile = self:getTile{
-					x = math.random(middleTileX - config.item.creation.xoffset, middleTileX + config.item.creation.xoffset),
-					y = math.random(config.panels.grid.nbRows)
+				repeat
+					tile = self:getTile{
+						x = math.random(middleTileX - config.item.creation.xoffset, middleTileX + config.item.creation.xoffset),
+						y = math.random(config.panels.grid.nbRows)
+					}
+
+					triesCount = triesCount + 1
+				until tile:hasNoContent() or tile:hasContentType{TILE.CONTENT.SIGN} or triesCount > 42
+
+				local item = MapItem.create{
+					tile = tile,
+					grid = self
 				}
 
-				triesCount = triesCount + 1
-			until tile:hasNoContent() or tile:hasContentType{TILE.CONTENT.SIGN} or triesCount > 42
-
-			local item = MapItem.create{
-				tile = tile,
-				grid = self
-			}
-
-			self.items[item.id] = item
-			self.lastItemSpawnTime = 0
+				self.items[item.id] = item
+				self.lastItemSpawnTime = 0
+			end
 		end
 	end
 
+	-- List of dead zombies
+	local dyings = {}
+
 	-- Check for collisions
 	for index, zombie in pairs(self.zombies) do
-		local mask1 = zombie.collisionMask
+		if zombie.phase == ZOMBIE.PHASE.MOVE or zombie.phase == ZOMBIE.PHASE.DYING then
+			local mask1 = zombie.collisionMask
 
-		-- Check collision with other zombies
-		for otherIndex, otherZombie in pairs(self.zombies) do
-			if zombie.player.id ~= otherZombie.player.id and otherZombie.id > zombie.id then
-				local mask2 = otherZombie.collisionMask
-
-				if Collisions.intersectRects(mask1.x, mask1.y, mask1.width, mask1.height,
-					mask2.x, mask2.y, mask2.width, mask2.height) then
-
-					zombie:die{
-						killer = ZOMBIE.KILLER.ZOMBIE,
-						hits = otherZombie.size
-					}
-
-					otherZombie:die{
-						killer = ZOMBIE.KILLER.ZOMBIE,
-						hits = zombie.size
-					}
-					break
-				end
-			end
-		end
-
-		-- Check collision with items
-		if zombie.phase == ZOMBIE.PHASE.MOVE
-			and zombie.player.itemCount < config.player.maxItems
-			and not zombie.isGiant then
-			for itemIndex, item in pairs(self.items) do
-				-- Determine if the current zombie can make the item carry process faster
-				if not item.zombie then
-					local mask2 = item.collisionMask
+			-- Check collision with other zombies
+			for otherIndex, otherZombie in pairs(self.zombies) do
+				if zombie.player.id ~= otherZombie.player.id and otherZombie.phase ~= ZOMBIE.PHASE.DEAD then
+					local mask2 = otherZombie.collisionMask
 
 					if Collisions.intersectRects(mask1.x, mask1.y, mask1.width, mask1.height,
 						mask2.x, mask2.y, mask2.width, mask2.height) then
-						
-						zombie:carryItem(item)
+
+						zombie:attack(otherZombie)
+
+						if otherZombie.phase == ZOMBIE.PHASE.DYING then
+							table.insert(dyings, otherZombie)
+						end
 						break
 					end
 				end
 			end
+
+			-- Check collision with items
+			if zombie.phase == ZOMBIE.PHASE.MOVE
+				and zombie.player.itemCount < config.player.maxItems
+				and not zombie.isGiant then
+				for itemIndex, item in pairs(self.items) do
+					-- Determine if the current zombie can make the item carry process faster
+					if not item.zombie then
+						local mask2 = item.collisionMask
+
+						if Collisions.intersectRects(mask1.x, mask1.y, mask1.width, mask1.height,
+							mask2.x, mask2.y, mask2.width, mask2.height) then
+							
+							zombie:carryItem(item)
+							break
+						end
+					end
+				end
+			end
 		end
+	end
+
+	-- Make death take the remains of their souls
+	for index, zombie in pairs(dyings) do
+		zombie:finalizeDeath()
 	end
 
 	self.lastItemSpawnTime = self.lastItemSpawnTime + timeDelta
