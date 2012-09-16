@@ -285,8 +285,7 @@ function City:attackCity(zombie)
 		local hits = math.min(zombie.size, self.inhabitants)
 		self:addInhabitants(-hits)
 		zombie:die{
-			killer = ZOMBIE.KILLER.CITY,
-			hits = hits
+			killer = ZOMBIE.KILLER.CITY
 		}
 	elseif not zombie.isGiant then
 		-- Notify player
