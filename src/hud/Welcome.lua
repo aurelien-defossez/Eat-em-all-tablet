@@ -92,9 +92,36 @@ function onDebugTap(button)
 				actionPerformed = onBackTap
 			},
 			Button.create{
-				text = "Start with items",
-				actionPerformed = onStartWithItemsTap,
-				selected = config.debug.startWithItems
+				text = "Speed",
+				actionPerformed = onSpeedTap
+			},
+			Button.create{
+				text = "Rendering",
+				actionPerformed = onRenderingTap
+			},
+			Button.create{
+				text = "Zombies",
+				actionPerformed = onZombiesTap
+			},
+			Button.create{
+				text = "Items",
+				actionPerformed = onItemsTap
+			}
+		}
+	})
+end
+
+-- Handler for the "Speed" button
+--
+-- Parameters:
+--  button: The button pressed
+function onSpeedTap(button)
+	WindowManager.addWindow(MenuWindow.create{
+		title = "Debug - Speed",
+		buttons = {
+			Button.create{
+				text = "Back",
+				actionPerformed = onBackTap
 			},
 			Button.create{
 				text = "Fast mode",
@@ -102,34 +129,9 @@ function onDebugTap(button)
 				selected = config.debug.fastMode
 			},
 			Button.create{
-				text = "Random giants",
-				actionPerformed = onRandomGiantsTap,
-				selected = config.debug.randomGiants
-			},
-			Button.create{
-				text = "Only Giants",
-				actionPerformed = onOnlyGiantsTap,
-				selected = config.debug.onlyGiants
-			},
-			Button.create{
-				text = "Fast item spawn",
-				actionPerformed = onFastItemSpawnTap,
-				selected = config.debug.fastItemSpawn
-			},
-			Button.create{
-				text = "One cemetery",
-				actionPerformed = onOneCemeteryTap,
-				selected = config.debug.oneCemetery
-			},
-			Button.create{
-				text = "One zombie",
-				actionPerformed = onOneZombieTap,
-				selected = config.debug.oneZombie
-			},
-			Button.create{
-				text = "Show collision masks",
-				actionPerformed = onShowCollisionMaskTap,
-				selected = config.debug.showCollisionMask
+				text = "Super Fast mode",
+				actionPerformed = onSuperFastModeTap,
+				selected = config.debug.superFastMode
 			},
 			Button.create{
 				text = "Frame by frame mode",
@@ -140,13 +142,107 @@ function onDebugTap(button)
 	})
 end
 
--- Handler for the "Start with items" button
+-- Handler for the "Rendering" button
 --
 -- Parameters:
 --  button: The button pressed
-function onStartWithItemsTap(button)
-	config.debug.startWithItems = not config.debug.startWithItems
-	button:setSelected(not button.selected)
+function onRenderingTap(button)
+	WindowManager.addWindow(MenuWindow.create{
+		title = "Debug - Rendering",
+		buttons = {
+			Button.create{
+				text = "Back",
+				actionPerformed = onBackTap
+			},
+			Button.create{
+				text = "Show collision masks",
+				actionPerformed = onShowCollisionMaskTap,
+				selected = config.debug.showCollisionMask
+			},
+			Button.create{
+				text = "Sober zombies",
+				actionPerformed = onSoberZombiesTap,
+				selected = config.debug.soberZombies
+			}
+		}
+	})
+end
+
+-- Handler for the "Zombies" button
+--
+-- Parameters:
+--  button: The button pressed
+function onZombiesTap(button)
+	WindowManager.addWindow(MenuWindow.create{
+		title = "Debug - Zombies",
+		buttons = {
+			Button.create{
+				text = "Back",
+				actionPerformed = onBackTap
+			},
+			Button.create{
+				text = "One cemetery",
+				actionPerformed = onOneCemeteryTap,
+				selected = config.debug.oneCemetery
+			},
+			Button.create{
+				text = "Two cemeteries",
+				actionPerformed = onTwoCemeteriesTap,
+				selected = config.debug.twoCemeteries
+			},
+			Button.create{
+				text = "One zombie",
+				actionPerformed = onOneZombieTap,
+				selected = config.debug.oneZombie
+			},
+			Button.create{
+				text = "Immediate spawn",
+				actionPerformed = onImmediateSpawnTap,
+				selected = config.debug.immediateSpawn
+			},
+			Button.create{
+				text = "Only Giants",
+				actionPerformed = onOnlyGiantsTap,
+				selected = config.debug.onlyGiants
+			},
+			Button.create{
+				text = "Random giants",
+				actionPerformed = onRandomGiantsTap,
+				selected = config.debug.randomGiants
+			},
+		}
+	})
+end
+
+-- Handler for the "Items" button
+--
+-- Parameters:
+--  button: The button pressed
+function onItemsTap(button)
+	WindowManager.addWindow(MenuWindow.create{
+		title = "Debug - Items",
+		buttons = {
+			Button.create{
+				text = "Back",
+				actionPerformed = onBackTap
+			},
+			Button.create{
+				text = "Start with items",
+				actionPerformed = onStartWithItemsTap,
+				selected = config.debug.startWithItems
+			},
+			Button.create{
+				text = "Fast item spawn",
+				actionPerformed = onFastItemSpawnTap,
+				selected = config.debug.fastItemSpawn
+			},
+			Button.create{
+				text = "No items",
+				actionPerformed = onNoItemsTap,
+				selected = config.debug.noItems
+			}
+		}
+	})
 end
 
 -- Handler for the "Fast mode" button
@@ -158,48 +254,21 @@ function onFastModeTap(button)
 	button:setSelected(not button.selected)
 end
 
--- Handler for the "Random giants" button
+-- Handler for the "Super Fast mode" button
 --
 -- Parameters:
 --  button: The button pressed
-function onRandomGiantsTap(button)
-	config.debug.randomGiants = not config.debug.randomGiants
+function onSuperFastModeTap(button)
+	config.debug.superFastMode = not config.debug.superFastMode
 	button:setSelected(not button.selected)
 end
 
--- Handler for the "Only giants" button
+-- Handler for the "Frame by frame mode" button
 --
 -- Parameters:
 --  button: The button pressed
-function onOnlyGiantsTap(button)
-	config.debug.onlyGiants = not config.debug.onlyGiants
-	button:setSelected(not button.selected)
-end
-
--- Handler for the "Fast item spawn" button
---
--- Parameters:
---  button: The button pressed
-function onFastItemSpawnTap(button)
-	config.debug.fastItemSpawn = not config.debug.fastItemSpawn
-	button:setSelected(not button.selected)
-end
-
--- Handler for the "One cemetery" button
---
--- Parameters:
---  button: The button pressed
-function onOneCemeteryTap(button)
-	config.debug.oneCemetery = not config.debug.oneCemetery
-	button:setSelected(not button.selected)
-end
-
--- Handler for the "One zombie" button
---
--- Parameters:
---  button: The button pressed
-function onOneZombieTap(button)
-	config.debug.oneZombie = not config.debug.oneZombie
+function onFrameByFrameTap(button)
+	config.debug.frameByFrame = not config.debug.frameByFrame
 	button:setSelected(not button.selected)
 end
 
@@ -212,12 +281,93 @@ function onShowCollisionMaskTap(button)
 	button:setSelected(not button.selected)
 end
 
--- Handler for the "Frame by frame mode" button
+-- Handler for the "Sober Zombies" button
 --
 -- Parameters:
 --  button: The button pressed
-function onFrameByFrameTap(button)
-	config.debug.frameByFrame = not config.debug.frameByFrame
+function onSoberZombiesTap(button)
+	config.debug.soberZombies = not config.debug.soberZombies
+	button:setSelected(not button.selected)
+end
+
+-- Handler for the "One cemetery" button
+--
+-- Parameters:
+--  button: The button pressed
+function onOneCemeteryTap(button)
+	config.debug.oneCemetery = not config.debug.oneCemetery
+	button:setSelected(not button.selected)
+end
+
+-- Handler for the "Immediate spawn" button
+--
+-- Parameters:
+--  button: The button pressed
+function onImmediateSpawnTap(button)
+	config.debug.immediateSpawn = not config.debug.immediateSpawn
+	button:setSelected(not button.selected)
+end
+
+-- Handler for the "Two cemeteries" button
+--
+-- Parameters:
+--  button: The button pressed
+function onTwoCemeteriesTap(button)
+	config.debug.twoCemeteries = not config.debug.twoCemeteries
+	button:setSelected(not button.selected)
+end
+
+-- Handler for the "One zombie" button
+--
+-- Parameters:
+--  button: The button pressed
+function onOneZombieTap(button)
+	config.debug.oneZombie = not config.debug.oneZombie
+	button:setSelected(not button.selected)
+end
+
+-- Handler for the "Only giants" button
+--
+-- Parameters:
+--  button: The button pressed
+function onOnlyGiantsTap(button)
+	config.debug.onlyGiants = not config.debug.onlyGiants
+	button:setSelected(not button.selected)
+end
+
+-- Handler for the "Random giants" button
+--
+-- Parameters:
+--  button: The button pressed
+function onRandomGiantsTap(button)
+	config.debug.randomGiants = not config.debug.randomGiants
+	button:setSelected(not button.selected)
+end
+
+-- Handler for the "Start with items" button
+--
+-- Parameters:
+--  button: The button pressed
+function onStartWithItemsTap(button)
+	config.debug.startWithItems = not config.debug.startWithItems
+	button:setSelected(not button.selected)
+end
+
+-- Handler for the "Fast item spawn" button
+--
+-- Parameters:
+--  button: The button pressed
+function onFastItemSpawnTap(button)
+	config.debug.fastItemSpawn = not config.debug.fastItemSpawn
+	button:setSelected(not button.selected)
+end
+
+-- Handler for the "No items" button
+--
+-- Parameters:
+--  button: The button pressed
+function onNoItemsTap(button)
+	config.debug.fastItemSpawn = not config.debug.noItems
 	button:setSelected(not button.selected)
 end
 

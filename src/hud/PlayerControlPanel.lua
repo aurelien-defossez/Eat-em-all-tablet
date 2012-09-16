@@ -79,7 +79,6 @@ end
 
 -- Destroy the panel
 function PlayerControlPanel:destroy()
-	self.cities:destroy()
 	self.arrows:destroy()
 	self.items:destroy()
 

@@ -1,22 +1,28 @@
 config = {
 	debug = {
+		-- Speed
 		fastMode = false,
+		fastModeRatio = 3,
 		superFastMode = false,
-		oneCemetery = false,
-		oneZombie = false,
-		twoCemeteries = false,
-		randomGiants = false,
-		onlyGiants = false,
-		immediateSpawn = false,
-		fastItemSpawn = false,
-		showCollisionMask = false,
-		startWithItems = false,
-		noItems = false,
-		soberZombies = false,
+		superFastModeRatio = 8,
 		frameByFrame = false,
 
-		fastModeRatio = 3,
-		superFastModeRatio = 8
+		-- Render
+		showCollisionMask = false,
+		soberZombies = false,
+
+		-- Zombies
+		oneCemetery = false,
+		twoCemeteries = false,
+		oneZombie = false,
+		immediateSpawn = false,
+		onlyGiants = false,
+		randomGiants = false,
+
+		-- Items
+		startWithItems = false,
+		fastItemSpawn = false,
+		noItems = false
 	},
 
 	fps = 30,
@@ -202,14 +208,6 @@ config = {
 					yoffset = 10
 				}
 			}
-			-- cities = {
-			-- 	ypadding = 8,
-			-- 	-- width = 2 Arrows width
-			-- 	width = 2 * 64,
-			-- 	-- height = maxHeight until bottom, less padding
-			-- 	nbRows = 3,
-			-- 	nbCols = 2
-			-- }
 		},
 		grid = {
 			nbRows = 10,
