@@ -317,8 +317,6 @@ function Grid:enterFrame(timeDelta)
 	end
 
 	-- List of dead zombies
-	local dyings = {}
-
 	-- Check for collisions
 	for index, zombie in pairs(self.zombies) do
 		if zombie.phase == ZOMBIE.PHASE.MOVE or zombie.phase == ZOMBIE.PHASE.DYING then
@@ -333,10 +331,6 @@ function Grid:enterFrame(timeDelta)
 						mask2.x, mask2.y, mask2.width, mask2.height) then
 
 						zombie:attack(otherZombie)
-
-						if otherZombie.phase == ZOMBIE.PHASE.DYING then
-							table.insert(dyings, otherZombie)
-						end
 						break
 					end
 				end
@@ -364,7 +358,7 @@ function Grid:enterFrame(timeDelta)
 	end
 
 	-- Make death take the remains of their souls
-	for index, zombie in pairs(dyings) do
+	for index, zombie in pairs(self.zombies) do
 		zombie:finalizeDeath()
 	end
 
