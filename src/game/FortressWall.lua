@@ -99,21 +99,14 @@ function FortressWall:enterTile(event)
 	local zombie = event.zombie
 
 	if zombie.player.id ~= self.player.id then
-		-- Lose HP
-		self.player:addHPs(-zombie.strength)
-
-		-- Kill zombie
-		zombie:die{
-			killer = ZOMBIE.KILLER.FORTRESS
+		zombie.stateMachine:triggerEvent{
+			event = "hitEnemyWall",
+			target = self
 		}
-	elseif zombie.phase == ZOMBIE.PHASE.CARRY_ITEM then
-		-- Fetch item
-		zombie.item:fetched(self.player)
 	else
-		-- Move backward
-		zombie:changeDirection{
-			direction = self.player.direction,
-			priority = ZOMBIE.PRIORITY.DEFAULT
+		zombie.stateMachine:triggerEvent{
+			event = "hitFriendlyWall",
+			target = self
 		}
 	end
 end

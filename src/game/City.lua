@@ -190,7 +190,6 @@ function City:addInhabitants(nb)
 	-- Update the spawning faculty of the city
 	local aboveThreshold = (self.inhabitants >= self.requiredInhabitants)
 	if not self.spawning and aboveThreshold then
-		self.timeSinceLastExit = 0
 		self.spawning = true
 		self:updateSprite()
 	elseif self.spawning and not aboveThreshold then
@@ -243,17 +242,22 @@ end
 --   zombie: The zombie entering the tile
 function City:enterTile(event)
 	local zombie = event.zombie
-	
-	if zombie.phase == ZOMBIE.PHASE.MOVE then
-		if not self.player or zombie.player ~= self.player then
-			self:attackCity(zombie)
-		elseif self.inhabitants < self.maxInhabitants and zombie.size == 1 then
-			-- Enforce city
-			self:addInhabitants(zombie.size)
-			zombie:die{
-				killer = ZOMBIE.KILLER.CITY_ENTER
-			}
-		end
+
+	if self.inhabitants > 0 and (not self.player or zombie.player.id ~= self.player.id) then
+		zombie.stateMachine:triggerEvent{
+			event = "hitEnemyCity",
+			target = self
+		}
+	elseif self.inhabitants == 0 then
+		zombie.stateMachine:triggerEvent{
+			event = "hitNeutralCity",
+			target = self
+		}
+	elseif self.inhabitants < self.maxInhabitants then
+		zombie.stateMachine:triggerEvent{
+			event = "hitFriendlyCity",
+			target = self
+		}
 	end
 end
 
@@ -265,7 +269,7 @@ end
 function City:reachTileCenter(event)
 	local zombie = event.zombie
 
-	if zombie.phase == ZOMBIE.PHASE.MOVE and self.player and zombie.player.id == self.player.id then
+	if self.player and zombie.player.id == self.player.id then
 		zombie:changeDirection{
 			direction = self.player.direction,
 			priority = ZOMBIE.PRIORITY.CITY,
@@ -275,29 +279,41 @@ function City:reachTileCenter(event)
 end
 
 
--- Make the city receive an attack by the given zombie
+-- The city is attacked
 --
 -- Parameters:
 --  zombie: The zombie attacking the city
 function City:attackCity(zombie)
-	if self.inhabitants > 0 then
-		-- Attack city and die
-		local hits = math.min(zombie.size, self.inhabitants)
-		self:addInhabitants(-hits)
-		zombie:die{
-			killer = ZOMBIE.KILLER.CITY
-		}
-	elseif not zombie.isGiant then
-		-- Notify player
-		zombie.player:gainCity(self)
+	-- Attack city and die
+	local hits = math.min(zombie.size, self.inhabitants)
+	self:addInhabitants(-hits)
+	zombie:die{
+		killer = ZOMBIE.KILLER.CITY
+	}
+end
 
-		-- Change the city owner
-		self.player = zombie.player
+-- The city is taken by a player
+--
+-- Parameters:
+--  player: The player taking the city
+function City:takeCity(player)
+	-- Notify player
+	player:gainCity(self)
+
+	-- Change the city owner
+	self.player = player
+
+	-- Update the bar color
+	self:updateSprite()
+end
+
+-- Enforce the city with a zombie
+--
+-- Parameters:
+--  zombie: The zombie enforcing the city
+function City:enforceCity(zombie)
+	if self.inhabitants < self.maxInhabitants then
 		self:addInhabitants(zombie.size)
-		zombie:die{
-			killer = ZOMBIE.KILLER.CITY_ENTER
-		}
-
 		self:updateSprite()
 	end
 end

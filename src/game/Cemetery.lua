@@ -138,21 +138,14 @@ function Cemetery:enterTile(event)
 	local zombie = event.zombie
 
 	if zombie.player.id ~= self.player.id then
-		-- Lose HP
-		self.player:addHPs(-zombie.strength)
-
-		-- Kill zombie
-		zombie:die{
-			killer = ZOMBIE.KILLER.CEMETERY
+		zombie.stateMachine:triggerEvent{
+			event = "hitEnemyCemetery",
+			target = self
 		}
-	elseif zombie.phase == ZOMBIE.PHASE.CARRY_ITEM then
-		-- Fetch item
-		zombie.item:fetched(self.player)
 	else
-		-- Move backward
-		zombie:changeDirection{
-			direction = self.player.direction,
-			priority = ZOMBIE.PRIORITY.DEFAULT
+		zombie.stateMachine:triggerEvent{
+			event = "hitFriendlyCemetery",
+			target = self
 		}
 	end
 end

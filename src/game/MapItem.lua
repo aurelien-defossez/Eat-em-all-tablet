@@ -138,7 +138,6 @@ end
 -- Parameters:
 --  player: The player fetching the item
 function MapItem:fetched(player)
-	self.zombie.phase = ZOMBIE.PHASE.MOVE
 	self.zombie:changeDirection{
 		direction = self.zombie.player.direction,
 		priority = ZOMBIE.PRIORITY.DEFAULT

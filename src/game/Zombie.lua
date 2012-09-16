@@ -17,6 +17,7 @@ require("src.utils.Constants")
 require("src.config.GameConfig")
 
 local SpriteManager = require("src.utils.SpriteManager")
+local FiniteStateMachine = require("src.utils.FiniteStateMachine")
 local Tile = require("src.game.Tile")
 
 -----------------------------------------------------------------------------------------
@@ -37,6 +38,231 @@ DIRECTION_VECTOR = {
 function initialize()
 	classGroup = display.newGroup()
 	spriteSet = SpriteManager.getSpriteSet(SPRITE_SET.ZOMBIE)
+
+	-- Zombie state machine
+	STATES = {
+		-- Spawning
+		spawning = {
+			name = "spawning",
+			attributes = {
+				canMove = false,
+				canAttack = false,
+				isAttackable = false
+			},
+			transitions = {
+				animationEnd = {
+					state = "moving"
+				}
+			}
+		},
+		-- Moving
+		moving = {
+			name = "moving",
+			attributes = {
+				canMove = true,
+				canAttack = true,
+				isAttackable = true,
+				followSigns = true
+			},
+			transitions = {
+				hitZombie = {
+					state = "attackingZombie",
+					onChange = onHitZombie
+				},
+				hitEnemyWall = {
+					state = "attackingWall"
+				},
+				hitFriendlyWall = {
+					onChange = onHitFriendlyWall
+				},
+				hitEnemyCemetery = {
+					state = "attackingCemetery"
+				},
+				hitFriendlyCemetery = {
+					onChange = onHitFriendlyWall
+				},
+				hitEnemyCity = {
+					state = "attackingCity"
+				},
+				hitNeutralCity = {
+					state = "enforcingCity",
+					onChange = onHitNeutralCity
+				},
+				hitFriendlyCity = {
+					state = "enforcingCity"
+				},
+				hitItem = {
+					state = "positioningOnItem"
+				},
+				killed = {
+					state = "goingToDie"
+				}
+			}
+		},
+		-- Attacking wall
+		attackingWall = {
+			name = "attackingWall",
+			attributes = {
+				canMove = false,
+				canAttack = false,
+				isAttackable = false
+			},
+			onEnter = onEnterAttackingWall,
+			transitions = {
+				animationEnd = {
+					state = "dead"
+				}
+			}
+		},
+		-- Attacking cemetery
+		attackingCemetery = {
+			name = "attackingCemetery",
+			attributes = {
+				canMove = false,
+				canAttack = false,
+				isAttackable = false
+			},
+			onEnter = onEnterAttackingWall,
+			transitions = {
+				animationEnd = {
+					state = "dead"
+				}
+			}
+		},
+		-- Attacking city
+		attackingCity = {
+			name = "attackingCity",
+			attributes = {
+				canMove = false,
+				canAttack = false,
+				isAttackable = false
+			},
+			onEnter = onEnterAttackingCity,
+			transitions = {
+				animationEnd = {
+					state = "dead"
+				}
+			}
+		},
+		-- Enforce city
+		enforcingCity = {
+			name = "enforcingCity",
+			attributes = {
+				canMove = false,
+				canAttack = false,
+				isAttackable = false
+			},
+			onEnter = onEnterEnforcingCity,
+			transitions = {
+				animationEnd = {
+					state = "dead"
+				}
+			}
+		},
+		-- Attacking zombie
+		attackingZombie = {
+			name = "attackingZombie",
+			attributes = {
+				canMove = false,
+				canAttack = false,
+				isAttackable = true
+			},
+			transitions = {
+				timeout = {
+					state = "moving"
+				},
+				killed = {
+					state = "dying"
+				}
+			}
+		},
+		-- Positioning on item
+		positioningOnItem = {
+			name = "positioningOnItem",
+			attributes = {
+				canMove = true,
+				canAttack = false,
+				isAttackable = true,
+				followSigns = false
+			},
+			onEnter = onEnterPositioningOnItem,
+			transitions = {
+				positioned = {
+					state = "fetchingItem"
+				},
+				killed = {
+					state = "dying"
+				}
+			}
+		},
+		-- Fetching item
+		fetchingItem = {
+			name = "fetchingItem",
+			attributes = {
+				canMove = true,
+				canAttack = false,
+				isAttackable = true,
+				followSigns = false
+			},
+			onEnter = onEnterFetchingItem,
+			transitions = {
+				hitFriendlyWall = {
+					state = "moving",
+					onChange = onItemFetched
+				},
+				hitFriendlyCemetery = {
+					state = "moving",
+					onChange = onItemFetched
+				},
+				killed = {
+					state = "dying"
+				}
+			}
+		},
+		-- Going to die
+		goingToDie = {
+			name = "goingToDie",
+			attributes = {
+				canMove = false,
+				canAttack = true,
+				isAttackable = false
+			},
+
+			transitions = {
+				hitZombie = {
+					onChange = onHitZombie
+				},
+				finalizeDeath = {
+					state = "dying"
+				}
+			}
+		},
+		-- Dying
+		dying = {
+			name = "dying",
+			attributes = {
+				canMove = false,
+				canAttack = false,
+				isAttackable = false
+			},
+			transitions = {
+				animationEnd = {
+					state = "dead"
+				}
+			}
+		},
+		-- Dead
+		dead = {
+			name = "dead",
+			attributes = {
+				canMove = false,
+				canAttack = false,
+				isAttackable = false
+			},
+			onEnter = onEnterDead,
+			transitions = {}
+		}
+	}
 end
 
 -----------------------------------------------------------------------------------------
@@ -67,7 +293,6 @@ function Zombie.create(parameters)
 
 	-- Initialize attributes
 	self.id = ctId
-	self.phase = ZOMBIE.PHASE.MOVE
 	self.width = config.zombie.width
 	self.height = config.zombie.height
 	self.x = self.tile.x
@@ -75,7 +300,21 @@ function Zombie.create(parameters)
 	self.direction = self.player.direction
 	self.size = self.size or 1
 	self.directionPriority = ZOMBIE.PRIORITY.NO_DIRECTION
-	self.attackCooldownCounter = 0
+	self.timer = 0
+	self.canMove = false
+	self.canAttack = false
+	self.isAttackable = false
+	self.followSigns = false
+	self.stateMachine = FiniteStateMachine.create{
+		states = STATES,
+		initialState = "spawning",
+		target = self
+	}
+
+	-- No spawning animation yet
+	self.stateMachine:triggerEvent{
+		event = "animationEnd"
+	}
 
 	if self.size == 1 then
 		self.isGiant = false
@@ -137,6 +376,8 @@ end
 -- Destroy the zombie
 function Zombie:destroy()
 	Runtime:removeEventListener("spritePause", self)
+
+	self.stateMachine:destroy()
 
 	self.group:removeSelf()
 end
@@ -252,11 +493,9 @@ function Zombie:moveTo(parameters)
 	self.group.y = self.y
 
 	if self.x == parameters.x and self.y == parameters.y then
-		self.phase = ZOMBIE.PHASE.CARRY_ITEM
-
-		self.item:startMotion()
-
-		self:updateSprite()
+		self.stateMachine:triggerEvent{
+			event = "positioned"
+		}
 	end
 end
 
@@ -313,7 +552,8 @@ end
 -- Update the zombie sprite depending on the phase and the direction
 function Zombie:updateSprite()
 	local directionName
-	local phaseName
+	local stateName
+	local state = self.stateMachine.currentState.name
 
 	-- Update the direction vector
 	if self.direction == DIRECTION.UP then
@@ -326,43 +566,14 @@ function Zombie:updateSprite()
 		directionName = "right"
 	end
 
-	if self.phase == ZOMBIE.PHASE.CARRY_ITEM then
-		phaseName = "carry"
+	if state == "fetchingItem" then
+		stateName = "carry"
 	else
-		phaseName = "move"
+		stateName = "move"
 	end
 
-	self.zombieSprite:prepare("zombie_" .. phaseName .. "_" .. directionName .. "_" .. self.player.color.name)
+	self.zombieSprite:prepare("zombie_" .. stateName .. "_" .. directionName .. "_" .. self.player.color.name)
 	self.zombieSprite:play()
-end
-
--- Make azombie carry an item
---
--- Parameters:
---  item: The item to carry
-function Zombie:carryItem(item)
-	self.item = item
-	self.phase = ZOMBIE.PHASE.CARRY_ITEM_INIT
-
-	self:changeDirection{
-		direction = getReverseDirection(self.player.direction),
-		priority = ZOMBIE.PRIORITY.ITEM
-	}
-
-	item:attachZombie(self)
-end
-
-function Zombie:attack(otherZombie)
-	if self.phase ~= ZOMBIE.PHASE.DYING then
-		self.phase = ZOMBIE.PHASE.ATTACKING
-	end
-
-	self.attackCooldownCounter = self.attackCooldown
-
-	otherZombie:die{
-		killer = ZOMBIE.KILLER.ZOMBIE,
-		hits = self.strength
-	}
 end
 
 -- Hits the zombie. It does not actually kill it, if it can sustain the given damage.
@@ -371,33 +582,152 @@ end
 --  killer: The killer type, as possible Zombie constant types
 --  hits: The number of hits the zombie takes (Default is all)
 function Zombie:die(parameters)
-	if self.phase ~= ZOMBIE.PHASE.DYING and self.phase ~= ZOMBIE.PHASE.DEAD then
-		parameters.hits = parameters.hits or self.hitPoints
-		self.hitPoints = self.hitPoints - parameters.hits
+	parameters.hits = parameters.hits or self.hitPoints
+	self.hitPoints = self.hitPoints - parameters.hits
 
-		if self.hitPoints <= 0 then
-			self:updateSprite()
-
-			-- Drop the item
-			if self.phase == ZOMBIE.PHASE.CARRY_ITEM_INIT or self.phase == ZOMBIE.PHASE.CARRY_ITEM then
-				self.item:detachZombie(self)
-			end
-			
-			self.phase = ZOMBIE.PHASE.DYING
-		end
+	if self.hitPoints <= 0 then
+		self.stateMachine:triggerEvent{
+			event = "killed"
+		}
 	end
 end
 
+-- Finalize the death of the zombie (for the transient goingToDie state)
 function Zombie:finalizeDeath()
-	if self.phase == ZOMBIE.PHASE.DYING then
-		self.phase = ZOMBIE.PHASE.DEAD
-
-		-- Remove zombie from the zombies list
-		self.grid:removeZombie(self)
-
-		-- Remove sprite from display
-		self:destroy()
+	if self.stateMachine.currentState.name == "goingToDie" then
+		self.stateMachine:triggerEvent{
+			event = "finalizeDeath"
+		}
+	elseif self.stateMachine.currentState.name == "dying" then
+		self.stateMachine:triggerEvent{
+			event = "animationEnd"
+		}
 	end
+end
+
+-----------------------------------------------------------------------------------------
+-- State machine listeners
+-----------------------------------------------------------------------------------------
+
+-- The onEnter callback for the "attackingWall" state
+--
+-- Parameters:
+--  target: The wall
+function Zombie:onEnterAttackingWall(parameters)
+	-- Lose HP
+	parameters.target.player:addHPs(-self.strength)
+
+	self.stateMachine:triggerEvent{
+		event = "animationEnd"
+	}
+end
+
+-- The onChange callback for the "hitFriendlyWall" event
+--
+-- Parameters:
+--  target: The wall
+function Zombie:onHitFriendlyWall(parameters)
+	-- Move backward
+	self:changeDirection{
+		direction = self.player.direction,
+		priority = ZOMBIE.PRIORITY.DEFAULT
+	}
+
+	self.stateMachine:triggerEvent{
+		event = "animationEnd"
+	}
+end
+
+-- The onEnter callback for the "attackingCity" state
+--
+-- Parameters:
+--  target: The city
+function Zombie:onEnterAttackingCity(parameters)
+	parameters.target:attackCity(self)
+
+	self.stateMachine:triggerEvent{
+		event = "animationEnd"
+	}
+end
+
+-- The onChange callback for the "hitNeutralCity" event
+--
+-- Parameters:
+--  target: The city
+function Zombie:onHitNeutralCity(parameters)
+	parameters.target:takeCity(self.player)
+end
+
+-- The onEnter callback for the "enforcingCity" state
+--
+-- Parameters:
+--  target: The city
+function Zombie:onEnterEnforcingCity(parameters)
+	local ok = parameters.target:enforceCity(self)
+
+	self.stateMachine:triggerEvent{
+		event = "animationEnd"
+	}
+end
+
+-- The onEnter callback for the "positioningOnItem" state
+--
+-- Parameters:
+--  target: The item
+function Zombie:onEnterPositioningOnItem(parameters)
+	self.item = parameters.target
+
+	self:changeDirection{
+		direction = getReverseDirection(self.player.direction),
+		priority = ZOMBIE.PRIORITY.ITEM
+	}
+
+	self.item:attachZombie(self)
+end
+
+-- The onEnter callback for the "fetchingItem" state
+--
+-- Parameters:
+--  target: The item
+function Zombie:onEnterFetchingItem(parameters)
+	self.item:startMotion()
+
+	self:changeDirection{
+		direction = self.player.direction,
+		priority = ZOMBIE.PRIORITY.ITEM
+	}
+
+	self:updateSprite()
+end
+
+-- The onChange callback for the "itemFetched" event
+--
+-- Parameters:
+--  target: The item
+function Zombie:onItemFetched(parameters)
+	self.item:fetched(self.player)
+end
+
+-- The onChange callback for the "hitZombie" event
+--
+-- Parameters:
+--  target: The zombie
+function Zombie:onHitZombie(parameters)
+	self.timer = self.attackCooldown
+
+	parameters.target:die{
+		killer = ZOMBIE.KILLER.ZOMBIE,
+		hits = self.strength
+	}
+end
+
+-- The onEnter callback for the "dead" state
+function Zombie:onEnterDead(parameters)
+	-- Remove zombie from the zombies list
+	self.grid:removeZombie(self)
+
+	-- Remove sprite from display
+	self:destroy()
 end
 
 -----------------------------------------------------------------------------------------
@@ -409,51 +739,55 @@ end
 -- Parameters:
 --  timeDelta: The time in ms since last frame
 function Zombie:enterFrame(timeDelta)
-	local speedFactor = Tile.width * timeDelta / 1000
+	-- Move
+	if self.canMove then
+		local state = self.stateMachine.currentState.name
+		local speedFactor = Tile.width * timeDelta / 1000
 
-	-- Move normally
-	if self.phase == ZOMBIE.PHASE.MOVE then
-		local movement = self.speed * speedFactor
+		if state == "moving" then
+			local movement = self.speed * speedFactor
 
-		self:move{
-			x = movement * self.directionVector.x,
-			y = movement * self.directionVector.y
-		}
-	-- Get in position to fetch the item
-	elseif self.phase == ZOMBIE.PHASE.CARRY_ITEM_INIT then
-		local speed = math.max(self.speed, self.item.speed)
-		local movement = speed * speedFactor
-		local itemMask = self.item.collisionMask
-
-		if self.player.direction == DIRECTION.RIGHT then
-			self:moveTo{
-				x = self.item.x - itemMask.width,
-				y = self.item.y,
-				maxMovement = movement
+			self:move{
+				x = movement * self.directionVector.x,
+				y = movement * self.directionVector.y
 			}
-		else
-			self:moveTo{
-				x = self.item.x + itemMask.width,
-				y = self.item.y,
-				maxMovement = movement
+		-- Get in position to fetch the item
+		elseif state == "positioningOnItem" then
+			local movement = self.speed * speedFactor
+			local itemMask = self.item.collisionMask
+
+			if self.player.direction == DIRECTION.RIGHT then
+				self:moveTo{
+					x = self.item.x - itemMask.width,
+					y = self.item.y,
+					maxMovement = movement
+				}
+			else
+				self:moveTo{
+					x = self.item.x + itemMask.width,
+					y = self.item.y,
+					maxMovement = movement
+				}
+			end
+		-- Carry the item to the fortress
+		elseif state == "fetchingItem" then
+			local movement = self.item.speed * speedFactor
+
+			self:move{
+				x = movement,
+				y = 0
 			}
 		end
-	-- Carry the item to the fortress
-	elseif self.phase == ZOMBIE.PHASE.CARRY_ITEM then
-		local movement = self.item.speed * speedFactor
-
-		self:move{
-			x = movement,
-			y = 0
-		}
 	end
 
-	-- Cooldown of the attack
-	if self.phase == ZOMBIE.PHASE.ATTACKING then
-		self.attackCooldownCounter = self.attackCooldownCounter - timeDelta
+	-- Timer cooldown
+	if self.timer > 0 then
+		self.timer = self.timer - timeDelta
 
-		if self.attackCooldownCounter <= 0 then
-			self.phase = ZOMBIE.PHASE.MOVE
+		if self.timer <= 0 then
+			self.stateMachine:triggerEvent{
+				event = "timeout"
+			}
 		end
 	end
 

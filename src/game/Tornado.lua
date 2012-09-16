@@ -112,7 +112,7 @@ end
 function Tornado:reachTileCenter(event)
 	local zombie = event.zombie
 
-	if zombie.phase == ZOMBIE.PHASE.MOVE then
+	if zombie.followSigns then
 		-- Block direction so a sign cannot rectify the trajectory
 		local hasFollowed = zombie:changeDirection{
 			direction = self.nextDirection,

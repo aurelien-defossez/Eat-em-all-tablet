@@ -316,45 +316,10 @@ function Grid:enterFrame(timeDelta)
 		end
 	end
 
-	-- List of dead zombies
 	-- Check for collisions
 	for index, zombie in pairs(self.zombies) do
-		if zombie.phase == ZOMBIE.PHASE.MOVE or zombie.phase == ZOMBIE.PHASE.DYING then
-			local mask1 = zombie.collisionMask
-
-			-- Check collision with other zombies
-			for otherIndex, otherZombie in pairs(self.zombies) do
-				if zombie.player.id ~= otherZombie.player.id and otherZombie.phase ~= ZOMBIE.PHASE.DEAD then
-					local mask2 = otherZombie.collisionMask
-
-					if Collisions.intersectRects(mask1.x, mask1.y, mask1.width, mask1.height,
-						mask2.x, mask2.y, mask2.width, mask2.height) then
-
-						zombie:attack(otherZombie)
-						break
-					end
-				end
-			end
-
-			-- Check collision with items
-			if zombie.phase == ZOMBIE.PHASE.MOVE
-				and zombie.player.itemCount < config.player.maxItems
-				and not zombie.isGiant then
-				for itemIndex, item in pairs(self.items) do
-					-- Determine if the current zombie can make the item carry process faster
-					if not item.zombie then
-						local mask2 = item.collisionMask
-
-						if Collisions.intersectRects(mask1.x, mask1.y, mask1.width, mask1.height,
-							mask2.x, mask2.y, mask2.width, mask2.height) then
-							
-							zombie:carryItem(item)
-							break
-						end
-					end
-				end
-			end
-		end
+		self:checkZombiesCollsion(zombie)
+		self:checkitemsCollsion(zombie)
 	end
 
 	-- Make death take the remains of their souls
@@ -363,6 +328,71 @@ function Grid:enterFrame(timeDelta)
 	end
 
 	self.lastItemSpawnTime = self.lastItemSpawnTime + timeDelta
+end
+
+-- Check for collisions with other zombies
+-- Returns as soon as a positive collision has happened
+--
+-- Parameters:
+--  zombie: The zombie to check collisions with
+function Grid:checkZombiesCollsion(zombie)
+	if zombie.canAttack then
+		local mask1 = zombie.collisionMask
+
+		-- Check collision with other zombies
+		for otherIndex, otherZombie in pairs(self.zombies) do
+			if zombie.player.id ~= otherZombie.player.id and otherZombie.isAttackable then
+				local mask2 = otherZombie.collisionMask
+
+				if Collisions.intersectRects(mask1.x, mask1.y, mask1.width, mask1.height,
+					mask2.x, mask2.y, mask2.width, mask2.height) then
+
+					local ok = zombie.stateMachine:triggerEvent{
+						event = "hitZombie",
+						target = otherZombie
+					}
+					
+					if ok then
+						return
+					end
+				end
+			end
+		end
+	end
+end
+
+-- Check for collisions with items
+-- Returns as soon as a positive collision has happened
+--
+-- Parameters:
+--  zombie: The zombie to check collisions with
+function Grid:checkitemsCollsion(zombie)
+	if zombie.canMove then
+		local mask1 = zombie.collisionMask
+
+		-- Check collision with items
+		if zombie.player.itemCount < config.player.maxItems and not zombie.isGiant then
+			for itemIndex, item in pairs(self.items) do
+				-- Determine if the current zombie can make the item carry process faster
+				if not item.zombie then
+					local mask2 = item.collisionMask
+
+					if Collisions.intersectRects(mask1.x, mask1.y, mask1.width, mask1.height,
+						mask2.x, mask2.y, mask2.width, mask2.height) then
+						
+						local ok = zombie.stateMachine:triggerEvent{
+							event = "hitItem",
+							target = item
+						}
+					
+						if ok then
+							return
+						end
+					end
+				end
+			end
+		end
+	end
 end
 
 -----------------------------------------------------------------------------------------
