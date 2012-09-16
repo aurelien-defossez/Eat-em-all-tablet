@@ -124,18 +124,21 @@ function Grid:loadMap(parameters)
 	for index, cemetery in pairs(parameters.cemeteries) do
 		if not config.debug.oneCemetery or placedCemeteries == 0 then
 			local player = self.players[cemetery.playerId]
-			local tile = self:getTile{
-				x = cemetery.x,
-				y = cemetery.y
-			}
 
-			player:addCemetery(Cemetery.create{
-				grid = self,
-				tile = tile,
-				player = player
-			})
+			if not config.debug.twoCemeteries or #player.cemeteries == 0 then
+				local tile = self:getTile{
+					x = cemetery.x,
+					y = cemetery.y
+				}
 
-			placedCemeteries = placedCemeteries + 1
+				player:addCemetery(Cemetery.create{
+					grid = self,
+					tile = tile,
+					player = player
+				})
+
+				placedCemeteries = placedCemeteries + 1
+			end
 		end
 	end
 

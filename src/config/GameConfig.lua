@@ -4,6 +4,7 @@ config = {
 		superFastMode = false,
 		oneCemetery = false,
 		oneZombie = false,
+		twoCemeteries = false,
 		randomGiants = false,
 		onlyGiants = false,
 		immediateSpawn = false,
