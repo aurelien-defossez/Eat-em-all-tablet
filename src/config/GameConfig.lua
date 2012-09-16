@@ -58,11 +58,7 @@ config = {
 	city = {
 		width = 64,
 		height = 64,
-		easingTime = 1500,
-		nameText = {
-			x = 27,
-			y = 27
-		},
+		-- easingTime = 1500,
 		bars = {
 			offset = {
 				x = 50,
@@ -188,15 +184,15 @@ config = {
 					xoffset = 15,
 					yoffset = 10
 				}
-			},
-			cities = {
-				ypadding = 8,
-				-- width = 2 Arrows width
-				width = 2 * 64,
-				-- height = maxHeight until bottom, less padding
-				nbRows = 3,
-				nbCols = 2
 			}
+			-- cities = {
+			-- 	ypadding = 8,
+			-- 	-- width = 2 Arrows width
+			-- 	width = 2 * 64,
+			-- 	-- height = maxHeight until bottom, less padding
+			-- 	nbRows = 3,
+			-- 	nbCols = 2
+			-- }
 		},
 		grid = {
 			nbRows = 10,

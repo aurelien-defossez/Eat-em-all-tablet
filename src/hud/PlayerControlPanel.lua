@@ -17,7 +17,6 @@ require("src.config.GameConfig")
 
 local ItemsPanel = require("src.hud.ItemsPanel")
 local ArrowsPanel = require("src.hud.ArrowsPanel")
-local CitiesPanel = require("src.hud.CitiesPanel")
 
 -----------------------------------------------------------------------------------------
 -- Class initialization
@@ -64,12 +63,6 @@ function PlayerControlPanel.create(parameters)
 		grid = self.grid,
 		x = self.x + config.panels.controls.padding,
 		y = self.y + self.height / 2 - config.panels.controls.arrows.height / 2
-	}
-	
-	self.cities = CitiesPanel.create{
-		player = self.player,
-		x = self.x + config.panels.controls.padding,
-		y = self.y + self.height / 2 + config.panels.controls.arrows.height / 2 + config.panels.controls.cities.ypadding
 	}
 
 	-- Draw background

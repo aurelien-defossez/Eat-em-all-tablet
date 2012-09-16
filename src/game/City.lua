@@ -53,11 +53,8 @@ function City.create(parameters)
 	self.x = self.tile.x
 	self.y = self.tile.y
 	self.player = nil
-	self.gateOpened = false
 	self.spawning = false
-
 	self.timeSinceLastSpawn = 0
-	self.timeSinceLastExit = 0
 
 	if self.size == CITY.SIZE.SMALL then
 		self.inhabitants = config.city.small.inhabitants
@@ -123,9 +120,6 @@ function City.create(parameters)
 	self.barGroup:insert(self.backgroundBar)
 	self.barGroup:insert(self.inhabitantsBar)
 	
-	-- Handle events
-	-- self.citySprite:addEventListener("touch", self)
-
 	-- Play neutral animation
 	self:updateSprite()
 
@@ -145,7 +139,6 @@ function City:destroy()
 	self.tile:removeEventListener(TILE.EVENT.ENTER_TILE, self)
 	self.tile:removeEventListener(TILE.EVENT.REACH_TILE_CENTER, self)
 	Runtime:removeEventListener("spritePause", self)
-	-- self.citySprite:removeEventListener("touch", self)
 
 	self.tile:removeContent(self.contentId)
 
@@ -176,10 +169,6 @@ function City:updateSprite()
 	
 	self.citySprite:prepare(animationName)
 	self.citySprite:play()
-
-	if self.shortcut then
-		self.shortcut:updateSprite(animationName)
-	end
 end
 
 -- Update the number of inhabitants graphically
@@ -227,11 +216,6 @@ function City:addInhabitants(nb)
 	end
 
 	self:updateInhabitants()
-
-	-- Notify shortcut
-	if self.shortcut then
-		self.shortcut:updateInhabitants()
-	end
 end
 
 -- Spawn a zombie
@@ -324,64 +308,15 @@ end
 -- Parameters:
 --  timeDelta: The time in ms since last frame
 function City:enterFrame(timeDelta)
-	if self.player then
-		self.timeSinceLastExit = self.timeSinceLastExit + timeDelta
+	if self.player and self.spawning then
+		self.timeSinceLastSpawn = self.timeSinceLastSpawn + timeDelta
 
-		-- Count spawn time
-		if self.spawning then
-			self.timeSinceLastSpawn = self.timeSinceLastSpawn + timeDelta
-
-			if self.timeSinceLastSpawn >= self.spawnPeriod then
-				self.timeSinceLastSpawn = self.timeSinceLastSpawn - self.spawnPeriod
-				self:spawn{
-					free = true
-				}
-			end
+		if self.timeSinceLastSpawn >= self.spawnPeriod then
+			self.timeSinceLastSpawn = self.timeSinceLastSpawn - self.spawnPeriod
+			self:spawn{
+				free = true
+			}
 		end
-
-		-- Count exit time
-		if self.gateOpened then
-			if self.timeSinceLastExit >= self.exitPeriod then
-				self.timeSinceLastExit = self.timeSinceLastExit - self.exitPeriod
-				self:spawn{
-					free = false
-				}
-			end
-		elseif self.timeSinceLastExit > self.exitPeriod then
-			-- Prepare next exit
-			self.timeSinceLastExit = self.exitPeriod
-		end
-	end
-end
-
------------------------------------------------------------------------------------------
--- Event listeners
------------------------------------------------------------------------------------------
-
--- Touch handler on a city
---
--- Parameters:
---  event: The touch event
-function City:touch(event)
-	-- Open the gates while the finger touches the city
-	self.gateOpened = self.tile:isInside(event)
-		and event.phase ~= "ended" and event.phase ~= "cancelled"
-
-	-- Focus this object in order to track this finger properly
-	display.getCurrentStage():setFocus(event.target, event.id)
-	
-	return true
-end
-
--- Pause the sprite animation
--- Parameters:
---  event: The tile event, with these values:
---   status: If true, then pauses the animation, otherwise resumes it
-function City:spritePause(event)
-	if event.status then
-		self.citySprite:pause()
-	else
-		self.citySprite:play()
 	end
 end
 
