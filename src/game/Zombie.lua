@@ -40,6 +40,8 @@ function initialize()
 	spriteSet = SpriteManager.getSpriteSet(SPRITE_SET.ZOMBIE)
 
 	-- Zombie state machine
+	-- Full graph available in "doc/Zombie FSM.png"
+	-- or https://raw.github.com/aurelien-defossez/Eat-em-all-tablet/master/doc/Zombie%20FSM.png
 	STATES = {
 		-- Spawning
 		spawning = {
@@ -220,12 +222,11 @@ function initialize()
 				canAttack = true,
 				isAttackable = false
 			},
-
 			transitions = {
 				hitZombie = {
 					onChange = onHitZombie
 				},
-				finalizeDeath = {
+				endOfFrame = {
 					state = "dying"
 				}
 			}
@@ -237,6 +238,7 @@ function initialize()
 				canAttack = false,
 				isAttackable = false
 			},
+			onEnter = onEnterDying,
 			transitions = {
 				animationEnd = {
 					state = "dead"
@@ -576,16 +578,10 @@ function Zombie:die(parameters)
 end
 
 -- Finalize the death of the zombie (for the transient goingToDie state)
-function Zombie:finalizeDeath()
-	if self.stateMachine.currentState.name == "goingToDie" then
-		self.stateMachine:triggerEvent{
-			event = "finalizeDeath"
-		}
-	elseif self.stateMachine.currentState.name == "dying" then
-		self.stateMachine:triggerEvent{
-			event = "animationEnd"
-		}
-	end
+function Zombie:leaveFrame()
+	self.stateMachine:triggerEvent{
+		event = "endOfFrame"
+	}
 end
 
 -----------------------------------------------------------------------------------------
@@ -646,7 +642,7 @@ end
 -- Parameters:
 --  target: The city
 function Zombie:onEnterEnforcingCity(parameters)
-	local ok = parameters.target:enforceCity(self)
+	parameters.target:enforceCity(self)
 
 	self.stateMachine:triggerEvent{
 		event = "animationEnd"
@@ -701,6 +697,13 @@ function Zombie:onHitZombie(parameters)
 	parameters.target:die{
 		killer = ZOMBIE.KILLER.ZOMBIE,
 		hits = self.strength
+	}
+end
+
+-- The onEnter callback for the "dying" state
+function Zombie:onEnterDying(parameters)
+	self.stateMachine:triggerEvent{
+		event = "animationEnd"
 	}
 end
 

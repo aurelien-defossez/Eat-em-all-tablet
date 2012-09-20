@@ -324,7 +324,7 @@ function Grid:enterFrame(timeDelta)
 
 	-- Make death take the remains of their souls
 	for index, zombie in pairs(self.zombies) do
-		zombie:finalizeDeath()
+		zombie:leaveFrame()
 	end
 
 	self.lastItemSpawnTime = self.lastItemSpawnTime + timeDelta
