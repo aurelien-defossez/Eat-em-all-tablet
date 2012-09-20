@@ -15,7 +15,7 @@ config = {
 		oneCemetery = false,
 		twoCemeteries = false,
 		oneZombie = false,
-		immediateSpawn = false,
+		immediateSpawn = true,
 		onlyGiants = false,
 		randomGiants = false,
 
@@ -294,6 +294,11 @@ config = {
 			}
 		},
 		zombie = {
+			zombie_spawn_right_red = {
+				frameCount = 3,
+				period = 200,
+				loop = false
+			},
 			zombie_move_right_red = {},
 			zombie_move_left_red = {},
 			zombie_move_up_red = {},
@@ -319,6 +324,11 @@ config = {
 				loop = false
 			},
 			zombie_carry_left_red = {},
+			zombie_spawn_left_blue = {
+				frameCount = 3,
+				period = 200,
+				loop = false
+			},
 			zombie_move_right_blue = {},
 			zombie_move_left_blue = {},
 			zombie_move_up_blue = {},

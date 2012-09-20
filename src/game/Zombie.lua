@@ -47,7 +47,7 @@ function initialize()
 		spawning = {
 			name = "spawning",
 			attributes = {
-				animationName = "move",
+				animationName = "spawn",
 				canAttack = false,
 				isAttackable = false
 			},
@@ -363,11 +363,6 @@ function Zombie.create(parameters)
 
 	-- Add to group
 	self.group:insert(self.zombieSprite)
-
-	-- No spawning animation yet
-	self.stateMachine:triggerEvent{
-		event = "animationEnd"
-	}
 
 	return self
 end
