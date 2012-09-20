@@ -294,11 +294,12 @@ config = {
 			}
 		},
 		zombie = {
-			zombie_spawn_right_red = {
+			zombie_spawn_red = {
 				frameCount = 3,
 				period = 200,
 				loop = false
 			},
+			zombie_carry_red = {},
 			zombie_move_right_red = {},
 			zombie_move_left_red = {},
 			zombie_move_up_red = {},
@@ -323,17 +324,16 @@ config = {
 				period = 500,
 				loop = false
 			},
-			zombie_carry_left_red = {},
-			zombie_spawn_left_blue = {
+			zombie_spawn_blue = {
 				frameCount = 3,
 				period = 200,
 				loop = false
 			},
+			zombie_carry_blue = {},
 			zombie_move_right_blue = {},
 			zombie_move_left_blue = {},
 			zombie_move_up_blue = {},
 			zombie_move_down_blue = {},
-			zombie_carry_right_blue = {},
 			zombie_attack_right_blue = {
 				frameCount = 2,
 				period = 500,

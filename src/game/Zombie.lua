@@ -547,6 +547,7 @@ end
 -- Update the zombie sprite depending on the phase and the direction
 function Zombie:updateSprite()
 	local directionName
+	local completeAnimationName
 
 	-- Update the direction vector
 	if self.direction == DIRECTION.UP then
@@ -559,7 +560,13 @@ function Zombie:updateSprite()
 		directionName = "right"
 	end
 
-	self.zombieSprite:prepare("zombie_" .. self.animationName .. "_" .. directionName .. "_" .. self.player.color.name)
+	if self.animationName == "carry" or self.animationName == "spawn" then
+		completeAnimationName = "zombie_" .. self.animationName .. "_" .. self.player.color.name
+	else
+		completeAnimationName = "zombie_" .. self.animationName .. "_" .. directionName .. "_" .. self.player.color.name
+	end
+
+	self.zombieSprite:prepare(completeAnimationName)
 	self.zombieSprite:play()
 end
 
