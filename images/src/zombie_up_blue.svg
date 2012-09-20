@@ -13,9 +13,9 @@
    height="64px"
    id="svg4323"
    version="1.1"
-   inkscape:version="0.48.2 r9819"
+   inkscape:version="0.48.3.1 r9886"
    sodipodi:docname="zombie_up_blue.svg"
-   inkscape:export-filename="/Users/adefossez/work/eat-em-all-tablet/images/zombie_up_blue.png"
+   inkscape:export-filename="D:\Work\Eat-em-all-tablet\images\zombie_move_up_blue.png"
    inkscape:export-xdpi="90"
    inkscape:export-ydpi="90">
   <defs
@@ -31,13 +31,13 @@
      inkscape:cx="33.240284"
      inkscape:cy="21.555798"
      inkscape:current-layer="layer1"
-     showgrid="true"
+     showgrid="false"
      inkscape:document-units="px"
      inkscape:grid-bbox="true"
-     inkscape:window-width="1224"
-     inkscape:window-height="756"
-     inkscape:window-x="56"
-     inkscape:window-y="0"
+     inkscape:window-width="1920"
+     inkscape:window-height="1028"
+     inkscape:window-x="-8"
+     inkscape:window-y="-8"
      inkscape:window-maximized="1"
      showguides="false">
     <inkscape:grid
@@ -68,14 +68,6 @@
        x="27"
        y="43"
        ry="0.86024886" />
-    <rect
-       style="fill:#ae7533;fill-opacity:1;stroke:#2f3db7;stroke-width:2.22498893999999980;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
-       id="rect4389"
-       width="12"
-       height="21.772984"
-       x="26"
-       y="24"
-       ry="0.73985875" />
     <rect
        style="fill:#ae7533;fill-opacity:1;stroke:#2f3db7;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
        id="rect4915"
@@ -112,5 +104,13 @@
        sodipodi:ry="7.4545455"
        d="m 37.09091,14.909091 a 7,7.4545455 0 1 1 -14,0 7,7.4545455 0 1 1 14,0 z"
        transform="translate(1.90909,1.090909)" />
+    <rect
+       style="fill:#ae7533;fill-opacity:1;stroke:#2f3db7;stroke-width:2.22498893999999980;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       id="rect4389"
+       width="12"
+       height="21.772984"
+       x="26"
+       y="24"
+       ry="0.73985875" />
   </g>
 </svg>

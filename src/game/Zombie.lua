@@ -47,7 +47,7 @@ function initialize()
 		spawning = {
 			name = "spawning",
 			attributes = {
-				stateNameForSprite = "move",
+				animationName = "move",
 				canAttack = false,
 				isAttackable = false
 			},
@@ -61,11 +61,12 @@ function initialize()
 		moving = {
 			name = "moving",
 			attributes = {
-				stateNameForSprite = "move",
+				animationName = "move",
 				canAttack = true,
 				isAttackable = true,
 				followSigns = true
 			},
+			onEnter = onEnterMove,
 			transitions = {
 				hitZombie = {
 					state = "attackingZombie",
@@ -105,6 +106,7 @@ function initialize()
 		attackingWall = {
 			name = "attackingWall",
 			attributes = {
+				animationName = "attack",
 				canAttack = false,
 				isAttackable = false
 			},
@@ -119,6 +121,7 @@ function initialize()
 		attackingCemetery = {
 			name = "attackingCemetery",
 			attributes = {
+				animationName = "attack",
 				canAttack = false,
 				isAttackable = false
 			},
@@ -133,6 +136,7 @@ function initialize()
 		attackingCity = {
 			name = "attackingCity",
 			attributes = {
+				animationName = "attack",
 				canAttack = false,
 				isAttackable = false
 			},
@@ -161,11 +165,12 @@ function initialize()
 		attackingZombie = {
 			name = "attackingZombie",
 			attributes = {
+				animationName = "attack",
 				canAttack = false,
 				isAttackable = true
 			},
 			transitions = {
-				timeout = {
+				animationEnd = {
 					state = "moving"
 				},
 				killed = {
@@ -187,7 +192,8 @@ function initialize()
 					state = "fetchingItem"
 				},
 				killed = {
-					state = "dying"
+					state = "dying",
+					onChange = onItemDropped
 				}
 			}
 		},
@@ -195,7 +201,7 @@ function initialize()
 		fetchingItem = {
 			name = "fetchingItem",
 			attributes = {
-				stateNameForSprite = "carry",
+				animationName = "carry",
 				canAttack = false,
 				isAttackable = true,
 				followSigns = false
@@ -211,7 +217,8 @@ function initialize()
 					onChange = onItemFetched
 				},
 				killed = {
-					state = "dying"
+					state = "dying",
+					onChange = onItemDropped
 				}
 			}
 		},
@@ -235,6 +242,7 @@ function initialize()
 		dying = {
 			name = "dying",
 			attributes = {
+				animationName = "move",
 				canAttack = false,
 				isAttackable = false
 			},
@@ -293,20 +301,14 @@ function Zombie.create(parameters)
 	self.direction = self.player.direction
 	self.size = self.size or 1
 	self.directionPriority = ZOMBIE.PRIORITY.NO_DIRECTION
-	self.timer = 0
 	self.canAttack = false
 	self.isAttackable = false
 	self.followSigns = false
-	self.stateNameForSprite = nil
+	self.animationName = nil
 	self.stateMachine = FiniteStateMachine.create{
 		states = STATES,
 		initialState = "spawning",
 		target = self
-	}
-
-	-- No spawning animation yet
-	self.stateMachine:triggerEvent{
-		event = "animationEnd"
 	}
 
 	if self.size == 1 then
@@ -314,19 +316,18 @@ function Zombie.create(parameters)
 		self.speed = config.zombie.speed.normal
 		self.hitPoints = config.zombie.hitPoints.normal
 		self.strength = config.zombie.strength.normal
-		self.attackCooldown = config.zombie.attackCooldown.normal
 	else
 		self.isGiant = true
 		self.speed = config.zombie.speed.giant
 		self.hitPoints = config.zombie.hitPoints.giant
 		self.strength = config.zombie.strength.giant
-		self.attackCooldown = config.zombie.attackCooldown.giant
 	end
 
 	ctId = ctId + 1
 
 	-- Draw sprite
 	self.zombieSprite = SpriteManager.newSprite(spriteSet)
+	self.zombieSprite:addEventListener("sprite", self)
 
 	self:changeDirection{
 		direction = self.player.direction,
@@ -363,12 +364,18 @@ function Zombie.create(parameters)
 	-- Add to group
 	self.group:insert(self.zombieSprite)
 
+	-- No spawning animation yet
+	self.stateMachine:triggerEvent{
+		event = "animationEnd"
+	}
+
 	return self
 end
 
 -- Destroy the zombie
 function Zombie:destroy()
 	Runtime:removeEventListener("spritePause", self)
+	self.zombieSprite:removeEventListener("sprite", self)
 
 	self.stateMachine:destroy()
 
@@ -557,7 +564,7 @@ function Zombie:updateSprite()
 		directionName = "right"
 	end
 
-	self.zombieSprite:prepare("zombie_" .. self.stateNameForSprite .. "_" .. directionName .. "_" .. self.player.color.name)
+	self.zombieSprite:prepare("zombie_" .. self.animationName .. "_" .. directionName .. "_" .. self.player.color.name)
 	self.zombieSprite:play()
 end
 
@@ -588,17 +595,18 @@ end
 -- State machine listeners
 -----------------------------------------------------------------------------------------
 
+-- The onEnter callback for the "move" state
+function Zombie:onEnterMove(parameters)
+	self:updateSprite()
+end
+
 -- The onEnter callback for the "attackingWall" state
 --
 -- Parameters:
 --  target: The wall
 function Zombie:onEnterAttackingWall(parameters)
-	-- Lose HP
 	parameters.target.player:addHPs(-self.strength)
-
-	self.stateMachine:triggerEvent{
-		event = "animationEnd"
-	}
+	self:updateSprite()
 end
 
 -- The onChange callback for the "hitFriendlyWall" event
@@ -611,10 +619,6 @@ function Zombie:onHitFriendlyWall(parameters)
 		direction = self.player.direction,
 		priority = ZOMBIE.PRIORITY.DEFAULT
 	}
-
-	self.stateMachine:triggerEvent{
-		event = "animationEnd"
-	}
 end
 
 -- The onEnter callback for the "attackingCity" state
@@ -623,10 +627,7 @@ end
 --  target: The city
 function Zombie:onEnterAttackingCity(parameters)
 	parameters.target:attackCity(self)
-
-	self.stateMachine:triggerEvent{
-		event = "animationEnd"
-	}
+	self:updateSprite()
 end
 
 -- The onChange callback for the "hitNeutralCity" event
@@ -644,6 +645,7 @@ end
 function Zombie:onEnterEnforcingCity(parameters)
 	parameters.target:enforceCity(self)
 
+	-- No enforcing animation yet
 	self.stateMachine:triggerEvent{
 		event = "animationEnd"
 	}
@@ -665,9 +667,6 @@ function Zombie:onEnterPositioningOnItem(parameters)
 end
 
 -- The onEnter callback for the "fetchingItem" state
---
--- Parameters:
---  target: The item
 function Zombie:onEnterFetchingItem(parameters)
 	self.item:startMotion()
 
@@ -680,11 +679,16 @@ function Zombie:onEnterFetchingItem(parameters)
 end
 
 -- The onChange callback for the "itemFetched" event
+function Zombie:onItemFetched(parameters)
+	self.item:fetched(self.player)
+end
+
+-- The onChange callback for the "itemDropped" event
 --
 -- Parameters:
 --  target: The item
-function Zombie:onItemFetched(parameters)
-	self.item:fetched(self.player)
+function Zombie:onItemDropped(parameters)
+	self.item:detachZombie(self)
 end
 
 -- The onChange callback for the "hitZombie" event
@@ -692,12 +696,12 @@ end
 -- Parameters:
 --  target: The zombie
 function Zombie:onHitZombie(parameters)
-	self.timer = self.attackCooldown
-
 	parameters.target:die{
 		killer = ZOMBIE.KILLER.ZOMBIE,
 		hits = self.strength
 	}
+
+	self:updateSprite()
 end
 
 -- The onEnter callback for the "dying" state
@@ -764,17 +768,6 @@ function Zombie:enterFrame(timeDelta)
 		}
 	end
 
-	-- Timer cooldown
-	if self.timer > 0 then
-		self.timer = self.timer - timeDelta
-
-		if self.timer <= 0 then
-			self.stateMachine:triggerEvent{
-				event = "timeout"
-			}
-		end
-	end
-
 	-- Draw collision mask
 	if config.debug.showCollisionMask and not self.collisionMaskDebug then
 		self.collisionMaskDebug = display.newRect(config.zombie.mask.x, config.zombie.mask.y,
@@ -790,6 +783,15 @@ function Zombie:enterFrame(timeDelta)
 	if not config.debug.showCollisionMask and self.collisionMaskDebug then
 		self.collisionMaskDebug:removeSelf()
 		self.collisionMaskDebug = nil
+	end
+end
+
+
+function Zombie:sprite(event)
+	if event.phase == "end" then
+		self.stateMachine:triggerEvent{
+			event = "animationEnd"
+		}
 	end
 end
 

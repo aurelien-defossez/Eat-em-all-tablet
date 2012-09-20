@@ -322,7 +322,7 @@ function Grid:enterFrame(timeDelta)
 		self:checkitemsCollsion(zombie)
 	end
 
-	-- Make death take the remains of their souls
+	-- Relay leave frame event
 	for index, zombie in pairs(self.zombies) do
 		zombie:leaveFrame()
 	end

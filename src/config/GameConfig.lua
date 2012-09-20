@@ -147,10 +147,6 @@ config = {
 			normal = 10,
 			giant = 60
 		},
-		attackCooldown = {
-			normal = 500,
-			giant = 1000
-		},
 		mask = {
 			width = 16,
 			height = 50,
@@ -302,12 +298,52 @@ config = {
 			zombie_move_left_red = {},
 			zombie_move_up_red = {},
 			zombie_move_down_red = {},
+			zombie_attack_right_red = {
+				frameCount = 2,
+				period = 500,
+				loop = false
+			},
+			zombie_attack_left_red = {
+				frameCount = 2,
+				period = 500,
+				loop = false
+			},
+			zombie_attack_down_red = {
+				frameCount = 2,
+				period = 500,
+				loop = false
+			},
+			zombie_attack_up_red = {
+				frameCount = 2,
+				period = 500,
+				loop = false
+			},
 			zombie_carry_left_red = {},
 			zombie_move_right_blue = {},
 			zombie_move_left_blue = {},
 			zombie_move_up_blue = {},
 			zombie_move_down_blue = {},
-			zombie_carry_right_blue = {}
+			zombie_carry_right_blue = {},
+			zombie_attack_right_blue = {
+				frameCount = 2,
+				period = 500,
+				loop = false
+			},
+			zombie_attack_left_blue = {
+				frameCount = 2,
+				period = 500,
+				loop = false
+			},
+			zombie_attack_down_blue = {
+				frameCount = 2,
+				period = 500,
+				loop = false
+			},
+			zombie_attack_up_blue = {
+				frameCount = 2,
+				period = 500,
+				loop = false
+			}
 		},
 		misc = {
 			pause = {}
