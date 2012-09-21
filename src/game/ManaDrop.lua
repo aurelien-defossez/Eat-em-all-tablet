@@ -171,7 +171,7 @@ function ManaDrop:enterFrame(timeDelta)
 	if config.debug.showCollisionMask and not self.collisionMaskDebug then
 		self.collisionMaskDebug = display.newRect(config.mana.mask.x, config.mana.mask.y,
 			config.mana.mask.width, config.mana.mask.height)
-		self.collisionMaskDebug.strokeWidth = 3
+		self.collisionMaskDebug.strokeWidth = 1
 		self.collisionMaskDebug:setStrokeColor(255, 0, 0)
 		self.collisionMaskDebug:setFillColor(0, 0, 0, 0)
 

@@ -767,7 +767,7 @@ function Zombie:enterFrame(timeDelta)
 	if config.debug.showCollisionMask and not self.collisionMaskDebug then
 		self.collisionMaskDebug = display.newRect(config.zombie.mask.x, config.zombie.mask.y,
 			config.zombie.mask.width, config.zombie.mask.height)
-		self.collisionMaskDebug.strokeWidth = 3
+		self.collisionMaskDebug.strokeWidth = 1
 		self.collisionMaskDebug:setStrokeColor(255, 0, 0)
 		self.collisionMaskDebug:setFillColor(0, 0, 0, 0)
 
@@ -779,7 +779,7 @@ function Zombie:enterFrame(timeDelta)
 		self.collisionMaskDebug:removeSelf()
 		self.collisionMaskDebug = nil
 	end
-	
+
 	self.stateMachine:triggerEvent{
 		event = "endOfFrame"
 	}

@@ -107,8 +107,8 @@ config = {
 		mask = {
 			width = 10,
 			height = 10,
-			x = 25,
-			y = 29
+			x = 27,
+			y = 27
 		},
 		speed = 0.1,
 		creation = {
@@ -150,9 +150,9 @@ config = {
 			giant = 60
 		},
 		mask = {
-			width = 16,
+			width = 24,
 			height = 50,
-			x = 24,
+			x = 20,
 			y = 7
 		},
 		-- In tiles per seconds
