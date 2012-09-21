@@ -1,12 +1,12 @@
 -----------------------------------------------------------------------------------------
 --
--- MapItem.lua
+-- ManaDrop.lua
 --
 -----------------------------------------------------------------------------------------
 
-module("MapItem", package.seeall)
+module("ManaDrop", package.seeall)
 
-MapItem.__index = MapItem
+ManaDrop.__index = ManaDrop
 
 -----------------------------------------------------------------------------------------
 -- Imports
@@ -17,7 +17,6 @@ require("src.config.GameConfig")
 
 local SpriteManager = require("src.utils.SpriteManager")
 local Tile = require("src.game.Tile")
-local PlayerItem = require("src.hud.PlayerItem")
 
 -----------------------------------------------------------------------------------------
 -- Class attributes
@@ -32,22 +31,22 @@ ct = 0
 
 function initialize()
 	classGroup = display.newGroup()
-	spriteSet = SpriteManager.getSpriteSet(SPRITE_SET.ITEM)
+	spriteSet = SpriteManager.getSpriteSet(SPRITE_SET.MANA)
 end
 
 -----------------------------------------------------------------------------------------
 -- Initialization and Destruction
 -----------------------------------------------------------------------------------------
 
--- Creates the item
+-- Creates the mana drop
 --
 -- Parameters:
---  tile: The tile the item is on
+--  tile: The tile the mana is on
 --  grid: The grid
-function MapItem.create(parameters)
+function ManaDrop.create(parameters)
 	-- Create object
 	local self = parameters or {}
-	setmetatable(self, MapItem)
+	setmetatable(self, ManaDrop)
 
 	-- Create group
 	self.group = display.newGroup()
@@ -70,17 +69,17 @@ function MapItem.create(parameters)
 	self.group.y = self.y
 
 	-- Draw sprite
-	self.itemSprite = SpriteManager.newSprite(spriteSet)
-	self.itemSprite:prepare("item")
-	self.itemSprite:play()
+	self.manaSprite = SpriteManager.newSprite(spriteSet)
+	self.manaSprite:prepare("mana")
+	self.manaSprite:play()
 
 	-- Position sprite
-	self.itemSprite:setReferencePoint(display.CenterReferencePoint)
-	self.itemSprite.x = Tile.width_2
-	self.itemSprite.y = Tile.height_2
+	self.manaSprite:setReferencePoint(display.CenterReferencePoint)
+	self.manaSprite.x = Tile.width_2
+	self.manaSprite.y = Tile.height_2
 
 	-- Add to group
-	self.group:insert(self.itemSprite)
+	self.group:insert(self.manaSprite)
 
 	-- Listen to events
 	Runtime:addEventListener("spritePause", self)
@@ -88,12 +87,13 @@ function MapItem.create(parameters)
 	return self
 end
 
--- Destroy the item
-function MapItem:destroy()
+-- Destroy the mana
+function ManaDrop:destroy()
 	ct = ct - 1
 
 	Runtime:removeEventListener("spritePause", self)
 
+	self.grid:removeManaDrop(self)
 	self.group:removeSelf()
 end
 
@@ -101,65 +101,52 @@ end
 -- Methods
 -----------------------------------------------------------------------------------------
 
--- Compute the item collision mask
-function MapItem:computeCollisionMask()
+-- Compute the mana collision mask
+function ManaDrop:computeCollisionMask()
 	self.collisionMask = {
-		x = self.x + config.item.mask.x,
-		y = self.y + config.item.mask.y,
-		width = config.item.mask.width,
-		height = config.item.mask.height
+		x = self.x + config.mana.mask.x,
+		y = self.y + config.mana.mask.y,
+		width = config.mana.mask.width,
+		height = config.mana.mask.height
 	}
 end
 
--- Attach a zombie to this item
+-- Attach a zombie to this mana
 --
 -- Parameters:
 --  zombie: The zombie to attach
-function MapItem:attachZombie(zombie)
+function ManaDrop:attachZombie(zombie)
 	self.zombie = zombie
 end
 
--- Detach a zombie from this item
+-- Detach a zombie from this mana
 --
 -- Parameters:
 --  zombie: The zombie to detach
-function MapItem:detachZombie(zombie)
+function ManaDrop:detachZombie(zombie)
 	self.zombie = nil
 	self.speed = 0
 end
 
--- Start the motion of the item being carried by the zombie
-function MapItem:startMotion()
-	self.speed = self.config.item.speed * self.zombie.directionVector.x
+-- Start the motion of the mana being carried by the zombie
+function ManaDrop:startMotion()
+	self.speed = self.config.mana.speed * self.zombie.directionVector.x
 end
 
--- Item is fetched by a player, giving this item to him
+-- Mana is fetched by a player, giving this mana to him
 --
 -- Parameters:
---  player: The player fetching the item
-function MapItem:fetched(player)
+--  player: The player fetching the mana
+function ManaDrop:fetched(player)
 	self.zombie:changeDirection{
 		direction = self.zombie.player.direction,
 		priority = ZOMBIE.PRIORITY.DEFAULT
 	}
 
+	player:addMana(config.mana.value)
+
 	self:detachZombie(self.zombie)
-
-	if player.itemCount < config.player.maxItems then
-		-- Create player item
-		local playerItem = PlayerItem.create{
-			player = player,
-			grid = self.grid,
-			x = self.x,
-			y = self.y,
-			type = math.random(1, ITEM.COUNT)
-		}
-
-		player:gainItem(playerItem)
-		self.grid:removeItem(self)
-
-		self:destroy()
-	end
+	self:destroy()
 end
 
 -----------------------------------------------------------------------------------------
@@ -170,7 +157,7 @@ end
 --
 -- Parameters:
 --  timeDelta: The time in ms since last frame
-function MapItem:enterFrame(timeDelta)
+function ManaDrop:enterFrame(timeDelta)
 	if self.speed ~= 0 then
 		local movement = timeDelta / 1000 * self.speed * Tile.width
 
@@ -182,8 +169,8 @@ function MapItem:enterFrame(timeDelta)
 
 	-- Draw collision mask
 	if config.debug.showCollisionMask and not self.collisionMaskDebug then
-		self.collisionMaskDebug = display.newRect(config.item.mask.x, config.item.mask.y,
-			config.item.mask.width, config.item.mask.height)
+		self.collisionMaskDebug = display.newRect(config.mana.mask.x, config.mana.mask.y,
+			config.mana.mask.width, config.mana.mask.height)
 		self.collisionMaskDebug.strokeWidth = 3
 		self.collisionMaskDebug:setStrokeColor(255, 0, 0)
 		self.collisionMaskDebug:setFillColor(0, 0, 0, 0)
@@ -202,14 +189,14 @@ end
 -- Parameters:
 --  event: The tile event, with these values:
 --   status: If true, then pauses the animation, otherwise resumes it
-function MapItem:spritePause(event)
+function ManaDrop:spritePause(event)
 	if event.status then
-		self.itemSprite:pause()
+		self.manaSprite:pause()
 	else
-		self.itemSprite:play()
+		self.manaSprite:play()
 	end
 end
 
 -----------------------------------------------------------------------------------------
 
-return MapItem
+return ManaDrop

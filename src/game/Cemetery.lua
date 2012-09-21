@@ -164,7 +164,7 @@ function Cemetery:enterFrame(timeDelta)
 
 		local size = 1
 		if config.debug.onlyGiants or config.debug.randomGiants and math.random() < 0.2 then
-			size = config.item.giant.size
+			size = config.mana.giant.size
 		end
 
 		self:spawn{

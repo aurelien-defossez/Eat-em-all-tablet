@@ -36,8 +36,11 @@ function Player.create(parameters)
 	self.signs = {}
 	self.signsCount = 0
 	self.cemeteries = {}
-	self.itemCount = 0
 	self.mana = config.player.startingMana
+
+	if config.debug.startWithMana then
+		self.mana = config.debug.startingMana
+	end
 	
 	return self
 end
@@ -77,12 +80,21 @@ function Player:addHPs(nbHPs)
 	end
 end
 
+-- Add some mana to the mana pool
+--
+-- Parameters:
+--  value: The mana to add to the pool
+function Player:addMana(value)
+	self.mana = self.mana + value
+	self.powersPanel:updateMana(math.floor(self.mana))
+end
+
 -- Add a city under the control of the player
 --
 -- Parameters:
 --  The city controlled
 function Player:gainCity(city)
-	-- Do nothring
+	-- Do nothing
 end
 
 -- Lose the control of a city
@@ -90,25 +102,7 @@ end
 -- Parameters:
 --  The city lost
 function Player:loseCity(city)
-	-- Do nothring
-end
-
--- Add an item
---
--- Parameters:
---  item: The item
-function Player:gainItem(item)
-	self.itemsPanel:gainItem(item)
-	self.itemCount = self.itemCount + 1
-end
-
--- Remove an item from the list
---
--- Parameters:
---  item: The item to remove
-function Player:removeItem(item)
-	self.itemsPanel:removeItem(item)
-	self.itemCount = self.itemCount - 1
+	-- Do nothing
 end
 
 -- Add a sign under the control of the player

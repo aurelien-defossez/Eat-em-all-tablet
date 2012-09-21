@@ -58,10 +58,10 @@ function PlayerItem.create(parameters)
 
 	-- Initialize attributes
 	self.id = ctId
-	self.width = config.item.width
-	self.height = config.item.height
-	self.width_2 = config.item.width / 2
-	self.height_2 = config.item.height / 2
+	self.width = config.mana.width
+	self.height = config.mana.height
+	self.width_2 = config.mana.width / 2
+	self.height_2 = config.mana.height / 2
 	
 	if self.type == ITEM.SKELETON then
 		self.typeName = "skeleton"
@@ -117,11 +117,11 @@ end
 -- Parameters:
 --  x: The X target position
 --  y: The y target position
---  easingTimeL The time took to make the easing (Default is config.item.easingTime.reorganize)
+--  easingTimeL The time took to make the easing (Default is config.mana.easingTime.reorganize)
 function PlayerItem:transitionTo(parameters)
 	transition.to(self.group, {
 		transition = easing.outExpo,
-		time = parameters.easingTime or config.item.easingTime.reorganize,
+		time = parameters.easingTime or config.mana.easingTime.reorganize,
 		x = parameters.x,
 		y = parameters.y
 	})
@@ -172,10 +172,10 @@ function PlayerItem:touch(event)
 
 				-- Spawn zombies or giant
 				if self.type == ITEM.SKELETON then
-					cemetery:quicklySpawnZombies(config.item.skeleton.nbZombies)
+					cemetery:quicklySpawnZombies(config.mana.skeleton.nbZombies)
 				elseif self.type == ITEM.GIANT then
 					cemetery:spawn{
-						size = config.item.giant.size
+						size = config.mana.giant.size
 					}
 				end
 			-- Use tornado if the drop tile does not contain a cemetery, a fortress wall or another tornado
@@ -222,7 +222,7 @@ function PlayerItem:touch(event)
 		self:transitionTo{
 			x = self.x,
 			y = self.y,
-			easingTime = config.item.easingTime.cancel
+			easingTime = config.mana.easingTime.cancel
 		}
 	end
 	

@@ -50,10 +50,7 @@ function initialize()
 	spriteSets[SPRITE_SET.CITY] = loadSpriteSet(sprites.city)
 	spriteSets[SPRITE_SET.FORTRESS_WALL] = loadSpriteSet(sprites.fortressWall)
 	spriteSets[SPRITE_SET.MANA] = loadSpriteSet(sprites.mana)
-	spriteSets[SPRITE_SET.ITEM] = loadSpriteSet(sprites.item)
 	spriteSets[SPRITE_SET.ZOMBIE] = loadSpriteSet(sprites.zombie)
-	spriteSets[SPRITE_SET.TORNADO] = loadSpriteSet(sprites.tornado)
-	spriteSets[SPRITE_SET.MINE] = loadSpriteSet(sprites.mine)
 	spriteSets[SPRITE_SET.MISC] = loadSpriteSet(sprites.misc)
 end
 

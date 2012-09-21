@@ -104,8 +104,8 @@ function onDebugTap(button)
 				actionPerformed = onZombiesTap
 			},
 			Button.create{
-				text = "Items",
-				actionPerformed = onItemsTap
+				text = "Mana",
+				actionPerformed = onManaTap
 			}
 		}
 	})
@@ -214,32 +214,32 @@ function onZombiesTap(button)
 	})
 end
 
--- Handler for the "Items" button
+-- Handler for the "Mana" button
 --
 -- Parameters:
 --  button: The button pressed
-function onItemsTap(button)
+function onManaTap(button)
 	WindowManager.addWindow(MenuWindow.create{
-		title = "Debug - Items",
+		title = "Debug - Mana",
 		buttons = {
 			Button.create{
 				text = "Back",
 				actionPerformed = onBackTap
 			},
 			Button.create{
-				text = "Start with items",
-				actionPerformed = onStartWithItemsTap,
-				selected = config.debug.startWithItems
+				text = "Start with mana",
+				actionPerformed = onStartWithManaTap,
+				selected = config.debug.startWithMana
 			},
 			Button.create{
-				text = "Fast item spawn",
-				actionPerformed = onFastItemSpawnTap,
-				selected = config.debug.fastItemSpawn
+				text = "Mana drop fury",
+				actionPerformed = onManaDropFury,
+				selected = config.debug.manaDropFury
 			},
 			Button.create{
-				text = "No items",
-				actionPerformed = onNoItemsTap,
-				selected = config.debug.noItems
+				text = "No mana drops",
+				actionPerformed = onNoManaDropsTap,
+				selected = config.debug.noManaDrops
 			}
 		}
 	})
@@ -344,30 +344,30 @@ function onRandomGiantsTap(button)
 	button:setSelected(not button.selected)
 end
 
--- Handler for the "Start with items" button
+-- Handler for the "Start with mana" button
 --
 -- Parameters:
 --  button: The button pressed
-function onStartWithItemsTap(button)
-	config.debug.startWithItems = not config.debug.startWithItems
+function onStartWithManaTap(button)
+	config.debug.startWithMana = not config.debug.startWithMana
 	button:setSelected(not button.selected)
 end
 
--- Handler for the "Fast item spawn" button
+-- Handler for the "Mana drop fury" button
 --
 -- Parameters:
 --  button: The button pressed
-function onFastItemSpawnTap(button)
-	config.debug.fastItemSpawn = not config.debug.fastItemSpawn
+function onManaDropFury(button)
+	config.debug.manaDropFury = not config.debug.manaDropFury
 	button:setSelected(not button.selected)
 end
 
--- Handler for the "No items" button
+-- Handler for the "No mana drops" button
 --
 -- Parameters:
 --  button: The button pressed
-function onNoItemsTap(button)
-	config.debug.fastItemSpawn = not config.debug.noItems
+function onNoManaDropsTap(button)
+	config.debug.noManaDrops = not config.debug.noManaDrops
 	button:setSelected(not button.selected)
 end
 

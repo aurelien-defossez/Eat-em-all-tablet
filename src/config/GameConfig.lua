@@ -2,9 +2,7 @@ config = {
 	debug = {
 		-- Speed
 		fastMode = false,
-		fastModeRatio = 3,
 		superFastMode = false,
-		superFastModeRatio = 8,
 		frameByFrame = false,
 
 		-- Render
@@ -15,14 +13,19 @@ config = {
 		oneCemetery = false,
 		twoCemeteries = false,
 		oneZombie = false,
-		immediateSpawn = true,
+		immediateSpawn = false,
 		onlyGiants = false,
 		randomGiants = false,
 
-		-- Items
-		startWithItems = false,
-		fastItemSpawn = false,
-		noItems = true
+		-- Mana
+		startWithMana = false,
+		manaDropFury = false,
+		noManaDrops = false,
+
+		-- Values
+		fastModeRatio = 3,
+		superFastModeRatio = 8,
+		startingMana = 200
 	},
 
 	fps = 30,
@@ -37,9 +40,8 @@ config = {
 	player = {
 		hitPoints = 1000,
 		maxSigns = 5,
-		maxItems = 4,
 		startingMana = 0,
-		manaGenerationRate = 0.5,
+		manaGenerationRate = 0.2,
 		colors = {
 			p1 = {
 				r = 250,
@@ -99,14 +101,14 @@ config = {
 		}
 	},
 
-	item = {
+	mana = {
 		width = 64,
 		height = 64,
 		mask = {
-			width = 32,
-			height = 32,
-			x = 16,
-			y = 16
+			width = 10,
+			height = 10,
+			x = 25,
+			y = 29
 		},
 		speed = 0.1,
 		creation = {
@@ -114,19 +116,21 @@ config = {
 			minTime = 6000,
 			xoffset = 2
 		},
-		easingTime = {
-			reorganize = 1500,
-			cancel = 750
-		},
-		skeleton = {
-			nbZombies = 5
-		},
-		giant = {
-			size = 6
-		},
-		tornado = {
-			duration = 15000
-		}
+		value = 10,
+		maxDrops = 4
+		-- easingTime = {
+		-- 	reorganize = 1500,
+		-- 	cancel = 750
+		-- },
+		-- skeleton = {
+		-- 	nbZombies = 5
+		-- },
+		-- giant = {
+		-- 	size = 6
+		-- },
+		-- tornado = {
+		-- 	duration = 15000
+		-- }
 	},
 
 	fortressWall = {

@@ -94,8 +94,8 @@ function initialize()
 				hitFriendlyCity = {
 					state = "enforcingCity"
 				},
-				hitItem = {
-					state = "positioningOnItem"
+				hitMana = {
+					state = "positioningOnMana"
 				},
 				killed = {
 					state = "goingToDie"
@@ -178,47 +178,47 @@ function initialize()
 				}
 			}
 		},
-		-- Positioning on item
-		positioningOnItem = {
-			name = "positioningOnItem",
+		-- Positioning on mana drop
+		positioningOnMana = {
+			name = "positioningOnMana",
 			attributes = {
 				canAttack = false,
 				isAttackable = true,
 				followSigns = false
 			},
-			onEnter = onEnterPositioningOnItem,
+			onEnter = onEnterPositioningOnMana,
 			transitions = {
 				positioned = {
-					state = "fetchingItem"
+					state = "fetchingMana"
 				},
 				killed = {
 					state = "dying",
-					onChange = onItemDropped
+					onChange = onManaDropped
 				}
 			}
 		},
-		-- Fetching item
-		fetchingItem = {
-			name = "fetchingItem",
+		-- Fetching mana drop
+		fetchingMana = {
+			name = "fetchingMana",
 			attributes = {
 				animationName = "carry",
 				canAttack = false,
 				isAttackable = true,
 				followSigns = false
 			},
-			onEnter = onEnterFetchingItem,
+			onEnter = onEnterFetchingMana,
 			transitions = {
 				hitFriendlyWall = {
 					state = "moving",
-					onChange = onItemFetched
+					onChange = onManaFetched
 				},
 				hitFriendlyCemetery = {
 					state = "moving",
-					onChange = onItemFetched
+					onChange = onManaFetched
 				},
 				killed = {
 					state = "dying",
-					onChange = onItemDropped
+					onChange = onManaDropped
 				}
 			}
 		},
@@ -653,44 +653,44 @@ function Zombie:onEnterEnforcingCity(parameters)
 	}
 end
 
--- The onEnter callback for the "positioningOnItem" state
+-- The onEnter callback for the "positioningOnMana" state
 --
 -- Parameters:
---  target: The item
-function Zombie:onEnterPositioningOnItem(parameters)
-	self.item = parameters.target
+--  target: The mana drop
+function Zombie:onEnterPositioningOnMana(parameters)
+	self.mana = parameters.target
 
 	self:changeDirection{
 		direction = getReverseDirection(self.player.direction),
-		priority = ZOMBIE.PRIORITY.ITEM
+		priority = ZOMBIE.PRIORITY.MANA
 	}
 
-	self.item:attachZombie(self)
+	self.mana:attachZombie(self)
 end
 
--- The onEnter callback for the "fetchingItem" state
-function Zombie:onEnterFetchingItem(parameters)
-	self.item:startMotion()
+-- The onEnter callback for the "fetchingMana" state
+function Zombie:onEnterFetchingMana(parameters)
+	self.mana:startMotion()
 
 	self:changeDirection{
 		direction = self.player.direction,
-		priority = ZOMBIE.PRIORITY.ITEM
+		priority = ZOMBIE.PRIORITY.MANA
 	}
 
 	self:updateSprite()
 end
 
--- The onChange callback for the "itemFetched" event
-function Zombie:onItemFetched(parameters)
-	self.item:fetched(self.player)
+-- The onChange callback for the "manaFetched" event
+function Zombie:onManaFetched(parameters)
+	self.mana:fetched(self.player)
 end
 
--- The onChange callback for the "itemDropped" event
+-- The onChange callback for the "manaDropped" event
 --
 -- Parameters:
---  target: The item
-function Zombie:onItemDropped(parameters)
-	self.item:detachZombie(self)
+--  target: The mana
+function Zombie:onManaDropped(parameters)
+	self.mana:detachZombie(self)
 end
 
 -- The onChange callback for the "hitZombie" event
@@ -740,27 +740,27 @@ function Zombie:enterFrame(timeDelta)
 			x = movement * self.directionVector.x,
 			y = movement * self.directionVector.y
 		}
-	-- Get in position to fetch the item
-	elseif state == "positioningOnItem" then
+	-- Get in position to fetch the mana drop
+	elseif state == "positioningOnMana" then
 		local movement = self.speed * speedFactor
-		local itemMask = self.item.collisionMask
+		local manaMask = self.mana.collisionMask
 
 		if self.player.direction == DIRECTION.RIGHT then
 			self:moveTo{
-				x = self.item.x - itemMask.width,
-				y = self.item.y,
+				x = self.mana.x - manaMask.width,
+				y = self.mana.y,
 				maxMovement = movement
 			}
 		else
 			self:moveTo{
-				x = self.item.x + itemMask.width,
-				y = self.item.y,
+				x = self.mana.x + manaMask.width,
+				y = self.mana.y,
 				maxMovement = movement
 			}
 		end
-	-- Carry the item to the fortress
-	elseif state == "fetchingItem" then
-		local movement = self.item.speed * speedFactor
+	-- Carry the mana drop to the fortress
+	elseif state == "fetchingMana" then
+		local movement = self.mana.speed * speedFactor
 
 		self:move{
 			x = movement,

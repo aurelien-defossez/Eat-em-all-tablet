@@ -20,8 +20,7 @@ local Tile = require("src.game.Tile")
 local City = require("src.game.City")
 local Cemetery = require("src.game.Cemetery")
 local FortressWall = require("src.game.FortressWall")
-local MapItem = require("src.game.MapItem")
-local PlayerItem = require("src.hud.PlayerItem")
+local ManaDrop = require("src.game.ManaDrop")
 
 -----------------------------------------------------------------------------------------
 -- Constants
@@ -64,8 +63,8 @@ function Grid.create(parameters)
 	self.zombies = {}
 	self.nbZombies = 0
 
-	self.items = {}
-	self.lastItemSpawnTime = 0	
+	self.manaDrops = {}
+	self.lastDropSpawnTime = 0	
 
 	self.matrix = {}
 	for x = 1, config.panels.grid.nbRows + 1 do
@@ -86,9 +85,9 @@ end
 
 -- Destroy the grid
 function Grid:destroy()
-	-- Destroy items
-	for index, item in pairs(self.items) do
-		item:destroy()
+	-- Destroy mana drops
+	for index, mana in pairs(self.manaDrops) do
+		mana:destroy()
 	end
 
 	-- Destroy zombies
@@ -216,12 +215,12 @@ function Grid:removeZombie(zombie)
 	self.nbZombies = self.nbZombies - 1
 end
 
--- Removes an item from the items list
+-- Removes a mana drop from the grid
 --
 -- Parameters
---  item: The item to remove
-function Grid:removeItem(item)
-	self.items[item.id] = nil
+--  mana: The mana drop to remove
+function Grid:removeManaDrop(mana)
+	self.manaDrops[mana.id] = nil
 end
 
 -- Get a tile using pixel coordinates
@@ -275,43 +274,46 @@ function Grid:enterFrame(timeDelta)
 		zombie:enterFrame(timeDelta)
 	end
 
-	-- Relay event to items
-	for index, item in pairs(self.items) do
-		item:enterFrame(timeDelta)
+	-- Relay event to mana drops
+	for index, mana in pairs(self.manaDrops) do
+		mana:enterFrame(timeDelta)
 	end
 
-	-- Create item
-	if not config.debug.noItems then
-		if config.debug.fastItemSpawn or self.lastItemSpawnTime >= config.item.creation.minTime then
+	-- Create mana drop
+	if not config.debug.noManaDrops then
+		if config.debug.manaDropFury or self.lastDropSpawnTime >= config.mana.creation.minTime then
 			-- pLog = log(ct) / log(max)
 			-- pLogInvert = 1 - pLog
 			-- pPerSecond = creationFactor / fps
 			-- pTotal = pLogInvert * pPerSecond
-			local itemCount = MapItem.ct + PlayerItem.ct
-			local probaFactor = config.item.creation.factor / config.fps
-			local probaItemSpawn = (1 - math.log(itemCount) / math.log(2 * config.player.maxItems)) * probaFactor
+			local probaFactor = config.mana.creation.factor / config.fps
+			local probaSpawn = (1 - math.log(ManaDrop.ct) / math.log(config.mana.maxDrops)) * probaFactor
 
-			if itemCount == 0 or math.random() < probaItemSpawn then
+			if config.debug.manaDropFury then
+				probaSpawn = probaSpawn * 2
+			end
+
+			if ManaDrop.ct == 0 or math.random() < probaSpawn then
 				local middleTileX = math.ceil(config.panels.grid.nbCols / 2)
 				local tile
 				local triesCount = 0
 
 				repeat
 					tile = self:getTile{
-						x = math.random(middleTileX - config.item.creation.xoffset, middleTileX + config.item.creation.xoffset),
+						x = math.random(middleTileX - config.mana.creation.xoffset, middleTileX + config.mana.creation.xoffset),
 						y = math.random(config.panels.grid.nbRows)
 					}
 
 					triesCount = triesCount + 1
 				until tile:hasNoContent() or tile:hasContentType{TILE.CONTENT.SIGN} or triesCount > 42
 
-				local item = MapItem.create{
+				local mana = ManaDrop.create{
 					tile = tile,
 					grid = self
 				}
 
-				self.items[item.id] = item
-				self.lastItemSpawnTime = 0
+				self.manaDrops[mana.id] = mana
+				self.lastDropSpawnTime = 0
 			end
 		end
 	end
@@ -319,7 +321,7 @@ function Grid:enterFrame(timeDelta)
 	-- Check for collisions
 	for index, zombie in pairs(self.zombies) do
 		self:checkZombiesCollsion(zombie)
-		self:checkitemsCollsion(zombie)
+		self:checkManaCollsion(zombie)
 	end
 
 	-- Relay leave frame event
@@ -327,7 +329,7 @@ function Grid:enterFrame(timeDelta)
 		zombie:leaveFrame()
 	end
 
-	self.lastItemSpawnTime = self.lastItemSpawnTime + timeDelta
+	self.lastDropSpawnTime = self.lastDropSpawnTime + timeDelta
 end
 
 -- Check for collisions with other zombies
@@ -361,33 +363,31 @@ function Grid:checkZombiesCollsion(zombie)
 	end
 end
 
--- Check for collisions with items
+-- Check for collisions with mana drops
 -- Returns as soon as a positive collision has happened
 --
 -- Parameters:
 --  zombie: The zombie to check collisions with
-function Grid:checkitemsCollsion(zombie)
+function Grid:checkManaCollsion(zombie)
 	if zombie.canAttack then
 		local mask1 = zombie.collisionMask
 
-		-- Check collision with items
-		if zombie.player.itemCount < config.player.maxItems and not zombie.isGiant then
-			for itemIndex, item in pairs(self.items) do
-				-- Determine if the current zombie can make the item carry process faster
-				if not item.zombie then
-					local mask2 = item.collisionMask
+		-- Check collision with mana drops
+		for index, mana in pairs(self.manaDrops) do
+			-- If the mana drop is already being carried, ignore it
+			if not mana.zombie then
+				local mask2 = mana.collisionMask
 
-					if Collisions.intersectRects(mask1.x, mask1.y, mask1.width, mask1.height,
-						mask2.x, mask2.y, mask2.width, mask2.height) then
-						
-						local ok = zombie.stateMachine:triggerEvent{
-							event = "hitItem",
-							target = item
-						}
+				if Collisions.intersectRects(mask1.x, mask1.y, mask1.width, mask1.height,
+					mask2.x, mask2.y, mask2.width, mask2.height) then
 					
-						if ok then
-							return
-						end
+					local ok = zombie.stateMachine:triggerEvent{
+						event = "hitMana",
+						target = mana
+					}
+				
+					if ok then
+						return
 					end
 				end
 			end

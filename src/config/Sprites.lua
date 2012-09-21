@@ -38,36 +38,6 @@ sprites = {
 		mana = {},
 		mana_stack = {}
 	},
-	item = {
-		item = {},
-		item_tornado = {},
-		item_giant = {},
-		item_mine = {},
-		item_skeleton = {}
-	},
-	tornado = {
-		tornado = {
-			frameCount = 4,
-			period = 400
-		}
-	},
-	mine = {
-		mine_create = {
-			frameCount = 14,
-			period = 500,
-			loop = false
-		},
-		mine_triggered = {
-			frameCount = 6,
-			period = 200,
-			loop = false
-		},
-		mine_explode = {
-			frameCount = 5,
-			period = 800,
-			loop = false
-		}
-	},
 	zombie = {
 		zombie_spawn_red = {
 			frameCount = 3,

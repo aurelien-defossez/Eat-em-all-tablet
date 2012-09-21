@@ -60,7 +60,7 @@ function Tornado.create(parameters)
 	self.type = TILE.CONTENT.TORNADO
 	self.x = self.tile.x
 	self.y = self.tile.y
-	self.lifeSpan = config.item.tornado.duration
+	self.lifeSpan = config.mana.tornado.duration
 	self.nextDirection = RANDOM_DIRECTION[math.random(#RANDOM_DIRECTION)]
 
 	-- Position group

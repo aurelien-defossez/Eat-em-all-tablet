@@ -16,7 +16,6 @@ require("src.utils.Constants")
 require("src.config.GameConfig")
 
 local TableLayout = require("src.utils.TableLayout")
-local PlayerItem = require("src.hud.PlayerItem")
 
 -----------------------------------------------------------------------------------------
 -- Class methods
@@ -49,14 +48,14 @@ function PowersPanel.create(parameters)
 	
 	-- Initialize attributes
 	self.width = config.panels.controls.powers.width
-	self.height = 3 * config.item.height
+	-- self.height = 3 * config.mana.height
 	-- self.tableLayout = TableLayout.create{
 	-- 	x = self.x,
 	-- 	y = self.y,
 	-- 	width = self.width,
 	-- 	height = self.height,
-	-- 	itemWidth = config.item.width,
-	-- 	itemHeight = config.item.height,
+	-- 	itemWidth = config.mana.width,
+	-- 	itemHeight = config.mana.height,
 	-- 	nbRows = config.panels.controls.powers.nbRows,
 	-- 	nbCols = config.panels.controls.powers.nbCols,
 	-- 	direction = self.player.tableLayoutDirection

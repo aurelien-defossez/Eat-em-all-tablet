@@ -24,14 +24,6 @@ CITY = {
 	}
 }
 
-ITEM = {
-	COUNT = 4,
-	SKELETON = 1,
-	GIANT = 2,
-	TORNADO = 3,
-	MINE = 4
-}
-
 TILE = {
 	CONTENT = {
 		CEMETERY = 1,
@@ -74,7 +66,7 @@ ZOMBIE = {
 		CITY = 2,
 		SIGN = 3,
 		TORNADO = 4,
-		ITEM = 5,
+		MANA = 5,
 		WALL = 6
 	}
 }
@@ -88,11 +80,8 @@ SPRITE_SET = {
 	CEMETERY = 2,
 	CITY = 3,
 	FORTRESS_WALL = 4,
-	ITEM = 5,
+	MANA = 5,
 	ZOMBIE = 6,
-	TORNADO = 7,
-	MINE = 8,
-	MANA = 9,
 	MISC = 42
 }
 
