@@ -250,6 +250,12 @@ end
 function onDebugFastModeTap(button)
 	config.debug.fastMode = not config.debug.fastMode
 	button:setSelected(not button.selected)
+
+	if config.debug.fastMode then
+		SpriteManager.setTimeScale(config.debug.fastModeRatio)
+	else
+		SpriteManager.setTimeScale(1)
+	end
 end
 
 -- Handler for the "Only Giants" button of the debug menu

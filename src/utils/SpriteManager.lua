@@ -26,6 +26,7 @@ local SpritesheetData = require("src.utils.SpritesheetData")
 spriteSheet = nil
 spriteSets = nil
 spriteSheetIndex = nil
+timeScale = 1
 
 -----------------------------------------------------------------------------------------
 -- Initialization and Destruction
@@ -109,7 +110,26 @@ end
 -- Returns:
 --  A new instance of the sprite set
 function newSprite(spriteSet)
-	return Sprite.newSprite(spriteSet)
+	local sprite = Sprite.newSprite(spriteSet)
+	sprite.timeScale = timeScale
+
+	return sprite
+end
+
+-- Sets the animation time scale.
+-- A time scale of 1.0 runs the animation at normal speed.
+-- A time scale of 2.0 runs the animation twice as fast.
+-- A time scale of 0.5 runs the animation at half speed.
+--
+-- Parameters:
+--  newTimeScale: The time scale
+function setTimeScale(newTimeScale)
+	timeScale = newTimeScale
+
+	Runtime:dispatchEvent{
+		name = "spriteChangeSpeed",
+		timeScale = newTimeScale
+	}
 end
 
 -----------------------------------------------------------------------------------------

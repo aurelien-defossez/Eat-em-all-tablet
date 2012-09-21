@@ -269,11 +269,6 @@ function Grid:enterFrame(timeDelta)
 		tile:enterFrame(timeDelta)
 	end
 
-	-- Relay event to zombies
-	for index, zombie in pairs(self.zombies) do
-		zombie:enterFrame(timeDelta)
-	end
-
 	-- Relay event to mana drops
 	for index, mana in pairs(self.manaDrops) do
 		mana:enterFrame(timeDelta)
@@ -324,9 +319,9 @@ function Grid:enterFrame(timeDelta)
 		self:checkManaCollsion(zombie)
 	end
 
-	-- Relay leave frame event
+	-- Relay event to zombies
 	for index, zombie in pairs(self.zombies) do
-		zombie:leaveFrame()
+		zombie:enterFrame(timeDelta)
 	end
 
 	self.lastDropSpawnTime = self.lastDropSpawnTime + timeDelta

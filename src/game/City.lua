@@ -130,6 +130,7 @@ function City.create(parameters)
 	self.tile:addEventListener(TILE.EVENT.ENTER_TILE, self)
 	self.tile:addEventListener(TILE.EVENT.REACH_TILE_CENTER, self)
 	Runtime:addEventListener("spritePause", self)
+	Runtime:addEventListener("spriteChangeSpeed", self)
 
 	return self
 end
@@ -139,6 +140,7 @@ function City:destroy()
 	self.tile:removeEventListener(TILE.EVENT.ENTER_TILE, self)
 	self.tile:removeEventListener(TILE.EVENT.REACH_TILE_CENTER, self)
 	Runtime:removeEventListener("spritePause", self)
+	Runtime:addEventListener("spriteChangeSpeed", self)
 
 	self.tile:removeContent(self.contentId)
 
@@ -333,6 +335,26 @@ function City:enterFrame(timeDelta)
 			}
 		end
 	end
+end
+
+-- Pause the sprite animation
+-- Parameters:
+--  event: The event, with these values:
+--   status: If true, then pauses the animation, otherwise resumes it
+function City:spritePause(event)
+	if event.status then
+		self.citySprite:pause()
+	else
+		self.citySprite:play()
+	end
+end
+
+-- Change the sprite animation speed
+-- Parameters:
+--  event: The event, with these values:
+--   timeScale: The new time scale
+function City:spriteChangeSpeed(event)
+	self.citySprite.timeScale = event.timeScale
 end
 
 -----------------------------------------------------------------------------------------

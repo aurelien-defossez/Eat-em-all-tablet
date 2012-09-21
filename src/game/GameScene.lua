@@ -57,6 +57,13 @@ function GameScene.create(parameters)
 	SpriteManager.initialize()
 	WindowManager.initialize()
 
+	-- Initialize sprite time scale
+	if config.debug.superFastMode then
+		SpriteManager.setTimeScale(config.debug.superFastModeRatio)
+	elseif config.debug.fastMode then
+		SpriteManager.setTimeScale(config.debug.fastModeRatio)
+	end
+
 	-- Initialize groups in invert Z order
 	UpperBarPanel.initialize()
 	PlayerControlPanel.initialize()

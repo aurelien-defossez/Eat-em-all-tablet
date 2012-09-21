@@ -360,6 +360,7 @@ function Zombie.create(parameters)
 
 	-- Listen to events
 	Runtime:addEventListener("spritePause", self)
+	Runtime:addEventListener("spriteChangeSpeed", self)
 
 	-- Add to group
 	self.group:insert(self.zombieSprite)
@@ -370,6 +371,7 @@ end
 -- Destroy the zombie
 function Zombie:destroy()
 	Runtime:removeEventListener("spritePause", self)
+	Runtime:removeEventListener("spriteChangeSpeed", self)
 	self.zombieSprite:removeEventListener("sprite", self)
 
 	self.stateMachine:destroy()
@@ -586,13 +588,6 @@ function Zombie:die(parameters)
 	end
 end
 
--- Finalize the death of the zombie (for the transient goingToDie state)
-function Zombie:leaveFrame()
-	self.stateMachine:triggerEvent{
-		event = "endOfFrame"
-	}
-end
-
 -----------------------------------------------------------------------------------------
 -- State machine listeners
 -----------------------------------------------------------------------------------------
@@ -784,6 +779,10 @@ function Zombie:enterFrame(timeDelta)
 		self.collisionMaskDebug:removeSelf()
 		self.collisionMaskDebug = nil
 	end
+	
+	self.stateMachine:triggerEvent{
+		event = "endOfFrame"
+	}
 end
 
 
@@ -797,7 +796,7 @@ end
 
 -- Pause the sprite animation
 -- Parameters:
---  event: The tile event, with these values:
+--  event: The event, with these values:
 --   status: If true, then pauses the animation, otherwise resumes it
 function Zombie:spritePause(event)
 	if event.status then
@@ -805,6 +804,14 @@ function Zombie:spritePause(event)
 	else
 		self.zombieSprite:play()
 	end
+end
+
+-- Change the sprite animation speed
+-- Parameters:
+--  event: The event, with these values:
+--   timeScale: The new time scale
+function Zombie:spriteChangeSpeed(event)
+	self.zombieSprite.timeScale = event.timeScale
 end
 
 -----------------------------------------------------------------------------------------
