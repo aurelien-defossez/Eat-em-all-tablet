@@ -186,8 +186,8 @@ config = {
 				width = 2 * 64,
 				height = 4 * 64,
 				counter = {
-					xoffset = 15,
-					yoffset = 10
+					xoffset = 30,
+					yoffset = -5
 				}
 			},
 			padding = 8,
