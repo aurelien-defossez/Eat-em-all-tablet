@@ -98,8 +98,8 @@ function ArrowsPanel.create(parameters)
 	}
 
 	-- Create arrow counter
-	self.signCounter = display.newText(config.player.maxSigns, config.panels.controls.arrows.counter.xoffset,
-		config.panels.controls.arrows.counter.yoffset, native.systemFontBold, 32)
+	self.signCounter = display.newText(config.player.maxSigns, 0, config.panels.controls.arrows.counter.yoffset,
+		native.systemFontBold, 32)
 	self.signCounter:rotate(self.player.direction)
 	self.signCounter:setReferencePoint(display.BottomCenterReferencePoint)
 	self.signCounter:setTextColor(0, 0, 0)

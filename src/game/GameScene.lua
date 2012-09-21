@@ -22,7 +22,7 @@ local WindowManager = require("src.utils.WindowManager")
 local UpperBarPanel = require("src.hud.UpperBarPanel")
 local PlayerControlPanel = require("src.hud.PlayerControlPanel")
 local ArrowsPanel = require("src.hud.ArrowsPanel")
-local ItemsPanel = require("src.hud.ItemsPanel")
+local PowersPanel = require("src.hud.PowersPanel")
 local PlayerItem = require("src.hud.PlayerItem")
 local Arrow = require("src.hud.Arrow")
 local MenuWindow = require("src.hud.MenuWindow")
@@ -64,7 +64,7 @@ function GameScene.create(parameters)
 	UpperBarPanel.initialize()
 	PlayerControlPanel.initialize()
 	ArrowsPanel.initialize()
-	ItemsPanel.initialize()
+	PowersPanel.initialize()
 	Arrow.initialize()
 	Tile.initialize()
 	FortressWall.initialize()
@@ -128,7 +128,7 @@ function GameScene:destroy()
 end
 
 -----------------------------------------------------------------------------------------
--- Methods
+-- Event handlers
 -----------------------------------------------------------------------------------------
 
 -- Enter frame handler
@@ -136,7 +136,12 @@ end
 -- Parameters:
 --  timeDelta: The time in ms since last frame
 function GameScene:enterFrame(timeDelta)
-	-- Relay event to grid
+	-- Relay event to players
+	for index, player in pairs(self.players) do
+		player:enterFrame(timeDelta)
+	end
+
+		-- Relay event to grid
 	self.grid:enterFrame(timeDelta)
 
 	if config.debug.frameByFrame then

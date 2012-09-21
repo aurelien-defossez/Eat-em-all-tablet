@@ -22,7 +22,7 @@ config = {
 		-- Items
 		startWithItems = false,
 		fastItemSpawn = false,
-		noItems = false
+		noItems = true
 	},
 
 	fps = 30,
@@ -38,6 +38,8 @@ config = {
 		hitPoints = 1000,
 		maxSigns = 5,
 		maxItems = 4,
+		startingMana = 0,
+		manaGenerationRate = 0.5,
 		colors = {
 			p1 = {
 				r = 250,
@@ -194,12 +196,20 @@ config = {
 			-- width = 2 x (arrow.width + padding)
 			width = 2 * (64 + 8),
 			-- height = maxHeight - upperBar.height,
-			items = {
+			powers = {
 				width = 2 * 64,
 				ypadding = 8,
-				nbRows = 2,
-				nbCols = 2
-			},
+				mana = {
+					icon = {
+						xoffset = 50,
+						yoffset = 35
+					},
+					counter = {
+						xoffset = 110,
+						yoffset = 20
+					}
+				}
+			}
 		},
 		grid = {
 			nbRows = 10,

@@ -37,6 +37,7 @@ function Player.create(parameters)
 	self.signsCount = 0
 	self.cemeteries = {}
 	self.itemCount = 0
+	self.mana = config.player.startingMana
 	
 	return self
 end
@@ -140,6 +141,25 @@ function Player:removeSign(sign)
 
 	-- Display number of remaining signs
 	self.arrowsPanel:updateSignCount(config.player.maxSigns - self.signsCount)
+end
+
+-----------------------------------------------------------------------------------------
+-- Event handlers
+-----------------------------------------------------------------------------------------
+
+-- Enter frame handler
+--
+-- Parameters:
+--  timeDelta: The time in ms since last frame
+function Player:enterFrame(timeDelta)
+	-- Generate mana
+	local oldManaCount = math.floor(self.mana)
+	self.mana = self.mana + config.player.manaGenerationRate * timeDelta / 1000
+	local newManaCount = math.floor(self.mana)
+
+	if newManaCount ~= oldManaCount then
+		self.powersPanel:updateMana(newManaCount)
+	end
 end
 
 -----------------------------------------------------------------------------------------

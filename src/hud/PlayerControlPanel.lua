@@ -15,7 +15,7 @@ PlayerControlPanel.__index = PlayerControlPanel
 require("src.utils.Constants")
 require("src.config.GameConfig")
 
-local ItemsPanel = require("src.hud.ItemsPanel")
+local PowersPanel = require("src.hud.PowersPanel")
 local ArrowsPanel = require("src.hud.ArrowsPanel")
 
 -----------------------------------------------------------------------------------------
@@ -55,14 +55,14 @@ function PlayerControlPanel.create(parameters)
 		player = self.player,
 		grid = self.grid,
 		x = self.x + config.panels.controls.padding,
-		y = self.y + config.panels.controls.items.ypadding
+		y = self.y + config.panels.controls.powers.ypadding
 	}
 
-	self.items = ItemsPanel.create{
+	self.powers = PowersPanel.create{
 		player = self.player,
 		grid = self.grid,
 		x = self.x + config.panels.controls.padding,
-		y = self.y + config.panels.controls.arrows.height + config.panels.controls.items.ypadding
+		y = self.y + config.panels.controls.arrows.height + config.panels.controls.powers.ypadding
 	}
 
 	-- Draw background
@@ -80,7 +80,7 @@ end
 -- Destroy the panel
 function PlayerControlPanel:destroy()
 	self.arrows:destroy()
-	self.items:destroy()
+	self.powers:destroy()
 
 	self.group:removeSelf()
 end

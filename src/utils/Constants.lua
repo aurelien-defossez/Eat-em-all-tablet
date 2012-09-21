@@ -92,6 +92,7 @@ SPRITE_SET = {
 	ZOMBIE = 6,
 	TORNADO = 7,
 	MINE = 8,
+	MANA = 9,
 	MISC = 42
 }
 

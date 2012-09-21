@@ -34,6 +34,10 @@ sprites = {
 		fortress_wall_blue = {},
 		fortress_wall_red = {}
 	},
+	mana = {
+		mana = {},
+		mana_stack = {}
+	},
 	item = {
 		item = {},
 		item_tornado = {},
