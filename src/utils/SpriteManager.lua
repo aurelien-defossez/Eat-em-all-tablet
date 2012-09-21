@@ -13,7 +13,7 @@ SpriteManager.__index = SpriteManager
 -----------------------------------------------------------------------------------------
 
 require("src.utils.Constants")
-require("src.config.GameConfig")
+require("src.config.Sprites")
 
 local Sprite = require("sprite")
 
@@ -31,6 +31,7 @@ spriteSheetIndex = nil
 -- Initialization and Destruction
 -----------------------------------------------------------------------------------------
 
+-- Pre load sprites
 function initialize()
 	-- Load sprite sheet
 	local spritesheetData = SpritesheetData.getSpriteSheetData()
@@ -44,15 +45,15 @@ function initialize()
 
 	-- Load sprite sets
 	spriteSets = {}
-	spriteSets[SPRITE_SET.ARROW] = loadSpriteSet(config.sprites.arrow)
-	spriteSets[SPRITE_SET.CEMETERY] = loadSpriteSet(config.sprites.cemetery)
-	spriteSets[SPRITE_SET.CITY] = loadSpriteSet(config.sprites.city)
-	spriteSets[SPRITE_SET.FORTRESS_WALL] = loadSpriteSet(config.sprites.fortressWall)
-	spriteSets[SPRITE_SET.ITEM] = loadSpriteSet(config.sprites.item)
-	spriteSets[SPRITE_SET.ZOMBIE] = loadSpriteSet(config.sprites.zombie)
-	spriteSets[SPRITE_SET.TORNADO] = loadSpriteSet(config.sprites.tornado)
-	spriteSets[SPRITE_SET.MINE] = loadSpriteSet(config.sprites.mine)
-	spriteSets[SPRITE_SET.MISC] = loadSpriteSet(config.sprites.misc)
+	spriteSets[SPRITE_SET.ARROW] = loadSpriteSet(sprites.arrow)
+	spriteSets[SPRITE_SET.CEMETERY] = loadSpriteSet(sprites.cemetery)
+	spriteSets[SPRITE_SET.CITY] = loadSpriteSet(sprites.city)
+	spriteSets[SPRITE_SET.FORTRESS_WALL] = loadSpriteSet(sprites.fortressWall)
+	spriteSets[SPRITE_SET.ITEM] = loadSpriteSet(sprites.item)
+	spriteSets[SPRITE_SET.ZOMBIE] = loadSpriteSet(sprites.zombie)
+	spriteSets[SPRITE_SET.TORNADO] = loadSpriteSet(sprites.tornado)
+	spriteSets[SPRITE_SET.MINE] = loadSpriteSet(sprites.mine)
+	spriteSets[SPRITE_SET.MISC] = loadSpriteSet(sprites.misc)
 end
 
 -----------------------------------------------------------------------------------------

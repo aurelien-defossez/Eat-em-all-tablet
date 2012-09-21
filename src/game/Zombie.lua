@@ -242,7 +242,7 @@ function initialize()
 		dying = {
 			name = "dying",
 			attributes = {
-				animationName = "move",
+				animationName = "die",
 				canAttack = false,
 				isAttackable = false
 			},
@@ -560,7 +560,7 @@ function Zombie:updateSprite()
 		directionName = "right"
 	end
 
-	if self.animationName == "carry" or self.animationName == "spawn" then
+	if self.animationName == "carry" or self.animationName == "spawn" or self.animationName == "die" then
 		completeAnimationName = "zombie_" .. self.animationName .. "_" .. self.player.color.name
 	else
 		completeAnimationName = "zombie_" .. self.animationName .. "_" .. directionName .. "_" .. self.player.color.name
@@ -708,9 +708,7 @@ end
 
 -- The onEnter callback for the "dying" state
 function Zombie:onEnterDying(parameters)
-	self.stateMachine:triggerEvent{
-		event = "animationEnd"
-	}
+	self:updateSprite()
 end
 
 -- The onEnter callback for the "dead" state
