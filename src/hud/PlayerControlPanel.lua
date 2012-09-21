@@ -51,18 +51,18 @@ function PlayerControlPanel.create(parameters)
 	self.width = config.panels.controls.width
 
 	-- Create sub-panels
-	self.items = ItemsPanel.create{
+	self.arrows = ArrowsPanel.create{
 		player = self.player,
 		grid = self.grid,
 		x = self.x + config.panels.controls.padding,
 		y = self.y + config.panels.controls.items.ypadding
 	}
 
-	self.arrows = ArrowsPanel.create{
+	self.items = ItemsPanel.create{
 		player = self.player,
 		grid = self.grid,
 		x = self.x + config.panels.controls.padding,
-		y = self.y + self.height / 2 - config.panels.controls.arrows.height / 2
+		y = self.y + config.panels.controls.arrows.height + config.panels.controls.items.ypadding
 	}
 
 	-- Draw background

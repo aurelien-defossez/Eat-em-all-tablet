@@ -69,7 +69,6 @@ config = {
 	city = {
 		width = 64,
 		height = 64,
-		-- easingTime = 1500,
 		bars = {
 			offset = {
 				x = 50,
@@ -82,21 +81,18 @@ config = {
 			inhabitants = 0,
 			spawnPeriod = 5000,
 			maxInhabitants = 10,
-			exitPeriod = 400,
 			requiredInhabitants = 5
 		},
 		medium = {
 			inhabitants = 0,
 			spawnPeriod = 3500,
 			maxInhabitants = 20,
-			exitPeriod = 300,
 			requiredInhabitants = 15
 		},
 		large = {
 			inhabitants = 0,
 			spawnPeriod = 2000,
 			maxInhabitants = 30,
-			exitPeriod = 200,
 			requiredInhabitants = 25
 		}
 	},
@@ -186,6 +182,14 @@ config = {
 			}
 		},
 		controls = {
+			arrows = {
+				width = 2 * 64,
+				height = 4 * 64,
+				counter = {
+					xoffset = 15,
+					yoffset = 10
+				}
+			},
 			padding = 8,
 			-- width = 2 x (arrow.width + padding)
 			width = 2 * (64 + 8),
@@ -196,14 +200,6 @@ config = {
 				nbRows = 2,
 				nbCols = 2
 			},
-			arrows = {
-				width = 2 * 64,
-				height = 4 * 64,
-				counter = {
-					xoffset = 15,
-					yoffset = 10
-				}
-			}
 		},
 		grid = {
 			nbRows = 10,
