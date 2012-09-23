@@ -80,12 +80,13 @@ function GameScene.create(parameters)
 	MenuWindow.initialize()
 	Button.initialize()
 
-	-- Sizes
-	local mainHeight = config.screen.height - config.panels.upperBar.height
-	
 	-- Create upper bar panel
 	self.upperBar = UpperBarPanel.create{
-		players = self.players
+		players = self.players,
+		x = config.panels.controls.width + config.panels.grid.xpadding,
+		y = 0,
+		width = config.screen.width - 2 * config.panels.controls.width - 2 * config.panels.grid.xpadding,
+		height = config.panels.upperBar.height
 	}
 
 	-- Create grid
@@ -94,7 +95,7 @@ function GameScene.create(parameters)
 		x = config.panels.controls.width + config.panels.grid.xpadding,
 		y = config.panels.upperBar.height,
 		width = config.screen.width - 2 * config.panels.controls.width - 2 * config.panels.grid.xpadding,
-		height = mainHeight
+		height = config.screen.height - config.panels.upperBar.height
 	}
 
 	-- Load default map
@@ -104,16 +105,16 @@ function GameScene.create(parameters)
 	self.controlPanel1 = PlayerControlPanel.create{
 		player = self.players[1],
 		x = 0,
-		y = config.panels.upperBar.height,
-		height = mainHeight,
+		y = 0,
+		height = config.screen.height,
 		grid = self.grid
 	}
 
 	self.controlPanel2 = PlayerControlPanel.create{
 		player = self.players[2],
 		x = config.screen.width - config.panels.controls.width,
-		y = config.panels.upperBar.height,
-		height = mainHeight,
+		y = 0,
+		height = config.screen.height,
 		grid = self.grid
 	}
 

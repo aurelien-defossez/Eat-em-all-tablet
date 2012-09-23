@@ -176,11 +176,11 @@ config = {
 			height = 50,
 			hitPoints = {
 				-- width = (maxWidth - menuButton) / 2
-				xpadding = 10,
+				xpadding = 4,
 				ypadding = 10
 			},
 			menuButton = {
-				width = 100,
+				width = 50,
 				pause = {
 					width = 46,
 					height = 46

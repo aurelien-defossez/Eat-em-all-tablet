@@ -51,15 +51,14 @@ function UpperBarPanel.create(parameters)
 	classGroup:insert(self.group)
 	
 	-- Initialize attributes
-	self.height = config.panels.upperBar.height
-	self.hpWidth = (config.screen.width - config.panels.upperBar.menuButton.width) / 2
+	self.hpWidth = (self.width - config.panels.upperBar.menuButton.width) / 2
 
 	self.hitPoints = {}
 	self.hitPoints[1] = HitPointsPanel.create{
 		maxHitPoints = self.players[1].hitPoints,
 		hitPoints = self.players[1].hitPoints,
-		x = 0,
-		y = 0,
+		x = self.x,
+		y = self.y,
 		width = self.hpWidth,
 		direction = HIT_POINTS_PANEL.DIRECTION.FORWARD
 	}
@@ -67,8 +66,8 @@ function UpperBarPanel.create(parameters)
 	self.hitPoints[2] = HitPointsPanel.create{
 		maxHitPoints = self.players[2].hitPoints,
 		hitPoints = self.players[2].hitPoints,
-		x = self.hpWidth + config.panels.upperBar.menuButton.width,
-		y = 0,
+		x = self.x + self.hpWidth + config.panels.upperBar.menuButton.width,
+		y = self.y,
 		width = self.hpWidth,
 		direction = HIT_POINTS_PANEL.DIRECTION.REVERSE
 	}
