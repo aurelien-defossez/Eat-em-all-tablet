@@ -1,12 +1,12 @@
 -----------------------------------------------------------------------------------------
 --
--- Arrow.lua
+-- DraggedArrow.lua
 --
 -----------------------------------------------------------------------------------------
 
-module("Arrow", package.seeall)
+module("DraggedArrow", package.seeall)
 
-Arrow.__index = Arrow
+DraggedArrow.__index = DraggedArrow
 
 -----------------------------------------------------------------------------------------
 -- Imports
@@ -17,7 +17,8 @@ require("src.config.GameConfig")
 
 local SpriteManager = require("src.sprites.SpriteManager")
 local Sprite = require("src.sprites.Sprite")
-local DraggedArrow = require("src.hud.DraggedArrow")
+local Sign = require("src.game.Sign")
+local Tile = require("src.game.Tile")
 
 -----------------------------------------------------------------------------------------
 -- Class methods
@@ -32,7 +33,7 @@ end
 -- Initialization and Destruction
 -----------------------------------------------------------------------------------------
 
--- Create a control arrow
+-- Create a dragged arrow
 --
 -- Parameters:
 --  player: The arrow owner
@@ -40,10 +41,10 @@ end
 --  direction: The arrow direction, using Direction constants
 --  x: X position
 --  y: Y position
-function Arrow.create(parameters)
+function DraggedArrow.create(parameters)
 	-- Create object
 	local self = parameters or {}
-	setmetatable(self, Arrow)
+	setmetatable(self, DraggedArrow)
 
 	-- Create group
 	self.group = display.newGroup()
@@ -52,19 +53,25 @@ function Arrow.create(parameters)
 	-- Initialize attributes
 	self.width = config.arrow.width
 	self.height = config.arrow.height
-	self.enabled = true
 
 	-- Create sprite
 	self.arrowSprite = Sprite.create{
 		spriteSet = spriteSet,
 		group = self.group,
-		x = self.x or 0,
-		y = self.height / 2 + (self.y or 0),
-		orientation = self.direction or 0
+		x = self.x,
+		y = self.y,
+		orientation = self.direction
 	}
 
 	-- Draw sprite
-	self:updateSprite()
+	local animationName = nil
+	if self.direction ~= DIRECTION.DELETE then
+		animationName = "arrow_selected_" .. self.player.color.name
+	else 
+		animationName = "arrow_crossed_" .. self.player.color.name
+	end
+
+	self.arrowSprite:play(animationName)
 
 	-- Handle events
 	self.arrowSprite:addEventListener("touch", self)
@@ -73,60 +80,73 @@ function Arrow.create(parameters)
 end
 
 -- Destroy the arrow
-function Arrow:destroy()
+function DraggedArrow:destroy()
 	self.arrowSprite:removeEventListener("touch", self)
 	self.arrowSprite:destroy()
 	self.group:removeSelf()
 end
 
 -----------------------------------------------------------------------------------------
--- Methods
------------------------------------------------------------------------------------------
-
--- Enable the dragging of the arrow
-function Arrow:enable()
-	self.enabled = true
-	self:updateSprite()
-end
-
--- Disable the dragging of the arrow
-function Arrow:disable()
-	self.enabled = false
-	self:updateSprite()
-end
-
--- Draw the sprite according to the arrow state
-function Arrow:updateSprite()
-	local animationName
-	local disabled = self.enabled and "" or "disabled_"
-
-	if self.direction ~= DIRECTION.DELETE then
-		animationName = "arrow_" .. disabled .. self.player.color.name
-	else 
-		animationName = "arrow_crossed_" .. self.player.color.name
-	end
-
-	self.arrowSprite:play(animationName)
-end
-
------------------------------------------------------------------------------------------
 -- Event listeners
 -----------------------------------------------------------------------------------------
 
--- Touch handler on one of the four arrows of the control panel
+-- Touch handler on the dragged arrow
 --
 -- Parameters:
 --  event: The touch event
-function Arrow:touch(event)
-	-- Begin drag by creating a new draggable arrow
-	if self.enabled and event.phase == "began" then
-		DraggedArrow.create{
+function DraggedArrow:touch(event)
+	-- Follow the finger movement
+	if event.phase == "moved" then
+		self.arrowSprite:move{
 			x = event.x,
-			y = event.y,
-			direction = self.direction,
-			player = self.player,
-			grid = self.grid
+			y = event.y
 		}
+
+		-- Focus this object in order to track this finger properly
+		display.getCurrentStage():setFocus(self.arrowSprite.sprite, event.id)
+
+	-- Drop the arrow
+	elseif event.phase == "ended" then
+		-- Locate drop tile
+		local tile = self.grid:getTileByPixels{
+			x = event.x,
+			y = event.y
+		}
+
+		if tile then
+			local sign = tile:getContentForType{TILE.CONTENT.SIGN}
+
+			if self.direction ~= DIRECTION.DELETE then
+				-- Create sign
+				if not tile:hasContentType(CONTENT_GROUP.PRIMARY)
+					or (sign and sign.player == self.player) then
+
+					if sign then
+						sign:destroy()
+					end
+
+					Sign.create{
+						tile = tile,
+						player = self.player,
+						direction = self.direction
+					}
+				end
+			elseif sign and sign.player == self.player then
+				-- Remove sign
+				sign:destroy()
+			end
+		end
+
+		-- Remove focus
+		display.getCurrentStage():setFocus(nil, event.id)
+
+		-- Remove dragged sprite
+		self:destroy()
+
+	-- Delete the arrow
+	elseif event.phase == "cancelled" then
+		display.getCurrentStage():setFocus(nil, event.id)
+		self:destroy()
 	end
 
 	return true
@@ -134,4 +154,4 @@ end
 
 -----------------------------------------------------------------------------------------
 
-return Arrow
+return DraggedArrow

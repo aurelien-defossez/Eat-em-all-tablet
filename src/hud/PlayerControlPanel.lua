@@ -87,6 +87,7 @@ end
 
 -- Destroy the panel
 function PlayerControlPanel:destroy()
+	self.upgrade:destroy()
 	self.arrows:destroy()
 	self.powers:destroy()
 

@@ -16,6 +16,7 @@ require("src.utils.Constants")
 require("src.config.GameConfig")
 
 local SpriteManager = require("src.sprites.SpriteManager")
+local Sprite = require("src.sprites.Sprite")
 local Tile = require("src.game.Tile")
 
 -----------------------------------------------------------------------------------------
@@ -58,9 +59,9 @@ function ManaDrop.create(parameters)
 	self.y = self.tile.y
 	self.zombie = nil
 	self.speed = 0
-
 	self:computeCollisionMask()
 
+	-- Update class attributes
 	ctId = ctId + 1
 	ct = ct + 1
 
@@ -68,21 +69,16 @@ function ManaDrop.create(parameters)
 	self.group.x = self.x
 	self.group.y = self.y
 
+	-- Create sprite
+	self.manaSprite = Sprite.create{
+		spriteSet = spriteSet,
+		group = self.group,
+		x = Tile.width_2,
+		y = Tile.height_2
+	}
+
 	-- Draw sprite
-	self.manaSprite = SpriteManager.newSprite(spriteSet)
-	self.manaSprite:prepare("mana")
-	self.manaSprite:play()
-
-	-- Position sprite
-	self.manaSprite:setReferencePoint(display.CenterReferencePoint)
-	self.manaSprite.x = Tile.width_2
-	self.manaSprite.y = Tile.height_2
-
-	-- Add to group
-	self.group:insert(self.manaSprite)
-
-	-- Listen to events
-	Runtime:addEventListener("spritePause", self)
+	self.manaSprite:play("mana")
 
 	return self
 end
@@ -91,9 +87,8 @@ end
 function ManaDrop:destroy()
 	ct = ct - 1
 
-	Runtime:removeEventListener("spritePause", self)
-
 	self.grid:removeManaDrop(self)
+	self.manaSprite:destroy()
 	self.group:removeSelf()
 end
 
@@ -182,18 +177,6 @@ function ManaDrop:enterFrame(timeDelta)
 	if not config.debug.showCollisionMask and self.collisionMaskDebug then
 		self.collisionMaskDebug:removeSelf()
 		self.collisionMaskDebug = nil
-	end
-end
-
--- Pause the sprite animation
--- Parameters:
---  event: The tile event, with these values:
---   status: If true, then pauses the animation, otherwise resumes it
-function ManaDrop:spritePause(event)
-	if event.status then
-		self.manaSprite:pause()
-	else
-		self.manaSprite:play()
 	end
 end
 

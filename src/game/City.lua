@@ -16,6 +16,7 @@ require("src.utils.Constants")
 require("src.config.GameConfig")
 
 local SpriteManager = require("src.sprites.SpriteManager")
+local Sprite = require("src.sprites.Sprite")
 local Zombie = require("src.game.Zombie")
 
 -----------------------------------------------------------------------------------------
@@ -56,6 +57,10 @@ function City.create(parameters)
 	self.spawning = false
 	self.timeSinceLastSpawn = 0
 
+	-- Position group
+	self.group.x = self.x
+	self.group.y = self.y
+
 	if self.size == CITY.SIZE.SMALL then
 		self.inhabitants = config.city.small.inhabitants
 		self.spawnPeriod = config.city.small.spawnPeriod
@@ -83,17 +88,13 @@ function City.create(parameters)
 	self.group:insert(self.cityGroup)
 	self.group:insert(self.barGroup)
 
-	-- Position group
-	self.group.x = self.x
-	self.group.y = self.y
-
 	-- Create sprite
-	self.citySprite = SpriteManager.newSprite(spriteSet)
-
-	-- Position sprite
-	self.citySprite:setReferencePoint(display.CenterReferencePoint)
-	self.citySprite.x = self.tile.width / 2
-	self.citySprite.y = self.tile.height / 2
+	self.citySprite = Sprite.create{
+		spriteSet = spriteSet,
+		group = self.cityGroup,
+		x = Tile.width_2,
+		y = Tile.height_2
+	}
 
 	-- Bars
 	self.barHeight = config.city.bars.maxHeight * self.maxInhabitants / config.city.large.maxInhabitants
@@ -116,7 +117,6 @@ function City.create(parameters)
 	self:updateInhabitants()
 
 	-- Add to group
-	self.cityGroup:insert(self.citySprite)
 	self.barGroup:insert(self.backgroundBar)
 	self.barGroup:insert(self.inhabitantsBar)
 	
@@ -129,8 +129,6 @@ function City.create(parameters)
 	-- Listen to events
 	self.tile:addEventListener(TILE.EVENT.ENTER_TILE, self)
 	self.tile:addEventListener(TILE.EVENT.REACH_TILE_CENTER, self)
-	Runtime:addEventListener("spritePause", self)
-	Runtime:addEventListener("spriteChangeSpeed", self)
 
 	return self
 end
@@ -139,11 +137,8 @@ end
 function City:destroy()
 	self.tile:removeEventListener(TILE.EVENT.ENTER_TILE, self)
 	self.tile:removeEventListener(TILE.EVENT.REACH_TILE_CENTER, self)
-	Runtime:removeEventListener("spritePause", self)
-	Runtime:addEventListener("spriteChangeSpeed", self)
-
+	self.citySprite:destroy()
 	self.tile:removeContent(self.contentId)
-
 	self.group:removeSelf()
 end
 
@@ -169,8 +164,7 @@ function City:updateSprite()
 		animationName = "city" .. self.size .. "_" .. self.player.color.name
 	end
 	
-	self.citySprite:prepare(animationName)
-	self.citySprite:play()
+	self.citySprite:play(animationName)
 end
 
 -- Update the number of inhabitants graphically
@@ -335,26 +329,6 @@ function City:enterFrame(timeDelta)
 			}
 		end
 	end
-end
-
--- Pause the sprite animation
--- Parameters:
---  event: The event, with these values:
---   status: If true, then pauses the animation, otherwise resumes it
-function City:spritePause(event)
-	if event.status then
-		self.citySprite:pause()
-	else
-		self.citySprite:play()
-	end
-end
-
--- Change the sprite animation speed
--- Parameters:
---  event: The event, with these values:
---   timeScale: The new time scale
-function City:spriteChangeSpeed(event)
-	self.citySprite.timeScale = event.timeScale
 end
 
 -----------------------------------------------------------------------------------------

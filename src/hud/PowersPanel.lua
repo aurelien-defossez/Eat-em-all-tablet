@@ -61,29 +61,37 @@ function PowersPanel.create(parameters)
 	-- 	direction = self.player.tableLayoutDirection
 	-- }
 
-	-- Create mana stack icon
-	self.manaSprite = SpriteManager.newSprite(manaSpriteSet)
-	self.manaSprite.y = config.panels.controls.powers.mana.icon.yoffset
-	self.manaSprite:prepare("mana_stack")
-	self.manaSprite:play()
-	self.group:insert(self.manaSprite)
+	-- Position counter depending on player's side
+	local textX
+	local spriteX
+	if self.player.id == 1 then
+		textX = self.width - config.panels.controls.powers.mana.counter.xoffset
+		spriteX = self.width - config.panels.controls.powers.mana.icon.xoffset
+	else
+		textX = config.panels.controls.powers.mana.counter.xoffset
+		spriteX = config.panels.controls.powers.mana.icon.xoffset
+	end
+
+	-- Create sprite
+	self.manaSprite = Sprite.create{
+		spriteSet = manaSpriteSet,
+		group = self.group,
+		x = spriteX,
+		y = config.panels.controls.powers.mana.icon.yoffset,
+		orientation = self.player.direction
+	}
+
+	-- Draw sprite
+	self.manaSprite:play("mana_stack")
 
 	-- Create mana counter
 	self.manaCounter = display.newText(self.player.mana, 0, 0, native.systemFontBold, 32)
+	self.manaCounter.x = textX
 	self.manaCounter.y = config.panels.controls.powers.mana.counter.yoffset
 	self.manaCounter:rotate(self.player.direction)
 	self.manaCounter:setReferencePoint(display.BottomCenterReferencePoint)
 	self.manaCounter:setTextColor(0, 0, 0)
 	self.group:insert(self.manaCounter)
-
-	-- Position counter depending on player's side
-	if self.player.id == 1 then
-		self.manaCounter.x = self.width - config.panels.controls.powers.mana.counter.xoffset
-		self.manaSprite.x = self.width - config.panels.controls.powers.mana.icon.xoffset
-	else
-		self.manaCounter.x = config.panels.controls.powers.mana.counter.xoffset
-		self.manaSprite.x = config.panels.controls.powers.mana.icon.xoffset
-	end
 
 	-- Position group
 	self.group.x = self.x
@@ -97,7 +105,8 @@ end
 
 -- Destroy the panel
 function PowersPanel:destroy()
-	self.tableLayout:destroy()
+	-- self.tableLayout:destroy()
+	self.manaSprite:destroy()
 	self.group:removeSelf()
 end
 
@@ -105,6 +114,10 @@ end
 -- Methods
 -----------------------------------------------------------------------------------------
 
+-- Update the mana counter
+--
+-- Parameters:
+--  mana: The new amount of mana
 function PowersPanel:updateMana(mana)
 	self.manaCounter.text = mana
 end

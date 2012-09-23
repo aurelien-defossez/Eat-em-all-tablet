@@ -16,6 +16,7 @@ require("src.utils.Constants")
 require("src.config.GameConfig")
 
 local SpriteManager = require("src.sprites.SpriteManager")
+local Sprite = require("src.sprites.Sprite")
 
 -----------------------------------------------------------------------------------------
 -- Class initialization
@@ -53,25 +54,22 @@ function FortressWall.create(parameters)
 	self.group.x = self.x
 	self.group.y = self.y
 
+	-- Create sprite
+	self.wallSprite = Sprite.create{
+		spriteSet = spriteSet,
+		group = self.group,
+		x = Tile.width_2,
+		y = Tile.height_2
+	}
+
 	-- Draw sprite
-	self.wallSprite = SpriteManager.newSprite(spriteSet)
-	self.wallSprite:prepare("fortress_wall_" .. self.player.color.name)
-	self.wallSprite:play()
-
-	-- Position sprite
-	self.wallSprite:setReferencePoint(display.CenterReferencePoint)
-	self.wallSprite.x = self.tile.width / 2
-	self.wallSprite.y = self.tile.height / 2
-
-	-- Add to group
-	self.group:insert(self.wallSprite)
+	self.wallSprite:play("fortress_wall_" .. self.player.color.name)
 
 	-- Register to the tile
 	self.contentId = self.tile:addContent(self)
 
 	-- Listen to events
 	self.tile:addEventListener(TILE.EVENT.ENTER_TILE, self)
-	Runtime:addEventListener("spritePause", self)
 
 	return self
 end
@@ -79,10 +77,8 @@ end
 -- Destroy the wall
 function FortressWall:destroy()
 	self.tile:removeEventListener(TILE.EVENT.ENTER_TILE, self)
-	Runtime:removeEventListener("spritePause", self)
-
+	self.wallSprite:destroy()
 	self.tile:removeContent(self.contentId)
-
 	self.group:removeSelf()
 end
 
@@ -108,18 +104,6 @@ function FortressWall:enterTile(event)
 			event = "hitFriendlyWall",
 			target = self
 		}
-	end
-end
-
--- Pause the sprite animation
--- Parameters:
---  event: The tile event, with these values:
---   status: If true, then pauses the animation, otherwise resumes it
-function FortressWall:spritePause(event)
-	if event.status then
-		self.wallSprite:pause()
-	else
-		self.wallSprite:play()
 	end
 end
 

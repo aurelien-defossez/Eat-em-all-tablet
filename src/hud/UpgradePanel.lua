@@ -54,22 +54,26 @@ function UpgradePanel.create(parameters)
 	self.background:setStrokeColor(255, 255, 255)
 	self.group:insert(self.background)
 
-	-- Create upgrade icons
-	self.upgradeSprite1 = SpriteManager.newSprite(miscSpriteSet)
-	self.upgradeSprite1.x = config.panels.controls.upgrade.icon.width
-	self.upgradeSprite1.y = config.panels.controls.upgrade.icon.height
-	self.upgradeSprite1:rotate(180)
-	self.upgradeSprite1:prepare("upgrade")
-	self.upgradeSprite1:play()
-	self.group:insert(self.upgradeSprite1)
+	-- Create sprite
+	self.upgradeSprite1 = Sprite.create{
+		spriteSet = miscSpriteSet,
+		group = self.group,
+		x = config.panels.controls.upgrade.icon.width,
+		y = config.panels.controls.upgrade.icon.height,
+		orientation = 180
+	}
 
-	self.upgradeSprite2 = SpriteManager.newSprite(miscSpriteSet)
-	self.upgradeSprite2.x = self.width - config.panels.controls.upgrade.icon.width
-	self.upgradeSprite2.y = config.panels.controls.upgrade.icon.height
-	self.upgradeSprite2:rotate(180)
-	self.upgradeSprite2:prepare("upgrade")
-	self.upgradeSprite2:play()
-	self.group:insert(self.upgradeSprite2)
+	self.upgradeSprite2 = Sprite.create{
+		spriteSet = miscSpriteSet,
+		group = self.group,
+		x = self.width - config.panels.controls.upgrade.icon.width,
+		y = config.panels.controls.upgrade.icon.height,
+		orientation = 180
+	}
+
+	-- Draw sprites
+	self.upgradeSprite1:play("upgrade")
+	self.upgradeSprite2:play("upgrade")
 
 	-- Create XP counter
 	self.xpCounter = display.newText(self.player.xp, 0, 0, native.systemFontBold, 28)
@@ -92,6 +96,8 @@ end
 
 -- Destroy the panel
 function UpgradePanel:destroy()
+	self.upgradeSprite1:destroy()
+	self.upgradeSprite2:destroy()
 	self.group:removeSelf()
 end
 

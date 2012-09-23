@@ -83,22 +83,20 @@ function UpperBarPanel.create(parameters)
 	self.group.x = self.x
 	self.group.y = self.y
 
-	-- Draw pause button
-	self.pauseSprite = SpriteManager.newSprite(spriteSet)
-	self.pauseSprite:prepare("pause")
-	self.pauseSprite:play()
+	-- Create pause sprite
+	self.pauseSprite = Sprite.create{
+		spriteSet = spriteSet,
+		group = self.group,
+		x = self.hpWidth + config.panels.upperBar.menuButton.width / 2,
+		y = self.height / 2
+	}
 
-	-- Position sprite
-	self.pauseSprite:setReferencePoint(display.CenterReferencePoint)
-	self.pauseSprite.x = self.hpWidth + config.panels.upperBar.menuButton.width / 2
-	self.pauseSprite.y = self.height / 2
+	-- Draw sprite
+	self.pauseSprite:play("pause")
 
 	-- Add listener on tap
 	self.pauseSprite:addEventListener("tap", onPauseTap)
 
-	-- Add to group
-	self.group:insert(self.pauseSprite)
-	
 	return self
 end
 
@@ -106,6 +104,7 @@ end
 function UpperBarPanel:destroy()
 	self.hitPoints[1]:destroy()
 	self.hitPoints[2]:destroy()
+	self.pauseSprite:destroy()
 	self.group:removeSelf()
 end
 

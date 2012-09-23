@@ -64,15 +64,15 @@ function Cemetery.create(parameters)
 		self.timeSinceLastSpawn = config.cemetery.spawnPeriod.normal
 	end
 	
-	-- Draw the sprite
+	-- Create sprite
 	self.cemeterySprite = Sprite.create{
 		spriteSet = spriteSet,
 		group = self.group,
-		referencePoint = display.CenterReferencePoint,
 		x = Tile.width_2,
 		y = Tile.height_2
 	}
 
+	-- Draw sprite
 	self.cemeterySprite:play("cemetery_" .. self.player.color.name)
 
 	-- Register to the tile

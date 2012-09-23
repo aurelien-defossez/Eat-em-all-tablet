@@ -17,6 +17,7 @@ require("src.utils.Constants")
 require("src.config.GameConfig")
 
 local SpriteManager = require("src.sprites.SpriteManager")
+local Sprite = require("src.sprites.Sprite")
 local FiniteStateMachine = require("src.utils.FiniteStateMachine")
 local Tile = require("src.game.Tile")
 
@@ -323,59 +324,58 @@ function Zombie.create(parameters)
 		self.strength = config.zombie.strength.giant
 	end
 
-	ctId = ctId + 1
-
-	-- Draw sprite
-	self.zombieSprite = SpriteManager.newSprite(spriteSet)
-	self.zombieSprite:addEventListener("sprite", self)
-
-	self:changeDirection{
-		direction = self.player.direction,
-		priority = ZOMBIE.PRIORITY.DEFAULT
-	}
-
 	self:computeCollisionMask()
+
+	-- Update class attributes
+	ctId = ctId + 1
 
 	-- Position group
 	self.group.x = self.x
 	self.group.y = self.y
 
-	-- Position sprite
-	if not self.isGiant then
-		if config.debug.soberZombies then
-			self.zombieSprite.x = self.width / 2
-			self.zombieSprite.y = self.height / 2
-		else
-			self.zombieSprite.x = self.width / 2 +
-				math.random(config.zombie.randomOffsetRange.x[1], config.zombie.randomOffsetRange.x[2])
-			self.zombieSprite.y = self.height / 2 +
-				math.random(config.zombie.randomOffsetRange.y[1], config.zombie.randomOffsetRange.y[2])
-		end
-	else
-		self.zombieSprite.xScale = 1.5
-		self.zombieSprite.yScale = 1.5
-		self.zombieSprite.x = 32
-		self.zombieSprite.y = 20
+	-- Position sprite representation (not the actual object)
+	local representation = {
+		x = self.width / 2,
+		y = self.height / 2,
+		scale = 1
+	}
+
+	if self.isGiant then
+		representation.x = 32
+		representation.y = 20
+		representation.scale = 1.5
+	elseif not config.debug.soberZombies then
+		local range = config.zombie.randomOffsetRange
+		representation.x = self.width / 2 + math.random(range.x[1], range.x[2])
+		representation.y = self.height / 2 + math.random(range.y[1], range.y[2])
 	end
 
-	-- Listen to events
-	Runtime:addEventListener("spritePause", self)
-	Runtime:addEventListener("spriteChangeSpeed", self)
+	-- Create sprite
+	self.zombieSprite = Sprite.create{
+		spriteSet = spriteSet,
+		group = self.group,
+		x = representation.x,
+		y = representation.y,
+		scale = representation.scale
+	}
 
-	-- Add to group
-	self.group:insert(self.zombieSprite)
+	-- Add sprite event listener
+	self.zombieSprite:addEventListener("sprite", self)
+
+	-- Set initial direction
+	self:changeDirection{
+		direction = self.player.direction,
+		priority = ZOMBIE.PRIORITY.DEFAULT
+	}
 
 	return self
 end
 
 -- Destroy the zombie
 function Zombie:destroy()
-	Runtime:removeEventListener("spritePause", self)
-	Runtime:removeEventListener("spriteChangeSpeed", self)
 	self.zombieSprite:removeEventListener("sprite", self)
-
+	self.zombieSprite:destroy()
 	self.stateMachine:destroy()
-
 	self.group:removeSelf()
 end
 
@@ -568,8 +568,7 @@ function Zombie:updateSprite()
 		completeAnimationName = "zombie_" .. self.animationName .. "_" .. directionName .. "_" .. self.player.color.name
 	end
 
-	self.zombieSprite:prepare(completeAnimationName)
-	self.zombieSprite:play()
+	self.zombieSprite:play(completeAnimationName)
 end
 
 -- Hits the zombie. It does not actually kill it, if it can sustain the given damage.
@@ -800,26 +799,6 @@ function Zombie:sprite(event)
 			event = "animationEnd"
 		}
 	end
-end
-
--- Pause the sprite animation
--- Parameters:
---  event: The event, with these values:
---   status: If true, then pauses the animation, otherwise resumes it
-function Zombie:spritePause(event)
-	if event.status then
-		self.zombieSprite:pause()
-	else
-		self.zombieSprite:play()
-	end
-end
-
--- Change the sprite animation speed
--- Parameters:
---  event: The event, with these values:
---   timeScale: The new time scale
-function Zombie:spriteChangeSpeed(event)
-	self.zombieSprite.timeScale = event.timeScale
 end
 
 -----------------------------------------------------------------------------------------

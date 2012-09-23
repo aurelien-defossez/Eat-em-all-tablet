@@ -16,6 +16,7 @@ require("src.utils.Constants")
 require("src.config.GameConfig")
 
 local SpriteManager = require("src.sprites.SpriteManager")
+local Sprite = require("src.sprites.Sprite")
 
 -----------------------------------------------------------------------------------------
 -- Class attributes
@@ -57,25 +58,24 @@ function Sign.create(parameters)
 	self.y = self.tile.y
 	self.id = ctId
 
+	-- Update class attributes
 	ctId = ctId + 1
 
 	-- Position group
 	self.group.x = self.x
 	self.group.y = self.y
 
+	-- Create sprite
+	self.signSprite = Sprite.create{
+		spriteSet = spriteSet,
+		group = self.group,
+		x = Tile.width_2,
+		y = Tile.height_2,
+		orientation = self.direction or 0
+	}
+
 	-- Draw sprite
-	self.signSprite = SpriteManager.newSprite(spriteSet)
-	self.signSprite:prepare("arrow_" .. self.player.color.name)
-	self.signSprite:play()
-
-	-- Position sprite
-	self.signSprite:setReferencePoint(display.CenterReferencePoint)
-	self.signSprite.x = self.tile.width / 2
-	self.signSprite.y = self.tile.height / 2
-	self.signSprite:rotate(self.direction or 0)
-
-	-- Add to group
-	self.group:insert(self.signSprite)
+	self.signSprite:play("arrow_" .. self.player.color.name)
 
 	-- Register to the tile and player
 	self.contentId = self.tile:addContent(self)
@@ -83,7 +83,6 @@ function Sign.create(parameters)
 
 	-- Listen to events
 	self.tile:addEventListener(TILE.EVENT.REACH_TILE_CENTER, self)
-	Runtime:addEventListener("spritePause", self)
 
 	return self
 end
@@ -91,11 +90,9 @@ end
 -- Destroy the sign
 function Sign:destroy()
 	self.tile:removeEventListener(TILE.EVENT.REACH_TILE_CENTER, self)
-	Runtime:removeEventListener("spritePause", self)
-
 	self.player:removeSign(self)
+	self.signSprite:destroy()
 	self.tile:removeContent(self.contentId)
-
 	self.group:removeSelf()
 end
 
@@ -121,18 +118,6 @@ function Sign:reachTileCenter(event)
 				correctPosition = true
 			}
 		end
-	end
-end
-
--- Pause the sprite animation
--- Parameters:
---  event: The tile event, with these values:
---   status: If true, then pauses the animation, otherwise resumes it
-function Sign:spritePause(event)
-	if event.status then
-		self.signSprite:pause()
-	else
-		self.signSprite:play()
 	end
 end
 

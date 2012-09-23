@@ -13,6 +13,7 @@ Sprite.__index = Sprite
 -----------------------------------------------------------------------------------------
 
 local SpriteManager = require("src.sprites.SpriteManager")
+local ProxyListener = require("src.sprites.ProxyListener")
 
 -----------------------------------------------------------------------------------------
 -- Class attributes
@@ -25,11 +26,13 @@ local SpriteManager = require("src.sprites.SpriteManager")
 -- Create the sprite
 --
 -- Parameters:
---  spriteSet: The spriteSet (from the sprite manager)
---  group: The display group to add the sprite to
+--  spriteSet: The spriteSet got from the sprite manager
+--  group: The display group to add the sprite to (optional)
 --  referencePoint: The reference point (default is display.CenterReferencePoint)
 --  x: The x position (default is 0)
 --  y: The y position (default is 0)
+--  orientation: The sprite orientation (default is 0)
+--  scale: The uniform scale on both x and y axis (default is 1)
 function Sprite.create(parameters)
 	-- Create object
 	local self = parameters or {}
@@ -39,6 +42,8 @@ function Sprite.create(parameters)
 	self.referencePoint = self.referencePoint or display.CenterReferencePoint
 	self.x = self.x or 0
 	self.y = self.y or 0
+	self.orientation = self.orientation or 0
+	self.scale = self.scale or 1
 
 	-- Create Corona sprite
 	self.sprite = SpriteManager.newSprite(self.spriteSet)
@@ -46,12 +51,17 @@ function Sprite.create(parameters)
 	-- Set reference point
 	self.sprite:setReferencePoint(self.referencePoint)
 
-	-- Position sprite
+	-- Prepare sprite
 	self.sprite.x = self.x
 	self.sprite.y = self.y
+	self.sprite:rotate(self.orientation)
+	self.sprite.xScale = self.scale
+	self.sprite.yScale = self.scale
 
 	-- Add sprite to group
-	self.group:insert(self.sprite)
+	if self.group then
+		self.group:insert(self.sprite)
+	end
 
 	-- Listen to events
 	Runtime:addEventListener("spritePause", self)
@@ -64,6 +74,7 @@ end
 function Sprite:destroy()
 	Runtime:removeEventListener("spritePause", self)
 	Runtime:removeEventListener("spriteChangeSpeed", self)
+	self.sprite:removeSelf()
 end
 
 -----------------------------------------------------------------------------------------
@@ -76,6 +87,33 @@ function Sprite:play(animationName)
 	end
 
 	self.sprite:play()
+end
+
+function Sprite:move(parameters)
+	self.x = parameters.x
+	self.y = parameters.y
+	self.sprite.x = self.x
+	self.sprite.y = self.y
+end
+
+function Sprite:addEventListener(eventName, listener)
+	if self.proxy then
+		print("===========================================================")
+		print("ERROR: Cannot attach two event listeners on the same sprite")
+		print("===========================================================")
+		return
+	end
+
+	self.proxy = ProxyListener.create{
+		listener = listener,
+		target = self
+	}
+
+	self.sprite:addEventListener(eventName, self.proxy)
+end
+
+function Sprite:removeEventListener(eventName, listener)
+	self.sprite:removeEventListener(eventName, self.proxy)
 end
 
 -----------------------------------------------------------------------------------------
