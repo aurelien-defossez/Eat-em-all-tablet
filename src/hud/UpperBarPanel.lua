@@ -16,7 +16,7 @@ require("src.utils.Constants")
 require("src.config.GameConfig")
 
 local storyboard = require("storyboard")
-local SpriteManager = require("src.utils.SpriteManager")
+local SpriteManager = require("src.sprites.SpriteManager")
 local MenuWindow = require("src.hud.MenuWindow")
 local Button = require("src.hud.Button")
 local WindowManager = require("src.utils.WindowManager")

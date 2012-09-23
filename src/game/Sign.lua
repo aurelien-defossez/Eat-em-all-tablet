@@ -15,7 +15,7 @@ Sign.__index = Sign
 require("src.utils.Constants")
 require("src.config.GameConfig")
 
-local SpriteManager = require("src.utils.SpriteManager")
+local SpriteManager = require("src.sprites.SpriteManager")
 
 -----------------------------------------------------------------------------------------
 -- Class attributes

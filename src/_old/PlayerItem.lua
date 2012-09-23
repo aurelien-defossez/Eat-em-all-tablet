@@ -15,7 +15,7 @@ PlayerItem.__index = PlayerItem
 require("src.utils.Constants")
 require("src.config.GameConfig")
 
-local SpriteManager = require("src.utils.SpriteManager")
+local SpriteManager = require("src.sprites.SpriteManager")
 local Tile = require("src.game.Tile")
 local Tornado = require("src.game.Tornado")
 local Mine = require("src.game.Mine")

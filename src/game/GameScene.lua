@@ -17,7 +17,7 @@ require("src.utils.Utils")
 require("src.config.GameConfig")
 require("src.config.Maps")
 
-local SpriteManager = require("src.utils.SpriteManager")
+local SpriteManager = require("src.sprites.SpriteManager")
 local WindowManager = require("src.utils.WindowManager")
 local UpperBarPanel = require("src.hud.UpperBarPanel")
 local PlayerControlPanel = require("src.hud.PlayerControlPanel")

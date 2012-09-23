@@ -13,11 +13,10 @@ SpriteManager.__index = SpriteManager
 -----------------------------------------------------------------------------------------
 
 require("src.utils.Constants")
-require("src.config.Sprites")
+require("src.sprites.Sprites")
 
 local Sprite = require("sprite")
-
-local SpritesheetData = require("src.utils.SpritesheetData")
+local SpritesheetData = require("src.sprites.SpritesheetData")
 
 -----------------------------------------------------------------------------------------
 -- Class attributes
