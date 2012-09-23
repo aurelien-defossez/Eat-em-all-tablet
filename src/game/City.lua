@@ -2,10 +2,14 @@
 --
 -- City.lua
 --
+-- A city if a map entity that needs to be captured by zombies to spawn more zombies.
+-- Cities have various size, small, medium and large.
+-- Once a city has been captured, it spawns zombies at a regular rate.
+-- If the other player attacks and kill enough zombies, the city returns to its neutral state.
+--
 -----------------------------------------------------------------------------------------
 
 module("City", package.seeall)
-
 City.__index = City
 
 -----------------------------------------------------------------------------------------
@@ -23,6 +27,7 @@ local Zombie = require("src.game.Zombie")
 -- Class initialization
 -----------------------------------------------------------------------------------------
 
+-- Initialize the class
 function initialize()
 	classGroup = display.newGroup()
 end
@@ -183,11 +188,10 @@ function City:addInhabitants(nb)
 	self.inhabitants = self.inhabitants + nb
 
 	-- Update the spawning faculty of the city
-	local aboveThreshold = (self.inhabitants >= self.requiredInhabitants)
-	if not self.spawning and aboveThreshold then
+	if not self.spawning and self.inhabitants >= self.maxInhabitants then
 		self.spawning = true
 		self:updateSprite()
-	elseif self.spawning and not aboveThreshold then
+	elseif self.spawning and self.inhabitants < self.requiredInhabitants then
 		self.spawning = false
 		self:updateSprite()
 	end

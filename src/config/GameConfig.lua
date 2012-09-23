@@ -92,13 +92,13 @@ config = {
 			inhabitants = 0,
 			spawnPeriod = 3500,
 			maxInhabitants = 20,
-			requiredInhabitants = 15
+			requiredInhabitants = 12
 		},
 		large = {
 			inhabitants = 0,
 			spawnPeriod = 2000,
 			maxInhabitants = 30,
-			requiredInhabitants = 25
+			requiredInhabitants = 20
 		}
 	},
 
