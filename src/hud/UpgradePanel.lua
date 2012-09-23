@@ -21,7 +21,6 @@ require("src.config.GameConfig")
 
 function initialize()
 	classGroup = display.newGroup()
-	miscSpriteSet = SpriteManager.getSpriteSet(SPRITE_SET.MISC)
 end
 
 -----------------------------------------------------------------------------------------
@@ -56,7 +55,7 @@ function UpgradePanel.create(parameters)
 
 	-- Create sprite
 	self.upgradeSprite1 = Sprite.create{
-		spriteSet = miscSpriteSet,
+		spriteSet = SpriteManager.sets.misc,
 		group = self.group,
 		x = config.panels.controls.upgrade.icon.width,
 		y = config.panels.controls.upgrade.icon.height,
@@ -64,7 +63,7 @@ function UpgradePanel.create(parameters)
 	}
 
 	self.upgradeSprite2 = Sprite.create{
-		spriteSet = miscSpriteSet,
+		spriteSet = SpriteManager.sets.misc,
 		group = self.group,
 		x = self.width - config.panels.controls.upgrade.icon.width,
 		y = config.panels.controls.upgrade.icon.height,

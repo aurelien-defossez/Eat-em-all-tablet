@@ -25,7 +25,6 @@ local Zombie = require("src.game.Zombie")
 
 function initialize()
 	classGroup = display.newGroup()
-	spriteSet = SpriteManager.getSpriteSet(SPRITE_SET.CITY)
 end
 
 -----------------------------------------------------------------------------------------
@@ -90,7 +89,7 @@ function City.create(parameters)
 
 	-- Create sprite
 	self.citySprite = Sprite.create{
-		spriteSet = spriteSet,
+		spriteSet = SpriteManager.sets.city,
 		group = self.cityGroup,
 		x = Tile.width_2,
 		y = Tile.height_2

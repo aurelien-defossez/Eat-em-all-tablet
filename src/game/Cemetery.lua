@@ -26,7 +26,6 @@ local Tile = require("src.game.Tile")
 
 function initialize()
 	classGroup = display.newGroup()
-	spriteSet = SpriteManager.getSpriteSet(SPRITE_SET.CEMETERY)
 end
 
 -----------------------------------------------------------------------------------------
@@ -66,7 +65,7 @@ function Cemetery.create(parameters)
 	
 	-- Create sprite
 	self.cemeterySprite = Sprite.create{
-		spriteSet = spriteSet,
+		spriteSet = SpriteManager.sets.cemetery,
 		group = self.group,
 		x = Tile.width_2,
 		y = Tile.height_2

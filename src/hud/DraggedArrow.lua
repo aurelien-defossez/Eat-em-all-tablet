@@ -26,7 +26,6 @@ local Tile = require("src.game.Tile")
 
 function initialize()
 	classGroup = display.newGroup()
-	spriteSet = SpriteManager.getSpriteSet(SPRITE_SET.ARROW)
 end
 
 -----------------------------------------------------------------------------------------
@@ -56,7 +55,7 @@ function DraggedArrow.create(parameters)
 
 	-- Create sprite
 	self.arrowSprite = Sprite.create{
-		spriteSet = spriteSet,
+		spriteSet = SpriteManager.sets.arrow,
 		group = self.group,
 		x = self.x,
 		y = self.y,

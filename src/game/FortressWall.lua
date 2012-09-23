@@ -24,7 +24,6 @@ local Sprite = require("src.sprites.Sprite")
 
 function initialize()
 	classGroup = display.newGroup()
-	spriteSet = SpriteManager.getSpriteSet(SPRITE_SET.FORTRESS_WALL)
 end
 
 -----------------------------------------------------------------------------------------
@@ -56,7 +55,7 @@ function FortressWall.create(parameters)
 
 	-- Create sprite
 	self.wallSprite = Sprite.create{
-		spriteSet = spriteSet,
+		spriteSet = SpriteManager.sets.fortressWall,
 		group = self.group,
 		x = Tile.width_2,
 		y = Tile.height_2

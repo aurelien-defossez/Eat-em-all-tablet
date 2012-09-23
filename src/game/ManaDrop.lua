@@ -32,7 +32,6 @@ ct = 0
 
 function initialize()
 	classGroup = display.newGroup()
-	spriteSet = SpriteManager.getSpriteSet(SPRITE_SET.MANA)
 end
 
 -----------------------------------------------------------------------------------------
@@ -71,7 +70,7 @@ function ManaDrop.create(parameters)
 
 	-- Create sprite
 	self.manaSprite = Sprite.create{
-		spriteSet = spriteSet,
+		spriteSet = SpriteManager.sets.mana,
 		group = self.group,
 		x = Tile.width_2,
 		y = Tile.height_2

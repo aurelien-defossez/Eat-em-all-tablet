@@ -28,9 +28,6 @@ local HitPointsPanel = require("src.hud.HitPointsPanel")
 
 function initialize()
 	classGroup = display.newGroup()
-	spriteSet = SpriteManager.getSpriteSet(SPRITE_SET.MISC)
-
-	HitPointsPanel.initialize()
 end
 
 -----------------------------------------------------------------------------------------
@@ -85,7 +82,7 @@ function UpperBarPanel.create(parameters)
 
 	-- Create pause sprite
 	self.pauseSprite = Sprite.create{
-		spriteSet = spriteSet,
+		spriteSet = SpriteManager.sets.misc,
 		group = self.group,
 		x = self.hpWidth + config.panels.upperBar.menuButton.width / 2,
 		y = self.height / 2

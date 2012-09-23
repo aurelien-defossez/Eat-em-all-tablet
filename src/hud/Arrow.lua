@@ -25,7 +25,6 @@ local DraggedArrow = require("src.hud.DraggedArrow")
 
 function initialize()
 	classGroup = display.newGroup()
-	spriteSet = SpriteManager.getSpriteSet(SPRITE_SET.ARROW)
 end
 
 -----------------------------------------------------------------------------------------
@@ -56,7 +55,7 @@ function Arrow.create(parameters)
 
 	-- Create sprite
 	self.arrowSprite = Sprite.create{
-		spriteSet = spriteSet,
+		spriteSet = SpriteManager.sets.arrow,
 		group = self.group,
 		x = self.x or 0,
 		y = self.height / 2 + (self.y or 0),

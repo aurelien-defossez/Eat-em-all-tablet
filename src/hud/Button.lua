@@ -20,7 +20,6 @@ require("src.utils.Constants")
 
 function initialize()
 	classGroup = display.newGroup()
-	spriteSet = SpriteManager.getSpriteSet(SPRITE_SET.MISC)
 end
 
 -----------------------------------------------------------------------------------------

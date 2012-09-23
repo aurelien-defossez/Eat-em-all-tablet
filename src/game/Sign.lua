@@ -30,7 +30,6 @@ ctId = 1
 
 function initialize()
 	classGroup = display.newGroup()
-	spriteSet = SpriteManager.getSpriteSet(SPRITE_SET.ARROW)
 end
 
 -----------------------------------------------------------------------------------------
@@ -67,7 +66,7 @@ function Sign.create(parameters)
 
 	-- Create sprite
 	self.signSprite = Sprite.create{
-		spriteSet = spriteSet,
+		spriteSet = SpriteManager.sets.arrow,
 		group = self.group,
 		x = Tile.width_2,
 		y = Tile.height_2,

@@ -38,7 +38,6 @@ DIRECTION_VECTOR = {
 
 function initialize()
 	classGroup = display.newGroup()
-	spriteSet = SpriteManager.getSpriteSet(SPRITE_SET.ZOMBIE)
 
 	-- Zombie state machine
 	-- Full graph available in "doc/Zombie FSM.png"
@@ -352,7 +351,7 @@ function Zombie.create(parameters)
 
 	-- Create sprite
 	self.zombieSprite = Sprite.create{
-		spriteSet = spriteSet,
+		spriteSet = SpriteManager.sets.zombie,
 		group = self.group,
 		x = representation.x,
 		y = representation.y,

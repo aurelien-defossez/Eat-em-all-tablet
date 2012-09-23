@@ -23,7 +23,6 @@ local TableLayout = require("src.utils.TableLayout")
 
 function initialize()
 	classGroup = display.newGroup()
-	manaSpriteSet = SpriteManager.getSpriteSet(SPRITE_SET.MANA)
 end
 
 -----------------------------------------------------------------------------------------
@@ -74,7 +73,7 @@ function PowersPanel.create(parameters)
 
 	-- Create sprite
 	self.manaSprite = Sprite.create{
-		spriteSet = manaSpriteSet,
+		spriteSet = SpriteManager.sets.mana,
 		group = self.group,
 		x = spriteX,
 		y = config.panels.controls.powers.mana.icon.yoffset,

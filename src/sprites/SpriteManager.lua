@@ -22,8 +22,8 @@ local SpritesheetData = require("src.sprites.SpritesheetData")
 -- Class attributes
 -----------------------------------------------------------------------------------------
 
+sets = nil
 spriteSheet = nil
-spriteSets = nil
 spriteSheetIndex = nil
 timeScale = 1
 
@@ -44,14 +44,15 @@ function initialize()
 	end
 
 	-- Load sprite sets
-	spriteSets = {}
-	spriteSets[SPRITE_SET.ARROW] = loadSpriteSet(sprites.arrow)
-	spriteSets[SPRITE_SET.CEMETERY] = loadSpriteSet(sprites.cemetery)
-	spriteSets[SPRITE_SET.CITY] = loadSpriteSet(sprites.city)
-	spriteSets[SPRITE_SET.FORTRESS_WALL] = loadSpriteSet(sprites.fortressWall)
-	spriteSets[SPRITE_SET.MANA] = loadSpriteSet(sprites.mana)
-	spriteSets[SPRITE_SET.ZOMBIE] = loadSpriteSet(sprites.zombie)
-	spriteSets[SPRITE_SET.MISC] = loadSpriteSet(sprites.misc)
+	sets = {
+		arrow = loadSpriteSet(sprites.arrow),
+		cemetery = loadSpriteSet(sprites.cemetery),
+		city = loadSpriteSet(sprites.city),
+		fortressWall = loadSpriteSet(sprites.fortressWall),
+		mana = loadSpriteSet(sprites.mana),
+		zombie = loadSpriteSet(sprites.zombie),
+		misc = loadSpriteSet(sprites.misc)
+	}
 end
 
 -----------------------------------------------------------------------------------------
@@ -88,17 +89,6 @@ function loadSpriteSet(sprites)
 	end
 	
 	return spriteSet
-end
-
--- Return a sprite set by name
---
--- Parameters:
---  name: The sprite set name
---
--- Returns:
---  The sprite set
-function getSpriteSet(name)
-	return spriteSets[name]
 end
 
 -- Instanciate a sprite for a certain sprite set
