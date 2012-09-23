@@ -57,6 +57,7 @@ function Sprite.create(parameters)
 	self.sprite:rotate(self.orientation)
 	self.sprite.xScale = self.scale
 	self.sprite.yScale = self.scale
+	self.proxies = {}
 
 	-- Add sprite to group
 	if self.group then
@@ -97,23 +98,24 @@ function Sprite:move(parameters)
 end
 
 function Sprite:addEventListener(eventName, listener)
-	if self.proxy then
+	if self.proxies[eventName] then
 		print("===========================================================")
-		print("ERROR: Cannot attach two event listeners on the same sprite")
+		print("ERROR: Listener already attached for "..eventName)
 		print("===========================================================")
-		return
+	else
+		-- Create proxy listener
+		local proxy = ProxyListener.create{
+			listener = listener,
+			target = self
+		}
+
+		self.proxies[eventName] = proxy
+		self.sprite:addEventListener(eventName, proxy)
 	end
-
-	self.proxy = ProxyListener.create{
-		listener = listener,
-		target = self
-	}
-
-	self.sprite:addEventListener(eventName, self.proxy)
 end
 
 function Sprite:removeEventListener(eventName, listener)
-	self.sprite:removeEventListener(eventName, self.proxy)
+	self.sprite:removeEventListener(eventName, self.proxies[eventName])
 end
 
 -----------------------------------------------------------------------------------------
