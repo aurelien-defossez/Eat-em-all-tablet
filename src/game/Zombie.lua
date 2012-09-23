@@ -585,6 +585,10 @@ function Zombie:die(parameters)
 		self.stateMachine:triggerEvent{
 			event = "killed"
 		}
+
+		return true
+	else
+		return false
 	end
 end
 
@@ -693,10 +697,14 @@ end
 -- Parameters:
 --  target: The zombie
 function Zombie:onHitZombie(parameters)
-	parameters.target:die{
+	local dead = parameters.target:die{
 		killer = ZOMBIE.KILLER.ZOMBIE,
 		hits = self.strength
 	}
+
+	if dead then
+		self.player:addXp(1)
+	end
 
 	self:updateSprite()
 end

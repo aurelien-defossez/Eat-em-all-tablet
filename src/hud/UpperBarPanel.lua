@@ -41,6 +41,10 @@ end
 --
 -- Parameters:
 --  players: The two players
+--  x: X position
+--  y: Y position
+--  width: The width
+--  height: The height
 function UpperBarPanel.create(parameters)
 	-- Create object
 	local self = parameters or {}
@@ -87,7 +91,7 @@ function UpperBarPanel.create(parameters)
 	-- Position sprite
 	self.pauseSprite:setReferencePoint(display.CenterReferencePoint)
 	self.pauseSprite.x = self.hpWidth + config.panels.upperBar.menuButton.width / 2
-	self.pauseSprite.y = config.panels.upperBar.height / 2
+	self.pauseSprite.y = self.height / 2
 
 	-- Add listener on tap
 	self.pauseSprite:addEventListener("tap", onPauseTap)

@@ -41,6 +41,7 @@ config = {
 		hitPoints = 1000,
 		maxSigns = 5,
 		startingMana = 0,
+		startingXp = 0,
 		manaGenerationRate = 0.2,
 		colors = {
 			p1 = {
@@ -188,6 +189,14 @@ config = {
 			}
 		},
 		controls = {
+			upgrade = {
+				width = 2 * 64,
+				height = 42,
+				icon = {
+					width = 20,
+					height = 20
+				}
+			},
 			arrows = {
 				width = 2 * 64,
 				height = 4 * 64,

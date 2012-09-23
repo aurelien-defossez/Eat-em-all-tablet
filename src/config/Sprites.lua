@@ -111,6 +111,7 @@ sprites = {
 		}
 	},
 	misc = {
-		pause = {}
+		pause = {},
+		upgrade = {}
 	}
 }

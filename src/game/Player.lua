@@ -37,6 +37,7 @@ function Player.create(parameters)
 	self.signsCount = 0
 	self.cemeteries = {}
 	self.mana = config.player.startingMana
+	self.xp = config.player.startingXp
 
 	if config.debug.startWithMana then
 		self.mana = config.debug.startingMana
@@ -87,6 +88,15 @@ end
 function Player:addMana(value)
 	self.mana = self.mana + value
 	self.powersPanel:updateMana(math.floor(self.mana))
+end
+
+-- Add some Xp to the player
+--
+-- Parameters:
+--  value: The Xp to add to the player
+function Player:addXp(value)
+	self.xp = self.xp + value
+	self.upgradePanel:updateXp(self.xp)
 end
 
 -- Add a city under the control of the player
