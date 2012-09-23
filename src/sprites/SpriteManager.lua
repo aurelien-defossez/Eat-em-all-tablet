@@ -15,7 +15,7 @@ SpriteManager.__index = SpriteManager
 require("src.utils.Constants")
 require("src.sprites.Sprites")
 
-local Sprite = require("sprite")
+local SpriteLib = require("sprite")
 local SpritesheetData = require("src.sprites.SpritesheetData")
 
 -----------------------------------------------------------------------------------------
@@ -35,7 +35,7 @@ timeScale = 1
 function initialize()
 	-- Load sprite sheet
 	local spritesheetData = SpritesheetData.getSpriteSheetData()
-	spriteSheet = Sprite.newSpriteSheetFromData("images/bin/spritesheet.png", spritesheetData)
+	spriteSheet = SpriteLib.newSpriteSheetFromData("images/bin/spritesheet.png", spritesheetData)
 	spriteSheetIndex = {}
 
 	-- Initalize the index array to simply get an array index from its name
@@ -66,7 +66,7 @@ end
 -- Returns:
 --  The sprite set containing all these animations
 function loadSpriteSet(sprites)
-	local spriteSet = Sprite.newSpriteSet(spriteSheet, 1, 1)
+	local spriteSet = SpriteLib.newSpriteSet(spriteSheet, 1, 1)
 
 	for spriteName, animation in pairs(sprites) do
 		local firstSpriteName
@@ -84,7 +84,7 @@ function loadSpriteSet(sprites)
 		end
 		
 		-- Add the animation to the sprite set
-		Sprite.add(spriteSet, spriteName, spriteSheetIndex[firstSpriteName .. ".png"], frameCount, period, loop)
+		SpriteLib.add(spriteSet, spriteName, spriteSheetIndex[firstSpriteName .. ".png"], frameCount, period, loop)
 	end
 	
 	return spriteSet
@@ -109,7 +109,7 @@ end
 -- Returns:
 --  A new instance of the sprite set
 function newSprite(spriteSet)
-	local sprite = Sprite.newSprite(spriteSet)
+	local sprite = SpriteLib.newSprite(spriteSet)
 	sprite.timeScale = timeScale
 
 	return sprite

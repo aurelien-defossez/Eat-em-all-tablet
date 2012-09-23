@@ -16,6 +16,7 @@ require("src.utils.Constants")
 require("src.config.GameConfig")
 
 local SpriteManager = require("src.sprites.SpriteManager")
+local Sprite = require("src.sprites.Sprite")
 local Zombie = require("src.game.Zombie")
 local Tile = require("src.game.Tile")
 
@@ -64,24 +65,21 @@ function Cemetery.create(parameters)
 	end
 	
 	-- Draw the sprite
-	self.cemeterySprite = SpriteManager.newSprite(spriteSet)
-	self.cemeterySprite:prepare("cemetery_" .. self.player.color.name)
-	self.cemeterySprite:play()
+	self.cemeterySprite = Sprite.create{
+		spriteSet = spriteSet,
+		group = self.group,
+		referencePoint = display.CenterReferencePoint,
+		x = Tile.width_2,
+		y = Tile.height_2
+	}
 
-	-- Position sprite
-	self.cemeterySprite:setReferencePoint(display.CenterReferencePoint)
-	self.cemeterySprite.x = Tile.width_2
-	self.cemeterySprite.y = Tile.height_2
-
-	-- Add to group
-	self.group:insert(self.cemeterySprite)
+	self.cemeterySprite:play("cemetery_" .. self.player.color.name)
 
 	-- Register to the tile
 	self.contentId = self.tile:addContent(self)
 
 	-- Listen to events
 	self.tile:addEventListener(TILE.EVENT.ENTER_TILE, self)
-	Runtime:addEventListener("spritePause", self)
 
 	return self
 end
@@ -89,10 +87,8 @@ end
 -- Destroy the cemetery
 function Cemetery:destroy()
 	self.tile:removeEventListener(TILE.EVENT.ENTER_TILE, self)
-	Runtime:removeEventListener("spritePause", self)
-
+	self.cemeterySprite:destroy()
 	self.tile:removeContent(self.contentId)
-
 	self.group:removeSelf()
 end
 
@@ -181,18 +177,6 @@ function Cemetery:enterFrame(timeDelta)
 		self:spawn{
 			size = 1
 		}
-	end
-end
-
--- Pause the sprite animation
--- Parameters:
---  event: The tile event, with these values:
---   status: If true, then pauses the animation, otherwise resumes it
-function Cemetery:spritePause(event)
-	if event.status then
-		self.cemeterySprite:pause()
-	else
-		self.cemeterySprite:play()
 	end
 end
 
