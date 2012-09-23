@@ -2,10 +2,11 @@
 --
 -- Cemetery.lua
 --
+-- The cemetery is a map entity that spawns zombies at a regular rate.
+--
 -----------------------------------------------------------------------------------------
 
 module("Cemetery", package.seeall)
-
 Cemetery.__index = Cemetery
 
 -----------------------------------------------------------------------------------------
@@ -24,6 +25,7 @@ local Tile = require("src.game.Tile")
 -- Class initialization
 -----------------------------------------------------------------------------------------
 
+-- Initialize the class
 function initialize()
 	classGroup = display.newGroup()
 end

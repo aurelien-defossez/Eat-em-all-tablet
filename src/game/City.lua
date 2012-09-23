@@ -3,9 +3,12 @@
 -- City.lua
 --
 -- A city if a map entity that needs to be captured by zombies to spawn more zombies.
--- Cities have various size, small, medium and large.
+-- A city is captured when it is completely full.
 -- Once a city has been captured, it spawns zombies at a regular rate.
--- If the other player attacks and kill enough zombies, the city returns to its neutral state.
+-- If the other player attacks and kill enough zombies, the city returns to its neutral
+-- state.
+-- Cities have various size, small, medium and large, which determines the maximal
+-- number of inhabitants, the spawning rate and the decap threshold.
 --
 -----------------------------------------------------------------------------------------
 
@@ -69,19 +72,16 @@ function City.create(parameters)
 		self.inhabitants = config.city.small.inhabitants
 		self.spawnPeriod = config.city.small.spawnPeriod
 		self.maxInhabitants = config.city.small.maxInhabitants
-		self.exitPeriod = config.city.small.exitPeriod
 		self.requiredInhabitants = config.city.small.requiredInhabitants
 	elseif self.size == CITY.SIZE.MEDIUM then
 		self.inhabitants = config.city.medium.inhabitants
 		self.spawnPeriod = config.city.medium.spawnPeriod
 		self.maxInhabitants = config.city.medium.maxInhabitants
-		self.exitPeriod = config.city.medium.exitPeriod
 		self.requiredInhabitants = config.city.medium.requiredInhabitants
 	else
 		self.inhabitants = config.city.large.inhabitants
 		self.spawnPeriod = config.city.large.spawnPeriod
 		self.maxInhabitants = config.city.large.maxInhabitants
-		self.exitPeriod = config.city.large.exitPeriod
 		self.requiredInhabitants = config.city.large.requiredInhabitants
 	end
 

@@ -5,7 +5,6 @@
 -----------------------------------------------------------------------------------------
 
 module("Sprite", package.seeall)
-
 Sprite.__index = Sprite
 
 -----------------------------------------------------------------------------------------
@@ -14,10 +13,6 @@ Sprite.__index = Sprite
 
 local SpriteManager = require("src.sprites.SpriteManager")
 local ProxyListener = require("src.sprites.ProxyListener")
-
------------------------------------------------------------------------------------------
--- Class attributes
------------------------------------------------------------------------------------------
 
 -----------------------------------------------------------------------------------------
 -- Initialization and Destruction
@@ -82,14 +77,33 @@ end
 -- Methods
 -----------------------------------------------------------------------------------------
 
+-- Play the given animation
+--
+-- Parameters:
+--  animationName: The animation to play
 function Sprite:play(animationName)
-	if animationName then
-		self.sprite:prepare(animationName)
-	end
-
+	self.sprite:prepare(animationName)
 	self.sprite:play()
 end
 
+-- Pause the sprite animation
+function Sprite:pause()
+	self.isAnimating = self.sprite.animating
+	self.sprite:pause()
+end
+
+-- Resume the sprite animation
+function Sprite:resume()
+	if self.isAnimating then
+		self.sprite:play()
+	end
+end
+
+-- Move the sprite
+--
+-- Parameters:
+--  x: The x position
+--  y: The y position
 function Sprite:move(parameters)
 	self.x = parameters.x
 	self.y = parameters.y
@@ -97,6 +111,11 @@ function Sprite:move(parameters)
 	self.sprite.y = self.y
 end
 
+-- Add an event listener
+--
+-- Parameters:
+--  eventName: The event name
+--  listener: The listener
 function Sprite:addEventListener(eventName, listener)
 	if self.proxies[eventName] then
 		print("===========================================================")
@@ -104,16 +123,25 @@ function Sprite:addEventListener(eventName, listener)
 		print("===========================================================")
 	else
 		-- Create proxy listener
+		-- A proxy is created in order to set the event.target point to the custom Sprite object (self) and not
+		-- the Corona Sprite object (self.sprite)
 		local proxy = ProxyListener.create{
 			listener = listener,
 			target = self
 		}
 
+		-- Save proxy and attach the real listener to the proxy
+		-- The proxy will receive the sprite events and will directly call the real listener
 		self.proxies[eventName] = proxy
 		self.sprite:addEventListener(eventName, proxy)
 	end
 end
 
+-- Remove the event listener
+--
+-- Parameters:
+--  eventName: The event name
+--  listener: The listener
 function Sprite:removeEventListener(eventName, listener)
 	self.sprite:removeEventListener(eventName, self.proxies[eventName])
 end
@@ -128,9 +156,9 @@ end
 --   status: If true, then pauses the animation, otherwise resumes it
 function Sprite:spritePause(event)
 	if event.status then
-		self.sprite:pause()
+		self:pause()
 	else
-		self.sprite:play()
+		self:resume()
 	end
 end
 

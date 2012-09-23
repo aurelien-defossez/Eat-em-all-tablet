@@ -5,7 +5,6 @@
 -----------------------------------------------------------------------------------------
 
 module("ProxyListener", package.seeall)
-
 ProxyListener.__index = ProxyListener
 
 -----------------------------------------------------------------------------------------
@@ -20,6 +19,7 @@ ProxyListener.__index = ProxyListener
 --
 -- Parameters:
 --  listener: The event listener
+--  target: The event target (the event.target attribute when the event is dispatched)
 function ProxyListener.create(parameters)
 	-- Create object
 	local self = parameters or {}
@@ -28,7 +28,7 @@ function ProxyListener.create(parameters)
 	return self
 end
 
--- Destroy the sprite
+-- Destroy the proxy
 function ProxyListener:destroy()
 end
 
@@ -36,9 +36,14 @@ end
 -- Methods
 -----------------------------------------------------------------------------------------
 
+-- Dispatch the event to the real listener
+--
+-- Parameters:
+--  event: The event to dispatch
 function ProxyListener:dispatch(event)
 	event.target = self.target
 
+	-- Call the function directly or find the associate method if it is a table
 	if type(self.listener) == "function" then
 		self.listener(event)
 	else
@@ -50,14 +55,26 @@ end
 -- Event listeners
 -----------------------------------------------------------------------------------------
 
+-- Callback for the sprite event
+--
+-- Parameters:
+--  event: The dispatched event
 function ProxyListener:sprite(event)
 	self:dispatch(event)
 end
 
+-- Callback for the tap event
+--
+-- Parameters:
+--  event: The dispatched event
 function ProxyListener:tap(event)
 	self:dispatch(event)
 end
 
+-- Callback for the touch event
+--
+-- Parameters:
+--  event: The dispatched event
 function ProxyListener:touch(event)
 	self:dispatch(event)
 end
