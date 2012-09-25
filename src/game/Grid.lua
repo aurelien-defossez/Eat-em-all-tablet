@@ -2,10 +2,14 @@
 --
 -- Grid.lua
 --
+-- The grid is the array of tiles in which the zombies move.
+-- It contains all the tiles, the zombies and the mana drops.
+-- On each frame, the grid compute the collisions between zombies and between zombies and
+-- mana drops.
+--
 -----------------------------------------------------------------------------------------
 
 module("Grid", package.seeall)
-
 Grid.__index = Grid
 
 -----------------------------------------------------------------------------------------
@@ -21,12 +25,6 @@ local City = require("src.game.City")
 local Cemetery = require("src.game.Cemetery")
 local FortressWall = require("src.game.FortressWall")
 local ManaDrop = require("src.game.ManaDrop")
-
------------------------------------------------------------------------------------------
--- Constants
------------------------------------------------------------------------------------------
-
-ASCII_CAPITAL_A = 65
 
 -----------------------------------------------------------------------------------------
 -- Initialization and Destruction
@@ -45,28 +43,26 @@ function Grid.create(parameters)
 	local self = parameters or {}
 	setmetatable(self, Grid)
 
-	local saveWidth = self.width
-	local saveHeight = self.height
-
-	-- Initialize attributes
+	-- Initialize Tile attributes
 	Tile.initializeDimensions{
 		width = math.floor(self.width / config.panels.grid.nbCols),
 		height = math.floor(self.height / config.panels.grid.nbRows)
 	}
 
+	-- Initialize attributes
+	local saveWidth = self.width
+	local saveHeight = self.height
 	self.width = Tile.width * config.panels.grid.nbCols
 	self.height = Tile.height * config.panels.grid.nbRows
-
 	self.x = self.x + math.floor((saveWidth - self.width) / 2)
 	self.y = self.y + math.floor((saveHeight - self.height) / 2)
-
 	self.zombies = {}
 	self.nbZombies = 0
-
 	self.manaDrops = {}
 	self.lastDropSpawnTime = 0	
-
 	self.matrix = {}
+
+	-- Create tiles
 	for x = 1, config.panels.grid.nbRows + 1 do
 		for y = 1, config.panels.grid.nbCols + 1 do
 			self.matrix[getIndex(x, y)] = Tile.create{
@@ -189,8 +185,7 @@ function Grid:loadMap(parameters)
 			grid = self,
 			tile = tile,
 			size = size,
-			id = cityId,
-			name = string.char(cityId + ASCII_CAPITAL_A - 1)
+			id = cityId
 		}
 
 		cityId = cityId + 1
@@ -326,6 +321,10 @@ function Grid:enterFrame(timeDelta)
 
 	self.lastDropSpawnTime = self.lastDropSpawnTime + timeDelta
 end
+
+-----------------------------------------------------------------------------------------
+-- Event listeners - Utils
+-----------------------------------------------------------------------------------------
 
 -- Check for collisions with other zombies
 -- Returns as soon as a positive collision has happened

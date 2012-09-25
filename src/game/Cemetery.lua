@@ -3,6 +3,7 @@
 -- Cemetery.lua
 --
 -- The cemetery is a map entity that spawns zombies at a regular rate.
+-- If an enemy zombie attacks the cemetery, the player loses HP.
 --
 -----------------------------------------------------------------------------------------
 

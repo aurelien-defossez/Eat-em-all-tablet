@@ -2,6 +2,10 @@
 --
 -- Multiplayer.lua
 --
+-- This scene represents the multiplayer mode.
+-- It listens to scene events, and also game events, such as the pause or the restart
+-- event.
+--
 -----------------------------------------------------------------------------------------
 
 local storyboard = require("storyboard")
@@ -42,38 +46,8 @@ function Multiplayer:enterScene(event)
 	-- Enter frame time
 	self.lastFrameTime = -1
 
-	-- Create players
-	self.players = {}
-	self.players[1] = Player.create{
-		id = 1,
-		color = {
-			name = "red",
-			r = config.player.colors.p1.r,
-			g = config.player.colors.p1.g,
-			b = config.player.colors.p1.b
-		},
-		direction = DIRECTION.RIGHT,
-		tableLayoutDirection = TABLE_LAYOUT.DIRECTION.LEFT_TO_RIGHT,
-		hitPoints = config.player.hitPoints
-	}
-
-	self.players[2] = Player.create{
-		id = 2,
-		color = {
-			name = "blue",
-			r = config.player.colors.p2.r,
-			g = config.player.colors.p2.g,
-			b = config.player.colors.p2.b
-		},
-		direction = DIRECTION.LEFT,
-		tableLayoutDirection = TABLE_LAYOUT.DIRECTION.RIGHT_TO_LEFT,
-		hitPoints = config.player.hitPoints
-	}
-
 	-- Create game scene
-	self.gameScene = GameScene.create{
-		players = self.players
-	}
+	self.gameScene = GameScene.create()
 
 	-- Bind events
 	Runtime:addEventListener("enterFrame", self)
@@ -94,12 +68,10 @@ function Multiplayer:exitScene(event)
 
 	-- Destroy objects
 	self.gameScene:destroy()
-	self.players[1]:destroy()
-	self.players[2]:destroy()
 end
 
 -----------------------------------------------------------------------------------------
--- Callbacks
+-- Event listeners
 -----------------------------------------------------------------------------------------
 
 -- Pause handler
@@ -195,7 +167,6 @@ Multiplayer:addEventListener("exitScene", Multiplayer)
 -- automatically unloaded in low memory situations, or explicitly via a call to
 -- storyboard.purgeScene() or storyboard.removeScene().
 Multiplayer:addEventListener("destroyScene", Multiplayer)
-
 
 -----------------------------------------------------------------------------------------
 

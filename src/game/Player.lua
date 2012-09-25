@@ -2,10 +2,12 @@
 --
 -- Player.lua
 --
+-- A player is a non-grahical entity representing the player in the game.
+-- It has a color, a default direction for zombies, XP, mana, and so on...
+--
 -----------------------------------------------------------------------------------------
 
 module("Player", package.seeall)
-
 Player.__index = Player
 
 -----------------------------------------------------------------------------------------
@@ -13,6 +15,7 @@ Player.__index = Player
 -----------------------------------------------------------------------------------------
 
 require("src.utils.Constants")
+require("src.config.GameConfig")
 
 local GameScene = require("src.game.GameScene")
 
@@ -26,7 +29,7 @@ local GameScene = require("src.game.GameScene")
 --  id: The player id,
 --  color: The player color, used to load correct sprites
 --  direction: The default direction for new zombies
---  hitPoints: The number of hit points
+--  tableLayoutDirection: The table layout direction to properly present items
 function Player.create(parameters)
 	-- Create object
 	local self = parameters or {}
@@ -38,6 +41,7 @@ function Player.create(parameters)
 	self.cemeteries = {}
 	self.mana = config.player.startingMana
 	self.xp = config.player.startingXp
+	self.hitPoints = config.player.hitPoints
 
 	if config.debug.startWithMana then
 		self.mana = config.debug.startingMana
@@ -148,7 +152,7 @@ function Player:removeSign(sign)
 end
 
 -----------------------------------------------------------------------------------------
--- Event handlers
+-- Event listeners
 -----------------------------------------------------------------------------------------
 
 -- Enter frame handler

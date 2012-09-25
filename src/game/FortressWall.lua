@@ -2,10 +2,12 @@
 --
 -- FortressWall.lua
 --
+-- A fortress wall is a map entity representing a part of the player's wall.
+-- If an enemy zombie attacks the wall, the player loses HP.
+--
 -----------------------------------------------------------------------------------------
 
 module("FortressWall", package.seeall)
-
 FortressWall.__index = FortressWall
 
 -----------------------------------------------------------------------------------------
@@ -22,6 +24,7 @@ local Sprite = require("src.sprites.Sprite")
 -- Class initialization
 -----------------------------------------------------------------------------------------
 
+-- Initialize the class
 function initialize()
 	classGroup = display.newGroup()
 end

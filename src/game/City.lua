@@ -46,7 +46,6 @@ end
 --  tile: The tile the city is on
 --  size: The city size
 --  id: The city unique id
---  name: The city name
 function City.create(parameters)
 	-- Create object
 	local self = parameters or {}
@@ -150,40 +149,10 @@ end
 -- Methods
 -----------------------------------------------------------------------------------------
 
--- Update the city sprite animation
-function City:updateSprite()
-	local animationName;
-
-	-- Update bar color
-	if self.player then
-		self.inhabitantsBar:setFillColor(self.player.color.r, self.player.color.g, self.player.color.b)
-	else
-		self.inhabitantsBar:setFillColor(57, 57, 57)
-	end
-	
-	-- Update sprite color
-	if not self.spawning or not self.player then
-		animationName = "city" .. self.size .. "_grey"
-	else
-		animationName = "city" .. self.size .. "_" .. self.player.color.name
-	end
-	
-	self.citySprite:play(animationName)
-end
-
--- Update the number of inhabitants graphically
-function City:updateInhabitants()
-	local newHeight = self.barHeight - (1 - (self.inhabitants / self.maxInhabitants)) * self.barHeight
-	
-	self.inhabitantsBar.height = newHeight
-	self.inhabitantsBar.isVisible = (newHeight > 0)
-
-	self.inhabitantsBar:setReferencePoint(display.BottomLeftReferencePoint)
-	self.inhabitantsBar.x = config.city.bars.offset.x
-	self.inhabitantsBar.y = config.city.bars.offset.y + config.city.bars.maxHeight
-end
-
 -- Add inhabitants to the city
+--
+-- Parameters:
+--  nb: The number of inhabitants to add
 function City:addInhabitants(nb)
 	self.inhabitants = self.inhabitants + nb
 
@@ -207,13 +176,45 @@ function City:addInhabitants(nb)
 		end
 
 		self.player = nil
-		self.gateOpened = false
 		self.spawning = false
 
 		self:updateSprite()
 	end
 
 	self:updateInhabitants()
+end
+
+-- Update the number of inhabitants graphically
+function City:updateInhabitants()
+	local newHeight = self.barHeight - (1 - (self.inhabitants / self.maxInhabitants)) * self.barHeight
+	
+	self.inhabitantsBar.height = newHeight
+	self.inhabitantsBar.isVisible = (newHeight > 0)
+
+	self.inhabitantsBar:setReferencePoint(display.BottomLeftReferencePoint)
+	self.inhabitantsBar.x = config.city.bars.offset.x
+	self.inhabitantsBar.y = config.city.bars.offset.y + config.city.bars.maxHeight
+end
+
+-- Update the city sprite animation and the bar color
+function City:updateSprite()
+	local animationName;
+
+	-- Update bar color
+	if self.player then
+		self.inhabitantsBar:setFillColor(self.player.color.r, self.player.color.g, self.player.color.b)
+	else
+		self.inhabitantsBar:setFillColor(57, 57, 57)
+	end
+	
+	-- Update sprite color
+	if not self.spawning or not self.player then
+		animationName = "city" .. self.size .. "_grey"
+	else
+		animationName = "city" .. self.size .. "_" .. self.player.color.name
+	end
+	
+	self.citySprite:play(animationName)
 end
 
 -- Spawn a zombie
@@ -233,6 +234,10 @@ function City:spawn(parameters)
 		self:addInhabitants(-1)
 	end
 end
+
+-----------------------------------------------------------------------------------------
+-- Event listeners
+-----------------------------------------------------------------------------------------
 
 -- Enter tile handler, called when a zombie enters the tile
 --

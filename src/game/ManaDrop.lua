@@ -2,10 +2,16 @@
 --
 -- ManaDrop.lua
 --
+-- A mana drop is a map entity that can be carried by zombies.
+-- If a zombie collide with the mana drop, it carries it to its owner's wall.
+-- If the item has already a carrier, then the attacking zombie must first kill the
+-- other zombie before it can carry it.
+-- Once the mana drop is fetched (i.e. it arrives on a fortress wall or cemetery), some
+-- mana is added to the player's mana pool.
+--
 -----------------------------------------------------------------------------------------
 
 module("ManaDrop", package.seeall)
-
 ManaDrop.__index = ManaDrop
 
 -----------------------------------------------------------------------------------------
@@ -30,6 +36,7 @@ ct = 0
 -- Class initialization
 -----------------------------------------------------------------------------------------
 
+-- Initialize the class
 function initialize()
 	classGroup = display.newGroup()
 end
@@ -152,6 +159,7 @@ end
 -- Parameters:
 --  timeDelta: The time in ms since last frame
 function ManaDrop:enterFrame(timeDelta)
+	-- Move the item
 	if self.speed ~= 0 then
 		local movement = timeDelta / 1000 * self.speed * Tile.width
 

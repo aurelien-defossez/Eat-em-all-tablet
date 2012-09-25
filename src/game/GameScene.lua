@@ -2,10 +2,12 @@
 --
 -- GameScene.lua
 --
+-- The game scene is the main game class.
+-- It contains all entities, either graphical or non-graphical (e.g. the players).
+--
 -----------------------------------------------------------------------------------------
 
 module("GameScene", package.seeall)
-
 GameScene.__index = GameScene
 
 -----------------------------------------------------------------------------------------
@@ -43,18 +45,11 @@ local ManaDrop = require("src.game.ManaDrop")
 -----------------------------------------------------------------------------------------
 
 -- Create the grid
---
--- Parameters:
---  players: The two player objects
 function GameScene.create(parameters)
 	-- Create object
 	self = parameters or {}
 	setmetatable(self, GameScene)
 	instance = self
-
-	-- Draw the background
-	local background = display.newRect(0, 0, config.screen.width, config.screen.height)
-	background:setFillColor(142, 57, 20)
 
 	-- Initialize managers
 	SpriteManager.initialize()
@@ -66,6 +61,10 @@ function GameScene.create(parameters)
 	elseif config.debug.fastMode then
 		SpriteManager.setTimeScale(config.debug.fastModeRatio)
 	end
+
+	-- Draw the background
+	self.background = display.newRect(0, 0, config.screen.width, config.screen.height)
+	self.background:setFillColor(142, 57, 20)
 
 	-- Initialize groups in invert Z order
 	UpperBarPanel.initialize()
@@ -85,6 +84,34 @@ function GameScene.create(parameters)
 	DraggedArrow.initialize()
 	MenuWindow.initialize()
 	Button.initialize()
+
+	-- Create players
+	self.players = {}
+	self.players[1] = Player.create{
+		id = 1,
+		color = {
+			name = "red",
+			r = config.player.colors.p1.r,
+			g = config.player.colors.p1.g,
+			b = config.player.colors.p1.b
+		},
+		direction = DIRECTION.RIGHT,
+		tableLayoutDirection = TABLE_LAYOUT.DIRECTION.LEFT_TO_RIGHT,
+		hitPoints = config.player.hitPoints
+	}
+
+	self.players[2] = Player.create{
+		id = 2,
+		color = {
+			name = "blue",
+			r = config.player.colors.p2.r,
+			g = config.player.colors.p2.g,
+			b = config.player.colors.p2.b
+		},
+		direction = DIRECTION.LEFT,
+		tableLayoutDirection = TABLE_LAYOUT.DIRECTION.RIGHT_TO_LEFT,
+		hitPoints = config.player.hitPoints
+	}
 
 	-- Create upper bar panel
 	self.upperBar = UpperBarPanel.create{
@@ -133,10 +160,13 @@ function GameScene:destroy()
 	self.controlPanel2:destroy()
 	self.grid:destroy()
 	self.upperBar:destroy()
+	self.background:destroy()
+	self.players[1]:destroy()
+	self.players[2]:destroy()
 end
 
 -----------------------------------------------------------------------------------------
--- Event handlers
+-- Event listeners
 -----------------------------------------------------------------------------------------
 
 -- Enter frame handler
@@ -149,9 +179,10 @@ function GameScene:enterFrame(timeDelta)
 		player:enterFrame(timeDelta)
 	end
 
-		-- Relay event to grid
+	-- Relay event to grid
 	self.grid:enterFrame(timeDelta)
 
+	-- Frame by Frame mode
 	if config.debug.frameByFrame then
 		Runtime:dispatchEvent{
 			name = "gamePause",
