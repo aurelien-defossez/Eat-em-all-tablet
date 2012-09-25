@@ -14,9 +14,6 @@ Player.__index = Player
 -- Imports
 -----------------------------------------------------------------------------------------
 
-require("src.utils.Constants")
-require("src.config.GameConfig")
-
 local GameScene = require("src.game.GameScene")
 
 -----------------------------------------------------------------------------------------

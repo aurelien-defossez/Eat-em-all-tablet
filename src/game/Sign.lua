@@ -2,6 +2,12 @@
 --
 -- Sign.lua
 --
+-- A sign is a map entity that redirects the zombies.
+-- When a zombie arrives in the middle of a sign, it follows the sign if it belongs
+-- to their player.
+-- If the sign points to a wall, the tile will block this movement and correct it so the
+-- zombie goes along the wall.
+--
 -----------------------------------------------------------------------------------------
 
 module("Sign", package.seeall)
@@ -10,9 +16,6 @@ Sign.__index = Sign
 -----------------------------------------------------------------------------------------
 -- Imports
 -----------------------------------------------------------------------------------------
-
-require("src.utils.Constants")
-require("src.config.GameConfig")
 
 local SpriteManager = require("src.sprites.SpriteManager")
 local Sprite = require("src.sprites.Sprite")

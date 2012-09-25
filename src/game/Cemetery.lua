@@ -14,9 +14,6 @@ Cemetery.__index = Cemetery
 -- Imports
 -----------------------------------------------------------------------------------------
 
-require("src.utils.Constants")
-require("src.config.GameConfig")
-
 local SpriteManager = require("src.sprites.SpriteManager")
 local Sprite = require("src.sprites.Sprite")
 local Zombie = require("src.game.Zombie")
