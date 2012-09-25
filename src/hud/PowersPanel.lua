@@ -2,18 +2,16 @@
 --
 -- PowersPanel.lua
 --
+-- The powers panel from which the user can use the powers he bought.
+--
 -----------------------------------------------------------------------------------------
 
 module("PowersPanel", package.seeall)
-
 PowersPanel.__index = PowersPanel
 
 -----------------------------------------------------------------------------------------
 -- Imports
 -----------------------------------------------------------------------------------------
-
-require("src.utils.Constants")
-require("src.config.GameConfig")
 
 local TableLayout = require("src.utils.TableLayout")
 
@@ -21,6 +19,7 @@ local TableLayout = require("src.utils.TableLayout")
 -- Class methods
 -----------------------------------------------------------------------------------------
 
+-- Initialize the class
 function initialize()
 	classGroup = display.newGroup()
 end
@@ -46,7 +45,7 @@ function PowersPanel.create(parameters)
 	classGroup:insert(self.group)
 	
 	-- Initialize attributes
-	self.width = config.panels.controls.powers.width
+	self.width = hud.controls.powers.width
 	-- self.height = 3 * config.mana.height
 	-- self.tableLayout = TableLayout.create{
 	-- 	x = self.x,
@@ -55,8 +54,8 @@ function PowersPanel.create(parameters)
 	-- 	height = self.height,
 	-- 	itemWidth = config.mana.width,
 	-- 	itemHeight = config.mana.height,
-	-- 	nbRows = config.panels.controls.powers.nbRows,
-	-- 	nbCols = config.panels.controls.powers.nbCols,
+	-- 	nbRows = hud.controls.powers.nbRows,
+	-- 	nbCols = hud.controls.powers.nbCols,
 	-- 	direction = self.player.tableLayoutDirection
 	-- }
 
@@ -64,11 +63,11 @@ function PowersPanel.create(parameters)
 	local textX
 	local spriteX
 	if self.player.id == 1 then
-		textX = self.width - config.panels.controls.powers.mana.counter.xoffset
-		spriteX = self.width - config.panels.controls.powers.mana.icon.xoffset
+		textX = self.width - hud.controls.powers.mana.counter.xoffset
+		spriteX = self.width - hud.controls.powers.mana.icon.xoffset
 	else
-		textX = config.panels.controls.powers.mana.counter.xoffset
-		spriteX = config.panels.controls.powers.mana.icon.xoffset
+		textX = hud.controls.powers.mana.counter.xoffset
+		spriteX = hud.controls.powers.mana.icon.xoffset
 	end
 
 	-- Create sprite
@@ -76,7 +75,7 @@ function PowersPanel.create(parameters)
 		spriteSet = SpriteManager.sets.mana,
 		group = self.group,
 		x = spriteX,
-		y = config.panels.controls.powers.mana.icon.yoffset,
+		y = hud.controls.powers.mana.icon.yoffset,
 		orientation = self.player.direction
 	}
 
@@ -86,7 +85,7 @@ function PowersPanel.create(parameters)
 	-- Create mana counter
 	self.manaCounter = display.newText(self.player.mana, 0, 0, native.systemFontBold, 32)
 	self.manaCounter.x = textX
-	self.manaCounter.y = config.panels.controls.powers.mana.counter.yoffset
+	self.manaCounter.y = hud.controls.powers.mana.counter.yoffset
 	self.manaCounter:rotate(self.player.direction)
 	self.manaCounter:setReferencePoint(display.BottomCenterReferencePoint)
 	self.manaCounter:setTextColor(0, 0, 0)

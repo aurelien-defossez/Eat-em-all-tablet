@@ -2,19 +2,24 @@
 --
 -- Zombie.lua
 --
+-- A zombie is the main unit of the game. It belongs to a player and it pretty stupid.
+-- It goes always in one direction, changes direction if it hits something or if a
+-- player's sign redirects it.
+-- When it hits a city, it either attacks it or enforce it.
+-- When it hits an enemy cemetery or fortress wall, it attacks it and the opponent loses
+-- 1 HP.
+-- When it hits a friendly cemetery or fortress wall, the zombie goes back.
+-- When it hits another zombie, it starts to attack it.
+-- When it hits a mana drop not yet carried, it goes to fetch it to the player fortress.
+--
 -----------------------------------------------------------------------------------------
 
 module("Zombie", package.seeall)
-
 Zombie.__index = Zombie
 
 -----------------------------------------------------------------------------------------
 -- Imports
 -----------------------------------------------------------------------------------------
-
-require("src.utils.Utils")
-require("src.utils.Constants")
-require("src.config.GameConfig")
 
 local SpriteManager = require("src.sprites.SpriteManager")
 local Sprite = require("src.sprites.Sprite")
@@ -25,6 +30,7 @@ local Tile = require("src.game.Tile")
 -- Constants
 -----------------------------------------------------------------------------------------
 
+-- The direction vectors
 DIRECTION_VECTOR = {
 	UP = { x = 0, y = -1 },
 	DOWN = { x = 0, y = 1 },
@@ -36,6 +42,7 @@ DIRECTION_VECTOR = {
 -- Class initialization
 -----------------------------------------------------------------------------------------
 
+-- Initialize the class
 function initialize()
 	classGroup = display.newGroup()
 
@@ -147,7 +154,7 @@ function initialize()
 				}
 			}
 		},
-		-- Enforce city
+		-- Enforcing city
 		enforcingCity = {
 			name = "enforcingCity",
 			attributes = {
@@ -174,7 +181,7 @@ function initialize()
 					state = "moving"
 				},
 				killed = {
-					state = "dying"
+					state = "finishingAttack"
 				}
 			}
 		},
@@ -231,9 +238,23 @@ function initialize()
 			},
 			transitions = {
 				hitZombie = {
+					state = "finishingAttack",
 					onChange = onHitZombie
 				},
 				endOfFrame = {
+					state = "dying"
+				}
+			}
+		},
+		-- Finishing attack
+		finishingAttack = {
+			name = "finishingAttack",
+			attributes = {
+				canAttack = false,
+				isAttackable = false
+			},
+			transitions = {
+				animationEnd = {
 					state = "dying"
 				}
 			}
@@ -704,6 +725,7 @@ function Zombie:onHitZombie(parameters)
 		self.player:addXp(1)
 	end
 
+	self.animationName = "attack"
 	self:updateSprite()
 end
 
@@ -791,7 +813,10 @@ function Zombie:enterFrame(timeDelta)
 	}
 end
 
-
+-- Sprite event handler
+--
+-- Parameters:
+--  event: The event thrown
 function Zombie:sprite(event)
 	if event.phase == "end" then
 		self.stateMachine:triggerEvent{

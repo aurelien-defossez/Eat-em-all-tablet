@@ -1,31 +1,30 @@
 -----------------------------------------------------------------------------------------
 --
 -- UpperBarPanel.lua
+-- 
+-- The upper bar panel, containing the HP bars and the menu.
 --
 -----------------------------------------------------------------------------------------
 
 module("UpperBarPanel", package.seeall)
-
 UpperBarPanel.__index = UpperBarPanel
 
 -----------------------------------------------------------------------------------------
 -- Imports
 -----------------------------------------------------------------------------------------
 
-require("src.utils.Constants")
-require("src.config.GameConfig")
-
 local storyboard = require("storyboard")
 local SpriteManager = require("src.sprites.SpriteManager")
-local MenuWindow = require("src.hud.MenuWindow")
-local Button = require("src.hud.Button")
-local WindowManager = require("src.utils.WindowManager")
+local MenuWindow = require("src.menu.MenuWindow")
+local Button = require("src.menu.Button")
+local WindowManager = require("src.menu.WindowManager")
 local HitPointsPanel = require("src.hud.HitPointsPanel")
 
 -----------------------------------------------------------------------------------------
 -- Class initialization
 -----------------------------------------------------------------------------------------
 
+-- Initialize the class
 function initialize()
 	classGroup = display.newGroup()
 end
@@ -52,7 +51,7 @@ function UpperBarPanel.create(parameters)
 	classGroup:insert(self.group)
 	
 	-- Initialize attributes
-	self.hpWidth = (self.width - config.panels.upperBar.menuButton.width) / 2
+	self.hpWidth = (self.width - hud.upperBar.menuButton.width) / 2
 
 	self.hitPoints = {}
 	self.hitPoints[1] = HitPointsPanel.create{
@@ -67,7 +66,7 @@ function UpperBarPanel.create(parameters)
 	self.hitPoints[2] = HitPointsPanel.create{
 		maxHitPoints = self.players[2].hitPoints,
 		hitPoints = self.players[2].hitPoints,
-		x = self.x + self.hpWidth + config.panels.upperBar.menuButton.width,
+		x = self.x + self.hpWidth + hud.upperBar.menuButton.width,
 		y = self.y,
 		width = self.hpWidth,
 		direction = HIT_POINTS_PANEL.DIRECTION.REVERSE
@@ -84,7 +83,7 @@ function UpperBarPanel.create(parameters)
 	self.pauseSprite = Sprite.create{
 		spriteSet = SpriteManager.sets.misc,
 		group = self.group,
-		x = self.hpWidth + config.panels.upperBar.menuButton.width / 2,
+		x = self.hpWidth + hud.upperBar.menuButton.width / 2,
 		y = self.height / 2
 	}
 
@@ -194,7 +193,7 @@ end
 function onQuitTap(button)
 	WindowManager.removeAllWindows()
 
-	storyboard.gotoScene("src.hud.Welcome")
+	storyboard.gotoScene("src.scenes.Welcome")
 end
 
 -- Handler for the "Debug" button

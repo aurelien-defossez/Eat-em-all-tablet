@@ -10,7 +10,7 @@ system.activate("multitouch")
 -- include the Corona "storyboard" module
 local storyboard = require("storyboard")
 local GameScene = require("src.game.GameScene")
-local WindowManager = require("src.utils.WindowManager")
+local WindowManager = require("src.menu.WindowManager")
 
 -- Jump 30 lines in the debug console
 for i = 1, 30 do
@@ -44,7 +44,7 @@ local systemEventListener = function(event)
 		math.randomseed(os.time())
 
 		-- Start the multiplayer game
-		storyboard.gotoScene("src.hud.Welcome")
+		storyboard.gotoScene("src.scenes.Welcome")
 	elseif event.type == "applicationExit" then
 		-- quit()
 		return true

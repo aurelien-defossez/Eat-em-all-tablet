@@ -2,18 +2,13 @@
 --
 -- Tile.lua
 --
+-- A tile is one of the grid cells.
+-- It contains map elements such as cemeteries, cities, walls and signs.
+--
 -----------------------------------------------------------------------------------------
 
 module("Tile", package.seeall)
-
 Tile.__index = Tile
-
------------------------------------------------------------------------------------------
--- Imports
------------------------------------------------------------------------------------------
-
-require("src.utils.Constants")
-require("src.config.GameConfig")
 
 -----------------------------------------------------------------------------------------
 -- Class attributes
@@ -25,10 +20,16 @@ contentId = 0
 -- Class initialization
 -----------------------------------------------------------------------------------------
 
+-- Initialize the class
 function initialize()
 	classGroup = display.newGroup()
 end
 
+-- Initialize the tile dimensions
+--
+-- Parameters:
+--  width: The tile width
+--  height: The tile height
 function initializeDimensions(parameters)
 	width = parameters.width
 	height = parameters.height
@@ -60,7 +61,7 @@ function Tile.create(parameters)
 
 	-- Initialize attributes
 	self.isOnFirstRow = (self.yGrid == 1)
-	self.isOnLastRow = (self.yGrid == config.panels.grid.nbRows)
+	self.isOnLastRow = (self.yGrid == hud.grid.nbRows)
 	self.contents = {}
 
 	-- Position group
@@ -69,7 +70,7 @@ function Tile.create(parameters)
 
 	-- Draw borders
 	local borders = display.newRect(0, 0, self.width, self.height)
-	borders.strokeWidth = config.panels.grid.lineWidth
+	borders.strokeWidth = hud.grid.lineWidth
 	borders:setFillColor(122, 47, 15)
 	borders:setStrokeColor(152, 67, 35)
 

@@ -2,18 +2,18 @@
 --
 -- DraggedArrow.lua
 --
+-- An arrow of the player's arrow panel being dragged.
+-- If dropped onto a valid tile (e.g. empty of buildings and enemy arrows), then a sign
+-- is created. Otherwise, it is destroyed.
+--
 -----------------------------------------------------------------------------------------
 
 module("DraggedArrow", package.seeall)
-
 DraggedArrow.__index = DraggedArrow
 
 -----------------------------------------------------------------------------------------
 -- Imports
 -----------------------------------------------------------------------------------------
-
-require("src.utils.Constants")
-require("src.config.GameConfig")
 
 local SpriteManager = require("src.sprites.SpriteManager")
 local Sprite = require("src.sprites.Sprite")
@@ -24,6 +24,7 @@ local Tile = require("src.game.Tile")
 -- Class methods
 -----------------------------------------------------------------------------------------
 
+-- Initialize the class
 function initialize()
 	classGroup = display.newGroup()
 end

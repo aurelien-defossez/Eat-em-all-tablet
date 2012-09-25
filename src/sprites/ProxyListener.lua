@@ -2,14 +2,13 @@
 --
 -- ProxyListener.lua
 --
+-- The proxy listener listen for sprite events and redispatch them manually to the real
+-- listeners, changing in the process the event target.
+--
 -----------------------------------------------------------------------------------------
 
 module("ProxyListener", package.seeall)
 ProxyListener.__index = ProxyListener
-
------------------------------------------------------------------------------------------
--- Imports
------------------------------------------------------------------------------------------
 
 -----------------------------------------------------------------------------------------
 -- Initialization and Destruction

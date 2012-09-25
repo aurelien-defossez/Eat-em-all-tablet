@@ -5,20 +5,13 @@
 -----------------------------------------------------------------------------------------
 
 module("HitPointsPanel", package.seeall)
-
 HitPointsPanel.__index = HitPointsPanel
-
------------------------------------------------------------------------------------------
--- Imports
------------------------------------------------------------------------------------------
-
-require("src.utils.Constants")
-require("src.config.GameConfig")
 
 -----------------------------------------------------------------------------------------
 -- Class initialization
 -----------------------------------------------------------------------------------------
 
+-- Initialize the class
 function initialize()
 	classGroup = display.newGroup()
 end
@@ -45,12 +38,12 @@ function HitPointsPanel.create(parameters)
 	classGroup:insert(self.group)
 	
 	-- Initialize attributes
-	self.height = config.panels.upperBar.height
+	self.height = hud.upperBar.height
 	self.barPosition = {
-		x = self.x + config.panels.upperBar.hitPoints.xpadding,
-		y = self.y + config.panels.upperBar.hitPoints.ypadding,
-		maxWidth = self.width - 2 * config.panels.upperBar.hitPoints.xpadding,
-		height = self.height - 2 * config.panels.upperBar.hitPoints.ypadding
+		x = self.x + hud.upperBar.hitPoints.xpadding,
+		y = self.y + hud.upperBar.hitPoints.ypadding,
+		maxWidth = self.width - 2 * hud.upperBar.hitPoints.xpadding,
+		height = self.height - 2 * hud.upperBar.hitPoints.ypadding
 	}
 
 	-- Draw bars
@@ -80,6 +73,10 @@ end
 -- Methods
 -----------------------------------------------------------------------------------------
 
+-- Update the hit points count
+--
+-- Parameters:
+-- hitPoints: The new value
 function HitPointsPanel:updateHPs(hitPoints)
 	self.hitPoints = hitPoints
 

@@ -2,18 +2,22 @@
 --
 -- TableLayout.lua
 --
+-- The table layout handle item positioning.
+-- For example, for a 3 x 2 table, with the left to right direction, it would create
+-- these item placeholders:
+--
+-- [ ] [ ]
+-- [ ] [ ]
+-- [ ] [ ]
+--
+-- Whenever an item is added to the table, it is added to the list, sorted with the
+-- others, then all items are reorganized through the table.
+--
 -----------------------------------------------------------------------------------------
 
 module("TableLayout", package.seeall)
 
 TableLayout.__index = TableLayout
-
------------------------------------------------------------------------------------------
--- Imports
------------------------------------------------------------------------------------------
-
-require("src.utils.Constants")
-require("src.config.GameConfig")
 
 -----------------------------------------------------------------------------------------
 -- Initialization and Destruction
@@ -110,6 +114,13 @@ function TableLayout:reorganize()
 end
 
 -- Comparison function for sorting items
+--
+-- Parameters:
+--  a: The first object to compare
+--  b: The second object to compare
+--
+-- Returns:
+--  True if a.id is lower than b.id
 function compareLess(a, b)
 	return a.id < b.id
 end
