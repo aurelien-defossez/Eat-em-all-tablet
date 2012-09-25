@@ -10,12 +10,6 @@ module("Button", package.seeall)
 Button.__index = Button
 
 -----------------------------------------------------------------------------------------
--- Imports
------------------------------------------------------------------------------------------
-
-require("src.utils.Constants")
-
------------------------------------------------------------------------------------------
 -- Class initialization
 -----------------------------------------------------------------------------------------
 
@@ -46,8 +40,8 @@ function Button.create(parameters)
 	-- Initialize attributes
 	self.x = self.x or 0
 	self.y = self.y or 0
-	self.height = config.windows.buttons.height
-	self.width = config.windows.buttons.width
+	self.height = hud.windows.buttons.height
+	self.width = hud.windows.buttons.width
 	self.selected = self.selected or false
 
 	-- Position group

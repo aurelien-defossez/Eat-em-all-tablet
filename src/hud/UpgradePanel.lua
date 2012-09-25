@@ -11,13 +11,6 @@ module("UpgradePanel", package.seeall)
 UpgradePanel.__index = UpgradePanel
 
 -----------------------------------------------------------------------------------------
--- Imports
------------------------------------------------------------------------------------------
-
-require("src.utils.Constants")
-require("src.config.GameConfig")
-
------------------------------------------------------------------------------------------
 -- Class methods
 -----------------------------------------------------------------------------------------
 
@@ -46,8 +39,8 @@ function UpgradePanel.create(parameters)
 	classGroup:insert(self.group)
 	
 	-- Initialize attributes
-	self.width = config.panels.controls.upgrade.width
-	self.height = config.panels.controls.upgrade.height
+	self.width = hud.controls.upgrade.width
+	self.height = hud.controls.upgrade.height
 
 	-- Create background
 	self.background = display.newRoundedRect(0, -10, self.width, self.height + 10, 10)
@@ -60,16 +53,16 @@ function UpgradePanel.create(parameters)
 	self.upgradeSprite1 = Sprite.create{
 		spriteSet = SpriteManager.sets.misc,
 		group = self.group,
-		x = config.panels.controls.upgrade.icon.width,
-		y = config.panels.controls.upgrade.icon.height,
+		x = hud.controls.upgrade.icon.width,
+		y = hud.controls.upgrade.icon.height,
 		orientation = 180
 	}
 
 	self.upgradeSprite2 = Sprite.create{
 		spriteSet = SpriteManager.sets.misc,
 		group = self.group,
-		x = self.width - config.panels.controls.upgrade.icon.width,
-		y = config.panels.controls.upgrade.icon.height,
+		x = self.width - hud.controls.upgrade.icon.width,
+		y = hud.controls.upgrade.icon.height,
 		orientation = 180
 	}
 

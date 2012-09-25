@@ -12,9 +12,6 @@ ManaDrop.__index = ManaDrop
 -- Imports
 -----------------------------------------------------------------------------------------
 
-require("src.utils.Constants")
-require("src.config.GameConfig")
-
 local SpriteManager = require("src.sprites.SpriteManager")
 local Sprite = require("src.sprites.Sprite")
 local Tile = require("src.game.Tile")

@@ -14,9 +14,7 @@ SpriteManager.__index = SpriteManager
 -- Imports
 -----------------------------------------------------------------------------------------
 
-require("src.utils.Constants")
-require("src.sprites.AnimationData")
-
+local animationData = require("src.sprites.AnimationData")
 local SpriteLib = require("sprite")
 local SpritesheetData = require("src.sprites.SpritesheetData")
 
@@ -48,13 +46,13 @@ function initialize()
 
 	-- Load sprite sets
 	sets = {
-		arrow = loadSpriteSet(spriteSheet, spriteSheetIndex, sprites.arrow),
-		cemetery = loadSpriteSet(spriteSheet, spriteSheetIndex, sprites.cemetery),
-		city = loadSpriteSet(spriteSheet, spriteSheetIndex, sprites.city),
-		fortressWall = loadSpriteSet(spriteSheet, spriteSheetIndex, sprites.fortressWall),
-		mana = loadSpriteSet(spriteSheet, spriteSheetIndex, sprites.mana),
-		zombie = loadSpriteSet(spriteSheet, spriteSheetIndex, sprites.zombie),
-		misc = loadSpriteSet(spriteSheet, spriteSheetIndex, sprites.misc)
+		arrow = loadSpriteSet(spriteSheet, spriteSheetIndex, animationData.arrow),
+		cemetery = loadSpriteSet(spriteSheet, spriteSheetIndex, animationData.cemetery),
+		city = loadSpriteSet(spriteSheet, spriteSheetIndex, animationData.city),
+		fortressWall = loadSpriteSet(spriteSheet, spriteSheetIndex, animationData.fortressWall),
+		mana = loadSpriteSet(spriteSheet, spriteSheetIndex, animationData.mana),
+		zombie = loadSpriteSet(spriteSheet, spriteSheetIndex, animationData.zombie),
+		misc = loadSpriteSet(spriteSheet, spriteSheetIndex, animationData.misc)
 	}
 end
 

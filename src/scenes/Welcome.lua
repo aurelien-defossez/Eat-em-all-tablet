@@ -15,10 +15,12 @@ local Welcome = storyboard.newScene()
 
 require("src.utils.Constants")
 require("src.config.GameConfig")
+require("src.config.HudConfig")
+require("src.utils.Utils")
 
-local MenuWindow = require("src.hud.MenuWindow")
-local Button = require("src.hud.Button")
-local WindowManager = require("src.utils.WindowManager")
+local MenuWindow = require("src.menu.MenuWindow")
+local Button = require("src.menu.Button")
+local WindowManager = require("src.menu.WindowManager")
 
 -----------------------------------------------------------------------------------------
 -- Initialization and Destruction
@@ -379,7 +381,7 @@ end
 --  button: The button pressed
 function onStartTap(button)
 	WindowManager.removeAllWindows()
-	storyboard.gotoScene("src.game.Multiplayer")
+	storyboard.gotoScene("src.scenes.Multiplayer")
 end
 
 -- Handler for the "Quit" button

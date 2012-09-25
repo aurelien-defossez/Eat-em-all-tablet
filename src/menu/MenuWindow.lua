@@ -11,13 +11,6 @@ module("MenuWindow", package.seeall)
 MenuWindow.__index = MenuWindow
 
 -----------------------------------------------------------------------------------------
--- Imports
------------------------------------------------------------------------------------------
-
-require("src.utils.Constants")
-require("src.config.GameConfig")
-
------------------------------------------------------------------------------------------
 -- Class initialization
 -----------------------------------------------------------------------------------------
 
@@ -44,9 +37,9 @@ function MenuWindow.create(parameters)
 	classGroup:insert(self.group)
 	
 	-- Initialize attributes
-	self.width = config.windows.width
-	self.height = 2 * config.windows.ypadding + config.windows.title.height +
-		table.getn(self.buttons) * (config.windows.buttons.ypadding + config.windows.buttons.height)
+	self.width = hud.windows.width
+	self.height = 2 * hud.windows.ypadding + hud.windows.title.height +
+		table.getn(self.buttons) * (hud.windows.buttons.ypadding + hud.windows.buttons.height)
 	self.x = (config.screen.width - self.width) / 2
 	self.y = (config.screen.height - self.height) / 2
 
@@ -61,21 +54,21 @@ function MenuWindow.create(parameters)
 	windowTitle:setTextColor(255, 255, 255)
 	windowTitle:setReferencePoint(display.CenterReferencePoint)
 	windowTitle.x = self.width / 2
-	windowTitle.y = config.windows.ypadding + config.windows.title.height / 2
+	windowTitle.y = hud.windows.ypadding + hud.windows.title.height / 2
 
 	-- Add to group
 	self.group:insert(background)
 	self.group:insert(windowTitle)
 
 	-- Position buttons
-	local offset = config.windows.title.height + config.windows.ypadding + config.windows.buttons.ypadding
+	local offset = hud.windows.title.height + hud.windows.ypadding + hud.windows.buttons.ypadding
 	for key, button in pairs(self.buttons) do
 		button:moveTo{
-			x = self.x + config.windows.xpadding,
+			x = self.x + hud.windows.xpadding,
 			y = self.y + offset
 		}
 
-		offset = offset + config.windows.buttons.height + config.windows.buttons.ypadding
+		offset = offset + hud.windows.buttons.height + hud.windows.buttons.ypadding
 	end
 
 	-- Position group

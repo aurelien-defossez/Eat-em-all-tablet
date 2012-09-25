@@ -11,13 +11,6 @@ module("Tile", package.seeall)
 Tile.__index = Tile
 
 -----------------------------------------------------------------------------------------
--- Imports
------------------------------------------------------------------------------------------
-
-require("src.utils.Constants")
-require("src.config.GameConfig")
-
------------------------------------------------------------------------------------------
 -- Class attributes
 -----------------------------------------------------------------------------------------
 
@@ -68,7 +61,7 @@ function Tile.create(parameters)
 
 	-- Initialize attributes
 	self.isOnFirstRow = (self.yGrid == 1)
-	self.isOnLastRow = (self.yGrid == config.panels.grid.nbRows)
+	self.isOnLastRow = (self.yGrid == hud.grid.nbRows)
 	self.contents = {}
 
 	-- Position group
@@ -77,7 +70,7 @@ function Tile.create(parameters)
 
 	-- Draw borders
 	local borders = display.newRect(0, 0, self.width, self.height)
-	borders.strokeWidth = config.panels.grid.lineWidth
+	borders.strokeWidth = hud.grid.lineWidth
 	borders:setFillColor(122, 47, 15)
 	borders:setStrokeColor(152, 67, 35)
 

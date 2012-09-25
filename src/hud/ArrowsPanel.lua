@@ -13,9 +13,6 @@ ArrowsPanel.__index = ArrowsPanel
 -- Imports
 -----------------------------------------------------------------------------------------
 
-require("src.utils.Constants")
-require("src.config.GameConfig")
-
 local Arrow = require("src.hud.Arrow")
 
 -----------------------------------------------------------------------------------------
@@ -55,8 +52,8 @@ function ArrowsPanel.create(parameters)
 	classGroup:insert(self.group)
 
 	-- Initialize attributes
-	self.width = config.panels.controls.arrows.width
-	self.height = config.panels.controls.arrows.height
+	self.width = hud.controls.arrows.width
+	self.height = hud.controls.arrows.height
 
 	-- Create arrows
 	self.arrowUp = Arrow.create{
@@ -100,7 +97,7 @@ function ArrowsPanel.create(parameters)
 	}
 
 	-- Create arrow counter
-	self.signCounter = display.newText(config.player.maxSigns, 0, config.panels.controls.arrows.counter.yoffset,
+	self.signCounter = display.newText(config.player.maxSigns, 0, hud.controls.arrows.counter.yoffset,
 		native.systemFontBold, 32)
 	self.signCounter:rotate(self.player.direction)
 	self.signCounter:setReferencePoint(display.BottomCenterReferencePoint)
@@ -109,9 +106,9 @@ function ArrowsPanel.create(parameters)
 
 	-- Position counter depending on player's side
 	if self.player.id == 1 then
-		self.signCounter.x = self.width - config.panels.controls.arrows.counter.xoffset
+		self.signCounter.x = self.width - hud.controls.arrows.counter.xoffset
 	else
-		self.signCounter.x = config.panels.controls.arrows.counter.xoffset
+		self.signCounter.x = hud.controls.arrows.counter.xoffset
 	end
 
 	-- Position group

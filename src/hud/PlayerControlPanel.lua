@@ -14,9 +14,6 @@ PlayerControlPanel.__index = PlayerControlPanel
 -- Imports
 -----------------------------------------------------------------------------------------
 
-require("src.utils.Constants")
-require("src.config.GameConfig")
-
 local UpgradePanel = require("src.hud.UpgradePanel")
 local ArrowsPanel = require("src.hud.ArrowsPanel")
 local PowersPanel = require("src.hud.PowersPanel")
@@ -52,28 +49,28 @@ function PlayerControlPanel.create(parameters)
 	classGroup:insert(self.group)
 	
 	-- Initialize attributes
-	self.width = config.panels.controls.width
+	self.width = hud.controls.width
 
 	-- Create sub-panels
 	self.upgrade = UpgradePanel.create{
 		player = self.player,
-		x = self.x + config.panels.controls.padding,
+		x = self.x + hud.controls.padding,
 		y = self.y
 	}
 
 	self.arrows = ArrowsPanel.create{
 		player = self.player,
 		grid = self.grid,
-		x = self.x + config.panels.controls.padding,
-		y = self.y + config.panels.controls.upgrade.height + config.panels.controls.powers.ypadding
+		x = self.x + hud.controls.padding,
+		y = self.y + hud.controls.upgrade.height + hud.controls.powers.ypadding
 	}
 
 	self.powers = PowersPanel.create{
 		player = self.player,
 		grid = self.grid,
-		x = self.x + config.panels.controls.padding,
-		y = self.y + config.panels.controls.upgrade.height + config.panels.controls.arrows.height
-			+ config.panels.controls.powers.ypadding
+		x = self.x + hud.controls.padding,
+		y = self.y + hud.controls.upgrade.height + hud.controls.arrows.height
+			+ hud.controls.powers.ypadding
 	}
 
 	-- Draw background

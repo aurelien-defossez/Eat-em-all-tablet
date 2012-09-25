@@ -21,10 +21,6 @@ Zombie.__index = Zombie
 -- Imports
 -----------------------------------------------------------------------------------------
 
-require("src.utils.Utils")
-require("src.utils.Constants")
-require("src.config.GameConfig")
-
 local SpriteManager = require("src.sprites.SpriteManager")
 local Sprite = require("src.sprites.Sprite")
 local FiniteStateMachine = require("src.utils.FiniteStateMachine")

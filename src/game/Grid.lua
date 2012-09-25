@@ -12,9 +12,6 @@ Grid.__index = Grid
 -- Imports
 -----------------------------------------------------------------------------------------
 
-require("src.utils.Constants")
-require("src.config.GameConfig")
-
 local Collisions = require("src.lib.Collisions")
 local Tile = require("src.game.Tile")
 local City = require("src.game.City")
@@ -50,12 +47,12 @@ function Grid.create(parameters)
 
 	-- Initialize attributes
 	Tile.initializeDimensions{
-		width = math.floor(self.width / config.panels.grid.nbCols),
-		height = math.floor(self.height / config.panels.grid.nbRows)
+		width = math.floor(self.width / hud.grid.nbCols),
+		height = math.floor(self.height / hud.grid.nbRows)
 	}
 
-	self.width = Tile.width * config.panels.grid.nbCols
-	self.height = Tile.height * config.panels.grid.nbRows
+	self.width = Tile.width * hud.grid.nbCols
+	self.height = Tile.height * hud.grid.nbRows
 
 	self.x = self.x + math.floor((saveWidth - self.width) / 2)
 	self.y = self.y + math.floor((saveHeight - self.height) / 2)
@@ -67,8 +64,8 @@ function Grid.create(parameters)
 	self.lastDropSpawnTime = 0	
 
 	self.matrix = {}
-	for x = 1, config.panels.grid.nbRows + 1 do
-		for y = 1, config.panels.grid.nbCols + 1 do
+	for x = 1, hud.grid.nbRows + 1 do
+		for y = 1, hud.grid.nbCols + 1 do
 			self.matrix[getIndex(x, y)] = Tile.create{
 				xGrid = x,
 				yGrid = y,
@@ -142,14 +139,14 @@ function Grid:loadMap(parameters)
 	end
 
 	-- Place fortress walls on edges where there are not any cemetery
-	for y = 1, config.panels.grid.nbRows do
+	for y = 1, hud.grid.nbRows do
 		local leftTile = self:getTile{
 			x = 1,
 			y = y
 		}
 
 		local rightTile = self:getTile{
-			x = config.panels.grid.nbRows + 1,
+			x = hud.grid.nbRows + 1,
 			y = y
 		}
 
@@ -233,8 +230,8 @@ end
 --  The corresponding tile
 function Grid:getTileByPixels(parameters)
 	return self:getTile{
-		x = math.floor((parameters.x - self.x) / self.width * config.panels.grid.nbCols) + 1,
-		y = math.floor((parameters.y - self.y) / self.height * config.panels.grid.nbRows) + 1
+		x = math.floor((parameters.x - self.x) / self.width * hud.grid.nbCols) + 1,
+		y = math.floor((parameters.y - self.y) / self.height * hud.grid.nbRows) + 1
 	}
 end
 
@@ -247,8 +244,8 @@ end
 -- Returns:
 --  The corresponding tile, or nil if the coordinates are incorrect
 function Grid:getTile(parameters)
-	if parameters.x > 0 and parameters.x <= config.panels.grid.nbCols
-		and parameters.y > 0 and parameters.y <= config.panels.grid.nbRows then
+	if parameters.x > 0 and parameters.x <= hud.grid.nbCols
+		and parameters.y > 0 and parameters.y <= hud.grid.nbRows then
 		return self.matrix[getIndex(parameters.x, parameters.y)]
 	else
 		return nil
@@ -289,14 +286,14 @@ function Grid:enterFrame(timeDelta)
 			end
 
 			if ManaDrop.ct == 0 or math.random() < probaSpawn then
-				local middleTileX = math.ceil(config.panels.grid.nbCols / 2)
+				local middleTileX = math.ceil(hud.grid.nbCols / 2)
 				local tile
 				local triesCount = 0
 
 				repeat
 					tile = self:getTile{
 						x = math.random(middleTileX - config.mana.creation.xoffset, middleTileX + config.mana.creation.xoffset),
-						y = math.random(config.panels.grid.nbRows)
+						y = math.random(hud.grid.nbRows)
 					}
 
 					triesCount = triesCount + 1
@@ -404,7 +401,7 @@ end
 -- Returns:
 --  The 1-D array index
 function getIndex(x, y)
-	return x * config.panels.grid.nbCols + y
+	return x * hud.grid.nbCols + y
 end
 
 -----------------------------------------------------------------------------------------

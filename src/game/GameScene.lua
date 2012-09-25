@@ -12,13 +12,10 @@ GameScene.__index = GameScene
 -- Imports
 -----------------------------------------------------------------------------------------
 
-require("src.utils.Constants")
-require("src.utils.Utils")
-require("src.config.GameConfig")
 require("src.config.Maps")
 
 local SpriteManager = require("src.sprites.SpriteManager")
-local WindowManager = require("src.utils.WindowManager")
+local WindowManager = require("src.menu.WindowManager")
 local UpperBarPanel = require("src.hud.UpperBarPanel")
 local HitPointsPanel = require("src.hud.HitPointsPanel")
 local PlayerControlPanel = require("src.hud.PlayerControlPanel")
@@ -27,8 +24,8 @@ local ArrowsPanel = require("src.hud.ArrowsPanel")
 local PowersPanel = require("src.hud.PowersPanel")
 local Arrow = require("src.hud.Arrow")
 local DraggedArrow = require("src.hud.DraggedArrow")
-local MenuWindow = require("src.hud.MenuWindow")
-local Button = require("src.hud.Button")
+local MenuWindow = require("src.menu.MenuWindow")
+local Button = require("src.menu.Button")
 local Grid = require("src.game.Grid")
 local Tile = require("src.game.Tile")
 local Cemetery = require("src.game.Cemetery")
@@ -89,19 +86,19 @@ function GameScene.create(parameters)
 	-- Create upper bar panel
 	self.upperBar = UpperBarPanel.create{
 		players = self.players,
-		x = config.panels.controls.width + config.panels.grid.xpadding,
+		x = hud.controls.width + hud.grid.xpadding,
 		y = 0,
-		width = config.screen.width - 2 * config.panels.controls.width - 2 * config.panels.grid.xpadding,
-		height = config.panels.upperBar.height
+		width = config.screen.width - 2 * hud.controls.width - 2 * hud.grid.xpadding,
+		height = hud.upperBar.height
 	}
 
 	-- Create grid
 	self.grid = Grid.create{
 		players = self.players,
-		x = config.panels.controls.width + config.panels.grid.xpadding,
-		y = config.panels.upperBar.height,
-		width = config.screen.width - 2 * config.panels.controls.width - 2 * config.panels.grid.xpadding,
-		height = config.screen.height - config.panels.upperBar.height
+		x = hud.controls.width + hud.grid.xpadding,
+		y = hud.upperBar.height,
+		width = config.screen.width - 2 * hud.controls.width - 2 * hud.grid.xpadding,
+		height = config.screen.height - hud.upperBar.height
 	}
 
 	-- Load default map
@@ -118,7 +115,7 @@ function GameScene.create(parameters)
 
 	self.controlPanel2 = PlayerControlPanel.create{
 		player = self.players[2],
-		x = config.screen.width - config.panels.controls.width,
+		x = config.screen.width - hud.controls.width,
 		y = 0,
 		height = config.screen.height,
 		grid = self.grid
