@@ -2,10 +2,12 @@
 --
 -- Tile.lua
 --
+-- A tile is one of the grid cells.
+-- It contains map elements such as cemeteries, cities, walls and signs.
+--
 -----------------------------------------------------------------------------------------
 
 module("Tile", package.seeall)
-
 Tile.__index = Tile
 
 -----------------------------------------------------------------------------------------
@@ -25,10 +27,16 @@ contentId = 0
 -- Class initialization
 -----------------------------------------------------------------------------------------
 
+-- Initialize the class
 function initialize()
 	classGroup = display.newGroup()
 end
 
+-- Initialize the tile dimensions
+--
+-- Parameters:
+--  width: The tile width
+--  height: The tile height
 function initializeDimensions(parameters)
 	width = parameters.width
 	height = parameters.height

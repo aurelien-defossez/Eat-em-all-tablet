@@ -2,10 +2,11 @@
 --
 -- PowersPanel.lua
 --
+-- The powers panel from which the user can use the powers he bought.
+--
 -----------------------------------------------------------------------------------------
 
 module("PowersPanel", package.seeall)
-
 PowersPanel.__index = PowersPanel
 
 -----------------------------------------------------------------------------------------
@@ -21,6 +22,7 @@ local TableLayout = require("src.utils.TableLayout")
 -- Class methods
 -----------------------------------------------------------------------------------------
 
+-- Initialize the class
 function initialize()
 	classGroup = display.newGroup()
 end

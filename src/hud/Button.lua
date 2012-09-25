@@ -2,10 +2,11 @@
 --
 -- Button.lua
 --
+-- A menu button than can be clicked.
+--
 -----------------------------------------------------------------------------------------
 
 module("Button", package.seeall)
-
 Button.__index = Button
 
 -----------------------------------------------------------------------------------------
@@ -18,6 +19,7 @@ require("src.utils.Constants")
 -- Class initialization
 -----------------------------------------------------------------------------------------
 
+-- Initialize the class
 function initialize()
 	classGroup = display.newGroup()
 end

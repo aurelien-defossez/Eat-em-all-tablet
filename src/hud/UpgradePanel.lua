@@ -2,6 +2,8 @@
 --
 -- UpgradePanel.lua
 --
+-- The upgrade panel from which the user can buy upgrades.
+--
 -----------------------------------------------------------------------------------------
 
 module("UpgradePanel", package.seeall)
@@ -19,6 +21,7 @@ require("src.config.GameConfig")
 -- Class methods
 -----------------------------------------------------------------------------------------
 
+-- Initialize the class
 function initialize()
 	classGroup = display.newGroup()
 end
@@ -104,6 +107,10 @@ end
 -- Methods
 -----------------------------------------------------------------------------------------
 
+-- Update the XP count
+--
+-- Parameters:
+--  xp: The new XP value
 function UpgradePanel:updateXp(xp)
 	self.xpCounter.text = xp
 end

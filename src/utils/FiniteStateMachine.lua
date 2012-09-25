@@ -2,10 +2,12 @@
 --
 -- FiniteStateMachine.lua
 --
+-- A finite state machine implementation.
+-- For more information, please read the comments below.
+--
 -----------------------------------------------------------------------------------------
 
 module("FiniteStateMachine", package.seeall)
-
 FiniteStateMachine.__index = FiniteStateMachine
 
 -----------------------------------------------------------------------------------------

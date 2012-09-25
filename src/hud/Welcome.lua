@@ -2,6 +2,8 @@
 --
 -- Welcome.lua
 --
+-- The first scene, with the "Start", "Debug", "Quit" menu.
+--
 -----------------------------------------------------------------------------------------
 
 local storyboard = require("storyboard")
@@ -405,7 +407,6 @@ Welcome:addEventListener("exitScene", Welcome)
 -- automatically unloaded in low memory situations, or explicitly via a call to
 -- storyboard.purgeScene() or storyboard.removeScene().
 Welcome:addEventListener("destroyScene", Welcome)
-
 
 -----------------------------------------------------------------------------------------
 

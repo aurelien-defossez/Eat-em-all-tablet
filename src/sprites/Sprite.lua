@@ -2,6 +2,11 @@
 --
 -- Sprite.lua
 --
+-- An abstract layer over the Corona sprites, used to simplify how it is handled by
+-- Corona.
+-- It handles the reference point better than legacy Corona.
+-- It also handle the spritePause and spriteChangeSpeed events.
+--
 -----------------------------------------------------------------------------------------
 
 module("Sprite", package.seeall)

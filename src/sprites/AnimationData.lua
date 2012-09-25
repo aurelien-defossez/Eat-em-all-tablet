@@ -1,3 +1,20 @@
+-----------------------------------------------------------------------------------------
+--
+-- AnimationData.lua
+--
+-- The definition of each set, within each the animations.
+-- Each animation is defined by these attributes:
+--  frameCount: The number of frames defining the animation (default is 1)
+--				If frameCount > 1, then the source images should be suffixed by _01, _02
+--				and so on
+--				(e.g. zombie_attack_right_blue_01.png and zombie_attack_right_blue_02.png)
+--  period: The period in ms to play the whole animation.
+--			(Optional if there is only one frame)
+--  loop: Tells whether the animation loops.
+--		  (Default is true)
+--
+-----------------------------------------------------------------------------------------
+
 sprites = {
 	arrow = {
 		arrow_blue = {},

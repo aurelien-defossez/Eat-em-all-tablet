@@ -2,10 +2,12 @@
 --
 -- PlayerControlPanel.lua
 --
+-- The player control panel, which contains the upgrade panel, the arrows panel and the
+-- powers panel.
+--
 -----------------------------------------------------------------------------------------
 
 module("PlayerControlPanel", package.seeall)
-
 PlayerControlPanel.__index = PlayerControlPanel
 
 -----------------------------------------------------------------------------------------
@@ -23,6 +25,7 @@ local PowersPanel = require("src.hud.PowersPanel")
 -- Class initialization
 -----------------------------------------------------------------------------------------
 
+-- Initialize the class
 function initialize()
 	classGroup = display.newGroup()
 end

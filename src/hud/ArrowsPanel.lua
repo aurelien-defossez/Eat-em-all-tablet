@@ -2,10 +2,11 @@
 --
 -- ArrowsPanel.lua
 --
+-- The arrow panel contains the 4 direction arrows and the remove arrow.
+--
 -----------------------------------------------------------------------------------------
 
 module("ArrowsPanel", package.seeall)
-
 ArrowsPanel.__index = ArrowsPanel
 
 -----------------------------------------------------------------------------------------
@@ -21,6 +22,7 @@ local Arrow = require("src.hud.Arrow")
 -- Class initialization
 -----------------------------------------------------------------------------------------
 
+-- Initialize the class
 function initialize()
 	classGroup = display.newGroup()
 end

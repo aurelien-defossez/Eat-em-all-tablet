@@ -2,6 +2,8 @@
 --
 -- MenuWindow.lua
 --
+-- A menu with some buttons in it.
+--
 -----------------------------------------------------------------------------------------
 
 module("MenuWindow", package.seeall)
@@ -19,6 +21,7 @@ require("src.config.GameConfig")
 -- Class initialization
 -----------------------------------------------------------------------------------------
 
+-- Initialize the class
 function initialize()
 	classGroup = display.newGroup()
 end

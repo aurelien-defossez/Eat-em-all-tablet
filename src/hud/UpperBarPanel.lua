@@ -1,11 +1,12 @@
 -----------------------------------------------------------------------------------------
 --
 -- UpperBarPanel.lua
+-- 
+-- The upper bar panel, containing the HP bars and the menu.
 --
 -----------------------------------------------------------------------------------------
 
 module("UpperBarPanel", package.seeall)
-
 UpperBarPanel.__index = UpperBarPanel
 
 -----------------------------------------------------------------------------------------
@@ -26,6 +27,7 @@ local HitPointsPanel = require("src.hud.HitPointsPanel")
 -- Class initialization
 -----------------------------------------------------------------------------------------
 
+-- Initialize the class
 function initialize()
 	classGroup = display.newGroup()
 end

@@ -2,6 +2,8 @@
 --
 -- Utils.lua
 --
+-- Some utils functions
+--
 -----------------------------------------------------------------------------------------
 
 require("src.config.GameConfig")

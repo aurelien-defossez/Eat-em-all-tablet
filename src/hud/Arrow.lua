@@ -2,10 +2,12 @@
 --
 -- Arrow.lua
 --
+-- An arrow from the player's arrow panel. It can be touched if it is enabled.
+-- When touched, a DraggedArrow instance is created, which handle the drag'n'drop.
+--
 -----------------------------------------------------------------------------------------
 
 module("Arrow", package.seeall)
-
 Arrow.__index = Arrow
 
 -----------------------------------------------------------------------------------------
@@ -23,6 +25,7 @@ local DraggedArrow = require("src.hud.DraggedArrow")
 -- Class methods
 -----------------------------------------------------------------------------------------
 
+-- Initialize the class
 function initialize()
 	classGroup = display.newGroup()
 end

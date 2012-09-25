@@ -5,7 +5,6 @@
 -----------------------------------------------------------------------------------------
 
 module("HitPointsPanel", package.seeall)
-
 HitPointsPanel.__index = HitPointsPanel
 
 -----------------------------------------------------------------------------------------
@@ -19,6 +18,7 @@ require("src.config.GameConfig")
 -- Class initialization
 -----------------------------------------------------------------------------------------
 
+-- Initialize the class
 function initialize()
 	classGroup = display.newGroup()
 end
@@ -80,6 +80,10 @@ end
 -- Methods
 -----------------------------------------------------------------------------------------
 
+-- Update the hit points count
+--
+-- Parameters:
+-- hitPoints: The new value
 function HitPointsPanel:updateHPs(hitPoints)
 	self.hitPoints = hitPoints
 

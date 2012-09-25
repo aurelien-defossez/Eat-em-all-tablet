@@ -1,11 +1,14 @@
 -----------------------------------------------------------------------------------------
 --
 -- WindowManager.lua
+-- 
+-- A window manager to manage the different menu windows on the screen.
+-- Windows can stack, and the manager make sure only one is displayed at a time.
+-- Windows can be pushed and poped from this stack.
 --
 -----------------------------------------------------------------------------------------
 
 module("WindowManager", package.seeall)
-
 WindowManager.__index = WindowManager
 
 -----------------------------------------------------------------------------------------
