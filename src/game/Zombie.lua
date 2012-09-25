@@ -154,7 +154,7 @@ function initialize()
 				}
 			}
 		},
-		-- Enforce city
+		-- Enforcing city
 		enforcingCity = {
 			name = "enforcingCity",
 			attributes = {
@@ -181,7 +181,7 @@ function initialize()
 					state = "moving"
 				},
 				killed = {
-					state = "dying"
+					state = "finishingAttack"
 				}
 			}
 		},
@@ -238,9 +238,23 @@ function initialize()
 			},
 			transitions = {
 				hitZombie = {
+					state = "finishingAttack",
 					onChange = onHitZombie
 				},
 				endOfFrame = {
+					state = "dying"
+				}
+			}
+		},
+		-- Finishing attack
+		finishingAttack = {
+			name = "finishingAttack",
+			attributes = {
+				canAttack = false,
+				isAttackable = false
+			},
+			transitions = {
+				animationEnd = {
 					state = "dying"
 				}
 			}
@@ -711,6 +725,7 @@ function Zombie:onHitZombie(parameters)
 		self.player:addXp(1)
 	end
 
+	self.animationName = "attack"
 	self:updateSprite()
 end
 

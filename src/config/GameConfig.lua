@@ -156,8 +156,8 @@ config = {
 			giant = 360
 		},
 		strength = {
-			normal = 10,
-			giant = 60
+			normal = 30,
+			giant = 200
 		},
 		mask = {
 			width = 24,
